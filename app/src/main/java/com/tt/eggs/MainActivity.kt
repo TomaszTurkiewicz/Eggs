@@ -5,8 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.view.get
+import com.tt.eggs.classes.CaughtEgg
 import com.tt.eggs.classes.Game
 import com.tt.eggs.classes.Static
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,16 +13,46 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    var game = Game()
-    var basket = Static.RIGHT_TOP
-    val mHandler = Handler()
-    var gameLoop: Runnable = object : Runnable{
-        override fun run(){
-            game.moveDown()
-            displayState()
-            mHandler.postDelayed(this,1000)
-        }
+    private var game = Game()
+    private var basket = Static.RIGHT_TOP
+    private val mHandler = Handler()
+    private var eggCaught = CaughtEgg()
+    private var gameLoop: Runnable = Runnable {
+        game.moveDown()
+        displayState()
+        eggCaught = checkCatch()
+        checkNextMove(eggCaught)
     }
+
+    // if egg at last position check if it is in the basket
+    private fun checkNextMove(eggCaught: CaughtEgg) {
+        if(eggCaught.logicSum==1){
+            mHandler.postDelayed(gameLoop,1000)
+        }
+        else{
+            game.clear()
+            mHandler.removeCallbacks(gameLoop)
+        }
+
+    }
+
+    // check if egg is in the basket
+    private fun checkCatch(): CaughtEgg {
+        val eggCheck = CaughtEgg()
+        for(i in 0..3){
+            if(game.gameState[5][i]||game.position[i]){
+                eggCheck.logicSum+=1
+            }
+        }
+        for(i in 0..3){
+            if(game.gameState[5][i]&&game.position[i]){
+                eggCheck.logicProduct+=1
+            }
+        }
+        return eggCheck
+        }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +69,6 @@ class MainActivity : AppCompatActivity() {
 
         // set button listeners
         buttonsOnClickListeners()
-
-        // start game loop
-        gameLoop.run()
-
-
 
 
     }
@@ -152,8 +176,22 @@ class MainActivity : AppCompatActivity() {
             basket=Static.RIGHT_TOP
             displayBasket()
         }
+        start_pause.setOnClickListener { gameLoop.run() }
     }
 
     }
+
+// TODO add points
+// TODO add faults
+// TODO start_pause
+// TODO game A and B
+// TODO 200 and 500 points clear faults
+// TODO add rabbit (if rabbit and fault - counts as a half)
+// TODO different games speed
+// TODO different distance between eggs
+// TODO add sounds
+// TODO login
+// TODO save points (highest score (if 1000 - how many times), score in total)
+// TODO change UI
 
 
