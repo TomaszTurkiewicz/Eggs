@@ -37,6 +37,7 @@ class Game {
         score=0
 
         faults=0
+
     }
 
 
@@ -105,6 +106,23 @@ class Game {
     // return current faults
     fun getFault():Int{
         return faults
+    }
+
+    fun reset(){
+        for(x in 0..5){
+            for(y in 0..3){
+                gameState[x][y]=false
+            }
+        }
+
+        for(i in 0..3){
+            position[i]=false
+        }
+        position[Static.RIGHT_TOP]=true
+        lastNumber=0
+        score=0
+        faults=0
+
     }
 
 

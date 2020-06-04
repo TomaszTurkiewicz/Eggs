@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         eggCaught = checkCatch()
         checkNextMove(eggCaught)
     }
+    private var gameInProgress = false
 
     // if egg at last position check if it is in the basket
     private fun checkNextMove(eggCaught: CaughtEgg) {
@@ -49,6 +50,12 @@ class MainActivity : AppCompatActivity() {
             updateFaultsView()
             if(game.getFault()<=5){
                 mHandler.postDelayed(gameLoop,1000)
+            }
+            else{
+                gameInProgress=false
+                // clear whole game
+                game.reset()
+
             }
         }
     }
@@ -199,7 +206,13 @@ class MainActivity : AppCompatActivity() {
             basket=Static.RIGHT_TOP
             displayBasket()
         }
-        start_pause.setOnClickListener { gameLoop.run() }
+        start_pause.setOnClickListener {
+            if(!gameInProgress){
+                gameInProgress=true
+                updateFaultsView()
+                updateScoreTextView()
+                gameLoop.run()}
+        }
         updateScoreTextView()
     }
 
