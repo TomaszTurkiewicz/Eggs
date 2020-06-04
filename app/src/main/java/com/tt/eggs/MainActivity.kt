@@ -193,5 +193,9 @@ class MainActivity : AppCompatActivity() {
 // TODO login
 // TODO save points (highest score (if 1000 - how many times), score in total)
 // TODO change UI
+// TODO add ranking (individual highest points, points in total)
+// TODO onStop remove callback from game loop and save state to storage
+// TODO restarting game with count down from 3 to prepare user
+// TODO add admob after gameover or 1000 points
 
 
