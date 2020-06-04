@@ -13,6 +13,9 @@ class Game {
     // to avoid two eggs next to each other
         private var lastNumber:Int
 
+    // to store score
+    private var score:Int
+
     // initialization
     init {
         for(x in 0..5){
@@ -27,6 +30,8 @@ class Game {
         position[Static.RIGHT_TOP]=true
 
         lastNumber=0
+
+        score=0
     }
 
 
@@ -75,6 +80,14 @@ class Game {
         gameState[0][Static.RIGHT_TOP]=false
         gameState[0][Static.RIGHT_BOTTOM]=false
         gameState[0][ran]=true
+    }
+
+    fun getScore():Int{
+        return score
+    }
+
+    fun addPoint(){
+        score+=1
     }
 
 

@@ -26,9 +26,20 @@ class MainActivity : AppCompatActivity() {
 
     // if egg at last position check if it is in the basket
     private fun checkNextMove(eggCaught: CaughtEgg) {
+
+        // egg in basket or no egg
         if(eggCaught.logicSum==1){
+
+            // egg has been caught
+            if(eggCaught.logicProduct==1){
+                game.addPoint()
+                updateScoreTextView()
+            }
+
             mHandler.postDelayed(gameLoop,1000)
         }
+
+        // egg outside the basket
         else{
             game.clear()
             mHandler.removeCallbacks(gameLoop)
@@ -67,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         // update basket position
         displayBasket()
 
-        // set button listeners
+        // set button listeners and text view displays
         buttonsOnClickListeners()
 
 
@@ -177,9 +188,18 @@ class MainActivity : AppCompatActivity() {
             displayBasket()
         }
         start_pause.setOnClickListener { gameLoop.run() }
+        updateScoreTextView()
     }
 
+    // update score in text view
+    private fun updateScoreTextView(){
+        score.text = game.getScore().toString()
     }
+    }
+
+
+
+
 
 // TODO add points
 // TODO add faults
