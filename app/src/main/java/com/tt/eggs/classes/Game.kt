@@ -24,7 +24,7 @@ class Game {
         for(i in 0..3){
             position[i]=false
         }
-        position[3]=true
+        position[Static.RIGHT_TOP]=true
 
         lastNumber=0
     }
@@ -70,10 +70,10 @@ class Game {
             ran %= 4
         }
         lastNumber=ran
-        gameState[0][0]=false
-        gameState[0][1]=false
-        gameState[0][2]=false
-        gameState[0][3]=false
+        gameState[0][Static.LEFT_BOTTOM]=false
+        gameState[0][Static.LEFT_TOP]=false
+        gameState[0][Static.RIGHT_TOP]=false
+        gameState[0][Static.RIGHT_BOTTOM]=false
         gameState[0][ran]=true
     }
 

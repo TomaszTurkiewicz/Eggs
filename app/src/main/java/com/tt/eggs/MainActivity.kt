@@ -8,13 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.get
 import com.tt.eggs.classes.Game
+import com.tt.eggs.classes.Static
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
     var game = Game()
-    var basket = 3
+    var basket = Static.RIGHT_TOP
     val mHandler = Handler()
     var gameLoop: Runnable = object : Runnable{
         override fun run(){
@@ -68,25 +69,25 @@ class MainActivity : AppCompatActivity() {
 
     // display all fallen eggs
     private fun displayState(){
-        displayEgg(eggTopLeftFirst,1,1)
-        displayEgg(eggTopLeftSecond,2,1)
-        displayEgg(eggTopLeftThird,3,1)
-        displayEgg(eggTopLeftFourth,4,1)
+        displayEgg(eggTopLeftFirst,1,Static.LEFT_TOP)
+        displayEgg(eggTopLeftSecond,2,Static.LEFT_TOP)
+        displayEgg(eggTopLeftThird,3,Static.LEFT_TOP)
+        displayEgg(eggTopLeftFourth,4,Static.LEFT_TOP)
 
-        displayEgg(eggBottomLeftFirst,1,0)
-        displayEgg(eggBottomLeftSecond,2,0)
-        displayEgg(eggBottomLeftThird,3,0)
-        displayEgg(eggBottomLeftFourth,4,0)
+        displayEgg(eggBottomLeftFirst,1,Static.LEFT_BOTTOM)
+        displayEgg(eggBottomLeftSecond,2,Static.LEFT_BOTTOM)
+        displayEgg(eggBottomLeftThird,3,Static.LEFT_BOTTOM)
+        displayEgg(eggBottomLeftFourth,4,Static.LEFT_BOTTOM)
 
-        displayEgg(eggBottomRightFirst,1,3)
-        displayEgg(eggBottomRightSecond,2,3)
-        displayEgg(eggBottomRightThird,3,3)
-        displayEgg(eggBottomRightFourth,4,3)
+        displayEgg(eggBottomRightFirst,1,Static.RIGHT_BOTTOM)
+        displayEgg(eggBottomRightSecond,2,Static.RIGHT_BOTTOM)
+        displayEgg(eggBottomRightThird,3,Static.RIGHT_BOTTOM)
+        displayEgg(eggBottomRightFourth,4,Static.RIGHT_BOTTOM)
 
-        displayEgg(eggTopRightFirst,1,2)
-        displayEgg(eggTopRightSecond,2,2)
-        displayEgg(eggTopRightThird,3,2)
-        displayEgg(eggTopRightFourth,4,2)
+        displayEgg(eggTopRightFirst,1,Static.RIGHT_TOP)
+        displayEgg(eggTopRightSecond,2,Static.RIGHT_TOP)
+        displayEgg(eggTopRightThird,3,Static.RIGHT_TOP)
+        displayEgg(eggTopRightFourth,4,Static.RIGHT_TOP)
 
     }
 
@@ -103,22 +104,22 @@ class MainActivity : AppCompatActivity() {
     // display position of basket
     private fun displayBasket(){
         game.setBasket(basket)
-        if(game.position[1]){
+        if(game.position[Static.LEFT_TOP]){
             basketTopLeft.setImageDrawable(getDrawable(R.drawable.basket))
         }else{
             basketTopLeft.setImageDrawable(null)
         }
-        if(game.position[0]){
+        if(game.position[Static.LEFT_BOTTOM]){
             basketBottomLeft.setImageDrawable(getDrawable(R.drawable.basket))
         }else{
             basketBottomLeft.setImageDrawable(null)
         }
-        if(game.position[3]){
+        if(game.position[Static.RIGHT_BOTTOM]){
             basketBottomRight.setImageDrawable(getDrawable(R.drawable.basket))
         }else{
             basketBottomRight.setImageDrawable(null)
         }
-        if(game.position[2]){
+        if(game.position[Static.RIGHT_TOP]){
             basketTopRight.setImageDrawable(getDrawable(R.drawable.basket))
         }else{
             basketTopRight.setImageDrawable(null)
@@ -135,20 +136,20 @@ class MainActivity : AppCompatActivity() {
     // set click listeners for all buttons
     private fun buttonsOnClickListeners(){
         buttonTopLeft.setOnClickListener {
-            basket=1
+            basket=Static.LEFT_TOP
             displayBasket()
 
         }
         buttonBottomLeft.setOnClickListener {
-            basket=0
+            basket=Static.LEFT_BOTTOM
             displayBasket()
         }
         buttonBottomRight.setOnClickListener {
-            basket=3
+            basket=Static.RIGHT_BOTTOM
             displayBasket()
         }
         buttonTopRight.setOnClickListener {
-            basket=2
+            basket=Static.RIGHT_TOP
             displayBasket()
         }
     }
