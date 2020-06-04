@@ -14,9 +14,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     var game = Game()
-
     var basket = 3
-
     val mHandler = Handler()
     var gameLoop: Runnable = object : Runnable{
         override fun run(){
@@ -42,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         // set button listeners
         buttonsOnClickListeners()
 
-
+        // start game loop
         gameLoop.run()
 
 
@@ -50,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // full screen
     private fun fullScreen(){
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -67,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // display all fallen eggs
     private fun displayState(){
         displayEgg(eggTopLeftFirst,1,1)
         displayEgg(eggTopLeftSecond,2,1)
@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // display single egg
     private fun displayEgg( imageView: ImageView, x:Int, y:Int){
         if(game.displayCell(x,y)){
             imageView.setImageDrawable(getDrawable(R.drawable.button))
@@ -99,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // display position of basket
     private fun displayBasket(){
         game.setBasket(basket)
         if(game.position[1]){
@@ -123,12 +125,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // first displaying array (empty)
     private fun updateArray(){
         game.clear()
         displayState()
 
     }
 
+    // set click listeners for all buttons
     private fun buttonsOnClickListeners(){
         buttonTopLeft.setOnClickListener {
             basket=1
@@ -148,8 +152,6 @@ class MainActivity : AppCompatActivity() {
             displayBasket()
         }
     }
-
-
 
     }
 

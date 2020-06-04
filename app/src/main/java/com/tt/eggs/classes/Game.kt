@@ -3,12 +3,17 @@ package com.tt.eggs.classes
 import kotlin.random.Random
 
 class Game {
+
+    // array representing eggs
         var gameState = Array(6) {BooleanArray(4)}
 
+    // array representing basket
         var position = BooleanArray(4)
 
+    // to avoid two eggs next to each other
         private var lastNumber:Int
 
+    // initialization
     init {
         for(x in 0..5){
             for(y in 0..3){
@@ -25,10 +30,12 @@ class Game {
     }
 
 
+    // return one position in egg array
     fun displayCell(x:Int, y:Int):Boolean{
         return gameState[x][y]
     }
 
+    // clear egg array
     fun clear(){
         for(x in 0..5){
             for(y in 0..3){
@@ -37,6 +44,7 @@ class Game {
         }
     }
 
+    // placing basket at one in four positions
     fun setBasket(i:Int){
         for(arg in 0..3){
             position[arg]=false
@@ -44,14 +52,17 @@ class Game {
         position[i]=true
     }
 
+    // egg array move down
     fun moveDown(){
+
+        // move down
         for(i in 4 downTo 0){
             for(j in 0..3){
                 gameState[i+1][j]=gameState[i][j]
             }
         }
 
-
+        // generate new egg at random postion
         val random = Random.nextInt(0,99)
         var ran=random%4
         if(lastNumber==ran){
@@ -65,7 +76,6 @@ class Game {
         gameState[0][3]=false
         gameState[0][ran]=true
     }
-
 
 
 }
