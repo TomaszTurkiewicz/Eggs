@@ -6,13 +6,233 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <ImageView
+        android:id="@+id/buttonTopRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        app:layout_constraintBottom_toTopOf="@id/buttonBottomRight"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/button"
+        android:layout_margin="50dp"/>
+
+    <ImageView
+        android:id="@+id/buttonBottomRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/button"
+        android:layout_margin="50dp"/>
+
+    <ImageView
+        android:id="@+id/buttonTopLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/buttonBottomLeft"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@drawable/button"
+        android:layout_margin="50dp"/>
+
+    <ImageView
+        android:id="@+id/buttonBottomLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/button"
+        android:layout_margin="50dp"/>
+
+    <ImageView
+        android:id="@+id/start_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/play"/>
+
+    <TextView
+        android:id="@+id/screen"
+        android:layout_width="500dp"
+        android:layout_height="300dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#88DADADA"/>
+
+    <ImageView
+        android:id="@+id/eggTopLeftFirst"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toLeftOf="@id/screen"
+        app:layout_constraintTop_toTopOf="@id/screen"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/eggTopLeftSecond"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toRightOf="@id/eggTopLeftFirst"
+        app:layout_constraintTop_toBottomOf="@id/eggTopLeftFirst"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/eggTopLeftThird"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toRightOf="@id/eggTopLeftSecond"
+        app:layout_constraintTop_toBottomOf="@id/eggTopLeftSecond"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/eggTopLeftFourth"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toRightOf="@id/eggTopLeftThird"
+        app:layout_constraintTop_toBottomOf="@id/eggTopLeftThird"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/basketTopLeft"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toRightOf="@id/eggTopLeftFourth"
+        app:layout_constraintTop_toBottomOf="@id/eggTopLeftFourth"/>
+
+
+    <ImageView
+        android:id="@+id/eggBottomLeftFirst"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toLeftOf="@id/screen"
+        app:layout_constraintTop_toTopOf="@id/screen"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/eggBottomLeftSecond"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toRightOf="@id/eggBottomLeftFirst"
+        app:layout_constraintTop_toBottomOf="@id/eggBottomLeftFirst"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/eggBottomLeftThird"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toRightOf="@id/eggBottomLeftSecond"
+        app:layout_constraintTop_toBottomOf="@id/eggBottomLeftSecond"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+    android:id="@+id/eggBottomLeftFourth"
+    android:layout_width="25dp"
+    android:layout_height="25dp"
+    app:layout_constraintLeft_toRightOf="@id/eggBottomLeftThird"
+    app:layout_constraintTop_toBottomOf="@id/eggBottomLeftThird"
+    android:layout_marginLeft="20dp"
+    android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/basketBottomLeft"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toRightOf="@id/eggBottomLeftFourth"
+        app:layout_constraintTop_toBottomOf="@id/eggBottomLeftFourth"/>
+
+
+    <ImageView
+        android:id="@+id/eggTopRightFirst"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toRightOf="@id/screen"
+        app:layout_constraintTop_toTopOf="@id/screen"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/eggTopRightSecond"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toLeftOf="@id/eggTopRightFirst"
+        app:layout_constraintTop_toBottomOf="@id/eggTopRightFirst"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/eggTopRightThird"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toLeftOf="@id/eggTopRightSecond"
+        app:layout_constraintTop_toBottomOf="@id/eggTopRightSecond"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/eggTopRightFourth"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toLeftOf="@id/eggTopRightThird"
+        app:layout_constraintTop_toBottomOf="@id/eggTopRightThird"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/basketTopRight"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toLeftOf="@id/eggTopRightFourth"
+        app:layout_constraintTop_toBottomOf="@id/eggTopRightFourth"/>
+
+
+    <ImageView
+        android:id="@+id/eggBottomRightFirst"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toRightOf="@id/screen"
+        app:layout_constraintTop_toTopOf="@id/screen"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/eggBottomRightSecond"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toLeftOf="@id/eggBottomRightFirst"
+        app:layout_constraintTop_toBottomOf="@id/eggBottomRightFirst"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/eggBottomRightThird"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toLeftOf="@id/eggBottomRightSecond"
+        app:layout_constraintTop_toBottomOf="@id/eggBottomRightSecond"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/eggBottomRightFourth"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toLeftOf="@id/eggBottomRightThird"
+        app:layout_constraintTop_toBottomOf="@id/eggBottomRightThird"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/basketBottomRight"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toLeftOf="@id/eggBottomRightFourth"
+        app:layout_constraintTop_toBottomOf="@id/eggBottomRightFourth"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
