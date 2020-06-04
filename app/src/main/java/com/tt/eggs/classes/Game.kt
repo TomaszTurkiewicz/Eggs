@@ -16,6 +16,8 @@ class Game {
     // to store score
     private var score:Int
 
+    private var faults:Int
+
     // initialization
     init {
         for(x in 0..5){
@@ -27,11 +29,14 @@ class Game {
         for(i in 0..3){
             position[i]=false
         }
+
         position[Static.RIGHT_TOP]=true
 
         lastNumber=0
 
         score=0
+
+        faults=0
     }
 
 
@@ -82,13 +87,26 @@ class Game {
         gameState[0][ran]=true
     }
 
+    // return current score
     fun getScore():Int{
         return score
     }
 
+    // add point when egg caught
     fun addPoint(){
         score+=1
     }
+
+    // add fault when egg not caught
+    fun addFault(){
+        faults+=1
+    }
+
+    // return current faults
+    fun getFault():Int{
+        return faults
+    }
+
 
 
 }

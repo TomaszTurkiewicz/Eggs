@@ -1,5 +1,6 @@
 package com.tt.eggs
 
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -41,10 +42,15 @@ class MainActivity : AppCompatActivity() {
 
         // egg outside the basket
         else{
+            // clear egg array
             game.clear()
             mHandler.removeCallbacks(gameLoop)
+            game.addFault()
+            updateFaultsView()
+            if(game.getFault()<=5){
+                mHandler.postDelayed(gameLoop,1000)
+            }
         }
-
     }
 
     // check if egg is in the basket
@@ -82,6 +88,12 @@ class MainActivity : AppCompatActivity() {
         buttonsOnClickListeners()
 
 
+    }
+
+    // stop game loop when activity is disrupted by anything else (another app)
+    override fun onPause() {
+        super.onPause()
+        mHandler.removeCallbacks(gameLoop)
     }
 
     // full screen
@@ -195,14 +207,43 @@ class MainActivity : AppCompatActivity() {
     private fun updateScoreTextView(){
         score.text = game.getScore().toString()
     }
+
+    // display faults
+    private fun updateFaultsView(){
+        // clear views
+        right_fault.setImageDrawable(null)
+        middle_fault.setImageDrawable(null)
+        left_fault.setImageDrawable(null)
+
+        // set current no of faults
+        if(game.getFault()>=1){
+            right_fault.setImageDrawable(getDrawable(R.drawable.half_fault))
+        }
+        if(game.getFault()>=2){
+            right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        }
+
+        if(game.getFault()>=3){
+            middle_fault.setImageDrawable(getDrawable(R.drawable.half_fault))
+        }
+        if(game.getFault()>=4){
+            middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        }
+        if(game.getFault()>=5){
+            left_fault.setImageDrawable(getDrawable(R.drawable.half_fault))
+        }
+        if(game.getFault()>=6){
+            left_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        }
+    }
+
+
+
     }
 
 
 
 
-
-// TODO add points
-// TODO add faults
 // TODO start_pause
 // TODO game A and B
 // TODO 200 and 500 points clear faults
