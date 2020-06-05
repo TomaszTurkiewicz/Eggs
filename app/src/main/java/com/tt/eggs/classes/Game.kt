@@ -227,4 +227,8 @@ class Game {
 
     }
 
+    fun clearFaults() {
+        faults=0
+    }
+
 }

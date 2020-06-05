@@ -1,6 +1,6 @@
 package com.tt.eggs
 
-import android.graphics.drawable.Drawable
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -36,6 +36,12 @@ class MainActivity : AppCompatActivity() {
             if(eggCaught.logicProduct==1){
                 game.addPoint()
                 updateScoreTextView()
+
+                // clear faults when get 200 or 500 points
+                if(game.getScore()==200||game.getScore()==500){
+                    game.clearFaults()
+                    updateFaultsView()
+                }
             }
 
             mHandler.postDelayed(gameLoop,1000)
@@ -266,7 +272,6 @@ class MainActivity : AppCompatActivity() {
 
 
 // TODO start_pause
-// TODO 200 and 500 points clear faults
 // TODO add rabbit (if rabbit and fault - counts as a half)
 // TODO different games speed
 // TODO add sounds
