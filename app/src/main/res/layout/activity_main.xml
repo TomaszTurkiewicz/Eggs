@@ -151,11 +151,19 @@
         android:background="@drawable/empty_circle"/>
 
     <ImageView
-        android:id="@+id/basketTopLeft"
+        android:id="@+id/eggTopLeftFifth"
         android:layout_width="25dp"
         android:layout_height="25dp"
         app:layout_constraintLeft_toRightOf="@id/eggTopLeftFourth"
-        app:layout_constraintTop_toBottomOf="@id/eggTopLeftFourth"/>
+        app:layout_constraintTop_toBottomOf="@id/eggTopLeftFourth"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/empty_circle"/>
+    <ImageView
+        android:id="@+id/basketTopLeft"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toRightOf="@id/eggTopLeftFifth"
+        app:layout_constraintTop_toBottomOf="@id/eggTopLeftFifth"/>
 
 
     <ImageView
@@ -195,11 +203,20 @@
     android:background="@drawable/empty_circle"/>
 
     <ImageView
-        android:id="@+id/basketBottomLeft"
+        android:id="@+id/eggBottomLeftFifth"
         android:layout_width="25dp"
         android:layout_height="25dp"
         app:layout_constraintLeft_toRightOf="@id/eggBottomLeftFourth"
-        app:layout_constraintTop_toBottomOf="@id/eggBottomLeftFourth"/>
+        app:layout_constraintTop_toBottomOf="@id/eggBottomLeftFourth"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/basketBottomLeft"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toRightOf="@id/eggBottomLeftFifth"
+        app:layout_constraintTop_toBottomOf="@id/eggBottomLeftFifth"/>
 
 
     <ImageView
@@ -238,11 +255,20 @@
         android:background="@drawable/empty_circle"/>
 
     <ImageView
-        android:id="@+id/basketTopRight"
+        android:id="@+id/eggTopRightFifth"
         android:layout_width="25dp"
         android:layout_height="25dp"
         app:layout_constraintRight_toLeftOf="@id/eggTopRightFourth"
-        app:layout_constraintTop_toBottomOf="@id/eggTopRightFourth"/>
+        app:layout_constraintTop_toBottomOf="@id/eggTopRightFourth"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/basketTopRight"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toLeftOf="@id/eggTopRightFifth"
+        app:layout_constraintTop_toBottomOf="@id/eggTopRightFifth"/>
 
 
     <ImageView
@@ -282,11 +308,20 @@
         android:background="@drawable/empty_circle"/>
 
     <ImageView
-        android:id="@+id/basketBottomRight"
+        android:id="@+id/eggBottomRightFifth"
         android:layout_width="25dp"
         android:layout_height="25dp"
         app:layout_constraintRight_toLeftOf="@id/eggBottomRightFourth"
-        app:layout_constraintTop_toBottomOf="@id/eggBottomRightFourth"/>
+        app:layout_constraintTop_toBottomOf="@id/eggBottomRightFourth"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/empty_circle"/>
+
+    <ImageView
+        android:id="@+id/basketBottomRight"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toLeftOf="@id/eggBottomRightFifth"
+        app:layout_constraintTop_toBottomOf="@id/eggBottomRightFifth"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

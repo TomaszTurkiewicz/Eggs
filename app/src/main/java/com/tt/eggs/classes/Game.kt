@@ -5,7 +5,7 @@ import kotlin.random.Random
 class Game {
 
     // array representing eggs
-        var gameState = Array(6) {BooleanArray(4)}
+        var gameState = Array(7) {BooleanArray(4)}
 
     // array representing basket
         var position = BooleanArray(4)
@@ -30,7 +30,7 @@ class Game {
 
     // initialization
     init {
-        for(x in 0..5){
+        for(x in 0..6){
             for(y in 0..3){
                 gameState[x][y]=Static.NO_EGG
             }
@@ -50,7 +50,7 @@ class Game {
 
         gameMode=Static.GAME_A
 
-        distance=4
+        distance=5
 
         noOfEggs=1
     }
@@ -63,7 +63,7 @@ class Game {
 
     // clear egg array
     fun clear(){
-        for(x in 0..5){
+        for(x in 0..6){
             for(y in 0..3){
                 gameState[x][y]=Static.NO_EGG
             }
@@ -82,7 +82,7 @@ class Game {
     fun moveDown(){
 
         // move down
-        for(i in 4 downTo 0){
+        for(i in 5 downTo 0){
             for(j in 0..3){
                 gameState[i+1][j]=gameState[i][j]
             }
@@ -116,7 +116,7 @@ class Game {
     fun reset(){
 
         //clear eggs
-        for(x in 0..5){
+        for(x in 0..6){
             for(y in 0..3){
                 gameState[x][y]=Static.NO_EGG
             }
@@ -175,7 +175,7 @@ class Game {
         // set counters again
         if(noOfEggs==0&&distance==0){
             noOfEggs=2
-            distance=3
+            distance=4
         }
     }
 
@@ -185,7 +185,7 @@ class Game {
         // set counters again
         if(noOfEggs==0&&distance==0){
             noOfEggs=1
-            distance=4
+            distance=5
         }
     }
 

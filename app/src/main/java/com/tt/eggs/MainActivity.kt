@@ -70,12 +70,12 @@ class MainActivity : AppCompatActivity() {
     private fun checkCatch(): CaughtEgg {
         val eggCheck = CaughtEgg()
         for(i in 0..3){
-            if(game.gameState[5][i]||game.position[i]){
+            if(game.gameState[6][i]||game.position[i]){
                 eggCheck.logicSum+=1
             }
         }
         for(i in 0..3){
-            if(game.gameState[5][i]&&game.position[i]){
+            if(game.gameState[6][i]&&game.position[i]){
                 eggCheck.logicProduct+=1
             }
         }
@@ -132,21 +132,25 @@ class MainActivity : AppCompatActivity() {
         displayEgg(eggTopLeftSecond,2,Static.LEFT_TOP)
         displayEgg(eggTopLeftThird,3,Static.LEFT_TOP)
         displayEgg(eggTopLeftFourth,4,Static.LEFT_TOP)
+        displayEgg(eggTopLeftFifth,5,Static.LEFT_TOP)
 
         displayEgg(eggBottomLeftFirst,1,Static.LEFT_BOTTOM)
         displayEgg(eggBottomLeftSecond,2,Static.LEFT_BOTTOM)
         displayEgg(eggBottomLeftThird,3,Static.LEFT_BOTTOM)
         displayEgg(eggBottomLeftFourth,4,Static.LEFT_BOTTOM)
+        displayEgg(eggBottomLeftFifth,5,Static.LEFT_BOTTOM)
 
         displayEgg(eggBottomRightFirst,1,Static.RIGHT_BOTTOM)
         displayEgg(eggBottomRightSecond,2,Static.RIGHT_BOTTOM)
         displayEgg(eggBottomRightThird,3,Static.RIGHT_BOTTOM)
         displayEgg(eggBottomRightFourth,4,Static.RIGHT_BOTTOM)
+        displayEgg(eggBottomRightFifth,5,Static.RIGHT_BOTTOM)
 
         displayEgg(eggTopRightFirst,1,Static.RIGHT_TOP)
         displayEgg(eggTopRightSecond,2,Static.RIGHT_TOP)
         displayEgg(eggTopRightThird,3,Static.RIGHT_TOP)
         displayEgg(eggTopRightFourth,4,Static.RIGHT_TOP)
+        displayEgg(eggTopRightFifth,5,Static.RIGHT_TOP)
 
     }
 
@@ -273,9 +277,12 @@ class MainActivity : AppCompatActivity() {
 
 // TODO start_pause
 // TODO add rabbit (if rabbit and fault - counts as a half)
-// TODO different games speed
+// TODO different game speed
+// TODO add one egg to each side... should be 5 in total
 // TODO add sounds
 // TODO login
+// TODO add running chicken when fault
+// TODO win when points 1000
 // TODO save points (highest score (if 1000 - how many times), score in total)
 // TODO change UI
 // TODO add ranking (individual highest points, points in total)
