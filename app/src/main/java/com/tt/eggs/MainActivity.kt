@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            mHandler.postDelayed(gameLoop,1000)
+            mHandler.postDelayed(gameLoop,deelay())
         }
 
         // egg outside the basket
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             game.addFault()
             updateFaultsView()
             if(game.getFault()<=Static.FAULT_TWO_AND_HALF){
-                mHandler.postDelayed(gameLoop,1000)
+                mHandler.postDelayed(gameLoop, deelay())
             }
             else{
                 gameInProgress=false
@@ -268,6 +268,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun deelay():Long = when(game.getScore()){
+        in 0..100 -> 1000
+        in 101..200 -> 900
+        in 201..400 -> 800
+        in 401..600 -> 700
+        in 601..800 -> 600
+        else -> 500
+    }
+
 
 
     }
@@ -277,7 +286,6 @@ class MainActivity : AppCompatActivity() {
 
 // TODO start_pause
 // TODO add rabbit (if rabbit and fault - counts as a half)
-// TODO different game speed
 // TODO add one egg to each side... should be 5 in total
 // TODO add sounds
 // TODO login
