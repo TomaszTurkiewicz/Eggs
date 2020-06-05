@@ -74,13 +74,36 @@
         android:layout_margin="50dp"/>
 
     <ImageView
-        android:id="@+id/start_pause"
+        android:id="@+id/start_A"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="50dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/play"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/start_A"
+        app:layout_constraintLeft_toLeftOf="@id/start_A"
+        android:text="A"/>
+
+    <ImageView
+        android:id="@+id/start_B"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        app:layout_constraintTop_toBottomOf="@id/start_A"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/play"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/start_B"
+        app:layout_constraintLeft_toLeftOf="@id/start_B"
+        android:text="B"/>
 
     <TextView
         android:id="@+id/screen"

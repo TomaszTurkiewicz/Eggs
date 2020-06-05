@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             mHandler.removeCallbacks(gameLoop)
             game.addFault()
             updateFaultsView()
-            if(game.getFault()<=5){
+            if(game.getFault()<=Static.FAULT_TWO_AND_HALF){
                 mHandler.postDelayed(gameLoop,1000)
             }
             else{
@@ -206,10 +206,19 @@ class MainActivity : AppCompatActivity() {
             basket=Static.RIGHT_TOP
             displayBasket()
         }
-        start_pause.setOnClickListener {
+        start_A.setOnClickListener {
             if(!gameInProgress){
                 gameInProgress=true
                 updateFaultsView()
+                game.setGameMode(Static.GAME_A)
+                updateScoreTextView()
+                gameLoop.run()}
+        }
+        start_B.setOnClickListener {
+            if(!gameInProgress){
+                gameInProgress=true
+                updateFaultsView()
+                game.setGameMode(Static.GAME_B)
                 updateScoreTextView()
                 gameLoop.run()}
         }
@@ -229,23 +238,23 @@ class MainActivity : AppCompatActivity() {
         left_fault.setImageDrawable(null)
 
         // set current no of faults
-        if(game.getFault()>=1){
+        if(game.getFault()>=Static.FAULT_HALF){
             right_fault.setImageDrawable(getDrawable(R.drawable.half_fault))
         }
-        if(game.getFault()>=2){
+        if(game.getFault()>=Static.FAULT_ONE){
             right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
         }
 
-        if(game.getFault()>=3){
+        if(game.getFault()>=Static.FAULT_ONE_AND_HALF){
             middle_fault.setImageDrawable(getDrawable(R.drawable.half_fault))
         }
-        if(game.getFault()>=4){
+        if(game.getFault()>=Static.FAULT_TWO){
             middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
         }
-        if(game.getFault()>=5){
+        if(game.getFault()>=Static.FAULT_TWO_AND_HALF){
             left_fault.setImageDrawable(getDrawable(R.drawable.half_fault))
         }
-        if(game.getFault()>=6){
+        if(game.getFault()>=Static.FAULT_THREE){
             left_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
         }
     }
@@ -258,7 +267,6 @@ class MainActivity : AppCompatActivity() {
 
 
 // TODO start_pause
-// TODO game A and B
 // TODO 200 and 500 points clear faults
 // TODO add rabbit (if rabbit and fault - counts as a half)
 // TODO different games speed

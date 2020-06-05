@@ -16,27 +16,33 @@ class Game {
     // to store score
     private var score:Int
 
+    // store faults
     private var faults:Int
+
+    // game mode (A or B)
+    private var gameMode: Boolean
 
     // initialization
     init {
         for(x in 0..5){
             for(y in 0..3){
-                gameState[x][y]=false
+                gameState[x][y]=Static.NO_EGG
             }
         }
 
         for(i in 0..3){
-            position[i]=false
+            position[i]=Static.NO_BASKET
         }
 
-        position[Static.RIGHT_TOP]=true
+        position[Static.RIGHT_TOP]=Static.BASKET
 
         lastNumber=0
 
         score=0
 
-        faults=0
+        faults=Static.FAULT_NO_FAULT
+
+        gameMode=Static.GAME_A
 
     }
 
@@ -50,7 +56,7 @@ class Game {
     fun clear(){
         for(x in 0..5){
             for(y in 0..3){
-                gameState[x][y]=false
+                gameState[x][y]=Static.NO_EGG
             }
         }
     }
@@ -58,9 +64,9 @@ class Game {
     // placing basket at one in four positions
     fun setBasket(i:Int){
         for(arg in 0..3){
-            position[arg]=false
+            position[arg]=Static.NO_BASKET
         }
-        position[i]=true
+        position[i]=Static.BASKET
     }
 
     // egg array move down
@@ -75,17 +81,17 @@ class Game {
 
         // generate new egg at random postion
         val random = Random.nextInt(0,99)
-        var ran=random%4
+        var ran=random%gameMode()
         if(lastNumber==ran){
             ran += 1
-            ran %= 4
+            ran %= gameMode()
         }
         lastNumber=ran
-        gameState[0][Static.LEFT_BOTTOM]=false
-        gameState[0][Static.LEFT_TOP]=false
-        gameState[0][Static.RIGHT_TOP]=false
-        gameState[0][Static.RIGHT_BOTTOM]=false
-        gameState[0][ran]=true
+        gameState[0][Static.LEFT_BOTTOM]=Static.NO_EGG
+        gameState[0][Static.LEFT_TOP]=Static.NO_EGG
+        gameState[0][Static.RIGHT_TOP]=Static.NO_EGG
+        gameState[0][Static.RIGHT_BOTTOM]=Static.NO_EGG
+        gameState[0][ran]=Static.EGG
     }
 
     // return current score
@@ -108,23 +114,40 @@ class Game {
         return faults
     }
 
+    // clear everything
     fun reset(){
+
+        //clear eggs
         for(x in 0..5){
             for(y in 0..3){
-                gameState[x][y]=false
+                gameState[x][y]=Static.NO_EGG
             }
         }
 
+        // clear basket position
         for(i in 0..3){
-            position[i]=false
+            position[i]=Static.NO_BASKET
         }
-        position[Static.RIGHT_TOP]=true
+        position[Static.RIGHT_TOP]=Static.BASKET
+
+        // clear score and faults
         lastNumber=0
         score=0
-        faults=0
+        faults=Static.FAULT_NO_FAULT
 
     }
 
+    private fun gameMode() :Int{
+        return when(gameMode){
+            Static.GAME_A-> 3
+            else-> 4
+        }
+
+    }
+
+    fun setGameMode(mode:Boolean){
+        gameMode=mode
+    }
 
 
 }

@@ -18,5 +18,18 @@ class Static {
         const val FAULT_TWO_AND_HALF = 5
         const val FAULT_THREE = 6
 
+        // game mode (A or B)
+        const val GAME_A = false
+        const val GAME_B = true
+
+        // egg
+        const val EGG = true
+        const val NO_EGG = false
+
+        // basket
+        const val BASKET = true
+        const val NO_BASKET = false
+
+
     }
 }
