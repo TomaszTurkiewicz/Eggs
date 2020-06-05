@@ -77,7 +77,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -270,7 +269,6 @@ class MainActivity : AppCompatActivity() {
 // TODO 200 and 500 points clear faults
 // TODO add rabbit (if rabbit and fault - counts as a half)
 // TODO different games speed
-// TODO different distance between eggs
 // TODO add sounds
 // TODO login
 // TODO save points (highest score (if 1000 - how many times), score in total)

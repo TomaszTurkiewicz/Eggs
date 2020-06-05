@@ -22,6 +22,12 @@ class Game {
     // game mode (A or B)
     private var gameMode: Boolean
 
+    // distance between eggs
+    private var distance:Int
+
+    // number of eggs in row
+    private var noOfEggs:Int
+
     // initialization
     init {
         for(x in 0..5){
@@ -44,6 +50,9 @@ class Game {
 
         gameMode=Static.GAME_A
 
+        distance=4
+
+        noOfEggs=1
     }
 
 
@@ -80,18 +89,7 @@ class Game {
         }
 
         // generate new egg at random postion
-        val random = Random.nextInt(0,99)
-        var ran=random%gameMode()
-        if(lastNumber==ran){
-            ran += 1
-            ran %= gameMode()
-        }
-        lastNumber=ran
-        gameState[0][Static.LEFT_BOTTOM]=Static.NO_EGG
-        gameState[0][Static.LEFT_TOP]=Static.NO_EGG
-        gameState[0][Static.RIGHT_TOP]=Static.NO_EGG
-        gameState[0][Static.RIGHT_BOTTOM]=Static.NO_EGG
-        gameState[0][ran]=Static.EGG
+        generateEgg()
     }
 
     // return current score
@@ -137,17 +135,96 @@ class Game {
 
     }
 
-    private fun gameMode() :Int{
-        return when(gameMode){
-            Static.GAME_A-> 3
-            else-> 4
-        }
+    // return integer 3 or 4 (game mode)
+    private fun gameMode() = if(gameMode==Static.GAME_A) 3 else 4
 
-    }
-
+    // set game mode
     fun setGameMode(mode:Boolean){
         gameMode=mode
     }
 
+    // generate next egg or eggs
+    private fun generateEgg(){
+        when(score){
+            in 0..3 -> generateOneEgg()
+            in 4..12 -> generateTwoEggs()
+            else -> generateRandomNumberOfEggs()
+        }
+    }
+
+    // totally random
+    private fun generateRandomNumberOfEggs() {
+
+        generateEggUsingCounters()
+
+        // set counters again
+        if(noOfEggs==0&&distance==0){
+            val random = Random.nextInt(0,99)
+            val ranEggs = random%5+1
+            noOfEggs=ranEggs
+            val ranDistance = random%2
+            distance=ranDistance
+        }
+
+
+    }
+
+    // two eggs
+    private fun generateTwoEggs() {
+        generateEggUsingCounters()
+        // set counters again
+        if(noOfEggs==0&&distance==0){
+            noOfEggs=2
+            distance=3
+        }
+    }
+
+    // one egg
+    private fun generateOneEgg() {
+       generateEggUsingCounters()
+        // set counters again
+        if(noOfEggs==0&&distance==0){
+            noOfEggs=1
+            distance=4
+        }
+    }
+
+    // generate egg function
+    private fun generateEggUsingCounters(){
+
+        // generate egg
+        if(noOfEggs>0) {
+            val random = Random.nextInt(0, 99)
+            var ran = random % gameMode()
+            val ranCheck = random % 5
+
+            // random not check if next egg from the same side
+            if(ranCheck!=2) {
+                if (lastNumber == ran) {
+                    ran += 1
+                    ran %= gameMode()
+                }
+            }
+
+            lastNumber = ran
+
+            gameState[0][Static.LEFT_BOTTOM] = Static.NO_EGG
+            gameState[0][Static.LEFT_TOP] = Static.NO_EGG
+            gameState[0][Static.RIGHT_TOP] = Static.NO_EGG
+            gameState[0][Static.RIGHT_BOTTOM] = Static.NO_EGG
+            gameState[0][ran] = Static.EGG
+            noOfEggs -=1
+        }
+
+        // not generate egg
+        else{
+            gameState[0][Static.LEFT_BOTTOM] = Static.NO_EGG
+            gameState[0][Static.LEFT_TOP] = Static.NO_EGG
+            gameState[0][Static.RIGHT_TOP] = Static.NO_EGG
+            gameState[0][Static.RIGHT_BOTTOM] = Static.NO_EGG
+            distance -=1
+        }
+
+    }
 
 }
