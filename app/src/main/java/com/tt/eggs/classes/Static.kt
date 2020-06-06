@@ -16,7 +16,6 @@ class Static {
         const val FAULT_ONE_AND_HALF = 3
         const val FAULT_TWO = 4
         const val FAULT_TWO_AND_HALF = 5
-        const val FAULT_THREE = 6
 
         // game mode (A or B)
         const val GAME_A = false
@@ -33,6 +32,9 @@ class Static {
         // switch flashing
         const val OFF = false
         const val ON = true
+
+        // max points in the game
+        const val MAX_POINTS = 1000
 
 
     }

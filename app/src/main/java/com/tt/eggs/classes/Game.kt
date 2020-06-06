@@ -103,8 +103,8 @@ class Game {
     }
 
     // add fault when egg not caught
-    fun addFault(){
-        faults+=1
+    fun addFault(rabbitBoolean: Boolean){
+        faults += if(rabbitBoolean) 1 else 2
     }
 
     // return current faults
@@ -212,7 +212,9 @@ class Game {
             gameState[0][Static.LEFT_TOP] = Static.NO_EGG
             gameState[0][Static.RIGHT_TOP] = Static.NO_EGG
             gameState[0][Static.RIGHT_BOTTOM] = Static.NO_EGG
-            gameState[0][ran] = Static.EGG
+            // TODO for testing speed
+            gameState[0][Static.LEFT_TOP] = Static.EGG
+ //           gameState[0][ran] = Static.EGG
             noOfEggs -=1
         }
 
@@ -230,6 +232,8 @@ class Game {
     fun clearFaults() {
         faults=0
     }
+
+    fun underMaxScore() = score<1000
 
 
 }

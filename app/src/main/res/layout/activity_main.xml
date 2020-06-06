@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/rabbit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/screen"
+        app:layout_constraintTop_toTopOf="@id/screen"
+        android:layout_marginLeft="50dp"/>
+
+
     <TextView
         android:id="@+id/score"
         android:layout_width="wrap_content"

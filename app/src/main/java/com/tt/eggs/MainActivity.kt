@@ -10,26 +10,91 @@ import com.tt.eggs.classes.CaughtEgg
 import com.tt.eggs.classes.Game
 import com.tt.eggs.classes.Static
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.random.Random
 
 
 class MainActivity : AppCompatActivity() {
 
+    // rabbit state
+    private var rabbitBoolean = Static.OFF
+
+    // counter for rabbit show
+    private var rabbitOn = 0
+
+    // counter for rabbit not show
+    private var rabbitOff = 0
+
+    // game
     private var game = Game()
+
+    // basket position
     private var basket = Static.RIGHT_TOP
-    private val mHandler = Handler()
+
+    // egg sum and product
     private var eggCaught = CaughtEgg()
-    private var gameLoop: Runnable = Runnable {
-        game.moveDown()
-        displayState()
-        eggCaught = checkCatch()
-        checkNextMove(eggCaught)
+
+    // game loop
+    private val mHandler = Handler()
+    private fun gameLoop(): Runnable = Runnable {
+        if(game.getScore()<1000) {
+            game.moveDown()
+            displayState()
+            eggCaught = checkCatch()
+            checkNextMove(eggCaught)
+        }
+        else{
+
+        }
     }
+
+    // if game is in progress
     private var gameInProgress = false
+
+    // displaying rabbit
+    private val mHandlerRabbit = Handler()
+    private fun rabbitShow():Runnable = Runnable {
+        if(game.underMaxScore()){
+
+                if(rabbitOn>0){
+                    rabbitBoolean=Static.ON
+                    displayRabbit(rabbitBoolean)
+                    rabbitOn -=1
+                    mHandlerRabbit.postDelayed(rabbitShow(),1000)
+                }
+                else if(rabbitOff>0){
+                    rabbitBoolean=Static.OFF
+                    displayRabbit(rabbitBoolean)
+                    rabbitOff -=1
+                    mHandlerRabbit.postDelayed(rabbitShow(),1000)
+
+                }else{
+                    val random = Random.nextInt(0,99)
+                    rabbitOn=random%3+2
+                    val random1 = Random.nextInt(0,99)
+                    rabbitOff=random1%3+8
+                    mHandlerRabbit.postDelayed(rabbitShow(),1000)
+                }
+            }
+        else{
+            mHandlerRabbit.removeCallbacks(rabbitShow())
+        }
+        }
+    private fun displayRabbit(rabbitBoolean: Boolean){
+        if(rabbitBoolean){
+            rabbit.setImageDrawable(getDrawable(R.drawable.rabbit))
+        }
+        else{
+            rabbit.setImageDrawable(null)
+        }
+    }
+
+
+    // flashing fault
     private val mHandlerFlash = Handler()
     private var faultFlash = Static.ON
-
     private fun flashFault():Runnable = Runnable {
-        if(game.getFault()==1){
+        if(game.getFault()==Static.FAULT_HALF){
+            mHandlerFlash.removeCallbacks(flashFault())
         if(faultFlash==Static.ON){
             right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
             faultFlash=Static.OFF
@@ -40,7 +105,8 @@ class MainActivity : AppCompatActivity() {
             mHandlerFlash.postDelayed(flashFault(),500)
         }
         }
-        else if(game.getFault()==3){
+        else if(game.getFault()==Static.FAULT_ONE_AND_HALF){
+            mHandlerFlash.removeCallbacks(flashFault())
             if(faultFlash==Static.ON){
                 middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
                 faultFlash=Static.OFF
@@ -51,7 +117,8 @@ class MainActivity : AppCompatActivity() {
                 mHandlerFlash.postDelayed(flashFault(),500)
             }
         }
-        else if(game.getFault()==5){
+        else if(game.getFault()==Static.FAULT_TWO_AND_HALF){
+            mHandlerFlash.removeCallbacks(flashFault())
             if(faultFlash==Static.ON){
                 left_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
                 faultFlash=Static.OFF
@@ -63,7 +130,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         else
-            mHandlerFlash.removeCallbacks(flashFault())
+            mHandlerFlash.postDelayed(flashFault(),500)
     }
 
     // if egg at last position check if it is in the basket
@@ -84,18 +151,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            mHandler.postDelayed(gameLoop,deelay())
+            mHandler.postDelayed(gameLoop(),deelay())
         }
 
         // egg outside the basket
         else{
             // clear egg array
             game.clear()
-            mHandler.removeCallbacks(gameLoop)
-            game.addFault()
+            mHandler.removeCallbacks(gameLoop())
+            game.addFault(rabbitBoolean)
             updateFaultsView()
             if(game.getFault()<=Static.FAULT_TWO_AND_HALF){
-                mHandler.postDelayed(gameLoop, deelay())
+                mHandler.postDelayed(gameLoop(), deelay())
             }
             else{
                 gameInProgress=false
@@ -145,7 +212,7 @@ class MainActivity : AppCompatActivity() {
     // stop game loop when activity is disrupted by anything else (another app)
     override fun onPause() {
         super.onPause()
-        mHandler.removeCallbacks(gameLoop)
+        mHandler.removeCallbacks(gameLoop())
     }
 
     // full screen
@@ -261,7 +328,9 @@ class MainActivity : AppCompatActivity() {
                 updateFaultsView()
                 game.setGameMode(Static.GAME_A)
                 updateScoreTextView()
-                gameLoop.run()}
+                gameLoop().run()
+            rabbitShow().run()
+            flashFault().run()}
         }
         start_B.setOnClickListener {
             if(!gameInProgress){
@@ -269,7 +338,9 @@ class MainActivity : AppCompatActivity() {
                 updateFaultsView()
                 game.setGameMode(Static.GAME_B)
                 updateScoreTextView()
-                gameLoop.run()}
+                gameLoop().run()
+            rabbitShow().run()
+            flashFault().run()}
         }
         updateScoreTextView()
     }
@@ -286,12 +357,12 @@ class MainActivity : AppCompatActivity() {
 //        mHandlerFlash.removeCallbacks(flashFault(right_fault))
 
         when(game.getFault()){
-            0->zeroFault()
-            1->oneFault()
-            2->twoFault()
-            3->threeFault()
-            4->fourFault()
-            5->fiveFault()
+            Static.FAULT_NO_FAULT->zeroFault()
+            Static.FAULT_HALF->oneFault()
+            Static.FAULT_ONE->twoFault()
+            Static.FAULT_ONE_AND_HALF->threeFault()
+            Static.FAULT_TWO->fourFault()
+            Static.FAULT_TWO_AND_HALF->fiveFault()
             else->sixFault()
         }
 
@@ -325,9 +396,13 @@ class MainActivity : AppCompatActivity() {
     private fun deelay():Long = when(game.getScore()){
         in 0..100 -> 1000
         in 101..200 -> 900
-        in 201..400 -> 800
-        in 401..600 -> 700
-        in 601..800 -> 600
+        in 201..300 -> 850
+        in 301..400 -> 800
+        in 401..500 -> 750
+        in 501..600 -> 700
+        in 601..700 -> 650
+        in 701..800 -> 600
+        in 801..900 -> 550
         else -> 500
     }
 
@@ -338,9 +413,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun oneFault(){
+
         left_fault.setImageDrawable(null)
         middle_fault.setImageDrawable(null)
-        flashFault().run()
+
     }
 
     private fun twoFault(){
@@ -349,8 +425,8 @@ class MainActivity : AppCompatActivity() {
         right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
     }
     private fun threeFault(){
+
         left_fault.setImageDrawable(null)
-        flashFault().run()
         right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
     }
     private fun fourFault(){
@@ -359,7 +435,7 @@ class MainActivity : AppCompatActivity() {
         right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
     }
     private fun fiveFault(){
-        flashFault().run()
+
         middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
         right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
     }
@@ -376,11 +452,9 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
+// TODO check whats wrong with flashing faults
 // TODO start_pause
-// TODO add rabbit (if rabbit and fault - counts as a half)
 // TODO add sounds
-// TODO change displaying faults
 // TODO login
 // TODO add running chicken when fault
 // TODO win when points 1000
