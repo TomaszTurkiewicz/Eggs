@@ -30,6 +30,10 @@ class Static {
         const val BASKET = true
         const val NO_BASKET = false
 
+        // switch flashing
+        const val OFF = false
+        const val ON = true
+
 
     }
 }

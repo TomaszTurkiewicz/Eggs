@@ -25,6 +25,46 @@ class MainActivity : AppCompatActivity() {
         checkNextMove(eggCaught)
     }
     private var gameInProgress = false
+    private val mHandlerFlash = Handler()
+    private var faultFlash = Static.ON
+
+    private fun flashFault():Runnable = Runnable {
+        if(game.getFault()==1){
+        if(faultFlash==Static.ON){
+            right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+            faultFlash=Static.OFF
+            mHandlerFlash.postDelayed(flashFault(),500)
+        }else{
+            right_fault.setImageDrawable(null)
+            faultFlash=Static.ON
+            mHandlerFlash.postDelayed(flashFault(),500)
+        }
+        }
+        else if(game.getFault()==3){
+            if(faultFlash==Static.ON){
+                middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+                faultFlash=Static.OFF
+                mHandlerFlash.postDelayed(flashFault(),500)
+            }else{
+                middle_fault.setImageDrawable(null)
+                faultFlash=Static.ON
+                mHandlerFlash.postDelayed(flashFault(),500)
+            }
+        }
+        else if(game.getFault()==5){
+            if(faultFlash==Static.ON){
+                left_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+                faultFlash=Static.OFF
+                mHandlerFlash.postDelayed(flashFault(),500)
+            }else{
+                left_fault.setImageDrawable(null)
+                faultFlash=Static.ON
+                mHandlerFlash.postDelayed(flashFault(),500)
+            }
+        }
+        else
+            mHandlerFlash.removeCallbacks(flashFault())
+    }
 
     // if egg at last position check if it is in the basket
     private fun checkNextMove(eggCaught: CaughtEgg) {
@@ -241,31 +281,45 @@ class MainActivity : AppCompatActivity() {
 
     // display faults
     private fun updateFaultsView(){
-        // clear views
-        right_fault.setImageDrawable(null)
-        middle_fault.setImageDrawable(null)
-        left_fault.setImageDrawable(null)
+//        mHandlerFlash.removeCallbacks(flashFault(left_fault))
+//        mHandlerFlash.removeCallbacks(flashFault(middle_fault))
+//        mHandlerFlash.removeCallbacks(flashFault(right_fault))
 
-        // set current no of faults
-        if(game.getFault()>=Static.FAULT_HALF){
-            right_fault.setImageDrawable(getDrawable(R.drawable.half_fault))
-        }
-        if(game.getFault()>=Static.FAULT_ONE){
-            right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        when(game.getFault()){
+            0->zeroFault()
+            1->oneFault()
+            2->twoFault()
+            3->threeFault()
+            4->fourFault()
+            5->fiveFault()
+            else->sixFault()
         }
 
-        if(game.getFault()>=Static.FAULT_ONE_AND_HALF){
-            middle_fault.setImageDrawable(getDrawable(R.drawable.half_fault))
-        }
-        if(game.getFault()>=Static.FAULT_TWO){
-            middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
-        }
-        if(game.getFault()>=Static.FAULT_TWO_AND_HALF){
-            left_fault.setImageDrawable(getDrawable(R.drawable.half_fault))
-        }
-        if(game.getFault()>=Static.FAULT_THREE){
-            left_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
-        }
+//        // clear views
+//        right_fault.setImageDrawable(null)
+//        middle_fault.setImageDrawable(null)
+//        left_fault.setImageDrawable(null)
+//
+//        // set current no of faults
+//        if(game.getFault()>=Static.FAULT_HALF){
+//            right_fault.setImageDrawable(getDrawable(R.drawable.half_fault))
+//        }
+//        if(game.getFault()>=Static.FAULT_ONE){
+//            right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+//        }
+//
+//        if(game.getFault()>=Static.FAULT_ONE_AND_HALF){
+//            middle_fault.setImageDrawable(getDrawable(R.drawable.half_fault))
+//        }
+//        if(game.getFault()>=Static.FAULT_TWO){
+//            middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+//        }
+//        if(game.getFault()>=Static.FAULT_TWO_AND_HALF){
+//            left_fault.setImageDrawable(getDrawable(R.drawable.half_fault))
+//        }
+//        if(game.getFault()>=Static.FAULT_THREE){
+//            left_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+//        }
     }
 
     private fun deelay():Long = when(game.getScore()){
@@ -277,6 +331,45 @@ class MainActivity : AppCompatActivity() {
         else -> 500
     }
 
+    private fun zeroFault(){
+        right_fault.setImageDrawable(null)
+        middle_fault.setImageDrawable(null)
+        left_fault.setImageDrawable(null)
+    }
+
+    private fun oneFault(){
+        left_fault.setImageDrawable(null)
+        middle_fault.setImageDrawable(null)
+        flashFault().run()
+    }
+
+    private fun twoFault(){
+        left_fault.setImageDrawable(null)
+        middle_fault.setImageDrawable(null)
+        right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+    }
+    private fun threeFault(){
+        left_fault.setImageDrawable(null)
+        flashFault().run()
+        right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+    }
+    private fun fourFault(){
+        left_fault.setImageDrawable(null)
+        middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+    }
+    private fun fiveFault(){
+        flashFault().run()
+        middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+    }
+    private fun sixFault(){
+        left_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+    }
+
+
 
 
     }
@@ -286,8 +379,8 @@ class MainActivity : AppCompatActivity() {
 
 // TODO start_pause
 // TODO add rabbit (if rabbit and fault - counts as a half)
-// TODO add one egg to each side... should be 5 in total
 // TODO add sounds
+// TODO change displaying faults
 // TODO login
 // TODO add running chicken when fault
 // TODO win when points 1000
