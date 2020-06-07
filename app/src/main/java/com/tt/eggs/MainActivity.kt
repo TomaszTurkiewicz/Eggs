@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private var rabbitLoopCounterInt=0
 
 
+
     // rabbit state
     private var rabbitBoolean = Static.OFF
 
@@ -41,18 +42,26 @@ class MainActivity : AppCompatActivity() {
     // game loop
     private val mHandler = Handler()
     private fun gameLoop(): Runnable = Runnable {
+        // less then 1000 points
         if(game.underMaxScore()) {
             gameLoopCounterInt+=1
+            // make move down
             eggCaught = game.moveDown()
+            // display move
             displayState()
+            //check fault, egg in basket
             checkNextMove(eggCaught)
         }
         else{
-
+            // TODO winning animation
+            // TODO save points in total
+            // TODO add counter of high score (A or B)
             mHandlerFlash.removeCallbacksAndMessages(null)
             mHandlerRabbit.removeCallbacksAndMessages(null)
+            mHandlerTotal.removeCallbacksAndMessages(null)
             game.clearEverything()
             gameInProgress=false
+            gameStatus.text=if(game.getGameMode()==Static.GAME_A)"WIN A" else "WIN B"
 
 
         }
@@ -94,12 +103,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // display testing info
     private val mHandlerTotal = Handler()
     private fun showCounter():Runnable = Runnable {
         gameLoopCounter.text = gameLoopCounterInt.toString()
         faultLoopCounter.text = faultLoopCounterInt.toString()
         rabbitLoopCounter.text = rabbitLoopCounterInt.toString()
-        mHandlerTotal.postDelayed(showCounter(),500)
+        speed.text = delay().toString()
+        mHandlerTotal.postDelayed(showCounter(),100)
     }
 
 
@@ -137,7 +148,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            mHandler.postDelayed(gameLoop(),deelay())
+            mHandler.postDelayed(gameLoop(),delay())
         }
 
         // egg outside the basket
@@ -149,13 +160,18 @@ class MainActivity : AppCompatActivity() {
             updateFaultsView()
             if(game.getFault()<=Static.FAULT_TWO_AND_HALF){
                 game.clearDistanceAndNoOfEggs()
-                mHandler.postDelayed(gameLoop(), deelay())
+                // TODO animation when fault
+                mHandler.postDelayed(gameLoop(), delay())
             }
             else{
                 gameInProgress=false
                 // clear whole game
                 mHandlerRabbit.removeCallbacksAndMessages(null)
                 game.clearEverything()
+                gameStatus.text=if(game.getGameMode()==Static.GAME_A)"LOSE A" else "LOSE B"
+                // TODO animation when lose
+                // TODO save points in total
+                // TODO check if new high score
 
             }
         }
@@ -297,37 +313,65 @@ class MainActivity : AppCompatActivity() {
             basket=Static.RIGHT_TOP
             displayBasket()
         }
+
         start_A.setOnClickListener {
             if(!gameInProgress){
+                // check if paused (points or faults more than 0)
+
+                if(!((game.getScore()>0||game.getFault()>0)&&game.getGameMode()==Static.GAME_B)){
                 gameInProgress=true
                 game.setGameMode(Static.GAME_A)
+                    game.clearEggArray()
+                    game.clearDistanceAndNoOfEggs()
                 updateFaultsView()
                 updateScoreTextView()
                 displayBasket()
                 displayState()
                 gameLoop().run()
             rabbitShow().run()
-            showCounter().run()}
+            showCounter().run()
+                    gameStatus.text="PLAY A"
+                }
+            }
+            else{
+                if(game.getGameMode()==Static.GAME_A){
+                    gameInProgress=false
+                    mHandlerRabbit.removeCallbacksAndMessages(null)
+                    mHandler.removeCallbacksAndMessages(null)
+                    mHandlerFlash.removeCallbacksAndMessages(null)
+                    gameStatus.text="PAUSE A"
+                }
+            }
         }
         start_B.setOnClickListener {
             if(!gameInProgress){
-                gameInProgress=true
-                game.setGameMode(Static.GAME_B)
-                updateFaultsView()
-                updateScoreTextView()
-                displayBasket()
-                displayState()
-                gameLoop().run()
-                rabbitShow().run()
-                showCounter().run()}
+                // check if paused (points or faults more than 0)
+                if(!((game.getScore()>0||game.getFault()>0)&&game.getGameMode()==Static.GAME_A)){
+                    gameInProgress=true
+                    game.setGameMode(Static.GAME_B)
+                    game.clearEggArray()
+                    game.clearDistanceAndNoOfEggs()
+                    updateFaultsView()
+                    updateScoreTextView()
+                    displayBasket()
+                    displayState()
+                    gameLoop().run()
+                    rabbitShow().run()
+                    showCounter().run()
+                    gameStatus.text="PLAY B"
+                }}
+            else{
+                if(game.getGameMode()==Static.GAME_B){
+                    gameInProgress=false
+                    mHandlerRabbit.removeCallbacksAndMessages(null)
+                    mHandler.removeCallbacksAndMessages(null)
+                    mHandlerFlash.removeCallbacksAndMessages(null)
+                    gameStatus.text="PAUSE B"
+                }
+            }
         }
         updateScoreTextView()
-        stopLoops.setOnClickListener {
 
-            mHandler.removeCallbacksAndMessages(null)
-            mHandlerRabbit.removeCallbacksAndMessages(null)
-            mHandlerFlash.removeCallbacksAndMessages(null)
-        }
     }
 
     // update score in text view
@@ -349,17 +393,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun deelay():Long = when(game.getScore()){
+    // set delay in game loop
+    private fun delay():Long = when(game.getScore()){
         in 0..100 -> 1000
         in 101..200 -> 900
-        in 201..300 -> 850
-        in 301..400 -> 800
-        in 401..500 -> 750
-        in 501..600 -> 700
-        in 601..700 -> 650
-        in 701..800 -> 600
-        in 801..900 -> 550
-        else -> 500
+        in 201..300 -> if(game.getGameMode()==Static.GAME_A) 850 else 800
+        in 301..400 -> if(game.getGameMode()==Static.GAME_A) 800 else 750
+        in 401..500 -> if(game.getGameMode()==Static.GAME_A) 750 else 700
+        in 501..600 -> if(game.getGameMode()==Static.GAME_A) 700 else 650
+        in 601..700 -> if(game.getGameMode()==Static.GAME_A) 650 else 600
+        in 701..800 -> if(game.getGameMode()==Static.GAME_A) 600 else 550
+        in 801..900 -> if(game.getGameMode()==Static.GAME_A) 550 else 500
+        else -> if(game.getGameMode()==Static.GAME_A) 500 else 450
     }
 
     private fun zeroFault(){
@@ -416,7 +461,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-// TODO start_pause
 // TODO add sounds
 // TODO login
 // TODO add running chicken when fault

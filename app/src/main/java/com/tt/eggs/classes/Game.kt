@@ -106,6 +106,11 @@ class Game {
     // return boolean if under max score
     fun underMaxScore() = score<1000
 
+    // return game mode A or B
+    fun getGameMode():Boolean{
+        return gameMode
+    }
+
 
 
 
@@ -180,7 +185,9 @@ class Game {
         // set counters again
         if(noOfEggs==0&&distance==0){
             val random = Random.nextInt(0,99)
-            val ranEggs = random%5+1
+
+            // GAME A - 1-5eggs, GAME B 5-9eggs
+            val ranEggs = if(gameMode==Static.GAME_A) random%5+1 else random%5+5
             noOfEggs=ranEggs
             val ranDistance = random%2
             distance=ranDistance
@@ -237,8 +244,8 @@ class Game {
             gameState[0][Static.RIGHT_TOP] = Static.NO_EGG
             gameState[0][Static.RIGHT_BOTTOM] = Static.NO_EGG
             // TODO for testing speed
-      //      gameState[0][Static.LEFT_TOP] = Static.EGG
-            gameState[0][ran] = Static.EGG
+            gameState[0][Static.LEFT_TOP] = Static.EGG
+      //      gameState[0][ran] = Static.EGG
             noOfEggs -=1
         }
 
