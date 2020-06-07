@@ -50,27 +50,15 @@ class Game {
 
         gameMode=Static.GAME_A
 
-        distance=5
+        distance=0
 
-        noOfEggs=1
+        noOfEggs=0
     }
 
 
-    // return one position in egg array
-    fun displayCell(x:Int, y:Int):Boolean{
-        return gameState[x][y]
-    }
+    /*------------------SETTERS AND ADDERS---------------------------*/
 
-    // clear egg array
-    fun clear(){
-        for(x in 0..6){
-            for(y in 0..3){
-                gameState[x][y]=Static.NO_EGG
-            }
-        }
-    }
-
-    // placing basket at one in four positions
+    // set basket at one in four positions
     fun setBasket(i:Int){
         for(arg in 0..3){
             position[arg]=Static.NO_BASKET
@@ -78,28 +66,14 @@ class Game {
         position[i]=Static.BASKET
     }
 
-    // egg array move down
-    fun moveDown(){
-
-        // move down
-        for(i in 5 downTo 0){
-            for(j in 0..3){
-                gameState[i+1][j]=gameState[i][j]
-            }
-        }
-
-        // generate new egg at random postion
-        generateEgg()
-    }
-
-    // return current score
-    fun getScore():Int{
-        return score
+    // set game mode
+    fun setGameMode(mode:Boolean){
+        gameMode=mode
     }
 
     // add point when egg caught
-    fun addPoint(){
-        score+=1
+    private fun addPoint(){
+        score+=100
     }
 
     // add fault when egg not caught
@@ -107,56 +81,102 @@ class Game {
         faults += if(rabbitBoolean) 1 else 2
     }
 
+
+
+    /*-------------------GETTERS AND CONDITIONS FUNCTIONS---------------------------------*/
+
+    // return one position in egg array
+    fun displayCell(x:Int, y:Int):Boolean{
+        return gameState[x][y]
+    }
+
+    // return current score
+    fun getScore():Int{
+        return score
+    }
+
     // return current faults
     fun getFault():Int{
         return faults
     }
 
-    // clear everything
-    fun reset(){
+    // return integer 3 or 4 (game mode)
+    private fun gameMode() = if(gameMode==Static.GAME_A) 3 else 4
 
-        //clear eggs
+    // return boolean if under max score
+    fun underMaxScore() = score<1000
+
+
+
+
+
+    /*-----------------CLEARING SECTION------------------------*/
+    // clearing score
+    private fun clearScore(){
+        score=0
+    }
+
+    // clear egg array
+    fun clearEggArray(){
         for(x in 0..6){
             for(y in 0..3){
                 gameState[x][y]=Static.NO_EGG
             }
         }
+    }
 
-        // clear basket position
+    // clear distance and egg
+    fun clearDistanceAndNoOfEggs(){
+        distance=0
+        noOfEggs=0
+    }
+
+    //clear basket position
+    private fun clearBasketPosition(){
         for(i in 0..3){
             position[i]=Static.NO_BASKET
         }
         position[Static.RIGHT_TOP]=Static.BASKET
 
+    }
+
+    // clear faults
+    fun clearFaults() {
+        faults=Static.FAULT_NO_FAULT
+    }
+
+    // clear everything
+    fun clearEverything(){
+
+        //clear eggs
+        clearEggArray()
+
+        // clear basket position
+        clearBasketPosition()
+
         // clear score and faults
         lastNumber=0
-        score=0
-        faults=Static.FAULT_NO_FAULT
-
+        clearScore()
+        clearFaults()
+        clearDistanceAndNoOfEggs()
     }
 
-    // return integer 3 or 4 (game mode)
-    private fun gameMode() = if(gameMode==Static.GAME_A) 3 else 4
 
-    // set game mode
-    fun setGameMode(mode:Boolean){
-        gameMode=mode
-    }
+
+    /*------------------------GENERATING EGGS-----------------------*/
+
 
     // generate next egg or eggs
     private fun generateEgg(){
         when(score){
-            in 0..3 -> generateOneEgg()
-            in 4..12 -> generateTwoEggs()
+            in 0..4 -> generateOneEgg()
+            in 5..13 -> generateTwoEggs()
             else -> generateRandomNumberOfEggs()
         }
     }
 
     // totally random
     private fun generateRandomNumberOfEggs() {
-
-        generateEggUsingCounters()
-
         // set counters again
         if(noOfEggs==0&&distance==0){
             val random = Random.nextInt(0,99)
@@ -165,28 +185,32 @@ class Game {
             val ranDistance = random%2
             distance=ranDistance
         }
-
+        generateEggUsingCounters()
 
     }
 
     // two eggs
     private fun generateTwoEggs() {
-        generateEggUsingCounters()
         // set counters again
         if(noOfEggs==0&&distance==0){
             noOfEggs=2
             distance=4
         }
+
+        generateEggUsingCounters()
+
     }
 
     // one egg
     private fun generateOneEgg() {
-       generateEggUsingCounters()
         // set counters again
         if(noOfEggs==0&&distance==0){
             noOfEggs=1
             distance=5
         }
+
+        generateEggUsingCounters()
+
     }
 
     // generate egg function
@@ -213,8 +237,8 @@ class Game {
             gameState[0][Static.RIGHT_TOP] = Static.NO_EGG
             gameState[0][Static.RIGHT_BOTTOM] = Static.NO_EGG
             // TODO for testing speed
-            gameState[0][Static.LEFT_TOP] = Static.EGG
- //           gameState[0][ran] = Static.EGG
+      //      gameState[0][Static.LEFT_TOP] = Static.EGG
+            gameState[0][ran] = Static.EGG
             noOfEggs -=1
         }
 
@@ -229,11 +253,54 @@ class Game {
 
     }
 
-    fun clearFaults() {
-        faults=0
+
+
+    /*---------------------GAME LOGIC---------------------*/
+
+    // egg array move down
+    fun moveDown():CaughtEgg{
+
+        // move down
+        for(i in 5 downTo 0){
+            for(j in 0..3){
+                gameState[i+1][j]=gameState[i][j]
+            }
+        }
+
+        // check egg on last position
+        val eggCheck = CaughtEgg()
+        for(i in 0..3){
+            if(gameState[6][i]||position[i]){
+                eggCheck.logicSum+=1
+            }
+        }
+        for(i in 0..3){
+            if(gameState[6][i]&&position[i]){
+                eggCheck.logicProduct+=1
+            }
+        }
+
+        // check if egg outside basket
+        if(eggCheck.logicSum==2){
+            for(i in 0..3){
+                if(gameState[6][i]){
+                    eggCheck.positionFallenEgg=i
+                }
+            }
+        }
+
+        // no egg or egg in basket
+        if(eggCheck.logicSum==1) {
+
+            // egg in basket add points
+            if(eggCheck.logicProduct==1){
+                addPoint()
+            }
+            // generate new egg at random position
+            generateEgg()
+        }
+        // return egg to check conditions in main activity
+        return eggCheck
     }
-
-    fun underMaxScore() = score<1000
-
 
 }
