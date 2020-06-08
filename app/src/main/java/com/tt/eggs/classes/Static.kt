@@ -36,6 +36,16 @@ class Static {
         // max points in the game
         const val MAX_POINTS = 1000
 
+        // game state
+        const val DEMO = 0
+        const val PLAY_A = 1
+        const val PAUSE_A = 2
+        const val PLAY_B = 3
+        const val PAUSE_B = 4
+        const val LOSE_A = 5
+        const val LOSE_B = 6
+        const val WIN_A = 7
+        const val WIN_B = 8
 
     }
 }

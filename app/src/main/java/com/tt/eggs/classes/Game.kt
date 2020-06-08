@@ -81,6 +81,14 @@ class Game {
         faults += if(rabbitBoolean) 1 else 2
     }
 
+    fun setPoints( tPoints:Int){
+        score=tPoints
+    }
+
+    fun setFaults(tFaults:Int){
+        faults=tFaults
+    }
+
 
 
     /*-------------------GETTERS AND CONDITIONS FUNCTIONS---------------------------------*/

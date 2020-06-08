@@ -1,6 +1,7 @@
 package com.tt.eggs
 
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -15,11 +16,14 @@ import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
+
+
     private var gameLoopCounterInt=0
     private var faultLoopCounterInt=0
     private var rabbitLoopCounterInt=0
 
-
+    // game state
+    private var gameState = Static.DEMO
 
     // rabbit state
     private var rabbitBoolean = Static.OFF
@@ -59,16 +63,41 @@ class MainActivity : AppCompatActivity() {
             mHandlerFlash.removeCallbacksAndMessages(null)
             mHandlerRabbit.removeCallbacksAndMessages(null)
             mHandlerTotal.removeCallbacksAndMessages(null)
-            game.clearEverything()
-            gameInProgress=false
-            gameStatus.text=if(game.getGameMode()==Static.GAME_A)"WIN A" else "WIN B"
+            when(gameState){
+                Static.PLAY_A -> winA()
+                Static.PLAY_B -> winB()
+            }
 
 
         }
     }
 
-    // if game is in progress
-    private var gameInProgress = false
+    private fun winB() {
+        clearSavedGame()
+        gameState= Static.WIN_B
+        gameStatus.text="WIN B"
+        game.clearEverything()
+
+    }
+
+    private fun clearSavedGame() {
+        val sharedPreferences = getSharedPreferences("GAME_STATE", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt("POINTS",0)
+        editor.putInt("FAULTS",0)
+        editor.putBoolean("GAME_MODE",false)
+        editor.apply()
+
+    }
+
+    private fun winA() {
+        clearSavedGame()
+        gameState=Static.WIN_A
+        gameStatus.text="WIN A"
+        game.clearEverything()
+
+    }
+
 
     // displaying rabbit
     private val mHandlerRabbit = Handler()
@@ -117,7 +146,6 @@ class MainActivity : AppCompatActivity() {
     // flashing fault
     private val mHandlerFlash = Handler()
     private var faultFlash = Static.ON
-
     private fun flashFault(imageView: ImageView):Runnable = Runnable {
         faultLoopCounterInt +=1
         if(faultFlash==Static.ON){
@@ -164,11 +192,14 @@ class MainActivity : AppCompatActivity() {
                 mHandler.postDelayed(gameLoop(), delay())
             }
             else{
-                gameInProgress=false
                 // clear whole game
                 mHandlerRabbit.removeCallbacksAndMessages(null)
+                when(gameState){
+                    Static.PLAY_A -> loseA()
+                    Static.PLAY_B -> loseB()
+                }
                 game.clearEverything()
-                gameStatus.text=if(game.getGameMode()==Static.GAME_A)"LOSE A" else "LOSE B"
+
                 // TODO animation when lose
                 // TODO save points in total
                 // TODO check if new high score
@@ -177,6 +208,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun loseB() {
+        clearSavedGame()
+        gameState=Static.LOSE_B
+        gameStatus.text="LOSE B"
+        game.clearEverything()
+
+    }
+
+    private fun loseA() {
+        clearSavedGame()
+        gameState=Static.LOSE_A
+        gameStatus.text="LOSE A"
+        game.clearEverything()
+
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -195,15 +241,42 @@ class MainActivity : AppCompatActivity() {
         // set button listeners and text view displays
         buttonsOnClickListeners()
 
-
+        //go to demo mode
+        demoMode()
     }
+
+
+
 
     // stop game loop when activity is disrupted by anything else (another app)
     override fun onPause() {
         super.onPause()
-        mHandler.removeCallbacksAndMessages(null)
-        mHandlerFlash.removeCallbacksAndMessages(null)
-        mHandlerRabbit.removeCallbacksAndMessages(null)
+        when(gameState){
+            Static.PLAY_A -> pauseGameA()
+            Static.PLAY_B -> pauseGameB()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val sharedPreferences = getSharedPreferences("GAME_STATE", Context.MODE_PRIVATE)
+        val tPoints = sharedPreferences.getInt("POINTS", 0)
+        val tFaults = sharedPreferences.getInt("FAULTS", 0)
+        val tGame = sharedPreferences.getBoolean("GAME_MODE", false)
+        checkGameState(tPoints,tFaults,tGame)
+    }
+
+    private fun checkGameState(tPoints: Int, tFaults: Int, tGame: Boolean) {
+        if(tPoints>0||tFaults>0){
+            game.setPoints(tPoints)
+            game.setFaults(tFaults)
+            game.setGameMode(if(tGame==Static.GAME_A) Static.GAME_A else Static.GAME_B)
+            when(tGame){
+                Static.GAME_A -> pauseGameA()
+                Static.GAME_B -> pauseGameB()
+            }
+        }
+        else demoMode()
     }
 
     // full screen
@@ -297,80 +370,153 @@ class MainActivity : AppCompatActivity() {
     // set click listeners for all buttons
     private fun buttonsOnClickListeners(){
         buttonTopLeft.setOnClickListener {
-            basket=Static.LEFT_TOP
-            displayBasket()
-
+            if(playOrPause()) {
+                basket = Static.LEFT_TOP
+                displayBasket()
+            }
         }
         buttonBottomLeft.setOnClickListener {
+            if(playOrPause()){
             basket=Static.LEFT_BOTTOM
             displayBasket()
+            }
         }
         buttonBottomRight.setOnClickListener {
-            basket=Static.RIGHT_BOTTOM
-            displayBasket()
+            if(playOrPause()) {
+                basket = Static.RIGHT_BOTTOM
+                displayBasket()
+            }
         }
         buttonTopRight.setOnClickListener {
+            if(playOrPause()){
             basket=Static.RIGHT_TOP
             displayBasket()
+            }
         }
 
         start_A.setOnClickListener {
-            if(!gameInProgress){
-                // check if paused (points or faults more than 0)
-
-                if(!((game.getScore()>0||game.getFault()>0)&&game.getGameMode()==Static.GAME_B)){
-                gameInProgress=true
-                game.setGameMode(Static.GAME_A)
-                    game.clearEggArray()
-                    game.clearDistanceAndNoOfEggs()
-                updateFaultsView()
-                updateScoreTextView()
-                displayBasket()
-                displayState()
-                gameLoop().run()
-            rabbitShow().run()
-            showCounter().run()
-                    gameStatus.text="PLAY A"
+            when (gameState) {
+                Static.DEMO -> {
+                    startGameA()
                 }
-            }
-            else{
-                if(game.getGameMode()==Static.GAME_A){
-                    gameInProgress=false
-                    mHandlerRabbit.removeCallbacksAndMessages(null)
-                    mHandler.removeCallbacksAndMessages(null)
-                    mHandlerFlash.removeCallbacksAndMessages(null)
-                    gameStatus.text="PAUSE A"
+                Static.PLAY_A -> {
+                    pauseGameA()
                 }
+                Static.PAUSE_A -> {
+                    unPauseGameA()
+                }
+                else -> {/* do nothing*/}
             }
         }
         start_B.setOnClickListener {
-            if(!gameInProgress){
-                // check if paused (points or faults more than 0)
-                if(!((game.getScore()>0||game.getFault()>0)&&game.getGameMode()==Static.GAME_A)){
-                    gameInProgress=true
-                    game.setGameMode(Static.GAME_B)
-                    game.clearEggArray()
-                    game.clearDistanceAndNoOfEggs()
-                    updateFaultsView()
-                    updateScoreTextView()
-                    displayBasket()
-                    displayState()
-                    gameLoop().run()
-                    rabbitShow().run()
-                    showCounter().run()
-                    gameStatus.text="PLAY B"
-                }}
-            else{
-                if(game.getGameMode()==Static.GAME_B){
-                    gameInProgress=false
-                    mHandlerRabbit.removeCallbacksAndMessages(null)
-                    mHandler.removeCallbacksAndMessages(null)
-                    mHandlerFlash.removeCallbacksAndMessages(null)
-                    gameStatus.text="PAUSE B"
+            when (gameState) {
+                Static.DEMO -> {
+                    startGameB()
                 }
+                Static.PLAY_B -> {
+                    pauseGameB()
+                }
+                Static.PAUSE_B -> {
+                    unPauseGameB()
+                }
+                else -> {/* do nothing*/}
             }
         }
         updateScoreTextView()
+        closeApp.setOnClickListener {
+            finish()
+        }
+
+        demo.setOnClickListener {
+            if(gameState==Static.WIN_A||gameState==Static.WIN_B||gameState==Static.LOSE_A||gameState==Static.LOSE_B){
+                demoMode()
+
+            }
+        }
+
+    }
+
+    private fun demoMode() {
+        gameState=Static.DEMO
+        gameStatus.text="DEMO"
+
+    }
+
+    private fun unPauseGameB() {
+        startGameB()
+    }
+
+    private fun pauseGameB() {
+        gameState=Static.PAUSE_B
+        updateFaultsView()
+        updateScoreTextView()
+        mHandlerRabbit.removeCallbacksAndMessages(null)
+        mHandler.removeCallbacksAndMessages(null)
+        mHandlerFlash.removeCallbacksAndMessages(null)
+        saveGameState()
+        gameStatus.text="PAUSE B"
+    }
+
+    private fun startGameB() {
+        gameState=Static.PLAY_B
+        game.clearEggArray()
+        game.clearDistanceAndNoOfEggs()
+        game.setGameMode(Static.GAME_B)
+        updateFaultsView()
+        updateScoreTextView()
+        displayBasket()
+        displayState()
+        gameLoop().run()
+        rabbitShow().run()
+        showCounter().run()
+        gameStatus.text="PLAY B"
+
+    }
+
+    private fun unPauseGameA() {
+        startGameA()
+    }
+
+    // pause game A
+    private fun pauseGameA() {
+        gameState=Static.PAUSE_A
+        updateFaultsView()
+        updateScoreTextView()
+        mHandlerRabbit.removeCallbacksAndMessages(null)
+        mHandler.removeCallbacksAndMessages(null)
+        mHandlerFlash.removeCallbacksAndMessages(null)
+        saveGameState()
+        gameStatus.text="PAUSE A"
+    }
+
+    private fun saveGameState() {
+        val sharedPreferences = getSharedPreferences("GAME_STATE", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt("POINTS",game.getScore())
+        editor.putInt("FAULTS",game.getFault())
+        editor.putBoolean("GAME_MODE",game.getGameMode())
+        editor.apply()
+    }
+
+    // play game A
+    private fun startGameA() {
+        gameState=Static.PLAY_A
+        game.clearEggArray()
+        game.clearDistanceAndNoOfEggs()
+        game.setGameMode(Static.GAME_A)
+        updateFaultsView()
+        updateScoreTextView()
+        displayBasket()
+        displayState()
+        gameLoop().run()
+        rabbitShow().run()
+        showCounter().run()
+        gameStatus.text="PLAY A"
+    }
+
+    // return boolean if game is played or paused
+    private fun playOrPause(): Boolean {
+        return gameState==Static.PLAY_A||gameState==Static.PAUSE_A||gameState==Static.PLAY_B||gameState==Static.PAUSE_B
 
     }
 
@@ -428,24 +574,28 @@ class MainActivity : AppCompatActivity() {
         middle_fault.setImageDrawable(null)
         right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
     }
+
     private fun threeFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
         flashFault(middle_fault).run()
         left_fault.setImageDrawable(null)
         right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
     }
+
     private fun fourFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
         left_fault.setImageDrawable(null)
         middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
         right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
     }
+
     private fun fiveFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
         flashFault(left_fault).run()
         middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
         right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
     }
+
     private fun sixFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
         left_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
@@ -461,6 +611,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
 // TODO add sounds
 // TODO login
 // TODO add running chicken when fault
@@ -468,8 +619,6 @@ class MainActivity : AppCompatActivity() {
 // TODO save points (highest score (if 1000 - how many times), score in total)
 // TODO change UI
 // TODO add ranking (individual highest points, points in total)
-// TODO onStop remove callback from game loop and save state to storage
-// TODO restarting game with count down from 3 to prepare user
 // TODO add admob after gameover or 1000 points
 
 
