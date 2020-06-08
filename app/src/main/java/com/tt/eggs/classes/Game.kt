@@ -73,7 +73,7 @@ class Game {
 
     // add point when egg caught
     private fun addPoint(){
-        score+=100
+        score+=10
     }
 
     // add fault when egg not caught
@@ -252,8 +252,8 @@ class Game {
             gameState[0][Static.RIGHT_TOP] = Static.NO_EGG
             gameState[0][Static.RIGHT_BOTTOM] = Static.NO_EGG
             // TODO for testing speed
-            gameState[0][Static.LEFT_TOP] = Static.EGG
-      //      gameState[0][ran] = Static.EGG
+      //      gameState[0][Static.LEFT_TOP] = Static.EGG
+            gameState[0][ran] = Static.EGG
             noOfEggs -=1
         }
 
