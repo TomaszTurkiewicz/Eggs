@@ -18,7 +18,7 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
 
 
-
+    /**--------------------------- var and val-----------------------------**/
     // game state
     private var gameState = Static.DEMO
 
@@ -40,8 +40,71 @@ class MainActivity : AppCompatActivity() {
     // egg sum and product
     private var eggCaught = CaughtEgg()
 
-    // game loop
+    // for win loop
+    private var winLoopCounter = 0
+    private val mHandlerWin = Handler()
+    private var display = Static.ON
+
+    // for game loop
     private val mHandler = Handler()
+
+    // for rabbit loop
+    private val mHandlerRabbit = Handler()
+
+    // for faults loop
+    private val mHandlerFlash = Handler()
+    private var faultFlash = Static.ON
+
+    // for lost egg loops
+    private val mHandlerLostEgg = Handler()
+
+    // for demo loop
+    private var loopCounter=0
+    private val mHandlerDemo = Handler()
+
+    /**---------------------- activity life cycle methods---------------------------**/
+
+    // on create
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // make full screen
+        fullScreen()
+        setContentView(R.layout.activity_main)
+
+        // update eggs positions
+        updateArray()
+
+        // update basket position
+        displayBasket()
+
+        // set button listeners and text view displays
+        buttonsOnClickListeners()
+
+    }
+
+    // check if game hasn't been finished
+    override fun onResume() {
+        super.onResume()
+        // check if there is stored game
+        checkGameState()
+    }
+
+    // stop game loop when activity is disrupted by anything else (another app)
+    override fun onPause() {
+        super.onPause()
+        when(gameState){
+            // if game is playing pause it
+            Static.PLAY_A -> pauseGameA()
+            Static.PLAY_B -> pauseGameB()
+        }
+    }
+
+
+    /**------------------------ runnable -------------------------------------------**/
+
+
+    // game loop
     private fun gameLoop(): Runnable = Runnable {
         // less then 1000 points
         if(game.underMaxScore()) {
@@ -73,9 +136,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     // win loop
-    private var winLoopCounter = 0
-    private val mHandlerWin = Handler()
-    private var display = Static.ON
     private fun winLoop(): Runnable = Runnable {
         score.visibility=if(display) View.VISIBLE else View.GONE
         display = !display
@@ -93,7 +153,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     // displaying rabbit
-    private val mHandlerRabbit = Handler()
     private fun rabbitShow():Runnable = Runnable {
                 if(rabbitOn>0){
                     rabbitBoolean=Static.ON
@@ -115,19 +174,8 @@ class MainActivity : AppCompatActivity() {
                     mHandlerRabbit.postDelayed(rabbitShow(),1000)
                 }
         }
-    private fun displayRabbit(rabbitBoolean: Boolean){
-        if(rabbitBoolean){
-            rabbit.setImageDrawable(getDrawable(R.drawable.rabbit))
-        }
-        else{
-            rabbit.setImageDrawable(null)
-        }
-    }
-
 
     // flashing fault
-    private val mHandlerFlash = Handler()
-    private var faultFlash = Static.ON
     private fun flashFault(imageView: ImageView):Runnable = Runnable {
         if(faultFlash==Static.ON){
             imageView.setImageDrawable(getDrawable(R.drawable.full_fault))
@@ -141,10 +189,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     // fallen egg runnable
-    private val mHandlerLostEgg = Handler()
     private fun fallenEgg(fallenEgg: FallenEgg):Runnable = Runnable {
         val finished = fallenEgg.moveDown()
-        displayFallenEgg(fallenEgg)
+        displayRunningChicken(fallenEgg)
         if(!finished){
             mHandlerLostEgg.postDelayed(fallenEgg(fallenEgg),1000)
         }
@@ -155,7 +202,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun fallenEggEndGame(fallenEgg: FallenEgg): Runnable = Runnable{
         val finished = fallenEgg.moveDown()
-        displayFallenEgg(fallenEgg)
+        displayRunningChicken(fallenEgg)
         if(!finished){
             mHandlerLostEgg.postDelayed(fallenEggEndGame(fallenEgg),1000)
         }
@@ -171,8 +218,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     // demo runnable
-    private var loopCounter=0
-    private val mHandlerDemo = Handler()
     private fun demo():Runnable = Runnable {
         game.moveDownDemo()
         displayState()
@@ -182,222 +227,10 @@ class MainActivity : AppCompatActivity() {
         mHandlerDemo.postDelayed(demo(),600)
     }
 
-    private fun displayDemoBasket() {
-        if(game.position[Static.LEFT_TOP]){
-            basketTopLeft.setImageDrawable(getDrawable(R.drawable.basket))
-        }else{
-            basketTopLeft.setImageDrawable(null)
-        }
-        if(game.position[Static.LEFT_BOTTOM]){
-            basketBottomLeft.setImageDrawable(getDrawable(R.drawable.basket))
-        }else{
-            basketBottomLeft.setImageDrawable(null)
-        }
-        if(game.position[Static.RIGHT_BOTTOM]){
-            basketBottomRight.setImageDrawable(getDrawable(R.drawable.basket))
-        }else{
-            basketBottomRight.setImageDrawable(null)
-        }
-        if(game.position[Static.RIGHT_TOP]){
-            basketTopRight.setImageDrawable(getDrawable(R.drawable.basket))
-        }else{
-            basketTopRight.setImageDrawable(null)
-        }
 
-    }
+    /**----------------------- read and write to shared preferences -------------------**/
 
-
-    private fun displayFallenEgg(fallenEgg: FallenEgg) {
-        faultLeftFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,0))getDrawable(R.drawable.full_fault)else null)
-        faultLeftSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,0))getDrawable(R.drawable.full_fault)else null)
-        faultLeftThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,0))getDrawable(R.drawable.full_fault)else null)
-
-
-        faultRightFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,1))getDrawable(R.drawable.full_fault)else null)
-        faultRightSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,1))getDrawable(R.drawable.full_fault)else null)
-        faultRightThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,1))getDrawable(R.drawable.full_fault)else null)
-
-
-    }
-
-    // on create
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // make full screen
-        fullScreen()
-        setContentView(R.layout.activity_main)
-
-        // update eggs positions
-        updateArray()
-
-        // update basket position
-        displayBasket()
-
-        // set button listeners and text view displays
-        buttonsOnClickListeners()
-
-    }
-
-    // check if game hasn't been finished
-    override fun onResume() {
-        super.onResume()
-
-        // read and display scores A
-        readAndDisplayScoresA()
-        readAndDisplayScoresB()
-
-        // read from shared preferences
-        val sharedPreferences = getSharedPreferences("GAME_STATE", Context.MODE_PRIVATE)
-        val tPoints = sharedPreferences.getInt("POINTS", 0)
-        val tFaults = sharedPreferences.getInt("FAULTS", 0)
-        val tGame = sharedPreferences.getBoolean("GAME_MODE", false)
-
-
-
-        // check if there is stored game
-        checkGameState(tPoints,tFaults,tGame)
-    }
-
-    private fun readAndDisplayScoresA() {
-        val sharedPreferences = getSharedPreferences("GAME_A", Context.MODE_PRIVATE)
-        val tPoints = sharedPreferences.getInt("TOTAL", 0)
-        val tHigh = sharedPreferences.getInt("HIGH", 0)
-        val tHighCounter = sharedPreferences.getInt("COUNTER", 0)
-
-        totalPointsACounter.text=tPoints.toString()
-        highAScore.text=tHigh.toString()
-        highACounterScore.text=tHighCounter.toString()
-
-    }
-
-    private fun readAndDisplayScoresB() {
-        val sharedPreferences = getSharedPreferences("GAME_B", Context.MODE_PRIVATE)
-        val tPoints = sharedPreferences.getInt("TOTAL", 0)
-        val tHigh = sharedPreferences.getInt("HIGH", 0)
-        val tHighCounter = sharedPreferences.getInt("COUNTER", 0)
-
-        totalPointsBCounter.text=tPoints.toString()
-        highBScore.text=tHigh.toString()
-        highBCounterScore.text=tHighCounter.toString()
-
-    }
-
-    // stop game loop when activity is disrupted by anything else (another app)
-    override fun onPause() {
-        super.onPause()
-        when(gameState){
-            // if game is playing pause it
-            Static.PLAY_A -> pauseGameA()
-            Static.PLAY_B -> pauseGameB()
-        }
-    }
-
-
-    // if egg at last position check if it is in the basket
-    private fun checkNextMove(eggCaught: CaughtEgg) {
-
-        // egg in basket or no egg
-        if(eggCaught.logicSum==1){
-
-            // egg has been caught
-            if(eggCaught.logicProduct==1){
-                updateScoreTextView()
-
-                // clear faults when get 200 or 500 points
-                if(game.getScore()==200||game.getScore()==500){
-                    game.clearFaults()
-                    updateFaultsView()
-                }
-            }
-
-            mHandler.postDelayed(gameLoop(),delay())
-        }
-
-        // egg outside the basket
-        else{
-            // clear egg array
-            game.clearEggArray()
-            mHandler.removeCallbacks(gameLoop())
-            game.addFault(rabbitBoolean)
-            updateFaultsView()
-            if(game.getFault()<=Static.FAULT_TWO_AND_HALF) {
-                lostEggAnimation(eggCaught.positionFallenEgg)
-            }else{
-                lostEggAnimationEndGame(eggCaught.positionFallenEgg)
-
-            }
-        }
-    }
-
-    private fun lostEggAnimationEndGame(positionFallenEgg: Int) {
-        var fallenEgg = FallenEgg()
-        when(gameState){
-            Static.PLAY_A -> loseA()
-            Static.PLAY_B -> loseB()
-        }
-        fallenEgg.setFallenEgg(positionFallenEgg/2)
-        fallenEggEndGame(fallenEgg).run()
-
-    }
-
-
-
-    // lost egg animation
-    private fun lostEggAnimation(positionFallenEgg: Int) {
-
-        var fallenEgg = FallenEgg()
-        fallenEgg.setFallenEgg(positionFallenEgg/2)
-        fallenEgg(fallenEgg).run()
-
-
-    }
-
-    private fun loseB() {
-
-        savePointsLoseB()
-        clearSavedGame()
-        gameState=Static.LOSE_B
-        gameStatus.text="LOSE B"
-        game.clearEverything()
-    }
-
-    private fun savePointsLoseB() {
-        val sharedPreferences = getSharedPreferences("GAME_B", Context.MODE_PRIVATE)
-        var tPoints = sharedPreferences.getInt("TOTAL", 0)
-        var tHigh = sharedPreferences.getInt("HIGH", 0)
-
-        tPoints += game.getScore()
-
-        if(tHigh<game.getScore()){
-            tHigh=game.getScore()
-        }
-
-        val editor = sharedPreferences.edit()
-        editor.putInt("TOTAL",tPoints)
-        editor.putInt("HIGH",tHigh)
-
-        totalPointsBCounter.text=tPoints.toString()
-        highBScore.text=tHigh.toString()
-
-
-
-        editor.apply()
-
-
-    }
-
-    private fun loseA() {
-
-        savePointsLoseA()
-
-        game.clearEverything()
-        clearSavedGame()
-        gameState=Static.LOSE_A
-        gameStatus.text="LOSE A"
-
-    }
-
+    // save points game A after lose
     private fun savePointsLoseA() {
         val sharedPreferences = getSharedPreferences("GAME_A", Context.MODE_PRIVATE)
         var tPoints = sharedPreferences.getInt("TOTAL", 0)
@@ -413,51 +246,62 @@ class MainActivity : AppCompatActivity() {
         editor.putInt("TOTAL",tPoints)
         editor.putInt("HIGH",tHigh)
 
-        totalPointsACounter.text=tPoints.toString()
-        highAScore.text=tHigh.toString()
-
         editor.apply()
 
     }
 
-    private fun winB() {
-
-        savePointsWinB()
-        clearSavedGame()
-        gameState= Static.WIN_B
-        gameStatus.text="WIN B"
-        game.clearFaults()
-        game.clearScore()
-        game.clearDistanceAndNoOfEggs()
-
+    // save points game B after lose
+    private fun savePointsLoseB() {
+        val sharedPreferences = getSharedPreferences("GAME_B", Context.MODE_PRIVATE)
+        var tPoints = sharedPreferences.getInt("TOTAL", 0)
+        var tHigh = sharedPreferences.getInt("HIGH", 0)
+        tPoints += game.getScore()
+        if(tHigh<game.getScore()){
+            tHigh=game.getScore()
+        }
+        val editor = sharedPreferences.edit()
+        editor.putInt("TOTAL",tPoints)
+        editor.putInt("HIGH",tHigh)
+        editor.apply()
     }
 
+    // save points game A after win (1000)
+    private fun savePointsWinA() {
+        val sharedPreferences = getSharedPreferences("GAME_A", Context.MODE_PRIVATE)
+        var tPoints = sharedPreferences.getInt("TOTAL", 0)
+        var tHigh = sharedPreferences.getInt("HIGH", 0)
+        var tHighCounter = sharedPreferences.getInt("COUNTER", 0)
+        tPoints += game.getScore()
+        if(tHigh!=1000){
+            tHigh=1000
+        }
+        tHighCounter+=1
+        val editor = sharedPreferences.edit()
+        editor.putInt("TOTAL",tPoints)
+        editor.putInt("HIGH",tHigh)
+        editor.putInt("COUNTER",tHighCounter)
+        editor.apply()
+    }
+
+    // save points game B after win (1000)
     private fun savePointsWinB() {
         val sharedPreferences = getSharedPreferences("GAME_B", Context.MODE_PRIVATE)
         var tPoints = sharedPreferences.getInt("TOTAL", 0)
         var tHigh = sharedPreferences.getInt("HIGH", 0)
         var tHighCounter = sharedPreferences.getInt("COUNTER", 0)
-
         tPoints += game.getScore()
-
         if(tHigh!=1000){
             tHigh=1000
         }
         tHighCounter+=1
-
         val editor = sharedPreferences.edit()
         editor.putInt("TOTAL",tPoints)
         editor.putInt("HIGH",tHigh)
         editor.putInt("COUNTER",tHighCounter)
-
         editor.apply()
-
-        totalPointsBCounter.text=tPoints.toString()
-        highBScore.text=tHigh.toString()
-        highBCounterScore.text=tHighCounter.toString()
-
     }
 
+    // clear game state in shared preferences
     private fun clearSavedGame() {
         val sharedPreferences = getSharedPreferences("GAME_STATE", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -468,48 +312,23 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun winA() {
-
-        savePointsWinA()
-        clearSavedGame()
-        gameState=Static.WIN_A
-        gameStatus.text="WIN A"
-        game.clearFaults()
-        game.clearScore()
-        game.clearDistanceAndNoOfEggs()
-
-    }
-
-    private fun savePointsWinA() {
-
-        val sharedPreferences = getSharedPreferences("GAME_A", Context.MODE_PRIVATE)
-        var tPoints = sharedPreferences.getInt("TOTAL", 0)
-        var tHigh = sharedPreferences.getInt("HIGH", 0)
-        var tHighCounter = sharedPreferences.getInt("COUNTER", 0)
-
-        tPoints += game.getScore()
-
-        if(tHigh!=1000){
-            tHigh=1000
-        }
-        tHighCounter+=1
-
+    // store points, faults and game mode to shared preferences
+    private fun saveGameState() {
+        val sharedPreferences = getSharedPreferences("GAME_STATE", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        editor.putInt("TOTAL",tPoints)
-        editor.putInt("HIGH",tHigh)
-        editor.putInt("COUNTER",tHighCounter)
-
+        editor.putInt("POINTS",game.getScore())
+        editor.putInt("FAULTS",game.getFault())
+        editor.putBoolean("GAME_MODE",game.getGameMode())
         editor.apply()
-
-        totalPointsACounter.text=tPoints.toString()
-        highAScore.text=tHigh.toString()
-        highACounterScore.text=tHighCounter.toString()
-
     }
-
 
     // check if there is stored game
-    private fun checkGameState(tPoints: Int, tFaults: Int, tGame: Boolean) {
+    private fun checkGameState() {
+        // read from shared preferences
+        val sharedPreferences = getSharedPreferences("GAME_STATE", Context.MODE_PRIVATE)
+        val tPoints = sharedPreferences.getInt("POINTS", 0)
+        val tFaults = sharedPreferences.getInt("FAULTS", 0)
+        val tGame = sharedPreferences.getBoolean("GAME_MODE", false)
 
         // points or faults are larger than 0
         if(tPoints>0||tFaults>0){
@@ -526,6 +345,9 @@ class MainActivity : AppCompatActivity() {
         }
         else demoMode()
     }
+
+
+    /**-------------------------- displaying functions -------------------------------**/
 
     // full screen
     private fun fullScreen(){
@@ -583,6 +405,75 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // display rabbit
+    private fun displayRabbit(rabbitBoolean: Boolean){
+       if(rabbitBoolean){
+           rabbit.setImageDrawable(getDrawable(R.drawable.rabbit))
+       }
+       else{
+           rabbit.setImageDrawable(null)
+       }
+   }
+
+
+    // display running chicken during animation
+    private fun displayRunningChicken(fallenEgg: FallenEgg) {
+        faultLeftFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,0))getDrawable(R.drawable.full_fault)else null)
+        faultLeftSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,0))getDrawable(R.drawable.full_fault)else null)
+        faultLeftThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,0))getDrawable(R.drawable.full_fault)else null)
+
+
+        faultRightFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,1))getDrawable(R.drawable.full_fault)else null)
+        faultRightSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,1))getDrawable(R.drawable.full_fault)else null)
+        faultRightThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,1))getDrawable(R.drawable.full_fault)else null)
+
+
+    }
+
+    // display demo basket
+    private fun displayDemoBasket() {
+        if(game.position[Static.LEFT_TOP]){
+            basketTopLeft.setImageDrawable(getDrawable(R.drawable.basket))
+        }else{
+            basketTopLeft.setImageDrawable(null)
+        }
+        if(game.position[Static.LEFT_BOTTOM]){
+            basketBottomLeft.setImageDrawable(getDrawable(R.drawable.basket))
+        }else{
+            basketBottomLeft.setImageDrawable(null)
+        }
+        if(game.position[Static.RIGHT_BOTTOM]){
+            basketBottomRight.setImageDrawable(getDrawable(R.drawable.basket))
+        }else{
+            basketBottomRight.setImageDrawable(null)
+        }
+        if(game.position[Static.RIGHT_TOP]){
+            basketTopRight.setImageDrawable(getDrawable(R.drawable.basket))
+        }else{
+            basketTopRight.setImageDrawable(null)
+        }
+
+    }
+
+    // update score in text view
+    private fun updateScoreTextView(){
+        score.text = game.getScore().toString()
+    }
+
+    // display faults
+    private fun updateFaultsView(){
+
+        when(game.getFault()){
+            Static.FAULT_NO_FAULT->zeroFault()
+            Static.FAULT_HALF->oneFault()
+            Static.FAULT_ONE->twoFault()
+            Static.FAULT_ONE_AND_HALF->threeFault()
+            Static.FAULT_TWO->fourFault()
+            Static.FAULT_TWO_AND_HALF->fiveFault()
+            else->sixFault()
+        }
+    }
+
     // display position of basket
     private fun displayBasket(){
         game.setBasket(basket)
@@ -608,12 +499,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // first displaying array (empty)
+    // first displaying array (empty) only in onCreate
     private fun updateArray(){
         game.clearEverything()
         displayState()
-
     }
+
+
+    /** --------------------- buttons listeners -------------------------------**/
 
     // set click listeners for all buttons
     private fun buttonsOnClickListeners(){
@@ -625,8 +518,8 @@ class MainActivity : AppCompatActivity() {
         }
         buttonBottomLeft.setOnClickListener {
             if(playOrPause()){
-            basket=Static.LEFT_BOTTOM
-            displayBasket()
+                basket=Static.LEFT_BOTTOM
+                displayBasket()
             }
         }
         buttonBottomRight.setOnClickListener {
@@ -637,8 +530,8 @@ class MainActivity : AppCompatActivity() {
         }
         buttonTopRight.setOnClickListener {
             if(playOrPause()){
-            basket=Static.RIGHT_TOP
-            displayBasket()
+                basket=Static.RIGHT_TOP
+                displayBasket()
             }
         }
 
@@ -677,19 +570,14 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        demo.setOnClickListener {
-            if(gameState==Static.WIN_A||gameState==Static.WIN_B||gameState==Static.LOSE_A||gameState==Static.LOSE_B){
-                demoMode()
-
-            }
-        }
-
     }
+
+
+    /**------------------------ game state logic and functions ----------------**/
 
     // demo mode
     private fun demoMode() {
         gameState=Static.DEMO
-        gameStatus.text="DEMO"
         game.clearEverything()
         displayState()
         displayBasket()
@@ -698,66 +586,6 @@ class MainActivity : AppCompatActivity() {
         loopCounter = 0
         demo().run()
 
-
-
-    }
-
-    private fun unPauseGameB() {
-        startGameB()
-    }
-
-    private fun pauseGameB() {
-        gameState=Static.PAUSE_B
-        updateFaultsView()
-        updateScoreTextView()
-        mHandlerRabbit.removeCallbacksAndMessages(null)
-        mHandler.removeCallbacksAndMessages(null)
-        mHandlerFlash.removeCallbacksAndMessages(null)
-        saveGameState()
-        gameStatus.text="PAUSE B"
-    }
-
-    private fun startGameB() {
-        gameState=Static.PLAY_B
-        game.clearEggArray()
-        game.clearDistanceAndNoOfEggs()
-        game.setGameMode(Static.GAME_B)
-        updateFaultsView()
-        updateScoreTextView()
-        displayBasket()
-        displayState()
-        gameLoop().run()
-        rabbitShow().run()
-        gameStatus.text="PLAY B"
-
-    }
-
-    private fun unPauseGameA() {
-        startGameA()
-    }
-
-    // pause game A
-    private fun pauseGameA() {
-        gameState=Static.PAUSE_A
-        updateFaultsView()
-        updateScoreTextView()
-        // stop all runnable
-        mHandlerRabbit.removeCallbacksAndMessages(null)
-        mHandler.removeCallbacksAndMessages(null)
-        mHandlerFlash.removeCallbacksAndMessages(null)
-        // save game state to shared preferences
-        saveGameState()
-        gameStatus.text="PAUSE A"
-    }
-
-    // store points, faults and game mode to shared preferences
-    private fun saveGameState() {
-        val sharedPreferences = getSharedPreferences("GAME_STATE", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putInt("POINTS",game.getScore())
-        editor.putInt("FAULTS",game.getFault())
-        editor.putBoolean("GAME_MODE",game.getGameMode())
-        editor.apply()
     }
 
     // play game A
@@ -772,32 +600,139 @@ class MainActivity : AppCompatActivity() {
         displayState()
         gameLoop().run()
         rabbitShow().run()
-        gameStatus.text="PLAY A"
+    }
+
+    // play game B
+    private fun startGameB() {
+        gameState=Static.PLAY_B
+        game.clearEggArray()
+        game.clearDistanceAndNoOfEggs()
+        game.setGameMode(Static.GAME_B)
+        updateFaultsView()
+        updateScoreTextView()
+        displayBasket()
+        displayState()
+        gameLoop().run()
+        rabbitShow().run()
+
+    }
+
+    // pause game A
+    private fun pauseGameA() {
+        gameState=Static.PAUSE_A
+        updateFaultsView()
+        updateScoreTextView()
+        // stop all runnable
+        mHandlerRabbit.removeCallbacksAndMessages(null)
+        mHandler.removeCallbacksAndMessages(null)
+        mHandlerFlash.removeCallbacksAndMessages(null)
+        // save game state to shared preferences
+        saveGameState()
+    }
+
+
+    private fun unPauseGameA() {
+        startGameA()
+    }
+
+
+    private fun pauseGameB() {
+        gameState=Static.PAUSE_B
+        updateFaultsView()
+        updateScoreTextView()
+        mHandlerRabbit.removeCallbacksAndMessages(null)
+        mHandler.removeCallbacksAndMessages(null)
+        mHandlerFlash.removeCallbacksAndMessages(null)
+        saveGameState()
+    }
+
+
+    private fun unPauseGameB() {
+        startGameB()
+    }
+
+    // if egg at last position check if it is in the basket
+    private fun checkNextMove(eggCaught: CaughtEgg) {
+
+        // egg in basket or no egg
+        if(eggCaught.logicSum==1){
+
+            // egg has been caught
+            if(eggCaught.logicProduct==1){
+                updateScoreTextView()
+
+                // clear faults when get 200 or 500 points
+                if(game.getScore()==200||game.getScore()==500){
+                    game.clearFaults()
+                    updateFaultsView()
+                }
+            }
+
+            mHandler.postDelayed(gameLoop(),delay())
+        }
+
+        // egg outside the basket
+        else{
+            // clear egg array
+            game.clearEggArray()
+            mHandler.removeCallbacks(gameLoop())
+            game.addFault(rabbitBoolean)
+            updateFaultsView()
+            if(game.getFault()<=Static.FAULT_TWO_AND_HALF) {
+                lostEggAnimation(eggCaught.positionFallenEgg)
+            }else{
+                lostEggAnimationEndGame(eggCaught.positionFallenEgg)
+
+            }
+        }
+    }
+
+    // game A has finished because of 3 faults
+    private fun loseA() {
+        savePointsLoseA()
+        game.clearEverything()
+        clearSavedGame()
+        gameState=Static.LOSE_A
+
+    }
+
+    // game B has finished because of 3 faults
+    private fun loseB() {
+
+        savePointsLoseB()
+        clearSavedGame()
+        gameState=Static.LOSE_B
+        game.clearEverything()
+    }
+
+    // game A has finished because of 1000 points
+    private fun winA() {
+
+        savePointsWinA()
+        clearSavedGame()
+        gameState=Static.WIN_A
+        game.clearFaults()
+        game.clearScore()
+        game.clearDistanceAndNoOfEggs()
+
+    }
+
+    // game B has finished because of 1000 points
+    private fun winB() {
+
+        savePointsWinB()
+        clearSavedGame()
+        gameState= Static.WIN_B
+        game.clearFaults()
+        game.clearScore()
+        game.clearDistanceAndNoOfEggs()
+
     }
 
     // return boolean if game is played or paused
     private fun playOrPause(): Boolean {
         return gameState==Static.PLAY_A||gameState==Static.PAUSE_A||gameState==Static.PLAY_B||gameState==Static.PAUSE_B
 
-    }
-
-    // update score in text view
-    private fun updateScoreTextView(){
-        score.text = game.getScore().toString()
-    }
-
-    // display faults
-    private fun updateFaultsView(){
-
-        when(game.getFault()){
-            Static.FAULT_NO_FAULT->zeroFault()
-            Static.FAULT_HALF->oneFault()
-            Static.FAULT_ONE->twoFault()
-            Static.FAULT_ONE_AND_HALF->threeFault()
-            Static.FAULT_TWO->fourFault()
-            Static.FAULT_TWO_AND_HALF->fiveFault()
-            else->sixFault()
-        }
     }
 
     // set delay in game loop
@@ -864,6 +799,28 @@ class MainActivity : AppCompatActivity() {
         right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
     }
 
+    // lost egg animation end game
+    private fun lostEggAnimationEndGame(positionFallenEgg: Int) {
+        var fallenEgg = FallenEgg()
+        when(gameState){
+            Static.PLAY_A -> loseA()
+            Static.PLAY_B -> loseB()
+        }
+        fallenEgg.setFallenEgg(positionFallenEgg/2)
+        fallenEggEndGame(fallenEgg).run()
+
+    }
+
+    // lost egg animation
+    private fun lostEggAnimation(positionFallenEgg: Int) {
+
+        var fallenEgg = FallenEgg()
+        fallenEgg.setFallenEgg(positionFallenEgg/2)
+        fallenEgg(fallenEgg).run()
+
+
+    }
+
     }
 
 
@@ -872,6 +829,7 @@ TODO all strings from R.string
 TODO new record displayed in score
 TODO add sounds
 TODO login
+TODO user page with achievements
 TODO change UI
 TODO add ranking (individual highest points, points in total)
 TODO add admob after gameover or 1000 points

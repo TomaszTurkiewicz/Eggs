@@ -89,6 +89,7 @@ class Game {
         faults=tFaults
     }
 
+    // set egg array during win animation (every second egg is set)
     fun setWinEggArray() {
         for(x in 0..6){
             for(y in 0..3){
@@ -120,7 +121,7 @@ class Game {
     private fun gameMode() = if(gameMode==Static.GAME_A) 3 else 4
 
     // return boolean if under max score
-    fun underMaxScore() = score<1000
+    fun underMaxScore() = score< Static.MAX_POINTS
 
     // return game mode A or B
     fun getGameMode():Boolean{
@@ -276,16 +277,15 @@ class Game {
 
     }
 
+    // generates eggs during demo
     private fun generateEggDemo() {
         val random = Random.nextInt(0, 99)
-        var ran = random % 5
+        val ran = random % 5
         gameState[0][Static.LEFT_BOTTOM] = Static.NO_EGG
         gameState[0][Static.LEFT_TOP] = Static.NO_EGG
         gameState[0][Static.RIGHT_TOP] = Static.NO_EGG
         gameState[0][Static.RIGHT_BOTTOM] = Static.NO_EGG
-        if(ran==4){
-
-        }else{
+        if(ran!=4){
             gameState[0][ran]=Static.EGG
         }
 
@@ -342,6 +342,7 @@ class Game {
         return eggCheck
     }
 
+    // reverse egg array
     fun eggArrayWinAnimation() {
         for(x in 0..6){
             for(y in 0..3){
@@ -350,6 +351,7 @@ class Game {
         }
     }
 
+    // move down plus move basket during demo
     fun moveDownDemo() {
         // move down
         for(i in 5 downTo 0){
@@ -357,19 +359,13 @@ class Game {
                 gameState[i+1][j]=gameState[i][j]
             }
         }
-
+        // move basket
         for(i in 0..3){
             if(gameState[5][i])
                 setBasket(i)
         }
-
-
-
-            generateEggDemo()
-
+        // generate egg
+        generateEggDemo()
     }
-
-
-
 
 }
