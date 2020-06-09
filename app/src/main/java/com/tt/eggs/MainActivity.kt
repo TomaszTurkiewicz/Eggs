@@ -211,14 +211,12 @@ class MainActivity : AppCompatActivity() {
         faultLeftFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,0))getDrawable(R.drawable.full_fault)else null)
         faultLeftSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,0))getDrawable(R.drawable.full_fault)else null)
         faultLeftThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,0))getDrawable(R.drawable.full_fault)else null)
-        faultLeftFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,0))getDrawable(R.drawable.full_fault)else null)
-        faultLeftFifth.setImageDrawable(if(fallenEgg.getFallenEgg(5,0))getDrawable(R.drawable.full_fault)else null)
+
 
         faultRightFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,1))getDrawable(R.drawable.full_fault)else null)
         faultRightSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,1))getDrawable(R.drawable.full_fault)else null)
         faultRightThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,1))getDrawable(R.drawable.full_fault)else null)
-        faultRightFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,1))getDrawable(R.drawable.full_fault)else null)
-        faultRightFifth.setImageDrawable(if(fallenEgg.getFallenEgg(5,1))getDrawable(R.drawable.full_fault)else null)
+
 
     }
 
@@ -870,7 +868,8 @@ class MainActivity : AppCompatActivity() {
 
 
 /*
-TODO change length of running chicken when fault (is 5 should be 3)
+TODO all strings from R.string
+TODO new record displayed in score
 TODO add sounds
 TODO login
 TODO change UI
