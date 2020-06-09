@@ -125,8 +125,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
     // flashing fault
     private val mHandlerFlash = Handler()
     private var faultFlash = Static.ON
@@ -155,7 +153,6 @@ class MainActivity : AppCompatActivity() {
             mHandler.postDelayed(gameLoop(),delay())
         }
     }
-
     private fun fallenEggEndGame(fallenEgg: FallenEgg): Runnable = Runnable{
         val finished = fallenEgg.moveDown()
         displayFallenEgg(fallenEgg)
@@ -169,6 +166,42 @@ class MainActivity : AppCompatActivity() {
 
             demoMode()
 
+        }
+
+    }
+
+    // demo runnable
+    private var loopCounter=0
+    private val mHandlerDemo = Handler()
+    private fun demo():Runnable = Runnable {
+        game.moveDownDemo()
+        displayState()
+        displayDemoBasket()
+        displayRabbit(loopCounter%10>4)
+        loopCounter+=1
+        mHandlerDemo.postDelayed(demo(),600)
+    }
+
+    private fun displayDemoBasket() {
+        if(game.position[Static.LEFT_TOP]){
+            basketTopLeft.setImageDrawable(getDrawable(R.drawable.basket))
+        }else{
+            basketTopLeft.setImageDrawable(null)
+        }
+        if(game.position[Static.LEFT_BOTTOM]){
+            basketBottomLeft.setImageDrawable(getDrawable(R.drawable.basket))
+        }else{
+            basketBottomLeft.setImageDrawable(null)
+        }
+        if(game.position[Static.RIGHT_BOTTOM]){
+            basketBottomRight.setImageDrawable(getDrawable(R.drawable.basket))
+        }else{
+            basketBottomRight.setImageDrawable(null)
+        }
+        if(game.position[Static.RIGHT_TOP]){
+            basketTopRight.setImageDrawable(getDrawable(R.drawable.basket))
+        }else{
+            basketTopRight.setImageDrawable(null)
         }
 
     }
@@ -206,8 +239,6 @@ class MainActivity : AppCompatActivity() {
         // set button listeners and text view displays
         buttonsOnClickListeners()
 
-        //go to demo mode
-        demoMode()
     }
 
     // check if game hasn't been finished
@@ -616,6 +647,7 @@ class MainActivity : AppCompatActivity() {
         start_A.setOnClickListener {
             when (gameState) {
                 Static.DEMO -> {
+                    mHandlerDemo.removeCallbacksAndMessages(null)
                     startGameA()
                 }
                 Static.PLAY_A -> {
@@ -630,6 +662,7 @@ class MainActivity : AppCompatActivity() {
         start_B.setOnClickListener {
             when (gameState) {
                 Static.DEMO -> {
+                    mHandlerDemo.removeCallbacksAndMessages(null)
                     startGameB()
                 }
                 Static.PLAY_B -> {
@@ -660,7 +693,14 @@ class MainActivity : AppCompatActivity() {
         gameState=Static.DEMO
         gameStatus.text="DEMO"
         game.clearEverything()
-        // TODO animation when demo
+        displayState()
+        displayBasket()
+        updateFaultsView()
+        score.text="DEMO"
+        loopCounter = 0
+        demo().run()
+
+
 
     }
 
@@ -829,14 +869,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
-
-// TODO add sounds
-// TODO login
-// TODO add running chicken when fault
-// TODO change UI
-// TODO add ranking (individual highest points, points in total)
-// TODO add admob after gameover or 1000 points
+/*
+TODO change length of running chicken when fault (is 5 should be 3)
+TODO add sounds
+TODO login
+TODO change UI
+TODO add ranking (individual highest points, points in total)
+TODO add admob after gameover or 1000 points
+*/
 
 

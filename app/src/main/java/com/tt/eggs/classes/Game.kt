@@ -276,6 +276,22 @@ class Game {
 
     }
 
+    private fun generateEggDemo() {
+        val random = Random.nextInt(0, 99)
+        var ran = random % 5
+        gameState[0][Static.LEFT_BOTTOM] = Static.NO_EGG
+        gameState[0][Static.LEFT_TOP] = Static.NO_EGG
+        gameState[0][Static.RIGHT_TOP] = Static.NO_EGG
+        gameState[0][Static.RIGHT_BOTTOM] = Static.NO_EGG
+        if(ran==4){
+
+        }else{
+            gameState[0][ran]=Static.EGG
+        }
+
+
+
+    }
 
 
     /*---------------------GAME LOGIC---------------------*/
@@ -333,6 +349,27 @@ class Game {
             }
         }
     }
+
+    fun moveDownDemo() {
+        // move down
+        for(i in 5 downTo 0){
+            for(j in 0..3){
+                gameState[i+1][j]=gameState[i][j]
+            }
+        }
+
+        for(i in 0..3){
+            if(gameState[5][i])
+                setBasket(i)
+        }
+
+
+
+            generateEggDemo()
+
+    }
+
+
 
 
 }
