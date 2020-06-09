@@ -53,18 +53,43 @@ class MainActivity : AppCompatActivity() {
             checkNextMove(eggCaught)
         }
         else{
-            // TODO winning animation
-            // TODO save points in total
-            // TODO add counter of high score (A or B)
+
+
             mHandlerFlash.removeCallbacksAndMessages(null)
             mHandlerRabbit.removeCallbacksAndMessages(null)
             when(gameState){
                 Static.PLAY_A -> winA()
                 Static.PLAY_B -> winB()
             }
+            game.clearEggArray()
+            game.setWinEggArray()
+            score.text="1000"
+            winLoopCounter=0
+            winLoop().run()
+
 
 
         }
+    }
+
+    // win loop
+    private var winLoopCounter = 0
+    private val mHandlerWin = Handler()
+    private var display = Static.ON
+    private fun winLoop(): Runnable = Runnable {
+        score.visibility=if(display) View.VISIBLE else View.GONE
+        display = !display
+        game.eggArrayWinAnimation()
+        displayState()
+        winLoopCounter+=1
+        if(winLoopCounter<10){
+            mHandlerWin.postDelayed(winLoop(),500)
+        }else{
+            mHandlerWin.removeCallbacks(winLoop())
+            score.visibility=View.VISIBLE
+            demoMode()
+        }
+
     }
 
     // displaying rabbit
@@ -300,7 +325,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loseB() {
-        // TODO save points
+
         savePointsLoseB()
         clearSavedGame()
         gameState=Static.LOSE_B
@@ -334,7 +359,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loseA() {
-        // TODO save points
+
         savePointsLoseA()
 
         game.clearEverything()
@@ -362,18 +387,45 @@ class MainActivity : AppCompatActivity() {
         totalPointsACounter.text=tPoints.toString()
         highAScore.text=tHigh.toString()
 
-
-
         editor.apply()
 
     }
 
     private fun winB() {
-        // TODO save points
+
+        savePointsWinB()
         clearSavedGame()
         gameState= Static.WIN_B
         gameStatus.text="WIN B"
-        game.clearEverything()
+        game.clearFaults()
+        game.clearScore()
+        game.clearDistanceAndNoOfEggs()
+
+    }
+
+    private fun savePointsWinB() {
+        val sharedPreferences = getSharedPreferences("GAME_B", Context.MODE_PRIVATE)
+        var tPoints = sharedPreferences.getInt("TOTAL", 0)
+        var tHigh = sharedPreferences.getInt("HIGH", 0)
+        var tHighCounter = sharedPreferences.getInt("COUNTER", 0)
+
+        tPoints += game.getScore()
+
+        if(tHigh!=1000){
+            tHigh=1000
+        }
+        tHighCounter+=1
+
+        val editor = sharedPreferences.edit()
+        editor.putInt("TOTAL",tPoints)
+        editor.putInt("HIGH",tHigh)
+        editor.putInt("COUNTER",tHighCounter)
+
+        editor.apply()
+
+        totalPointsBCounter.text=tPoints.toString()
+        highBScore.text=tHigh.toString()
+        highBCounterScore.text=tHighCounter.toString()
 
     }
 
@@ -388,11 +440,41 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun winA() {
-        // TODO save points
+
+        savePointsWinA()
         clearSavedGame()
         gameState=Static.WIN_A
         gameStatus.text="WIN A"
-        game.clearEverything()
+        game.clearFaults()
+        game.clearScore()
+        game.clearDistanceAndNoOfEggs()
+
+    }
+
+    private fun savePointsWinA() {
+
+        val sharedPreferences = getSharedPreferences("GAME_A", Context.MODE_PRIVATE)
+        var tPoints = sharedPreferences.getInt("TOTAL", 0)
+        var tHigh = sharedPreferences.getInt("HIGH", 0)
+        var tHighCounter = sharedPreferences.getInt("COUNTER", 0)
+
+        tPoints += game.getScore()
+
+        if(tHigh!=1000){
+            tHigh=1000
+        }
+        tHighCounter+=1
+
+        val editor = sharedPreferences.edit()
+        editor.putInt("TOTAL",tPoints)
+        editor.putInt("HIGH",tHigh)
+        editor.putInt("COUNTER",tHighCounter)
+
+        editor.apply()
+
+        totalPointsACounter.text=tPoints.toString()
+        highAScore.text=tHigh.toString()
+        highACounterScore.text=tHighCounter.toString()
 
     }
 
@@ -577,6 +659,7 @@ class MainActivity : AppCompatActivity() {
     private fun demoMode() {
         gameState=Static.DEMO
         gameStatus.text="DEMO"
+        game.clearEverything()
         // TODO animation when demo
 
     }
@@ -752,8 +835,6 @@ class MainActivity : AppCompatActivity() {
 // TODO add sounds
 // TODO login
 // TODO add running chicken when fault
-// TODO win when points 1000
-// TODO save points (highest score (if 1000 - how many times), score in total)
 // TODO change UI
 // TODO add ranking (individual highest points, points in total)
 // TODO add admob after gameover or 1000 points

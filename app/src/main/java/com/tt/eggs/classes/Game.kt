@@ -73,7 +73,7 @@ class Game {
 
     // add point when egg caught
     private fun addPoint(){
-        score+=10
+        score+=100
     }
 
     // add fault when egg not caught
@@ -89,6 +89,14 @@ class Game {
         faults=tFaults
     }
 
+    fun setWinEggArray() {
+        for(x in 0..6){
+            for(y in 0..3){
+                gameState[x][y]=if((x+y)%2==0) Static.NO_EGG else Static.EGG
+            }
+        }
+
+    }
 
 
     /*-------------------GETTERS AND CONDITIONS FUNCTIONS---------------------------------*/
@@ -125,7 +133,7 @@ class Game {
 
     /*-----------------CLEARING SECTION------------------------*/
     // clearing score
-    private fun clearScore(){
+    fun clearScore(){
         score=0
     }
 
@@ -252,8 +260,8 @@ class Game {
             gameState[0][Static.RIGHT_TOP] = Static.NO_EGG
             gameState[0][Static.RIGHT_BOTTOM] = Static.NO_EGG
             // TODO for testing speed
-      //      gameState[0][Static.LEFT_TOP] = Static.EGG
-            gameState[0][ran] = Static.EGG
+            gameState[0][Static.LEFT_TOP] = Static.EGG
+      //      gameState[0][ran] = Static.EGG
             noOfEggs -=1
         }
 
@@ -317,5 +325,14 @@ class Game {
         // return egg to check conditions in main activity
         return eggCheck
     }
+
+    fun eggArrayWinAnimation() {
+        for(x in 0..6){
+            for(y in 0..3){
+                gameState[x][y]= !gameState[x][y]
+            }
+        }
+    }
+
 
 }
