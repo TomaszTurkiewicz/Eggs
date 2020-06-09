@@ -37,64 +37,107 @@
         android:textSize="30sp"
         android:textColor="@color/colorPrimary"/>
 
-    <TextView
-        android:id="@+id/speed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginLeft="20dp" />
 
     <TextView
-        android:id="@+id/gameLoop"
+        android:id="@+id/totalPointsA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="game loops"
+        android:text="total points A"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="30dp"/>
+
+    <TextView
+        android:id="@+id/totalPointsACounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/totalPointsA"
+        app:layout_constraintLeft_toRightOf="@id/totalPointsA"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/highA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="high A"
+        app:layout_constraintTop_toTopOf="@id/totalPointsA"
+        app:layout_constraintLeft_toRightOf="@id/totalPointsA"
+        android:layout_marginLeft="100dp"/>
+
+    <TextView
+        android:id="@+id/highAScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/highA"
+        app:layout_constraintLeft_toRightOf="@id/highA"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/highACounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1000 counter"
+        app:layout_constraintTop_toTopOf="@id/highA"
+        app:layout_constraintLeft_toRightOf="@id/highA"
+        android:layout_marginLeft="100dp"/>
+
+    <TextView
+        android:id="@+id/highACounterScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/highACounter"
+        app:layout_constraintLeft_toRightOf="@id/highACounter"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/totalPointsB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="total points B"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_margin="30dp"/>
 
     <TextView
-        android:id="@+id/gameLoopCounter"
+        android:id="@+id/totalPointsBCounter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/gameLoop"
-        app:layout_constraintLeft_toRightOf="@id/gameLoop"
+        app:layout_constraintTop_toTopOf="@id/totalPointsB"
+        app:layout_constraintLeft_toRightOf="@id/totalPointsB"
         android:layout_marginLeft="5dp"/>
 
     <TextView
-        android:id="@+id/faultLoop"
+        android:id="@+id/highB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="fault loops"
-        app:layout_constraintTop_toTopOf="@id/gameLoop"
-        app:layout_constraintLeft_toRightOf="@id/gameLoop"
+        android:text="high B"
+        app:layout_constraintTop_toTopOf="@id/totalPointsB"
+        app:layout_constraintLeft_toRightOf="@id/totalPointsB"
         android:layout_marginLeft="100dp"/>
 
     <TextView
-        android:id="@+id/faultLoopCounter"
+        android:id="@+id/highBScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/faultLoop"
-        app:layout_constraintLeft_toRightOf="@id/faultLoop"
+        app:layout_constraintTop_toTopOf="@id/highB"
+        app:layout_constraintLeft_toRightOf="@id/highB"
         android:layout_marginLeft="5dp"/>
 
     <TextView
-        android:id="@+id/rabbitLoop"
+        android:id="@+id/highBCounter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="rabbit loops"
-        app:layout_constraintTop_toTopOf="@id/faultLoop"
-        app:layout_constraintLeft_toRightOf="@id/faultLoop"
+        android:text="1000 counter"
+        app:layout_constraintTop_toTopOf="@id/highB"
+        app:layout_constraintLeft_toRightOf="@id/highB"
         android:layout_marginLeft="100dp"/>
 
     <TextView
-        android:id="@+id/rabbitLoopCounter"
+        android:id="@+id/highBCounterScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/rabbitLoop"
-        app:layout_constraintLeft_toRightOf="@id/rabbitLoop"
+        app:layout_constraintTop_toTopOf="@id/highBCounter"
+        app:layout_constraintLeft_toRightOf="@id/highBCounter"
         android:layout_marginLeft="5dp"/>
 
     <ImageView

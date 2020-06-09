@@ -19,10 +19,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    private var gameLoopCounterInt=0
-    private var faultLoopCounterInt=0
-    private var rabbitLoopCounterInt=0
-
     // game state
     private var gameState = Static.DEMO
 
@@ -49,7 +45,6 @@ class MainActivity : AppCompatActivity() {
     private fun gameLoop(): Runnable = Runnable {
         // less then 1000 points
         if(game.underMaxScore()) {
-            gameLoopCounterInt+=1
             // make move down
             eggCaught = game.moveDown()
             // display move
@@ -63,7 +58,6 @@ class MainActivity : AppCompatActivity() {
             // TODO add counter of high score (A or B)
             mHandlerFlash.removeCallbacksAndMessages(null)
             mHandlerRabbit.removeCallbacksAndMessages(null)
-            mHandlerTotal.removeCallbacksAndMessages(null)
             when(gameState){
                 Static.PLAY_A -> winA()
                 Static.PLAY_B -> winB()
@@ -76,7 +70,6 @@ class MainActivity : AppCompatActivity() {
     // displaying rabbit
     private val mHandlerRabbit = Handler()
     private fun rabbitShow():Runnable = Runnable {
-            rabbitLoopCounterInt+=1
                 if(rabbitOn>0){
                     rabbitBoolean=Static.ON
                     displayRabbit(rabbitBoolean)
@@ -106,21 +99,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // display testing info
-    private val mHandlerTotal = Handler()
-    private fun showCounter():Runnable = Runnable {
-        gameLoopCounter.text = gameLoopCounterInt.toString()
-        faultLoopCounter.text = faultLoopCounterInt.toString()
-        rabbitLoopCounter.text = rabbitLoopCounterInt.toString()
-        speed.text = delay().toString()
-        mHandlerTotal.postDelayed(showCounter(),100)
-    }
+
+
 
     // flashing fault
     private val mHandlerFlash = Handler()
     private var faultFlash = Static.ON
     private fun flashFault(imageView: ImageView):Runnable = Runnable {
-        faultLoopCounterInt +=1
         if(faultFlash==Static.ON){
             imageView.setImageDrawable(getDrawable(R.drawable.full_fault))
             faultFlash=Static.OFF
@@ -204,14 +189,44 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        // read and display scores A
+        readAndDisplayScoresA()
+        readAndDisplayScoresB()
+
         // read from shared preferences
         val sharedPreferences = getSharedPreferences("GAME_STATE", Context.MODE_PRIVATE)
         val tPoints = sharedPreferences.getInt("POINTS", 0)
         val tFaults = sharedPreferences.getInt("FAULTS", 0)
         val tGame = sharedPreferences.getBoolean("GAME_MODE", false)
 
+
+
         // check if there is stored game
         checkGameState(tPoints,tFaults,tGame)
+    }
+
+    private fun readAndDisplayScoresA() {
+        val sharedPreferences = getSharedPreferences("GAME_A", Context.MODE_PRIVATE)
+        val tPoints = sharedPreferences.getInt("TOTAL", 0)
+        val tHigh = sharedPreferences.getInt("HIGH", 0)
+        val tHighCounter = sharedPreferences.getInt("COUNTER", 0)
+
+        totalPointsACounter.text=tPoints.toString()
+        highAScore.text=tHigh.toString()
+        highACounterScore.text=tHighCounter.toString()
+
+    }
+
+    private fun readAndDisplayScoresB() {
+        val sharedPreferences = getSharedPreferences("GAME_B", Context.MODE_PRIVATE)
+        val tPoints = sharedPreferences.getInt("TOTAL", 0)
+        val tHigh = sharedPreferences.getInt("HIGH", 0)
+        val tHighCounter = sharedPreferences.getInt("COUNTER", 0)
+
+        totalPointsBCounter.text=tPoints.toString()
+        highBScore.text=tHigh.toString()
+        highBCounterScore.text=tHighCounter.toString()
+
     }
 
     // stop game loop when activity is disrupted by anything else (another app)
@@ -286,19 +301,70 @@ class MainActivity : AppCompatActivity() {
 
     private fun loseB() {
         // TODO save points
+        savePointsLoseB()
         clearSavedGame()
         gameState=Static.LOSE_B
         gameStatus.text="LOSE B"
         game.clearEverything()
     }
 
+    private fun savePointsLoseB() {
+        val sharedPreferences = getSharedPreferences("GAME_B", Context.MODE_PRIVATE)
+        var tPoints = sharedPreferences.getInt("TOTAL", 0)
+        var tHigh = sharedPreferences.getInt("HIGH", 0)
+
+        tPoints += game.getScore()
+
+        if(tHigh<game.getScore()){
+            tHigh=game.getScore()
+        }
+
+        val editor = sharedPreferences.edit()
+        editor.putInt("TOTAL",tPoints)
+        editor.putInt("HIGH",tHigh)
+
+        totalPointsBCounter.text=tPoints.toString()
+        highBScore.text=tHigh.toString()
+
+
+
+        editor.apply()
+
+
+    }
+
     private fun loseA() {
         // TODO save points
+        savePointsLoseA()
 
         game.clearEverything()
         clearSavedGame()
         gameState=Static.LOSE_A
         gameStatus.text="LOSE A"
+
+    }
+
+    private fun savePointsLoseA() {
+        val sharedPreferences = getSharedPreferences("GAME_A", Context.MODE_PRIVATE)
+        var tPoints = sharedPreferences.getInt("TOTAL", 0)
+        var tHigh = sharedPreferences.getInt("HIGH", 0)
+
+        tPoints += game.getScore()
+
+        if(tHigh<game.getScore()){
+            tHigh=game.getScore()
+        }
+
+        val editor = sharedPreferences.edit()
+        editor.putInt("TOTAL",tPoints)
+        editor.putInt("HIGH",tHigh)
+
+        totalPointsACounter.text=tPoints.toString()
+        highAScore.text=tHigh.toString()
+
+
+
+        editor.apply()
 
     }
 
@@ -541,7 +607,6 @@ class MainActivity : AppCompatActivity() {
         displayState()
         gameLoop().run()
         rabbitShow().run()
-        showCounter().run()
         gameStatus.text="PLAY B"
 
     }
@@ -586,7 +651,6 @@ class MainActivity : AppCompatActivity() {
         displayState()
         gameLoop().run()
         rabbitShow().run()
-        showCounter().run()
         gameStatus.text="PLAY A"
     }
 
