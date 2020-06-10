@@ -31,6 +31,8 @@ class LoginActivity : AppCompatActivity() {
 
 
     /**------------------ activity life cycle -------------------------------------**/
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // display full screen
@@ -77,7 +79,6 @@ class LoginActivity : AppCompatActivity() {
 
     // update ui and create/save user to database
     private fun updateUI(user:FirebaseUser?){
-        login_status.text = if(user!=null)"LOGGED IN" else "NOT LOGGED IN"
             if(user!=null){
                 database = Firebase.database
                 val dbRef = database.getReference("user").child(user.uid)
@@ -112,11 +113,30 @@ class LoginActivity : AppCompatActivity() {
                                     Functions.saveStatisticBToSharedPreferences(this@LoginActivity,user.uid,tUser.gameB)
                                 }
                                 dbRef.setValue(tUser)
+
+                                display(tUser)
                             }
                         }
                     }
                 })
             }
+            else{
+             displayNotLoggedIn()
+            }
+
+    }
+
+    // display nothing
+    private fun displayNotLoggedIn() {
+        user_name.text="-"
+        highScoreAUser.text="-"
+
+    }
+
+    //display user statistics
+    private fun display(tUser: User) {
+        user_name.text=tUser.userName
+        highScoreAUser.text=tUser.gameA.highScoreA.toString()
     }
 
 
@@ -185,3 +205,5 @@ class LoginActivity : AppCompatActivity() {
     }
 
 }
+
+// TODO finish displaying statistics in this activity

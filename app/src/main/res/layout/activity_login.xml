@@ -6,6 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_margin="50dp"/>
+
+    <TextView
+        android:id="@+id/highScoreA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/user_name"
+        app:layout_constraintTop_toBottomOf="@id/user_name"
+        android:layout_marginTop="50dp"
+        android:text="HIGH SCORE A"/>
+
+    <TextView
+        android:id="@+id/highScoreAUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/highScoreA"
+        app:layout_constraintTop_toTopOf="@id/highScoreA"
+        android:layout_marginLeft="10dp"/>
+
     <Button
         android:id="@+id/backToGame"
         android:layout_width="wrap_content"
@@ -23,15 +48,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="20dp"/>
-
-    <TextView
-        android:id="@+id/login_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

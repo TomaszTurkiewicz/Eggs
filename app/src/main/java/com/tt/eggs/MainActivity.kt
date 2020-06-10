@@ -10,6 +10,9 @@ import android.view.View
 import android.widget.ImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.*
@@ -566,7 +569,7 @@ class MainActivity : AppCompatActivity() {
                 else -> {/* do nothing*/}
             }
         }
- //       updateScoreTextView()
+
         closeApp.setOnClickListener {
             finish()
         }
@@ -581,8 +584,32 @@ class MainActivity : AppCompatActivity() {
         val auth = Firebase.auth
         val currentUser = auth.currentUser
         if(currentUser!=null){
-            userID.text=currentUser.uid
-        }else{
+            val database = Firebase.database
+            val dbRef = database.getReference("user").child(currentUser.uid)
+            dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    // do nothing
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    if(!p0.exists()){
+                       userID.text="PROBLEM WITH DATABASE"
+                    }
+                    else{
+                        // check if sharedpreferences and firebase database are the same if not make them the same
+                        val tUser = p0.getValue(User::class.java)
+                        if(tUser!=null) {
+                            userID.text=tUser.userName
+                        }
+                        else{
+                            userID.text="PROBLEM WITH DATABASE"
+                        }
+                    }
+                }
+            })
+        }
+        else
+        {
             userID.text="NOT LOGGED IN"
         }
 
