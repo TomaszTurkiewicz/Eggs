@@ -12,12 +12,23 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import kotlinx.android.synthetic.main.activity_login.*
+import com.google.firebase.ktx.Firebase
+import com.tt.eggs.classes.Functions
+import com.tt.eggs.classes.User
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var database: FirebaseDatabase
+
 
     /**------------------ activity life cycle -------------------------------------**/
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
         fullScreen()
         setContentView(R.layout.activity_login)
 
-        auth = FirebaseAuth.getInstance()
+        auth = Firebase.auth
 
         val currentUser = auth.currentUser
         updateUI(currentUser)
@@ -66,6 +77,32 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(user:FirebaseUser?){
         login_status.text = if(user!=null)"LOGGED IN" else "NOT LOGGED IN"
+            if(user!=null){
+                database = Firebase.database
+                val dbRef = database.getReference("user").child(user.uid)
+
+                // check if database exists (if not create)
+                dbRef.addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError) {
+                        // do nothing
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        if(!p0.exists()){
+                            val userDB = User(id = user.uid)
+                            dbRef.setValue(userDB)
+                        }
+                        else{
+                            val gameA = Functions.readGameAFromSharedPreferences(this@LoginActivity,user.uid)
+                            val gameB = Functions.readGameBFromSharedPreferences(this@LoginActivity,user.uid)
+                            val userDB = User(id=user.uid,gameA = gameA,gameB = gameB)
+                            dbRef.setValue(userDB)
+                        }
+
+                    }
+                })
+
+            }
 
     }
 
