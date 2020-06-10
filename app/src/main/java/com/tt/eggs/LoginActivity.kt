@@ -39,22 +39,29 @@ class LoginActivity : AppCompatActivity() {
         fullScreen()
         setContentView(R.layout.activity_login)
 
-        auth = Firebase.auth
+        // check if user is logged in and make UI
 
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
+        checkUser()
 
+
+        // buttons on click listeners
         setButtonsActions()
 
+        // for signing with google
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-
         googleSignInClient = GoogleSignIn.getClient(this,gso)
 
     }
 
+    private fun checkUser() {
+        auth = Firebase.auth
+        val currentUser = auth.currentUser
+        updateUI(currentUser)
+
+    }
 
 
     /**-------------------------- displaying functions -------------------------------**/
@@ -79,7 +86,11 @@ class LoginActivity : AppCompatActivity() {
 
     // update ui and create/save user to database
     private fun updateUI(user:FirebaseUser?){
+
+        // user logged in
             if(user!=null){
+
+                // reference to user database
                 database = Firebase.database
                 val dbRef = database.getReference("user").child(user.uid)
 
@@ -90,10 +101,17 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     override fun onDataChange(p0: DataSnapshot) {
+                        // user doesn't exists
                         if(!p0.exists()){
+
+                            // create user
                             val userDB = User(id = user.uid)
                             dbRef.setValue(userDB)
+                            checkUser()
+
                         }
+
+                        // user exists
                         else{
                             // check if sharedpreferences and firebase database are the same if not make them the same
                             val tUser = p0.getValue(User::class.java)
@@ -120,6 +138,8 @@ class LoginActivity : AppCompatActivity() {
                     }
                 })
             }
+
+            // no user
             else{
              displayNotLoggedIn()
             }
@@ -130,24 +150,51 @@ class LoginActivity : AppCompatActivity() {
     private fun displayNotLoggedIn() {
         user_name.text="-"
         highScoreAUser.text="-"
-
+        totalScoreAUser.text="-"
+        highScoreBUser.text="-"
+        totalScoreBUser.text="-"
+        totalScoreUser.text="-"
+        highScoreACounter.text=""
+        highScoreBCounter.text=""
+        googleSignIn.text="LOG IN"
     }
 
     //display user statistics
     private fun display(tUser: User) {
         user_name.text=tUser.userName
         highScoreAUser.text=tUser.gameA.highScoreA.toString()
+        totalScoreAUser.text=tUser.gameA.totalScoreA.toString()
+        highScoreBUser.text=tUser.gameB.highScoreB.toString()
+        totalScoreBUser.text=tUser.gameB.totalScoreB.toString()
+        totalScoreUser.text=(tUser.gameA.totalScoreA+tUser.gameB.totalScoreB).toString()
+        if(tUser.gameA.counterA>0){
+        highScoreACounter.text="("+tUser.gameA.counterA+")"
+        }
+        else{
+            highScoreACounter.text=""
+        }
+        if(tUser.gameB.counterB>0){
+            highScoreBCounter.text="("+tUser.gameB.counterB+")"
+        }
+        else{
+            highScoreBCounter.text=""
+        }
+
+        googleSignIn.text="LOG OUT"
     }
 
 
     /** --------------------- buttons listeners -------------------------------**/
 
     private fun setButtonsActions() {
+        // back to main screen
         backToGame.setOnClickListener {
             val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
             finish()
         }
+
+        // sign in/out button
         googleSignIn.setOnClickListener {
             if (auth.currentUser!=null){
                 signOut()
@@ -207,3 +254,4 @@ class LoginActivity : AppCompatActivity() {
 }
 
 // TODO finish displaying statistics in this activity
+// TODO make settings activity

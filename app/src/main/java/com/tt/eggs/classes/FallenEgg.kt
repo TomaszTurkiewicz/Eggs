@@ -12,6 +12,8 @@ class FallenEgg {
 
     // set fallen egg (right or left side)
     fun setFallenEgg (position:Int){
+        fallenEgg[0][0]=Static.NO_EGG
+        fallenEgg[0][1]=Static.NO_EGG
         fallenEgg[0][position]=Static.EGG
     }
 

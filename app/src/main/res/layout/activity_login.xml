@@ -31,6 +31,90 @@
         app:layout_constraintTop_toTopOf="@id/highScoreA"
         android:layout_marginLeft="10dp"/>
 
+    <TextView
+        android:id="@+id/highScoreACounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/highScoreAUser"
+        app:layout_constraintTop_toTopOf="@id/highScoreAUser"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/totalScoreA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/highScoreA"
+        app:layout_constraintTop_toBottomOf="@id/highScoreA"
+        android:layout_marginTop="50dp"
+        android:text="TOTAL SCORE A"/>
+
+    <TextView
+        android:id="@+id/totalScoreAUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/totalScoreA"
+        app:layout_constraintTop_toTopOf="@id/totalScoreA"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/highScoreB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/highScoreA"
+        app:layout_constraintTop_toTopOf="@id/highScoreA"
+        android:layout_marginLeft="100dp"
+        android:text="HIGH SCORE B"/>
+
+    <TextView
+        android:id="@+id/highScoreBUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/highScoreB"
+        app:layout_constraintTop_toTopOf="@id/highScoreB"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/highScoreBCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/highScoreBUser"
+        app:layout_constraintTop_toTopOf="@id/highScoreBUser"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/totalScoreB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/highScoreB"
+        app:layout_constraintTop_toBottomOf="@id/highScoreB"
+        android:layout_marginTop="50dp"
+        android:text="TOTAL SCORE B"/>
+
+    <TextView
+        android:id="@+id/totalScoreBUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/totalScoreB"
+        app:layout_constraintTop_toTopOf="@id/totalScoreB"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/totalScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/totalScoreA"
+        app:layout_constraintTop_toBottomOf="@id/totalScoreA"
+        android:layout_marginTop="50dp"
+        android:text="TOTAL SCORE"/>
+
+    <TextView
+        android:id="@+id/totalScoreUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/totalScore"
+        app:layout_constraintTop_toTopOf="@id/totalScore"
+        android:layout_marginLeft="10dp"/>
+
     <Button
         android:id="@+id/backToGame"
         android:layout_width="wrap_content"

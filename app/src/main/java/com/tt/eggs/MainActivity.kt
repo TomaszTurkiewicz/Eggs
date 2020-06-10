@@ -635,6 +635,8 @@ class MainActivity : AppCompatActivity() {
 
     // play game A
     private fun startGameA() {
+
+
         gameState=Static.PLAY_A
         game.clearEggArray()
         game.clearDistanceAndNoOfEggs()
@@ -649,6 +651,8 @@ class MainActivity : AppCompatActivity() {
 
     // play game B
     private fun startGameB() {
+
+
         gameState=Static.PLAY_B
         game.clearEggArray()
         game.clearDistanceAndNoOfEggs()
@@ -664,6 +668,7 @@ class MainActivity : AppCompatActivity() {
 
     // pause game A
     private fun pauseGameA() {
+
         gameState=Static.PAUSE_A
         updateFaultsView()
         updateScoreTextView()
@@ -671,6 +676,8 @@ class MainActivity : AppCompatActivity() {
         mHandlerRabbit.removeCallbacksAndMessages(null)
         mHandler.removeCallbacksAndMessages(null)
         mHandlerFlash.removeCallbacksAndMessages(null)
+        mHandlerLostEgg.removeCallbacksAndMessages(null)
+        clearAnimationFallenEgg()
         // save game state to shared preferences
         saveGameState()
     }
@@ -688,7 +695,15 @@ class MainActivity : AppCompatActivity() {
         mHandlerRabbit.removeCallbacksAndMessages(null)
         mHandler.removeCallbacksAndMessages(null)
         mHandlerFlash.removeCallbacksAndMessages(null)
+        mHandlerLostEgg.removeCallbacksAndMessages(null)
+        clearAnimationFallenEgg()
         saveGameState()
+    }
+
+    private fun clearAnimationFallenEgg() {
+        val fallenEgg=FallenEgg()
+        displayRunningChicken(fallenEgg)
+
     }
 
 
@@ -871,12 +886,10 @@ class MainActivity : AppCompatActivity() {
 
 
 /*
-TODO when fallen egg animation pause doesn't work!!!
+
 TODO firebase - auth, save data, store picture
 TODO new record displayed in score
 TODO add sounds
-TODO login
-TODO user page with achievements
 TODO change UI
 TODO add ranking (individual highest points, points in total)
 TODO add admob after gameover or 1000 points
