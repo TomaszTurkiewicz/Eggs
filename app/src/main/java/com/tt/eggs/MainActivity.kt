@@ -2,15 +2,13 @@ package com.tt.eggs
 
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.ImageView
-import com.tt.eggs.classes.CaughtEgg
-import com.tt.eggs.classes.FallenEgg
-import com.tt.eggs.classes.Game
-import com.tt.eggs.classes.Static
+import com.tt.eggs.classes.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
 
@@ -61,6 +59,8 @@ class MainActivity : AppCompatActivity() {
     // for demo loop
     private var loopCounter=0
     private val mHandlerDemo = Handler()
+
+
 
     /**---------------------- activity life cycle methods---------------------------**/
 
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
             }
             game.clearEggArray()
             game.setWinEggArray()
-            score.text="1000"
+            score.text=Static.MAX_POINTS.toString()
             winLoopCounter=0
             winLoop().run()
 
@@ -565,10 +565,18 @@ class MainActivity : AppCompatActivity() {
                 else -> {/* do nothing*/}
             }
         }
-        updateScoreTextView()
+ //       updateScoreTextView()
         closeApp.setOnClickListener {
             finish()
         }
+        account.setOnClickListener {
+            if(gameState==Static.DEMO){
+                val intent = Intent(this,LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
+
 
     }
 
@@ -582,7 +590,7 @@ class MainActivity : AppCompatActivity() {
         displayState()
         displayBasket()
         updateFaultsView()
-        score.text="DEMO"
+        score.text=getString(R.string.demo)
         loopCounter = 0
         demo().run()
 
@@ -801,7 +809,7 @@ class MainActivity : AppCompatActivity() {
 
     // lost egg animation end game
     private fun lostEggAnimationEndGame(positionFallenEgg: Int) {
-        var fallenEgg = FallenEgg()
+        val fallenEgg = FallenEgg()
         when(gameState){
             Static.PLAY_A -> loseA()
             Static.PLAY_B -> loseB()
@@ -814,7 +822,7 @@ class MainActivity : AppCompatActivity() {
     // lost egg animation
     private fun lostEggAnimation(positionFallenEgg: Int) {
 
-        var fallenEgg = FallenEgg()
+        val fallenEgg = FallenEgg()
         fallenEgg.setFallenEgg(positionFallenEgg/2)
         fallenEgg(fallenEgg).run()
 
@@ -825,7 +833,8 @@ class MainActivity : AppCompatActivity() {
 
 
 /*
-TODO all strings from R.string
+TODO when fallen egg animation pause doesn't work!!!
+TODO firebase - auth, save data, store picture
 TODO new record displayed in score
 TODO add sounds
 TODO login
