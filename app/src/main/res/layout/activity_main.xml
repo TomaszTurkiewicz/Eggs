@@ -15,6 +15,15 @@
         android:layout_margin="20dp"
         android:background="@drawable/account"/>
 
+    <TextView
+        android:id="@+id/userID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/account"
+        app:layout_constraintLeft_toRightOf="@id/account"
+        android:layout_marginLeft="20dp"/>
+
+
     <Button
         android:id="@+id/closeApp"
         android:layout_width="wrap_content"

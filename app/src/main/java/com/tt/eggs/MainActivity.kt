@@ -8,6 +8,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.ImageView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
@@ -200,6 +204,7 @@ class MainActivity : AppCompatActivity() {
             mHandler.postDelayed(gameLoop(),delay())
         }
     }
+
     private fun fallenEggEndGame(fallenEgg: FallenEgg): Runnable = Runnable{
         val finished = fallenEgg.moveDown()
         displayRunningChicken(fallenEgg)
@@ -232,112 +237,108 @@ class MainActivity : AppCompatActivity() {
 
     // save points game A after lose
     private fun savePointsLoseA() {
-        val sharedPreferences = getSharedPreferences("GAME_A", Context.MODE_PRIVATE)
-        var tPoints = sharedPreferences.getInt("TOTAL", 0)
-        var tHigh = sharedPreferences.getInt("HIGH", 0)
+        val auth = Firebase.auth
+        val currentUser = auth.currentUser
+        if(currentUser!=null){
+            Functions.savePointsLoseAToSharedPreferences(this,currentUser.uid,game.getScore())
+            val gameA = Functions.readGameAFromSharedPreferences(this,currentUser.uid)
+            val gameB = Functions.readGameBFromSharedPreferences(this,currentUser.uid)
+            val userDB = User(id=currentUser.uid,gameA = gameA,gameB = gameB)
+            val database = Firebase.database
+            val dbRef = database.getReference("user").child(currentUser.uid)
+            dbRef.setValue(userDB)
 
-        tPoints += game.getScore()
-
-        if(tHigh<game.getScore()){
-            tHigh=game.getScore()
         }
-
-        val editor = sharedPreferences.edit()
-        editor.putInt("TOTAL",tPoints)
-        editor.putInt("HIGH",tHigh)
-
-        editor.apply()
-
     }
 
     // save points game B after lose
     private fun savePointsLoseB() {
-        val sharedPreferences = getSharedPreferences("GAME_B", Context.MODE_PRIVATE)
-        var tPoints = sharedPreferences.getInt("TOTAL", 0)
-        var tHigh = sharedPreferences.getInt("HIGH", 0)
-        tPoints += game.getScore()
-        if(tHigh<game.getScore()){
-            tHigh=game.getScore()
+        val auth = Firebase.auth
+        val currentUser = auth.currentUser
+        if(currentUser!=null){
+            Functions.savePointsLoseBToSharedPreferences(this,currentUser.uid,game.getScore())
+            val gameA = Functions.readGameAFromSharedPreferences(this,currentUser.uid)
+            val gameB = Functions.readGameBFromSharedPreferences(this,currentUser.uid)
+            val userDB = User(id=currentUser.uid,gameA = gameA,gameB = gameB)
+            val database = Firebase.database
+            val dbRef = database.getReference("user").child(currentUser.uid)
+            dbRef.setValue(userDB)
         }
-        val editor = sharedPreferences.edit()
-        editor.putInt("TOTAL",tPoints)
-        editor.putInt("HIGH",tHigh)
-        editor.apply()
     }
 
     // save points game A after win (1000)
     private fun savePointsWinA() {
-        val sharedPreferences = getSharedPreferences("GAME_A", Context.MODE_PRIVATE)
-        var tPoints = sharedPreferences.getInt("TOTAL", 0)
-        var tHigh = sharedPreferences.getInt("HIGH", 0)
-        var tHighCounter = sharedPreferences.getInt("COUNTER", 0)
-        tPoints += game.getScore()
-        if(tHigh!=1000){
-            tHigh=1000
+        val auth = Firebase.auth
+        val currentUser = auth.currentUser
+        if(currentUser!=null){
+            Functions.savePointsWinAToSharedPreferences(this,currentUser.uid,game.getScore())
+            val gameA = Functions.readGameAFromSharedPreferences(this,currentUser.uid)
+            val gameB = Functions.readGameBFromSharedPreferences(this,currentUser.uid)
+            val userDB = User(id=currentUser.uid,gameA = gameA,gameB = gameB)
+            val database = Firebase.database
+            val dbRef = database.getReference("user").child(currentUser.uid)
+            dbRef.setValue(userDB)
         }
-        tHighCounter+=1
-        val editor = sharedPreferences.edit()
-        editor.putInt("TOTAL",tPoints)
-        editor.putInt("HIGH",tHigh)
-        editor.putInt("COUNTER",tHighCounter)
-        editor.apply()
+
     }
 
     // save points game B after win (1000)
     private fun savePointsWinB() {
-        val sharedPreferences = getSharedPreferences("GAME_B", Context.MODE_PRIVATE)
-        var tPoints = sharedPreferences.getInt("TOTAL", 0)
-        var tHigh = sharedPreferences.getInt("HIGH", 0)
-        var tHighCounter = sharedPreferences.getInt("COUNTER", 0)
-        tPoints += game.getScore()
-        if(tHigh!=1000){
-            tHigh=1000
+        val auth = Firebase.auth
+        val currentUser = auth.currentUser
+        if(currentUser!=null){
+            Functions.savePointsWinBToSharedPreferences(this,currentUser.uid,game.getScore())
+            val gameA = Functions.readGameAFromSharedPreferences(this,currentUser.uid)
+            val gameB = Functions.readGameBFromSharedPreferences(this,currentUser.uid)
+            val userDB = User(id=currentUser.uid,gameA = gameA,gameB = gameB)
+            val database = Firebase.database
+            val dbRef = database.getReference("user").child(currentUser.uid)
+            dbRef.setValue(userDB)
         }
-        tHighCounter+=1
-        val editor = sharedPreferences.edit()
-        editor.putInt("TOTAL",tPoints)
-        editor.putInt("HIGH",tHigh)
-        editor.putInt("COUNTER",tHighCounter)
-        editor.apply()
     }
 
     // clear game state in shared preferences
     private fun clearSavedGame() {
-        val sharedPreferences = getSharedPreferences("GAME_STATE", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putInt("POINTS",0)
-        editor.putInt("FAULTS",0)
-        editor.putBoolean("GAME_MODE",false)
-        editor.apply()
+        val auth = Firebase.auth
+        val currentUser = auth.currentUser
+        if(currentUser!=null){
+            Functions.clearSavedUserGameInSharedPreferences(this,currentUser.uid)
+        }else{
+            Functions.clearSavedGameInSharedPreferences(this)
+        }
 
     }
 
     // store points, faults and game mode to shared preferences
     private fun saveGameState() {
-        val sharedPreferences = getSharedPreferences("GAME_STATE", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putInt("POINTS",game.getScore())
-        editor.putInt("FAULTS",game.getFault())
-        editor.putBoolean("GAME_MODE",game.getGameMode())
-        editor.apply()
+        val auth = Firebase.auth
+        val currentUser = auth.currentUser
+        val gameState = GameState(game.getScore(),game.getFault(),game.getGameMode())
+        if(currentUser!=null){
+            Functions.saveUserGameStateToSharedPreferences(this,currentUser.uid,gameState)
+        }else{
+            Functions.saveGameStateToSharedPreferences(this,gameState)
+        }
+
+
     }
 
     // check if there is stored game
     private fun checkGameState() {
         // read from shared preferences
-        val sharedPreferences = getSharedPreferences("GAME_STATE", Context.MODE_PRIVATE)
-        val tPoints = sharedPreferences.getInt("POINTS", 0)
-        val tFaults = sharedPreferences.getInt("FAULTS", 0)
-        val tGame = sharedPreferences.getBoolean("GAME_MODE", false)
+        val auth = Firebase.auth
+        val currentUser = auth.currentUser
+        val gameState = if(currentUser!=null) Functions.checkUserGameStateFromSharedPreferences(this,currentUser.uid) else Functions.checkGameStateFromSharedPreferences(this)
+
 
         // points or faults are larger than 0
-        if(tPoints>0||tFaults>0){
+        if(gameState.score>0||gameState.fault>0){
 
             //set points, faults and game mode
-            game.setPoints(tPoints)
-            game.setFaults(tFaults)
-            game.setGameMode(if(tGame==Static.GAME_A) Static.GAME_A else Static.GAME_B)
-            when(tGame){
+            game.setPoints(gameState.score)
+            game.setFaults(gameState.fault)
+            game.setGameMode(if(gameState.gameMode==Static.GAME_A) Static.GAME_A else Static.GAME_B)
+            when(gameState.gameMode){
                 // activate proper pause mode
                 Static.GAME_A -> pauseGameA()
                 Static.GAME_B -> pauseGameB()
@@ -570,12 +571,21 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
         account.setOnClickListener {
-            if(gameState==Static.DEMO){
+            if(gameState==Static.DEMO||gameState==Static.PAUSE_A||gameState==Static.PAUSE_B){
                 val intent = Intent(this,LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             }
         }
+
+        val auth = Firebase.auth
+        val currentUser = auth.currentUser
+        if(currentUser!=null){
+            userID.text=currentUser.uid
+        }else{
+            userID.text="NOT LOGGED IN"
+        }
+
 
 
     }
@@ -683,6 +693,7 @@ class MainActivity : AppCompatActivity() {
         else{
             // clear egg array
             game.clearEggArray()
+            displayState()
             mHandler.removeCallbacks(gameLoop())
             game.addFault(rabbitBoolean)
             updateFaultsView()

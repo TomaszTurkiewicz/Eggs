@@ -75,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    // update ui and create/save user to database
     private fun updateUI(user:FirebaseUser?){
         login_status.text = if(user!=null)"LOGGED IN" else "NOT LOGGED IN"
             if(user!=null){
@@ -93,17 +94,29 @@ class LoginActivity : AppCompatActivity() {
                             dbRef.setValue(userDB)
                         }
                         else{
+                            // check if sharedpreferences and firebase database are the same if not make them the same
+                            val tUser = p0.getValue(User::class.java)
                             val gameA = Functions.readGameAFromSharedPreferences(this@LoginActivity,user.uid)
                             val gameB = Functions.readGameBFromSharedPreferences(this@LoginActivity,user.uid)
-                            val userDB = User(id=user.uid,gameA = gameA,gameB = gameB)
-                            dbRef.setValue(userDB)
+                            if(tUser!=null) {
+                                if (tUser.gameA.totalScoreA < gameA.totalScoreA) {
+                                    tUser.gameA = gameA
+                                }
+                                else{
+                                    Functions.saveStatisticAToSharedPreferences(this@LoginActivity,user.uid,tUser.gameA)
+                                }
+                                if (tUser.gameB.totalScoreB < gameB.totalScoreB) {
+                                    tUser.gameB = gameB
+                                }
+                                else{
+                                    Functions.saveStatisticBToSharedPreferences(this@LoginActivity,user.uid,tUser.gameB)
+                                }
+                                dbRef.setValue(tUser)
+                            }
                         }
-
                     }
                 })
-
             }
-
     }
 
 
