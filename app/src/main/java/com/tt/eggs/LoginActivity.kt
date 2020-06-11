@@ -1,10 +1,12 @@
 package com.tt.eggs
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -148,7 +150,7 @@ class LoginActivity : AppCompatActivity() {
 
     // display nothing
     private fun displayNotLoggedIn() {
-        user_name.text="-"
+        user_name_tv.text="-"
         highScoreAUser.text="-"
         totalScoreAUser.text="-"
         highScoreBUser.text="-"
@@ -157,11 +159,14 @@ class LoginActivity : AppCompatActivity() {
         highScoreACounter.text=""
         highScoreBCounter.text=""
         googleSignIn.text="LOG IN"
+        change_name_button.visibility=View.GONE
+        user_name_et.visibility=View.GONE
+        update_name_button.visibility=View.GONE
     }
 
     //display user statistics
     private fun display(tUser: User) {
-        user_name.text=tUser.userName
+        user_name_tv.text=tUser.userName
         highScoreAUser.text=tUser.gameA.highScoreA.toString()
         totalScoreAUser.text=tUser.gameA.totalScoreA.toString()
         highScoreBUser.text=tUser.gameB.highScoreB.toString()
@@ -181,6 +186,9 @@ class LoginActivity : AppCompatActivity() {
         }
 
         googleSignIn.text="LOG OUT"
+        change_name_button.visibility=View.VISIBLE
+        user_name_et.visibility = View.GONE
+        update_name_button.visibility=View.GONE
     }
 
 
@@ -202,6 +210,48 @@ class LoginActivity : AppCompatActivity() {
                 signIn()
             }
         }
+
+        change_name_button.setOnClickListener {
+            user_name_et.visibility=View.VISIBLE
+            user_name_et.requestFocus()
+            update_name_button.visibility=View.VISIBLE
+            updateUserName()
+
+
+
+        }
+    }
+
+    private fun updateUserName() {
+        auth = Firebase.auth
+        val currentUser = auth.currentUser
+        if(currentUser!=null) {
+            database = Firebase.database
+            val dbRef = database.getReference("user").child(currentUser.uid)
+            dbRef.addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    if(p0.exists()){
+                        val user = p0.getValue(User::class.java)
+                        if(user!=null){
+                            user_name_et.setText(user.userName)
+                            update_name_button.setOnClickListener {
+                                user.userName=user_name_et.text.toString()
+                                dbRef.setValue(user)
+                                updateUI(currentUser)
+                            }
+                        }
+                    }
+                }
+
+            })
+
+        }
+
+
     }
 
     /** ----------------------- sign in methods ---------------------------------**/
@@ -253,5 +303,6 @@ class LoginActivity : AppCompatActivity() {
 
 }
 
-// TODO finish displaying statistics in this activity
+// TODO send game to a friend
+// TODO ranking activity
 // TODO make settings activity

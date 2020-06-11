@@ -7,20 +7,51 @@
     tools:context=".LoginActivity">
 
     <TextView
-        android:id="@+id/user_name"
+        android:id="@+id/user_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_margin="50dp"/>
 
+    <EditText
+        android:id="@+id/user_name_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/update_name_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="10dp"
+        android:text="CHANGE"/>
+
+
+    <Button
+        android:id="@+id/change_name_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="50dp"
+        android:text="CHANGE"/>
+
     <TextView
         android:id="@+id/highScoreA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/user_name"
-        app:layout_constraintTop_toBottomOf="@id/user_name"
-        android:layout_marginTop="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="50dp"
         android:text="HIGH SCORE A"/>
 
     <TextView

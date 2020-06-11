@@ -888,6 +888,7 @@ class MainActivity : AppCompatActivity() {
 /*
 
 TODO firebase - auth, save data, store picture
+TODO display "PAUSE A" or "PAUSE B" when pause pressed
 TODO new record displayed in score
 TODO add sounds
 TODO change UI
