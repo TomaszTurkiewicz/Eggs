@@ -24,6 +24,9 @@ class MainActivity : AppCompatActivity() {
 
 
     /**--------------------------- var and val-----------------------------**/
+    // loggedInState
+    var loggedInStatus = LoggedInStatus()
+
     // game state
     private var gameState = Static.DEMO
 
@@ -67,6 +70,10 @@ class MainActivity : AppCompatActivity() {
     private var loopCounter=0
     private val mHandlerDemo = Handler()
 
+    // for pause loop
+    private var pauseState = Static.ON
+    private val mHandlerPause = Handler()
+
 
 
     /**---------------------- activity life cycle methods---------------------------**/
@@ -85,8 +92,16 @@ class MainActivity : AppCompatActivity() {
         // update basket position
         displayBasket()
 
+        // check if loggedIn
+        checkLoggedInState()
+
         // set button listeners and text view displays
         buttonsOnClickListeners()
+
+    }
+
+    private fun checkLoggedInState() {
+        loggedInStatus = Functions.readLoggedInStatusFromSharedPreferences(this)
 
     }
 
@@ -235,20 +250,29 @@ class MainActivity : AppCompatActivity() {
         mHandlerDemo.postDelayed(demo(),600)
     }
 
+    private fun pause(pause:String):Runnable = Runnable {
+        if(pauseState==Static.ON){
+            updatePauseTextView(pause)
+        }else {
+            updateScoreTextView()
+        }
+        pauseState=!pauseState
+        mHandlerPause.postDelayed(pause(pause),500)
+    }
+
 
     /**----------------------- read and write to shared preferences -------------------**/
 
     // save points game A after lose
     private fun savePointsLoseA() {
-        val auth = Firebase.auth
-        val currentUser = auth.currentUser
-        if(currentUser!=null){
-            Functions.savePointsLoseAToSharedPreferences(this,currentUser.uid,game.getScore())
-            val gameA = Functions.readGameAFromSharedPreferences(this,currentUser.uid)
-            val gameB = Functions.readGameBFromSharedPreferences(this,currentUser.uid)
-            val userDB = User(id=currentUser.uid,gameA = gameA,gameB = gameB)
+        if(loggedInStatus.loggedIn){
+            Functions.savePointsLoseAToSharedPreferences(this,loggedInStatus.userid,game.getScore())
+            val gameA = Functions.readGameAFromSharedPreferences(this,loggedInStatus.userid)
+            val gameB = Functions.readGameBFromSharedPreferences(this,loggedInStatus.userid)
+            val userName = Functions.checkUserNameFromSharedPreferences(this,loggedInStatus.userid)
+            val userDB = User(id=loggedInStatus.userid,userName = userName, gameA = gameA,gameB = gameB)
             val database = Firebase.database
-            val dbRef = database.getReference("user").child(currentUser.uid)
+            val dbRef = database.getReference("user").child(loggedInStatus.userid)
             dbRef.setValue(userDB)
 
         }
@@ -256,30 +280,28 @@ class MainActivity : AppCompatActivity() {
 
     // save points game B after lose
     private fun savePointsLoseB() {
-        val auth = Firebase.auth
-        val currentUser = auth.currentUser
-        if(currentUser!=null){
-            Functions.savePointsLoseBToSharedPreferences(this,currentUser.uid,game.getScore())
-            val gameA = Functions.readGameAFromSharedPreferences(this,currentUser.uid)
-            val gameB = Functions.readGameBFromSharedPreferences(this,currentUser.uid)
-            val userDB = User(id=currentUser.uid,gameA = gameA,gameB = gameB)
+        if(loggedInStatus.loggedIn){
+            Functions.savePointsLoseBToSharedPreferences(this,loggedInStatus.userid,game.getScore())
+            val gameA = Functions.readGameAFromSharedPreferences(this,loggedInStatus.userid)
+            val gameB = Functions.readGameBFromSharedPreferences(this,loggedInStatus.userid)
+            val userName = Functions.checkUserNameFromSharedPreferences(this,loggedInStatus.userid)
+            val userDB = User(id=loggedInStatus.userid,userName = userName, gameA = gameA,gameB = gameB)
             val database = Firebase.database
-            val dbRef = database.getReference("user").child(currentUser.uid)
+            val dbRef = database.getReference("user").child(loggedInStatus.userid)
             dbRef.setValue(userDB)
         }
     }
 
     // save points game A after win (1000)
     private fun savePointsWinA() {
-        val auth = Firebase.auth
-        val currentUser = auth.currentUser
-        if(currentUser!=null){
-            Functions.savePointsWinAToSharedPreferences(this,currentUser.uid,game.getScore())
-            val gameA = Functions.readGameAFromSharedPreferences(this,currentUser.uid)
-            val gameB = Functions.readGameBFromSharedPreferences(this,currentUser.uid)
-            val userDB = User(id=currentUser.uid,gameA = gameA,gameB = gameB)
+        if(loggedInStatus.loggedIn){
+            Functions.savePointsWinAToSharedPreferences(this,loggedInStatus.userid,game.getScore())
+            val gameA = Functions.readGameAFromSharedPreferences(this,loggedInStatus.userid)
+            val gameB = Functions.readGameBFromSharedPreferences(this,loggedInStatus.userid)
+            val userName = Functions.checkUserNameFromSharedPreferences(this,loggedInStatus.userid)
+            val userDB = User(id=loggedInStatus.userid,userName = userName, gameA = gameA,gameB = gameB)
             val database = Firebase.database
-            val dbRef = database.getReference("user").child(currentUser.uid)
+            val dbRef = database.getReference("user").child(loggedInStatus.userid)
             dbRef.setValue(userDB)
         }
 
@@ -287,25 +309,23 @@ class MainActivity : AppCompatActivity() {
 
     // save points game B after win (1000)
     private fun savePointsWinB() {
-        val auth = Firebase.auth
-        val currentUser = auth.currentUser
-        if(currentUser!=null){
-            Functions.savePointsWinBToSharedPreferences(this,currentUser.uid,game.getScore())
-            val gameA = Functions.readGameAFromSharedPreferences(this,currentUser.uid)
-            val gameB = Functions.readGameBFromSharedPreferences(this,currentUser.uid)
-            val userDB = User(id=currentUser.uid,gameA = gameA,gameB = gameB)
+        if(loggedInStatus.loggedIn){
+            Functions.savePointsWinBToSharedPreferences(this,loggedInStatus.userid,game.getScore())
+            val gameA = Functions.readGameAFromSharedPreferences(this,loggedInStatus.userid)
+            val gameB = Functions.readGameBFromSharedPreferences(this,loggedInStatus.userid)
+            val userName = Functions.checkUserNameFromSharedPreferences(this,loggedInStatus.userid)
+            val userDB = User(id=loggedInStatus.userid,userName = userName, gameA = gameA,gameB = gameB)
             val database = Firebase.database
-            val dbRef = database.getReference("user").child(currentUser.uid)
+            val dbRef = database.getReference("user").child(loggedInStatus.userid)
             dbRef.setValue(userDB)
         }
     }
 
     // clear game state in shared preferences
     private fun clearSavedGame() {
-        val auth = Firebase.auth
-        val currentUser = auth.currentUser
-        if(currentUser!=null){
-            Functions.clearSavedUserGameInSharedPreferences(this,currentUser.uid)
+
+        if(loggedInStatus.loggedIn){
+            Functions.clearSavedUserGameInSharedPreferences(this,loggedInStatus.userid)
         }else{
             Functions.clearSavedGameInSharedPreferences(this)
         }
@@ -314,11 +334,9 @@ class MainActivity : AppCompatActivity() {
 
     // store points, faults and game mode to shared preferences
     private fun saveGameState() {
-        val auth = Firebase.auth
-        val currentUser = auth.currentUser
         val gameState = GameState(game.getScore(),game.getFault(),game.getGameMode())
-        if(currentUser!=null){
-            Functions.saveUserGameStateToSharedPreferences(this,currentUser.uid,gameState)
+        if(loggedInStatus.loggedIn){
+            Functions.saveUserGameStateToSharedPreferences(this,loggedInStatus.userid,gameState)
         }else{
             Functions.saveGameStateToSharedPreferences(this,gameState)
         }
@@ -329,9 +347,7 @@ class MainActivity : AppCompatActivity() {
     // check if there is stored game
     private fun checkGameState() {
         // read from shared preferences
-        val auth = Firebase.auth
-        val currentUser = auth.currentUser
-        val gameState = if(currentUser!=null) Functions.checkUserGameStateFromSharedPreferences(this,currentUser.uid) else Functions.checkGameStateFromSharedPreferences(this)
+        val gameState = if(loggedInStatus.loggedIn) Functions.checkUserGameStateFromSharedPreferences(this,loggedInStatus.userid) else Functions.checkGameStateFromSharedPreferences(this)
 
 
         // points or faults are larger than 0
@@ -464,6 +480,11 @@ class MainActivity : AppCompatActivity() {
         score.text = game.getScore().toString()
     }
 
+    // update pause in text view
+    private fun updatePauseTextView(pause: String){
+        score.text = pause
+    }
+
     // display faults
     private fun updateFaultsView(){
 
@@ -581,32 +602,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val auth = Firebase.auth
-        val currentUser = auth.currentUser
-        if(currentUser!=null){
-            val database = Firebase.database
-            val dbRef = database.getReference("user").child(currentUser.uid)
-            dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                    // do nothing
-                }
 
-                override fun onDataChange(p0: DataSnapshot) {
-                    if(!p0.exists()){
-                       userID.text="PROBLEM WITH DATABASE"
-                    }
-                    else{
-                        // check if sharedpreferences and firebase database are the same if not make them the same
-                        val tUser = p0.getValue(User::class.java)
-                        if(tUser!=null) {
-                            userID.text=tUser.userName
-                        }
-                        else{
-                            userID.text="PROBLEM WITH DATABASE"
-                        }
-                    }
-                }
-            })
+        if(loggedInStatus.loggedIn) {
+            userID.text = Functions.checkUserNameFromSharedPreferences(this, loggedInStatus.userid)
         }
         else
         {
@@ -636,7 +634,7 @@ class MainActivity : AppCompatActivity() {
     // play game A
     private fun startGameA() {
 
-
+        mHandlerPause.removeCallbacksAndMessages(null)
         gameState=Static.PLAY_A
         game.clearEggArray()
         game.clearDistanceAndNoOfEggs()
@@ -652,7 +650,7 @@ class MainActivity : AppCompatActivity() {
     // play game B
     private fun startGameB() {
 
-
+        mHandlerPause.removeCallbacksAndMessages(null)
         gameState=Static.PLAY_B
         game.clearEggArray()
         game.clearDistanceAndNoOfEggs()
@@ -680,6 +678,7 @@ class MainActivity : AppCompatActivity() {
         clearAnimationFallenEgg()
         // save game state to shared preferences
         saveGameState()
+        pause("PAUSE A").run()
     }
 
 
@@ -698,6 +697,7 @@ class MainActivity : AppCompatActivity() {
         mHandlerLostEgg.removeCallbacksAndMessages(null)
         clearAnimationFallenEgg()
         saveGameState()
+        pause("PAUSE B").run()
     }
 
     private fun clearAnimationFallenEgg() {
@@ -887,7 +887,7 @@ class MainActivity : AppCompatActivity() {
 
 /*
 
-TODO firebase - auth, save data, store picture
+
 TODO display "PAUSE A" or "PAUSE B" when pause pressed
 TODO new record displayed in score
 TODO add sounds

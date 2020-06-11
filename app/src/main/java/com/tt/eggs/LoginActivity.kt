@@ -23,13 +23,14 @@ import com.google.firebase.database.ktx.database
 import kotlinx.android.synthetic.main.activity_login.*
 import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.Functions
+import com.tt.eggs.classes.LoggedInStatus
 import com.tt.eggs.classes.User
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var database: FirebaseDatabase
+    private var loggedInStatus = LoggedInStatus()
 
 
     /**------------------ activity life cycle -------------------------------------**/
@@ -59,9 +60,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkUser() {
-        auth = Firebase.auth
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
+
+        updateUI()
 
     }
 
@@ -87,65 +87,25 @@ class LoginActivity : AppCompatActivity() {
     }
 
     // update ui and create/save user to database
-    private fun updateUI(user:FirebaseUser?){
+    private fun updateUI(){
+        loggedInStatus = Functions.readLoggedInStatusFromSharedPreferences(this)
 
-        // user logged in
-            if(user!=null){
 
-                // reference to user database
-                database = Firebase.database
-                val dbRef = database.getReference("user").child(user.uid)
+        displayUI(loggedInStatus)
 
-                // check if database exists (if not create)
-                dbRef.addListenerForSingleValueEvent(object : ValueEventListener{
-                    override fun onCancelled(p0: DatabaseError) {
-                        // do nothing
-                    }
+    }
 
-                    override fun onDataChange(p0: DataSnapshot) {
-                        // user doesn't exists
-                        if(!p0.exists()){
+    private fun displayUI(loggedInStatus: LoggedInStatus) {
 
-                            // create user
-                            val userDB = User(id = user.uid)
-                            dbRef.setValue(userDB)
-                            checkUser()
+        auth=Firebase.auth
+        googleSignIn.text=if(auth.currentUser!=null) "LOG OUT" else "LOG IN"
 
-                        }
-
-                        // user exists
-                        else{
-                            // check if sharedpreferences and firebase database are the same if not make them the same
-                            val tUser = p0.getValue(User::class.java)
-                            val gameA = Functions.readGameAFromSharedPreferences(this@LoginActivity,user.uid)
-                            val gameB = Functions.readGameBFromSharedPreferences(this@LoginActivity,user.uid)
-                            if(tUser!=null) {
-                                if (tUser.gameA.totalScoreA < gameA.totalScoreA) {
-                                    tUser.gameA = gameA
-                                }
-                                else{
-                                    Functions.saveStatisticAToSharedPreferences(this@LoginActivity,user.uid,tUser.gameA)
-                                }
-                                if (tUser.gameB.totalScoreB < gameB.totalScoreB) {
-                                    tUser.gameB = gameB
-                                }
-                                else{
-                                    Functions.saveStatisticBToSharedPreferences(this@LoginActivity,user.uid,tUser.gameB)
-                                }
-                                dbRef.setValue(tUser)
-
-                                display(tUser)
-                            }
-                        }
-                    }
-                })
-            }
-
-            // no user
-            else{
-             displayNotLoggedIn()
-            }
-
+        if(loggedInStatus.loggedIn){
+            display(loggedInStatus.userid)
+        }
+        else{
+            displayNotLoggedIn()
+        }
     }
 
     // display nothing
@@ -158,14 +118,18 @@ class LoginActivity : AppCompatActivity() {
         totalScoreUser.text="-"
         highScoreACounter.text=""
         highScoreBCounter.text=""
-        googleSignIn.text="LOG IN"
         change_name_button.visibility=View.GONE
         user_name_et.visibility=View.GONE
         update_name_button.visibility=View.GONE
     }
 
     //display user statistics
-    private fun display(tUser: User) {
+    private fun display(userID:String) {
+        val tUser = User(userID,
+        Functions.checkUserNameFromSharedPreferences(this,userID),
+        Functions.readGameAFromSharedPreferences(this,userID),
+        Functions.readGameBFromSharedPreferences(this,userID))
+
         user_name_tv.text=tUser.userName
         highScoreAUser.text=tUser.gameA.highScoreA.toString()
         totalScoreAUser.text=tUser.gameA.totalScoreA.toString()
@@ -184,8 +148,6 @@ class LoginActivity : AppCompatActivity() {
         else{
             highScoreBCounter.text=""
         }
-
-        googleSignIn.text="LOG OUT"
         change_name_button.visibility=View.VISIBLE
         user_name_et.visibility = View.GONE
         update_name_button.visibility=View.GONE
@@ -202,7 +164,12 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
+
+
         // sign in/out button
+        auth=Firebase.auth
+        googleSignIn.text=if(auth.currentUser!=null) "LOG OUT" else "LOG IN"
+
         googleSignIn.setOnClickListener {
             if (auth.currentUser!=null){
                 signOut()
@@ -215,42 +182,27 @@ class LoginActivity : AppCompatActivity() {
             user_name_et.visibility=View.VISIBLE
             user_name_et.requestFocus()
             update_name_button.visibility=View.VISIBLE
-            updateUserName()
+            updateUserName(loggedInStatus.userid)
 
 
 
         }
     }
 
-    private fun updateUserName() {
-        auth = Firebase.auth
-        val currentUser = auth.currentUser
-        if(currentUser!=null) {
-            database = Firebase.database
-            val dbRef = database.getReference("user").child(currentUser.uid)
-            dbRef.addListenerForSingleValueEvent(object : ValueEventListener{
-                override fun onCancelled(p0: DatabaseError) {
+    private fun updateUserName(userID: String) {
+        val tUser = User(userID,
+            Functions.checkUserNameFromSharedPreferences(this,userID),
+            Functions.readGameAFromSharedPreferences(this,userID),
+            Functions.readGameBFromSharedPreferences(this,userID))
 
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    if(p0.exists()){
-                        val user = p0.getValue(User::class.java)
-                        if(user!=null){
-                            user_name_et.setText(user.userName)
-                            update_name_button.setOnClickListener {
-                                user.userName=user_name_et.text.toString()
-                                dbRef.setValue(user)
-                                updateUI(currentUser)
-                            }
-                        }
-                    }
-                }
-
-            })
-
+        user_name_et.setText(tUser.userName)
+        update_name_button.setOnClickListener {
+            tUser.userName=user_name_et.text.toString()
+            Functions.saveUserNameToSharedPreferences(this,userID,tUser.userName)
+            val dbReference = Firebase.database.getReference("user").child(userID)
+            dbReference.setValue(tUser)
+            updateUI()
         }
-
 
     }
 
@@ -280,18 +232,79 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credentials)
             .addOnCompleteListener(this){ task ->
                 if(task.isSuccessful){
-                    val user = auth.currentUser
-                    updateUI(user)
+                    val user = Firebase.auth.currentUser
+                        if(user!=null){
+                            // create user if not exists or compare if exists
+                            checkUserInDatabase(user)
+                            Functions.saveLoggedStateToSharedPreferences(this,true, user.uid)
+
+                            updateUI()
+                        }
                 }else{
-                    updateUI(null)
+                    Functions.saveLoggedStateToSharedPreferences(this,false,"")
+                    updateUI()
                 }
             }
+    }
+
+    // create user in database if not exists
+    private fun checkUserInDatabase(user: FirebaseUser?) {
+        if(user!=null){
+
+            // reference to user database
+            val dbRef = Firebase.database.getReference("user").child(user.uid)
+
+            // check if database exists (if not create)
+            dbRef.addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+                    // do nothing
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    // user doesn't exists
+                    if(!p0.exists()){
+
+                        // create user
+                        val userDB = User(id = user.uid)
+                        dbRef.setValue(userDB)
+                        checkUserInDatabase(user)
+
+                    }
+
+                    // user exists
+                    else{
+                        // check if sharedpreferences and firebase database are the same if not make them the same
+                        val tUser = p0.getValue(User::class.java)
+                        val gameA = Functions.readGameAFromSharedPreferences(this@LoginActivity,user.uid)
+                        val gameB = Functions.readGameBFromSharedPreferences(this@LoginActivity,user.uid)
+                        if(tUser!=null) {
+                            if (tUser.gameA.totalScoreA < gameA.totalScoreA) {
+                                tUser.gameA = gameA
+                            }
+                            else{
+                                Functions.saveStatisticAToSharedPreferences(this@LoginActivity,user.uid,tUser.gameA)
+                            }
+                            if (tUser.gameB.totalScoreB < gameB.totalScoreB) {
+                                tUser.gameB = gameB
+                            }
+                            else{
+                                Functions.saveStatisticBToSharedPreferences(this@LoginActivity,user.uid,tUser.gameB)
+                            }
+                            dbRef.setValue(tUser)
+
+                        }
+                    }
+                }
+            })
+        }
+
     }
 
     private fun signOut(){
         auth.signOut()
         googleSignInClient.signOut().addOnCompleteListener(this){
-            updateUI(null)
+            Functions.saveLoggedStateToSharedPreferences(this,false,"")
+            updateUI()
         }
     }
     /** ------------------------ companion objects ----------------------------------**/
@@ -305,4 +318,4 @@ class LoginActivity : AppCompatActivity() {
 
 // TODO send game to a friend
 // TODO ranking activity
-// TODO make settings activity
+

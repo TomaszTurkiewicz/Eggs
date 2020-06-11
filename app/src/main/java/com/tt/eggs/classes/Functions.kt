@@ -203,6 +203,43 @@ class Functions {
             return gameState
         }
 
+        fun saveUserNameToSharedPreferences(context: Context?, userId: String, userName: String){
+            if(context!=null){
+                val sharedPreferences = context.getSharedPreferences(userId,Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putString("USER_NAME",userName)
+                editor.apply()
+            }
+        }
+
+        fun checkUserNameFromSharedPreferences(context: Context?,userId: String):String{
+            var userName = ""
+            if(context!=null){
+                val sharedPreferences = context.getSharedPreferences(userId, Context.MODE_PRIVATE)
+                userName = sharedPreferences.getString("USER_NAME", "ANONYMOUS").toString()
+            }
+            return userName
+        }
+
+        fun saveLoggedStateToSharedPreferences(context: Context?, loggedIn:Boolean, userid: String){
+            if(context!=null){
+                val sharedPreferences = context.getSharedPreferences("LOGGED_IN",Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putBoolean("LOGGED_IN", loggedIn)
+                editor.putString("USER_ID",userid)
+                editor.apply()
+            }
+        }
+        fun readLoggedInStatusFromSharedPreferences(context: Context?):LoggedInStatus{
+            val loggedInStatus = LoggedInStatus()
+            if(context!=null){
+                val sharedPreferences = context.getSharedPreferences("LOGGED_IN", Context.MODE_PRIVATE)
+                loggedInStatus.loggedIn = sharedPreferences.getBoolean("LOGGED_IN",false)
+                loggedInStatus.userid = sharedPreferences.getString("USER_ID","").toString()
+            }
+            return loggedInStatus
+        }
+
 
     }
 
