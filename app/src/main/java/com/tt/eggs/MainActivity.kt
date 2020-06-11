@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.ImageView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -74,7 +76,7 @@ class MainActivity : AppCompatActivity() {
     private var pauseState = Static.ON
     private val mHandlerPause = Handler()
 
-
+    private lateinit var mInterstitialAd: InterstitialAd
 
     /**---------------------- activity life cycle methods---------------------------**/
 
@@ -98,6 +100,8 @@ class MainActivity : AppCompatActivity() {
         // set button listeners and text view displays
         buttonsOnClickListeners()
 
+
+
     }
 
     private fun checkLoggedInState() {
@@ -110,6 +114,9 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         // check if there is stored game
         checkGameState()
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = getString(R.string.admob_big)
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
     }
 
     // stop game loop when activity is disrupted by anything else (another app)
@@ -170,6 +177,9 @@ class MainActivity : AppCompatActivity() {
             mHandlerWin.removeCallbacks(winLoop())
             score.visibility=View.VISIBLE
             demoMode()
+            if(mInterstitialAd.isLoaded){
+                mInterstitialAd.show()
+            }
         }
 
     }
@@ -233,8 +243,12 @@ class MainActivity : AppCompatActivity() {
             mHandlerLostEgg.removeCallbacksAndMessages(null)
             mHandlerRabbit.removeCallbacksAndMessages(null)
             mHandlerFlash.removeCallbacksAndMessages(null)
-
             demoMode()
+            if(mInterstitialAd.isLoaded){
+                mInterstitialAd.show()
+            }
+
+
 
         }
 
@@ -620,6 +634,13 @@ class MainActivity : AppCompatActivity() {
 
     // demo mode
     private fun demoMode() {
+        mHandler.removeCallbacksAndMessages(null)
+        mHandlerDemo.removeCallbacksAndMessages(null)
+        mHandlerPause.removeCallbacksAndMessages(null)
+        mHandlerWin.removeCallbacksAndMessages(null)
+        mHandlerRabbit.removeCallbacksAndMessages(null)
+        mHandlerFlash.removeCallbacksAndMessages(null)
+        mHandlerLostEgg.removeCallbacksAndMessages(null)
         gameState=Static.DEMO
         game.clearEverything()
         displayState()
@@ -888,12 +909,12 @@ class MainActivity : AppCompatActivity() {
 /*
 
 
-TODO display "PAUSE A" or "PAUSE B" when pause pressed
+
 TODO new record displayed in score
 TODO add sounds
 TODO change UI
 TODO add ranking (individual highest points, points in total)
-TODO add admob after gameover or 1000 points
+
 */
 
 
