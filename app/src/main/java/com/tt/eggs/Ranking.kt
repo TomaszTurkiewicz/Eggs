@@ -89,25 +89,58 @@ class Ranking : AppCompatActivity() {
     private fun sort(){
         var boolean=false
         for(i in userList.size-1 downTo 1){
+
+            // score is different
             if(userList[i].score()>userList[i-1].score()){
                 val tUser = userList[i]
                 userList[i]=userList[i-1]
                 userList[i-1]=tUser
                 boolean=true
             }
+
+            // score is the same
             else if(userList[i].score()==userList[i-1].score()){
-                if(userList[i].gameB.counterB>userList[i-1].gameB.counterB){
+
+                // high score B
+                if(userList[i].gameB.highScoreB>userList[i-1].gameB.highScoreB){
                     val tUser = userList[i]
                     userList[i]=userList[i-1]
                     userList[i-1]=tUser
                     boolean=true
                 }
-                else if (userList[i].gameB.counterB==userList[i-1].gameB.counterB){
-                    if(userList[i].gameA.counterA>userList[i-1].gameA.counterA){
+
+                // high scoreB is the same
+                else if (userList[i].gameB.highScoreB==userList[i-1].gameB.highScoreB){
+
+                    // counterB different
+                    if(userList[i].gameB.counterB>userList[i-1].gameB.counterB){
                         val tUser = userList[i]
                         userList[i]=userList[i-1]
                         userList[i-1]=tUser
                         boolean=true
+                    }
+
+                    else if(userList[i].gameB.counterB==userList[i-1].gameB.counterB){
+
+                        // check high scoreA
+                        if(userList[i].gameA.highScoreA>userList[i-1].gameA.highScoreA){
+                            val tUser = userList[i]
+                            userList[i]=userList[i-1]
+                            userList[i-1]=tUser
+                            boolean=true
+                        }
+
+                        // the same high scoreA
+                        else if(userList[i].gameA.highScoreA==userList[i-1].gameA.highScoreA){
+
+                            
+                            if(userList[i].gameA.counterA>userList[i-1].gameA.counterA){
+                                val tUser = userList[i]
+                                userList[i]=userList[i-1]
+                                userList[i-1]=tUser
+                                boolean=true
+                            }
+                        }
                     }
                 }
             }
