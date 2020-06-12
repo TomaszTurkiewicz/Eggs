@@ -11,6 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
         <activity
+            android:name=".Ranking"
+            android:screenOrientation="landscape"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".LoginActivity"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity" />
@@ -27,8 +31,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-6785166837488087~1055570060"/>
-
+            android:value="ca-app-pub-6785166837488087~1055570060" />
     </application>
 
 </manifest>

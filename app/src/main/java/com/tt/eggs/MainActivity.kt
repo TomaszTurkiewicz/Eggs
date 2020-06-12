@@ -281,14 +281,27 @@ class MainActivity : AppCompatActivity() {
     private fun savePointsLoseA() {
         if(loggedInStatus.loggedIn){
             Functions.savePointsLoseAToSharedPreferences(this,loggedInStatus.userid,game.getScore())
-            val gameA = Functions.readGameAFromSharedPreferences(this,loggedInStatus.userid)
-            val gameB = Functions.readGameBFromSharedPreferences(this,loggedInStatus.userid)
-            val userName = Functions.checkUserNameFromSharedPreferences(this,loggedInStatus.userid)
-            val userDB = User(id=loggedInStatus.userid,userName = userName, gameA = gameA,gameB = gameB)
-            val database = Firebase.database
-            val dbRef = database.getReference("user").child(loggedInStatus.userid)
-            dbRef.setValue(userDB)
+            saveUserToFirebaseDatabase()
 
+
+
+        }
+    }
+
+    private fun saveUserToFirebaseDatabase() {
+        val currentUser = Firebase.auth.currentUser
+        if (currentUser != null) {
+            if (currentUser.uid.equals(loggedInStatus.userid)) {
+                val userDB =
+                    User(
+                        id = loggedInStatus.userid,
+                        userName = Functions.checkUserNameFromSharedPreferences(this, loggedInStatus.userid),
+                        gameA = Functions.readGameAFromSharedPreferences(this, loggedInStatus.userid),
+                        gameB = Functions.readGameBFromSharedPreferences(this, loggedInStatus.userid)
+                    )
+                val dbRef = Firebase.database.getReference("user").child(loggedInStatus.userid)
+                dbRef.setValue(userDB)
+            }
         }
     }
 
@@ -296,13 +309,7 @@ class MainActivity : AppCompatActivity() {
     private fun savePointsLoseB() {
         if(loggedInStatus.loggedIn){
             Functions.savePointsLoseBToSharedPreferences(this,loggedInStatus.userid,game.getScore())
-            val gameA = Functions.readGameAFromSharedPreferences(this,loggedInStatus.userid)
-            val gameB = Functions.readGameBFromSharedPreferences(this,loggedInStatus.userid)
-            val userName = Functions.checkUserNameFromSharedPreferences(this,loggedInStatus.userid)
-            val userDB = User(id=loggedInStatus.userid,userName = userName, gameA = gameA,gameB = gameB)
-            val database = Firebase.database
-            val dbRef = database.getReference("user").child(loggedInStatus.userid)
-            dbRef.setValue(userDB)
+            saveUserToFirebaseDatabase()
         }
     }
 
@@ -310,13 +317,7 @@ class MainActivity : AppCompatActivity() {
     private fun savePointsWinA() {
         if(loggedInStatus.loggedIn){
             Functions.savePointsWinAToSharedPreferences(this,loggedInStatus.userid,game.getScore())
-            val gameA = Functions.readGameAFromSharedPreferences(this,loggedInStatus.userid)
-            val gameB = Functions.readGameBFromSharedPreferences(this,loggedInStatus.userid)
-            val userName = Functions.checkUserNameFromSharedPreferences(this,loggedInStatus.userid)
-            val userDB = User(id=loggedInStatus.userid,userName = userName, gameA = gameA,gameB = gameB)
-            val database = Firebase.database
-            val dbRef = database.getReference("user").child(loggedInStatus.userid)
-            dbRef.setValue(userDB)
+            saveUserToFirebaseDatabase()
         }
 
     }
@@ -325,13 +326,7 @@ class MainActivity : AppCompatActivity() {
     private fun savePointsWinB() {
         if(loggedInStatus.loggedIn){
             Functions.savePointsWinBToSharedPreferences(this,loggedInStatus.userid,game.getScore())
-            val gameA = Functions.readGameAFromSharedPreferences(this,loggedInStatus.userid)
-            val gameB = Functions.readGameBFromSharedPreferences(this,loggedInStatus.userid)
-            val userName = Functions.checkUserNameFromSharedPreferences(this,loggedInStatus.userid)
-            val userDB = User(id=loggedInStatus.userid,userName = userName, gameA = gameA,gameB = gameB)
-            val database = Firebase.database
-            val dbRef = database.getReference("user").child(loggedInStatus.userid)
-            dbRef.setValue(userDB)
+            saveUserToFirebaseDatabase()
         }
     }
 
@@ -914,6 +909,7 @@ TODO new record displayed in score
 TODO add sounds
 TODO change UI
 TODO add ranking (individual highest points, points in total)
+TODO firebase change write rules (user can write only his node)
 
 */
 

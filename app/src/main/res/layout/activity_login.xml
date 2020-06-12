@@ -164,5 +164,16 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="20dp"/>
 
+    <Button
+        android:id="@+id/ranking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RANKING"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="20dp"/>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

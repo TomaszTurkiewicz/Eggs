@@ -166,9 +166,6 @@ class LoginActivity : AppCompatActivity() {
 
 
 
-        // sign in/out button
-        auth=Firebase.auth
-        googleSignIn.text=if(auth.currentUser!=null) "LOG OUT" else "LOG IN"
 
         googleSignIn.setOnClickListener {
             if (auth.currentUser!=null){
@@ -187,6 +184,12 @@ class LoginActivity : AppCompatActivity() {
 
 
         }
+
+        ranking.setOnClickListener {
+            val intent = Intent(this,Ranking::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun updateUserName(userID: String) {
@@ -199,9 +202,14 @@ class LoginActivity : AppCompatActivity() {
         update_name_button.setOnClickListener {
             tUser.userName=user_name_et.text.toString()
             Functions.saveUserNameToSharedPreferences(this,userID,tUser.userName)
-            val dbReference = Firebase.database.getReference("user").child(userID)
-            dbReference.setValue(tUser)
-            updateUI()
+            val currentUser = auth.currentUser
+            if(currentUser!=null) {
+                if (currentUser.uid.equals(userID)) {
+                    val dbReference = Firebase.database.getReference("user").child(userID)
+                    dbReference.setValue(tUser)
+                    updateUI()
+                }
+            }
         }
 
     }
@@ -318,4 +326,5 @@ class LoginActivity : AppCompatActivity() {
 
 // TODO send game to a friend
 // TODO ranking activity
+// TODO update button (invisible when there is no update needed)
 
