@@ -278,13 +278,13 @@ class MainActivity : AppCompatActivity() {
     /**----------------------- read and write to shared preferences -------------------**/
 
     // save points game A after lose
-    private fun savePointsLoseA() {
-        if(loggedInStatus.loggedIn){
-            Functions.savePointsLoseAToSharedPreferences(this,loggedInStatus.userid,game.getScore())
+    private fun savePointsLoseA():Boolean {
+        return if(loggedInStatus.loggedIn){
+            val newHighScore = Functions.savePointsLoseAToSharedPreferences(this,loggedInStatus.userid,game.getScore())
             saveUserToFirebaseDatabase()
-
-
-
+            newHighScore
+        }else{
+            false
         }
     }
 
@@ -306,10 +306,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     // save points game B after lose
-    private fun savePointsLoseB() {
-        if(loggedInStatus.loggedIn){
-            Functions.savePointsLoseBToSharedPreferences(this,loggedInStatus.userid,game.getScore())
+    private fun savePointsLoseB():Boolean {
+        return if(loggedInStatus.loggedIn){
+            val newHighScore = Functions.savePointsLoseBToSharedPreferences(this,loggedInStatus.userid,game.getScore())
             saveUserToFirebaseDatabase()
+            newHighScore
+        }else{
+            false
         }
     }
 
@@ -636,6 +639,7 @@ class MainActivity : AppCompatActivity() {
         mHandlerRabbit.removeCallbacksAndMessages(null)
         mHandlerFlash.removeCallbacksAndMessages(null)
         mHandlerLostEgg.removeCallbacksAndMessages(null)
+        newHighScore.visibility=View.GONE
         gameState=Static.DEMO
         game.clearEverything()
         displayState()
@@ -766,17 +770,28 @@ class MainActivity : AppCompatActivity() {
 
     // game A has finished because of 3 faults
     private fun loseA() {
-        savePointsLoseA()
+        val newHighScore = savePointsLoseA()
+        if(newHighScore){
+            showNewHighScore()
+        }
         game.clearEverything()
         clearSavedGame()
         gameState=Static.LOSE_A
 
     }
 
+    private fun showNewHighScore() {
+        newHighScore.visibility = View.VISIBLE
+    }
+
     // game B has finished because of 3 faults
     private fun loseB() {
 
-        savePointsLoseB()
+        val newHighScore = savePointsLoseB()
+        if(newHighScore){
+            showNewHighScore()
+        }
+
         clearSavedGame()
         gameState=Static.LOSE_B
         game.clearEverything()
@@ -905,7 +920,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-TODO new record displayed in score
+
 TODO add sounds
 TODO change UI
 TODO firebase change write rules (user can write only his node)

@@ -33,7 +33,8 @@ class Functions {
 
         }
 
-        fun savePointsLoseAToSharedPreferences(context: Context?, userId: String, score:Int){
+        fun savePointsLoseAToSharedPreferences(context: Context?, userId: String, score:Int):Boolean{
+            var newHighScore = false
             if(context!=null){
                 val sharedPreferences = context.getSharedPreferences(userId,Context.MODE_PRIVATE)
                 var tPoints = sharedPreferences.getInt("TOTAL_A", 0)
@@ -43,15 +44,18 @@ class Functions {
 
                 if(tHigh<score){
                     tHigh=score
+                    newHighScore=true
                 }
                 val editor = sharedPreferences.edit()
                 editor.putInt("TOTAL_A",tPoints)
                 editor.putInt("HIGH_A",tHigh)
                 editor.apply()
             }
+            return newHighScore
         }
 
-        fun savePointsLoseBToSharedPreferences(context: Context?, userId: String, score:Int){
+        fun savePointsLoseBToSharedPreferences(context: Context?, userId: String, score:Int):Boolean{
+            var newHighScore = false
             if(context!=null){
                 val sharedPreferences = context.getSharedPreferences(userId,Context.MODE_PRIVATE)
                 var tPoints = sharedPreferences.getInt("TOTAL_B", 0)
@@ -61,12 +65,14 @@ class Functions {
 
                 if(tHigh<score){
                     tHigh=score
+                    newHighScore=true
                 }
                 val editor = sharedPreferences.edit()
                 editor.putInt("TOTAL_B",tPoints)
                 editor.putInt("HIGH_B",tHigh)
                 editor.apply()
             }
+            return newHighScore
         }
 
         fun saveStatisticAToSharedPreferences(context: Context?, userId: String, gameA: GameA){

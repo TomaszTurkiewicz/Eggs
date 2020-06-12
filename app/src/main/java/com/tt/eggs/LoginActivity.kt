@@ -244,9 +244,7 @@ class LoginActivity : AppCompatActivity() {
                         if(user!=null){
                             // create user if not exists or compare if exists
                             checkUserInDatabase(user)
-                            Functions.saveLoggedStateToSharedPreferences(this,true, user.uid)
 
-                            updateUI()
                         }
                 }else{
                     Functions.saveLoggedStateToSharedPreferences(this,false,"")
@@ -283,9 +281,14 @@ class LoginActivity : AppCompatActivity() {
                     else{
                         // check if sharedpreferences and firebase database are the same if not make them the same
                         val tUser = p0.getValue(User::class.java)
+                        val userName = Functions.checkUserNameFromSharedPreferences(this@LoginActivity,user.uid)
                         val gameA = Functions.readGameAFromSharedPreferences(this@LoginActivity,user.uid)
                         val gameB = Functions.readGameBFromSharedPreferences(this@LoginActivity,user.uid)
                         if(tUser!=null) {
+                            if(!userName.equals(tUser.userName)){
+                                Functions.saveUserNameToSharedPreferences(this@LoginActivity,user.uid,tUser.userName)
+                            }
+
                             if (tUser.gameA.totalScoreA < gameA.totalScoreA) {
                                 tUser.gameA = gameA
                             }
@@ -299,6 +302,10 @@ class LoginActivity : AppCompatActivity() {
                                 Functions.saveStatisticBToSharedPreferences(this@LoginActivity,user.uid,tUser.gameB)
                             }
                             dbRef.setValue(tUser)
+
+                            Functions.saveLoggedStateToSharedPreferences(this@LoginActivity,true, user.uid)
+
+                            updateUI()
 
                         }
                     }
