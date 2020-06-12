@@ -908,7 +908,6 @@ class MainActivity : AppCompatActivity() {
 TODO new record displayed in score
 TODO add sounds
 TODO change UI
-TODO add ranking (individual highest points, points in total)
 TODO firebase change write rules (user can write only his node)
 
 */

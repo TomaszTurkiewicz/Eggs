@@ -33,6 +33,9 @@ class Ranking : AppCompatActivity() {
             finish()
         }
 
+        recyclerView.visibility = View.GONE
+        ranking_error.visibility = View.GONE
+
         val currentUser = Firebase.auth.currentUser
         userid = currentUser?.uid ?: ""
         userList = mutableListOf()
@@ -48,7 +51,9 @@ class Ranking : AppCompatActivity() {
         val dbRef = Firebase.database.getReference("user")
         dbRef.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
-                // TODO when data nor reached display text view ("no internet")
+                progress_bar.visibility = View.GONE
+                ranking_error.text = "DATABASE ERROR"
+                ranking_error.visibility = View.VISIBLE
             }
 
             override fun onDataChange(p0: DataSnapshot) {
@@ -59,6 +64,11 @@ class Ranking : AppCompatActivity() {
                     }
                     sortAndDisplay()
                 }
+                else{
+                    progress_bar.visibility = View.GONE
+                    ranking_error.text = "DATABASE EMPTY"
+                    ranking_error.visibility = View.VISIBLE
+                }
 
             }
 
@@ -67,7 +77,10 @@ class Ranking : AppCompatActivity() {
     }
 
     private fun sortAndDisplay() {
-        sort()
+
+        if(userList.size>1){
+            sort()
+        }
 
 
         initRecyclerView()
@@ -130,12 +143,9 @@ class Ranking : AppCompatActivity() {
             adapter = rankingAdapter
         }
 
+        recyclerView.visibility = View.VISIBLE
+        progress_bar.visibility = View.GONE
+
     }
 
 }
-
-/*
- TODO recycler view
- TODO progress bar
- TODO if logged in my position different color or something
- */

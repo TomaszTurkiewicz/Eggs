@@ -325,6 +325,5 @@ class LoginActivity : AppCompatActivity() {
 }
 
 // TODO send game to a friend
-// TODO ranking activity
 // TODO update button (invisible when there is no update needed)
 
