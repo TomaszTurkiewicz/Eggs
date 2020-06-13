@@ -133,7 +133,7 @@ class Ranking : AppCompatActivity() {
                         // the same high scoreA
                         else if(userList[i].gameA.highScoreA==userList[i-1].gameA.highScoreA){
 
-                            
+
                             if(userList[i].gameA.counterA>userList[i-1].gameA.counterA){
                                 val tUser = userList[i]
                                 userList[i]=userList[i-1]

@@ -6,8 +6,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.DisplayMetrics
 import android.view.View
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.firebase.auth.FirebaseAuth
@@ -18,6 +21,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.*
+import com.tt.eggs.drawable.MainScreenDrawable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
 
@@ -78,6 +82,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mInterstitialAd: InterstitialAd
 
+    private var screenHeight = 0
+    private var screenWidth = 0
+    private var screenUnit = 0
+
+    private val screenSize = Dimension()
+
     /**---------------------- activity life cycle methods---------------------------**/
 
     // on create
@@ -87,6 +97,9 @@ class MainActivity : AppCompatActivity() {
         // make full screen
         fullScreen()
         setContentView(R.layout.activity_main)
+
+        // makeUI
+        makeUI()
 
         // update eggs positions
         updateArray()
@@ -103,6 +116,8 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+
 
     private fun checkLoggedInState() {
         loggedInStatus = Functions.readLoggedInStatusFromSharedPreferences(this)
@@ -397,6 +412,54 @@ class MainActivity : AppCompatActivity() {
                         or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
             }
         }
+    }
+
+    // constraintSet
+    private fun makeUI() {
+
+        getScreenHighAndWidth()
+
+        setViewSizes()
+
+        setDrawable()
+
+        val set = ConstraintSet()
+        set.clone(main_activity_layout)
+
+        set.connect(screen.id,ConstraintSet.LEFT,main_activity_layout.id,ConstraintSet.LEFT,0)
+        set.connect(screen.id,ConstraintSet.RIGHT,main_activity_layout.id,ConstraintSet.RIGHT,0)
+        set.connect(screen.id,ConstraintSet.TOP,main_activity_layout.id,ConstraintSet.TOP,0)
+        set.connect(screen.id,ConstraintSet.BOTTOM,main_activity_layout.id,ConstraintSet.BOTTOM,0)
+
+
+        set.applyTo(main_activity_layout)
+
+
+    }
+
+    private fun setDrawable() {
+        val mainScreen = MainScreenDrawable(this,screenUnit,screenSize.width,screenSize.height)
+        screen.setImageDrawable(mainScreen)
+
+    }
+
+    private fun setViewSizes() {
+        screenSize.width = 14
+        screenSize.height = 7
+        val params = ConstraintLayout.LayoutParams(screenSize.width*screenUnit,screenSize.height*screenUnit)
+        screen.layoutParams = params
+
+    }
+
+    private fun getScreenHighAndWidth() {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        screenHeight = displayMetrics.heightPixels
+        screenWidth = displayMetrics.widthPixels
+        val unitWidth = screenWidth/20
+        val unitHeight = screenHeight/10
+        screenUnit=if(unitWidth>unitHeight)unitHeight else unitWidth
+
     }
 
     // display all fallen eggs

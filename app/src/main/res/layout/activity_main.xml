@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/main_activity_layout">
 
     <TextView
         android:id="@+id/newHighScore"
@@ -33,7 +34,6 @@
         app:layout_constraintLeft_toRightOf="@id/account"
         android:layout_marginLeft="20dp"/>
 
-
     <Button
         android:id="@+id/closeApp"
         android:layout_width="wrap_content"
@@ -44,8 +44,6 @@
         android:layout_marginLeft="20dp"
         android:text="CLOSE"/>
 
-
-
     <ImageView
         android:id="@+id/rabbit"
         android:layout_width="wrap_content"
@@ -53,7 +51,6 @@
         app:layout_constraintLeft_toLeftOf="@id/screen"
         app:layout_constraintTop_toTopOf="@id/screen"
         android:layout_marginLeft="50dp"/>
-
 
     <TextView
         android:id="@+id/score"
@@ -135,6 +132,7 @@
         android:background="@drawable/play"/>
 
     <TextView
+        android:id="@+id/letterA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/start_A"
@@ -151,13 +149,14 @@
         android:background="@drawable/play"/>
 
     <TextView
+        android:id="@+id/letterB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/start_B"
         app:layout_constraintLeft_toLeftOf="@id/start_B"
         android:text="B"/>
 
-    <TextView
+    <ImageView
         android:id="@+id/screen"
         android:layout_width="500dp"
         android:layout_height="300dp"
@@ -165,7 +164,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="#88DADADA"/>
+        android:background="@color/transparent"/>
 
     <ImageView
         android:id="@+id/eggTopLeftFirst"

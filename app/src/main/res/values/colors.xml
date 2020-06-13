@@ -3,4 +3,13 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="transparent">#00000000</color>
+    <color name="gray">#D5D5D5</color>
+    <color name="gray_LCD">#CCD8C0</color>
+    <color name="gray_light">#EAEAEA</color>
+    <color name="gray_dark">#5E5E5E</color>
+    <color name="black">#000000</color>
+    <color name="red">#BC0000</color>
+
+
 </resources>
