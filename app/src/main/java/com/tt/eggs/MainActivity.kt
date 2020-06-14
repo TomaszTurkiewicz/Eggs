@@ -1,7 +1,6 @@
 package com.tt.eggs
 
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,15 +12,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.*
+import com.tt.eggs.drawable.EggPlus45
 import com.tt.eggs.drawable.MainScreenDrawable
+import com.tt.eggs.drawable.NormalEggDrawable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
 
@@ -87,6 +84,7 @@ class MainActivity : AppCompatActivity() {
     private var screenUnit = 0
 
     private val screenSize = Dimension()
+    private val eggSize = Dimension()
 
     /**---------------------- activity life cycle methods---------------------------**/
 
@@ -422,7 +420,7 @@ class MainActivity : AppCompatActivity() {
         setViewSizes()
 
         setDrawable()
-
+        val eggJumpDown = screenUnit*0.25
         val set = ConstraintSet()
         set.clone(main_activity_layout)
 
@@ -430,6 +428,66 @@ class MainActivity : AppCompatActivity() {
         set.connect(screen.id,ConstraintSet.RIGHT,main_activity_layout.id,ConstraintSet.RIGHT,0)
         set.connect(screen.id,ConstraintSet.TOP,main_activity_layout.id,ConstraintSet.TOP,0)
         set.connect(screen.id,ConstraintSet.BOTTOM,main_activity_layout.id,ConstraintSet.BOTTOM,0)
+
+        set.connect(eggTopLeftFirst.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,screenUnit+screenUnit/2)
+        set.connect(eggTopLeftFirst.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (screenUnit*1.6).toInt())
+
+        set.connect(eggTopLeftSecond.id,ConstraintSet.LEFT,eggTopLeftFirst.id,ConstraintSet.RIGHT,0)
+        set.connect(eggTopLeftSecond.id,ConstraintSet.TOP,eggTopLeftFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
+
+        set.connect(eggTopLeftThird.id,ConstraintSet.LEFT,eggTopLeftSecond.id,ConstraintSet.RIGHT,0)
+        set.connect(eggTopLeftThird.id,ConstraintSet.TOP,eggTopLeftSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
+
+        set.connect(eggTopLeftFourth.id,ConstraintSet.LEFT,eggTopLeftThird.id,ConstraintSet.RIGHT,0)
+        set.connect(eggTopLeftFourth.id,ConstraintSet.TOP,eggTopLeftThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
+
+        set.connect(eggTopLeftFifth.id,ConstraintSet.LEFT,eggTopLeftFourth.id,ConstraintSet.RIGHT,0)
+        set.connect(eggTopLeftFifth.id,ConstraintSet.TOP,eggTopLeftFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
+
+        set.connect(eggBottomLeftFirst.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,screenUnit+screenUnit/2)
+        set.connect(eggBottomLeftFirst.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (screenUnit*3.1).toInt())
+
+        set.connect(eggBottomLeftSecond.id,ConstraintSet.LEFT,eggBottomLeftFirst.id,ConstraintSet.RIGHT,0)
+        set.connect(eggBottomLeftSecond.id,ConstraintSet.TOP,eggBottomLeftFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
+
+        set.connect(eggBottomLeftThird.id,ConstraintSet.LEFT,eggBottomLeftSecond.id,ConstraintSet.RIGHT,0)
+        set.connect(eggBottomLeftThird.id,ConstraintSet.TOP,eggBottomLeftSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
+
+        set.connect(eggBottomLeftFourth.id,ConstraintSet.LEFT,eggBottomLeftThird.id,ConstraintSet.RIGHT,0)
+        set.connect(eggBottomLeftFourth.id,ConstraintSet.TOP,eggBottomLeftThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
+
+        set.connect(eggBottomLeftFifth.id,ConstraintSet.LEFT,eggBottomLeftFourth.id,ConstraintSet.RIGHT,0)
+        set.connect(eggBottomLeftFifth.id,ConstraintSet.TOP,eggBottomLeftFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
+
+        set.connect(eggTopRightFirst.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,screenUnit+screenUnit/2)
+        set.connect(eggTopRightFirst.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (screenUnit*1.6).toInt())
+
+        set.connect(eggTopRightSecond.id,ConstraintSet.RIGHT,eggTopRightFirst.id,ConstraintSet.LEFT,0)
+        set.connect(eggTopRightSecond.id,ConstraintSet.TOP,eggTopRightFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
+
+        set.connect(eggTopRightThird.id,ConstraintSet.RIGHT,eggTopRightSecond.id,ConstraintSet.LEFT,0)
+        set.connect(eggTopRightThird.id,ConstraintSet.TOP,eggTopRightSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
+
+        set.connect(eggTopRightFourth.id,ConstraintSet.RIGHT,eggTopRightThird.id,ConstraintSet.LEFT,0)
+        set.connect(eggTopRightFourth.id,ConstraintSet.TOP,eggTopRightThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
+
+        set.connect(eggTopRightFifth.id,ConstraintSet.RIGHT,eggTopRightFourth.id,ConstraintSet.LEFT,0)
+        set.connect(eggTopRightFifth.id,ConstraintSet.TOP,eggTopRightFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
+
+        set.connect(eggBottomRightFirst.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,screenUnit+screenUnit/2)
+        set.connect(eggBottomRightFirst.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (screenUnit*3.1).toInt())
+
+        set.connect(eggBottomRightSecond.id,ConstraintSet.RIGHT,eggBottomRightFirst.id,ConstraintSet.LEFT,0)
+        set.connect(eggBottomRightSecond.id,ConstraintSet.TOP,eggBottomRightFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
+
+        set.connect(eggBottomRightThird.id,ConstraintSet.RIGHT,eggBottomRightSecond.id,ConstraintSet.LEFT,0)
+        set.connect(eggBottomRightThird.id,ConstraintSet.TOP,eggBottomRightSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
+
+        set.connect(eggBottomRightFourth.id,ConstraintSet.RIGHT,eggBottomRightThird.id,ConstraintSet.LEFT,0)
+        set.connect(eggBottomRightFourth.id,ConstraintSet.TOP,eggBottomRightThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
+
+        set.connect(eggBottomRightFifth.id,ConstraintSet.RIGHT,eggBottomRightFourth.id,ConstraintSet.LEFT,0)
+        set.connect(eggBottomRightFifth.id,ConstraintSet.TOP,eggBottomRightFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
 
         set.applyTo(main_activity_layout)
@@ -444,10 +502,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setViewSizes() {
-        screenSize.width = 14
-        screenSize.height = 7
-        val params = ConstraintLayout.LayoutParams(screenSize.width*screenUnit,screenSize.height*screenUnit)
-        screen.layoutParams = params
+        screenSize.width = 14.0
+        screenSize.height = 7.0
+        screen.layoutParams = ConstraintLayout.LayoutParams((screenSize.width*screenUnit).toInt(),(screenSize.height*screenUnit).toInt())
+
+        eggSize.width=0.5
+        eggSize.height=0.5
+        eggTopLeftFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggTopLeftSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggTopLeftThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggTopLeftFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggTopLeftFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggBottomLeftFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggBottomLeftSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggBottomLeftThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggBottomLeftFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggBottomLeftFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggTopRightFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggTopRightSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggTopRightThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggTopRightFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggTopRightFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggBottomRightFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggBottomRightSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggBottomRightThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggBottomRightFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        eggBottomRightFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
 
     }
 
@@ -464,25 +544,31 @@ class MainActivity : AppCompatActivity() {
 
     // display all fallen eggs
     private fun displayState(){
-        displayEgg(eggTopLeftFirst,1,Static.LEFT_TOP)
-        displayEgg(eggTopLeftSecond,2,Static.LEFT_TOP)
+        eggTopLeftFirst.setImageDrawable(if(game.displayCell(1,Static.LEFT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+        eggTopLeftSecond.setImageDrawable(if(game.displayCell(2,Static.LEFT_TOP)) EggPlus45(this,screenUnit*eggSize.width) else null)
+
+
         displayEgg(eggTopLeftThird,3,Static.LEFT_TOP)
         displayEgg(eggTopLeftFourth,4,Static.LEFT_TOP)
         displayEgg(eggTopLeftFifth,5,Static.LEFT_TOP)
 
-        displayEgg(eggBottomLeftFirst,1,Static.LEFT_BOTTOM)
-        displayEgg(eggBottomLeftSecond,2,Static.LEFT_BOTTOM)
+        eggBottomLeftFirst.setImageDrawable(if(game.displayCell(1,Static.LEFT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+        eggBottomLeftSecond.setImageDrawable(if(game.displayCell(2,Static.LEFT_BOTTOM)) EggPlus45(this,screenUnit*eggSize.width) else null)
+
+
         displayEgg(eggBottomLeftThird,3,Static.LEFT_BOTTOM)
         displayEgg(eggBottomLeftFourth,4,Static.LEFT_BOTTOM)
         displayEgg(eggBottomLeftFifth,5,Static.LEFT_BOTTOM)
 
-        displayEgg(eggBottomRightFirst,1,Static.RIGHT_BOTTOM)
+        eggBottomRightFirst.setImageDrawable(if(game.displayCell(1,Static.RIGHT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+
         displayEgg(eggBottomRightSecond,2,Static.RIGHT_BOTTOM)
         displayEgg(eggBottomRightThird,3,Static.RIGHT_BOTTOM)
         displayEgg(eggBottomRightFourth,4,Static.RIGHT_BOTTOM)
         displayEgg(eggBottomRightFifth,5,Static.RIGHT_BOTTOM)
 
-        displayEgg(eggTopRightFirst,1,Static.RIGHT_TOP)
+        eggTopRightFirst.setImageDrawable(if(game.displayCell(1,Static.RIGHT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+
         displayEgg(eggTopRightSecond,2,Static.RIGHT_TOP)
         displayEgg(eggTopRightThird,3,Static.RIGHT_TOP)
         displayEgg(eggTopRightFourth,4,Static.RIGHT_TOP)

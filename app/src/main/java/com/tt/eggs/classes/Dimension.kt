@@ -1,4 +1,4 @@
 package com.tt.eggs.classes
 
-class Dimension(var width:Int = 0, var height:Int = 0) {
+class Dimension(var width:Double = 0.0, var height:Double = 0.0) {
 }
