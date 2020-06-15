@@ -16,9 +16,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.*
-import com.tt.eggs.drawable.EggPlus45
-import com.tt.eggs.drawable.MainScreenDrawable
-import com.tt.eggs.drawable.NormalEggDrawable
+import com.tt.eggs.drawable.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
 
@@ -546,45 +544,35 @@ class MainActivity : AppCompatActivity() {
     private fun displayState(){
         eggTopLeftFirst.setImageDrawable(if(game.displayCell(1,Static.LEFT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
         eggTopLeftSecond.setImageDrawable(if(game.displayCell(2,Static.LEFT_TOP)) EggPlus45(this,screenUnit*eggSize.width) else null)
+        eggTopLeftThird.setImageDrawable(if(game.displayCell(3,Static.LEFT_TOP)) EggPlus90(this,screenUnit*eggSize.width) else null)
+        eggTopLeftFourth.setImageDrawable(if(game.displayCell(4,Static.LEFT_TOP)) EggPlus135(this,screenUnit*eggSize.width) else null)
+        eggTopLeftFifth.setImageDrawable(if(game.displayCell(5,Static.LEFT_TOP)) EggPlus225(this,screenUnit*eggSize.width) else null)
 
-
-        displayEgg(eggTopLeftThird,3,Static.LEFT_TOP)
-        displayEgg(eggTopLeftFourth,4,Static.LEFT_TOP)
-        displayEgg(eggTopLeftFifth,5,Static.LEFT_TOP)
 
         eggBottomLeftFirst.setImageDrawable(if(game.displayCell(1,Static.LEFT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
         eggBottomLeftSecond.setImageDrawable(if(game.displayCell(2,Static.LEFT_BOTTOM)) EggPlus45(this,screenUnit*eggSize.width) else null)
+        eggBottomLeftThird.setImageDrawable(if(game.displayCell(3,Static.LEFT_BOTTOM)) EggPlus90(this,screenUnit*eggSize.width) else null)
+        eggBottomLeftFourth.setImageDrawable(if(game.displayCell(4,Static.LEFT_BOTTOM)) EggPlus135(this,screenUnit*eggSize.width) else null)
+        eggBottomLeftFifth.setImageDrawable(if(game.displayCell(5,Static.LEFT_BOTTOM)) EggPlus225(this,screenUnit*eggSize.width) else null)
 
-
-        displayEgg(eggBottomLeftThird,3,Static.LEFT_BOTTOM)
-        displayEgg(eggBottomLeftFourth,4,Static.LEFT_BOTTOM)
-        displayEgg(eggBottomLeftFifth,5,Static.LEFT_BOTTOM)
 
         eggBottomRightFirst.setImageDrawable(if(game.displayCell(1,Static.RIGHT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+        eggBottomRightSecond.setImageDrawable(if(game.displayCell(2,Static.RIGHT_BOTTOM)) EggMinus45(this,screenUnit*eggSize.width) else null)
+        eggBottomRightThird.setImageDrawable(if(game.displayCell(3,Static.RIGHT_BOTTOM)) EggMinus90(this,screenUnit*eggSize.width) else null)
+        eggBottomRightFourth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_BOTTOM)) EggPlus225(this,screenUnit*eggSize.width) else null)
+        eggBottomRightFifth.setImageDrawable(if(game.displayCell(5,Static.RIGHT_BOTTOM)) EggPlus135(this,screenUnit*eggSize.width) else null)
 
-        displayEgg(eggBottomRightSecond,2,Static.RIGHT_BOTTOM)
-        displayEgg(eggBottomRightThird,3,Static.RIGHT_BOTTOM)
-        displayEgg(eggBottomRightFourth,4,Static.RIGHT_BOTTOM)
-        displayEgg(eggBottomRightFifth,5,Static.RIGHT_BOTTOM)
 
         eggTopRightFirst.setImageDrawable(if(game.displayCell(1,Static.RIGHT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+        eggTopRightSecond.setImageDrawable(if(game.displayCell(2,Static.RIGHT_TOP)) EggMinus45(this,screenUnit*eggSize.width) else null)
+        eggTopRightThird.setImageDrawable(if(game.displayCell(3,Static.RIGHT_TOP)) EggMinus90(this,screenUnit*eggSize.width) else null)
+        eggTopRightFourth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_TOP)) EggPlus225(this,screenUnit*eggSize.width) else null)
+        eggTopRightFifth.setImageDrawable(if(game.displayCell(5,Static.RIGHT_TOP)) EggPlus135(this,screenUnit*eggSize.width) else null)
 
-        displayEgg(eggTopRightSecond,2,Static.RIGHT_TOP)
-        displayEgg(eggTopRightThird,3,Static.RIGHT_TOP)
-        displayEgg(eggTopRightFourth,4,Static.RIGHT_TOP)
-        displayEgg(eggTopRightFifth,5,Static.RIGHT_TOP)
 
     }
 
-    // display single egg
-    private fun displayEgg( imageView: ImageView, x:Int, y:Int){
-        if(game.displayCell(x,y)){
-            imageView.setImageDrawable(getDrawable(R.drawable.button))
-        }
-        else{
-            imageView.setImageDrawable(null)
-        }
-    }
+
 
     // display rabbit
     private fun displayRabbit(rabbitBoolean: Boolean){
@@ -761,6 +749,12 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+        }
+
+        test.setOnClickListener {
+            val intent = Intent(this,TestEgg::class.java)
+            startActivity(intent)
+            finish()
         }
 
 

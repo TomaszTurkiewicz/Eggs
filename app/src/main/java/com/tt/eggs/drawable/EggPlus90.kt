@@ -8,9 +8,8 @@ import com.tt.eggs.R
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.math.sqrt
 
-class EggPlus45 (private val context: Context, private val size: Double): Drawable() {
+class EggPlus90 (private val context: Context, private val size: Double): Drawable(){
     private var paint= Paint()
 
 
@@ -19,11 +18,9 @@ class EggPlus45 (private val context: Context, private val size: Double): Drawab
         paint.style = Paint.Style.STROKE
         paint.color = ContextCompat.getColor(context, R.color.black)
         paint.strokeWidth = (size/8).toFloat()
-        val sqrt = sqrt(0.3)
-        val dif = sqrt/2-0.055
 
-        val a = Point((size*(0.5-dif)).toInt(), (size*(0.66-dif)).toInt())
-        val b = Point((size*(0.5+dif)).toInt(), (size*(0.66+dif)).toInt())
+        val a = Point((size*0.5).toInt(), (size*0.36).toInt())
+        val b = Point((size*0.5).toInt(), (size*0.96).toInt())
         val curveRadiusTop = size
         val curveRadiusBottom = 0.3*size
         val midX = a.x +((b.x-a.x)/2)
@@ -44,8 +41,7 @@ class EggPlus45 (private val context: Context, private val size: Double): Drawab
             (midY-curveRadiusBottom).toFloat(), (midX+curveRadiusBottom).toFloat(), (midY+curveRadiusBottom).toFloat()
         )
 
-        canvas.drawArc(mRect,45F,180F,false,paint)
-
+        canvas.drawArc(mRect,90F,180F,false,paint)
 
 
 
@@ -60,5 +56,4 @@ class EggPlus45 (private val context: Context, private val size: Double): Drawab
     override fun setColorFilter(colorFilter: ColorFilter?) {
         paint.colorFilter = colorFilter
     }
-
 }

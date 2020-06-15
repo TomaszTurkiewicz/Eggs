@@ -21,25 +21,27 @@ class NormalEggDrawable(private val context: Context, private val size: Double):
 
         val a = Point((size*0.2).toInt(), (size*0.66).toInt())
         val b = Point((size*0.8).toInt(), (size*0.66).toInt())
-        val curveRadiusBottom =size*0.6
         val curveRadiusTop = size
+        val curveRadiusBottom = 0.3*size
         val midX = a.x +((b.x-a.x)/2)
         val midY = a.y +((b.y-a.y)/2)
         val xDiff:Double = (midX-a.x).toDouble()
         val yDiff:Double = (midY-a.y).toDouble()
         val angle = (atan2(yDiff,xDiff) *(180/Math.PI))-90
         val angleRadius = Math.toRadians(angle)
-        val pointXBottom: Float = (midX-curveRadiusBottom* cos(angleRadius)).toFloat()
-        val pointYBottom: Float = (midY-curveRadiusBottom* sin(angleRadius)).toFloat()
         val pointXTop: Float = (midX+curveRadiusTop* cos(angleRadius)).toFloat()
         val pointYTop: Float = (midY+curveRadiusTop* sin(angleRadius)).toFloat()
 
         val path = Path()
         path.moveTo(a.x.toFloat(), a.y.toFloat())
-        path.cubicTo(a.x.toFloat(), a.y.toFloat(),pointXBottom,pointYBottom, b.x.toFloat(), b.y.toFloat())
-        path.cubicTo(b.x.toFloat(), b.y.toFloat(),pointXTop,pointYTop, a.x.toFloat(), a.y.toFloat())
+        path.cubicTo(a.x.toFloat(), a.y.toFloat(),pointXTop,pointYTop, b.x.toFloat(), b.y.toFloat())
         canvas.drawPath(path,paint)
 
+        val mRect = RectF((midX-curveRadiusBottom).toFloat(),
+            (midY-curveRadiusBottom).toFloat(), (midX+curveRadiusBottom).toFloat(), (midY+curveRadiusBottom).toFloat()
+        )
+
+        canvas.drawArc(mRect,0F,180F,false,paint)
 
 
 

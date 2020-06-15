@@ -11,6 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
         <activity
+            android:name=".TestEgg"
+            android:screenOrientation="landscape"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".Ranking"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity" />
