@@ -87,6 +87,7 @@ class MainActivity : AppCompatActivity() {
     private val eggSize = Dimension()
     private val arrowSize = Dimension()
     private val startButtonSize = Dimension()
+    private val userIdSize = Dimension()
 
     /**---------------------- activity life cycle methods---------------------------**/
 
@@ -534,6 +535,15 @@ class MainActivity : AppCompatActivity() {
         set.connect(exit.id,ConstraintSet.RIGHT,closeApp.id,ConstraintSet.RIGHT,0)
         set.connect(exit.id,ConstraintSet.BOTTOM,closeApp.id,ConstraintSet.BOTTOM,screenUnit)
 
+        set.connect(account.id,ConstraintSet.TOP,main_activity_layout.id,ConstraintSet.TOP,0)
+        set.connect(account.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
+        set.connect(account.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.TOP,0)
+
+        set.connect(userID.id,ConstraintSet.TOP,main_activity_layout.id,ConstraintSet.TOP,0)
+        set.connect(userID.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,0)
+        set.connect(userID.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
+        set.connect(userID.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.TOP,0)
+
         set.applyTo(main_activity_layout)
 
 
@@ -571,7 +581,13 @@ class MainActivity : AppCompatActivity() {
             screenUnit*startButtonSize.height
         ))
 
-  //      buttonBottomLeft.setBackgroundColor(getColor(R.color.red))
+        account.setImageDrawable(StartButton(this,screenUnit*userIdSize.height,
+            screenUnit*userIdSize.height
+        ))
+
+        userID.background = TextViewDrawable(this,userIdSize.width*screenUnit,userIdSize.height*screenUnit)
+
+
     }
 
     private fun setViewSizes() {
@@ -625,6 +641,13 @@ class MainActivity : AppCompatActivity() {
 
         closeApp.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
         exit.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+        userIdSize.height = arrowSize.height
+        userIdSize.width = screenSize.width-3*userIdSize.height
+
+        account.layoutParams = ConstraintLayout.LayoutParams((userIdSize.height*screenUnit).toInt(), (userIdSize.height*screenUnit).toInt())
+        userID.layoutParams = ConstraintLayout.LayoutParams((userIdSize.width*screenUnit).toInt(), (userIdSize.height*screenUnit).toInt())
+        userID.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
     }
 
