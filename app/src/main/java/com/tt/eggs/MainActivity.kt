@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -83,6 +85,7 @@ class MainActivity : AppCompatActivity() {
 
     private val screenSize = Dimension()
     private val eggSize = Dimension()
+    private val arrowSize = Dimension()
 
     /**---------------------- activity life cycle methods---------------------------**/
 
@@ -487,6 +490,27 @@ class MainActivity : AppCompatActivity() {
         set.connect(eggBottomRightFifth.id,ConstraintSet.RIGHT,eggBottomRightFourth.id,ConstraintSet.LEFT,0)
         set.connect(eggBottomRightFifth.id,ConstraintSet.TOP,eggBottomRightFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
+        set.connect(score.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP,
+            (screenUnit*0.6).toInt()
+        )
+        set.connect(score.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,0)
+        set.connect(score.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
+
+        set.connect(buttonBottomLeft.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.LEFT,0)
+        set.connect(buttonBottomLeft.id,ConstraintSet.LEFT,main_activity_layout.id,ConstraintSet.LEFT,0)
+        set.connect(buttonBottomLeft.id,ConstraintSet.BOTTOM,main_activity_layout.id,ConstraintSet.BOTTOM,screenUnit)
+
+        set.connect(buttonTopLeft.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.LEFT,0)
+        set.connect(buttonTopLeft.id,ConstraintSet.LEFT,main_activity_layout.id,ConstraintSet.LEFT,0)
+        set.connect(buttonTopLeft.id,ConstraintSet.BOTTOM,buttonBottomLeft.id,ConstraintSet.TOP,screenUnit)
+
+        set.connect(buttonBottomRight.id,ConstraintSet.LEFT,screen.id,ConstraintSet.RIGHT,0)
+        set.connect(buttonBottomRight.id,ConstraintSet.RIGHT,main_activity_layout.id,ConstraintSet.RIGHT,0)
+        set.connect(buttonBottomRight.id,ConstraintSet.BOTTOM,main_activity_layout.id,ConstraintSet.BOTTOM,screenUnit)
+
+        set.connect(buttonTopRight.id,ConstraintSet.LEFT,screen.id,ConstraintSet.RIGHT,0)
+        set.connect(buttonTopRight.id,ConstraintSet.RIGHT,main_activity_layout.id,ConstraintSet.RIGHT,0)
+        set.connect(buttonTopRight.id,ConstraintSet.BOTTOM,buttonBottomRight.id,ConstraintSet.TOP,screenUnit)
 
         set.applyTo(main_activity_layout)
 
@@ -497,6 +521,23 @@ class MainActivity : AppCompatActivity() {
         val mainScreen = MainScreenDrawable(this,screenUnit,screenSize.width,screenSize.height)
         screen.setImageDrawable(mainScreen)
 
+        buttonBottomLeft.setImageDrawable(ArrowBottomLeft(this,screenUnit*arrowSize.width,
+            screenUnit*arrowSize.height
+        ))
+
+        buttonTopLeft.setImageDrawable(ArrowTopLeft(this,screenUnit*arrowSize.width,
+            screenUnit*arrowSize.height
+        ))
+
+        buttonTopRight.setImageDrawable(ArrowTopRight(this,screenUnit*arrowSize.width,
+            screenUnit*arrowSize.height
+        ))
+
+        buttonBottomRight.setImageDrawable(ArrowBottomRight(this,screenUnit*arrowSize.width,
+            screenUnit*arrowSize.height
+        ))
+
+  //      buttonBottomLeft.setBackgroundColor(getColor(R.color.red))
     }
 
     private fun setViewSizes() {
@@ -526,6 +567,18 @@ class MainActivity : AppCompatActivity() {
         eggBottomRightThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
         eggBottomRightFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
         eggBottomRightFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+
+        score.layoutParams = ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        score.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.8).toFloat())
+        score.setTextColor(getColor(R.color.black))
+
+        arrowSize.width= 2.0
+        arrowSize.height=arrowSize.width*2/3
+
+        buttonBottomLeft.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
+        buttonTopLeft.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
+        buttonBottomRight.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
+        buttonTopRight.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
 
     }
 
