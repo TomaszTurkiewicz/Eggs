@@ -86,6 +86,7 @@ class MainActivity : AppCompatActivity() {
     private val screenSize = Dimension()
     private val eggSize = Dimension()
     private val arrowSize = Dimension()
+    private val startButtonSize = Dimension()
 
     /**---------------------- activity life cycle methods---------------------------**/
 
@@ -512,6 +513,12 @@ class MainActivity : AppCompatActivity() {
         set.connect(buttonTopRight.id,ConstraintSet.RIGHT,main_activity_layout.id,ConstraintSet.RIGHT,0)
         set.connect(buttonTopRight.id,ConstraintSet.BOTTOM,buttonBottomRight.id,ConstraintSet.TOP,screenUnit)
 
+        set.connect(start_A.id,ConstraintSet.LEFT,buttonTopRight.id,ConstraintSet.LEFT,0)
+        set.connect(start_A.id,ConstraintSet.TOP,main_activity_layout.id,ConstraintSet.TOP,screenUnit)
+
+        set.connect(start_B.id,ConstraintSet.LEFT,buttonTopRight.id,ConstraintSet.LEFT,0)
+        set.connect(start_B.id,ConstraintSet.TOP,start_A.id,ConstraintSet.BOTTOM,screenUnit/2)
+
         set.applyTo(main_activity_layout)
 
 
@@ -537,6 +544,13 @@ class MainActivity : AppCompatActivity() {
             screenUnit*arrowSize.height
         ))
 
+        start_A.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
+            screenUnit*startButtonSize.height
+        ))
+
+        start_B.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
+            screenUnit*startButtonSize.height
+        ))
   //      buttonBottomLeft.setBackgroundColor(getColor(R.color.red))
     }
 
@@ -579,6 +593,13 @@ class MainActivity : AppCompatActivity() {
         buttonTopLeft.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
         buttonBottomRight.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
         buttonTopRight.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
+
+        startButtonSize.width = arrowSize.height
+        startButtonSize.height = arrowSize.height
+
+        start_A.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
+        start_B.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
+
 
     }
 
