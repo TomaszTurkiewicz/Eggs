@@ -519,6 +519,21 @@ class MainActivity : AppCompatActivity() {
         set.connect(start_B.id,ConstraintSet.LEFT,buttonTopRight.id,ConstraintSet.LEFT,0)
         set.connect(start_B.id,ConstraintSet.TOP,start_A.id,ConstraintSet.BOTTOM,screenUnit/2)
 
+        set.connect(letterA.id,ConstraintSet.LEFT,start_A.id,ConstraintSet.LEFT,0)
+        set.connect(letterA.id,ConstraintSet.RIGHT,start_A.id,ConstraintSet.RIGHT,0)
+        set.connect(letterA.id,ConstraintSet.BOTTOM,start_A.id,ConstraintSet.BOTTOM,screenUnit)
+
+        set.connect(letterB.id,ConstraintSet.LEFT,start_B.id,ConstraintSet.LEFT,0)
+        set.connect(letterB.id,ConstraintSet.RIGHT,start_B.id,ConstraintSet.RIGHT,0)
+        set.connect(letterB.id,ConstraintSet.BOTTOM,start_B.id,ConstraintSet.BOTTOM,screenUnit)
+
+        set.connect(closeApp.id,ConstraintSet.RIGHT,buttonTopLeft.id,ConstraintSet.RIGHT,0)
+        set.connect(closeApp.id,ConstraintSet.TOP,start_A.id,ConstraintSet.TOP,0)
+
+        set.connect(exit.id,ConstraintSet.LEFT,closeApp.id,ConstraintSet.LEFT,0)
+        set.connect(exit.id,ConstraintSet.RIGHT,closeApp.id,ConstraintSet.RIGHT,0)
+        set.connect(exit.id,ConstraintSet.BOTTOM,closeApp.id,ConstraintSet.BOTTOM,screenUnit)
+
         set.applyTo(main_activity_layout)
 
 
@@ -551,6 +566,11 @@ class MainActivity : AppCompatActivity() {
         start_B.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
             screenUnit*startButtonSize.height
         ))
+
+        closeApp.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
+            screenUnit*startButtonSize.height
+        ))
+
   //      buttonBottomLeft.setBackgroundColor(getColor(R.color.red))
     }
 
@@ -600,6 +620,11 @@ class MainActivity : AppCompatActivity() {
         start_A.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
         start_B.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
 
+        letterA.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        letterB.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+        closeApp.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
+        exit.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
     }
 

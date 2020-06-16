@@ -32,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="20dp"
         android:background="@drawable/account"/>
@@ -44,15 +45,21 @@
         app:layout_constraintLeft_toRightOf="@id/account"
         android:layout_marginLeft="20dp"/>
 
-    <Button
+    <ImageView
         android:id="@+id/closeApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="20dp"
-        android:text="CLOSE"/>
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/start_A"
+        app:layout_constraintLeft_toLeftOf="@id/start_A"
+        android:text="EXIT"/>
 
     <ImageView
         android:id="@+id/rabbit"
@@ -135,6 +142,7 @@
         android:id="@+id/letterA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@id/start_A"
         app:layout_constraintLeft_toLeftOf="@id/start_A"
         android:text="A"/>
@@ -152,6 +160,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/start_B"
         app:layout_constraintLeft_toLeftOf="@id/start_B"
+        android:textColor="@color/black"
         android:text="B"/>
 
     <ImageView
