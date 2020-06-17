@@ -1188,6 +1188,9 @@ class MainActivity : AppCompatActivity() {
 
 TODO add sounds
 TODO change UI
+TODO wolf
+TODO rabbit
+TODO faults up and down
 TODO firebase change write rules (user can write only his node)
 
 */

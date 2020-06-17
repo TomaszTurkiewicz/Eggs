@@ -4,9 +4,14 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -22,15 +27,30 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import kotlinx.android.synthetic.main.activity_login.*
 import com.google.firebase.ktx.Firebase
+import com.tt.eggs.classes.Dimension
 import com.tt.eggs.classes.Functions
 import com.tt.eggs.classes.LoggedInStatus
 import com.tt.eggs.classes.User
+import com.tt.eggs.drawable.StartButton
+import com.tt.eggs.drawable.TextViewDrawable
+import kotlinx.android.synthetic.main.activity_main.*
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private var loggedInStatus = LoggedInStatus()
+    private var screenHeight = 0
+    private var screenWidth = 0
+    private var screenUnit = 0
+    private val userNameSize = Dimension()
+    private val changeNameButtonSize = Dimension()
+    private val scoreSize = Dimension()
+    private val scoreUserSize = Dimension()
+    private val backToGameButtonSize = Dimension()
+    private val rankingButtonSize = Dimension()
+    private val loginButtonSize = Dimension()
+    private val otherGamesButtonSize = Dimension()
 
 
     /**------------------ activity life cycle -------------------------------------**/
@@ -41,6 +61,8 @@ class LoginActivity : AppCompatActivity() {
         // display full screen
         fullScreen()
         setContentView(R.layout.activity_login)
+
+        makeUI()
 
         // check if user is logged in and make UI
 
@@ -56,6 +78,182 @@ class LoginActivity : AppCompatActivity() {
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this,gso)
+
+    }
+
+    private fun makeUI() {
+        getScreenHeightAndWidth()
+        setViewSizes()
+        setDrawable()
+        connectViews()
+
+    }
+
+    private fun connectViews() {
+        val set = ConstraintSet()
+        set.clone(login_activity)
+
+        set.connect(user_name_tv.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP,
+            (screenUnit*0.5).toInt()
+        )
+        set.connect(user_name_tv.id,ConstraintSet.LEFT,login_activity.id,ConstraintSet.LEFT,screenUnit)
+
+        set.connect(change_name_linearLayout.id,ConstraintSet.TOP,user_name_tv.id,ConstraintSet.TOP,0)
+        set.connect(change_name_linearLayout.id,ConstraintSet.LEFT,user_name_tv.id,ConstraintSet.RIGHT,screenUnit)
+
+        set.connect(user_name_et.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP,
+            (screenUnit*0.5).toInt()
+        )
+        set.connect(user_name_et.id,ConstraintSet.LEFT,login_activity.id,ConstraintSet.LEFT,screenUnit)
+
+        set.connect(change_name_linearLayout_et.id,ConstraintSet.TOP,user_name_et.id,ConstraintSet.TOP,0)
+        set.connect(change_name_linearLayout_et.id,ConstraintSet.LEFT,user_name_et.id,ConstraintSet.RIGHT,screenUnit)
+
+        set.connect(highScoreA.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP,
+            (screenUnit*2.5).toInt()
+        )
+        set.connect(highScoreA.id,ConstraintSet.LEFT,login_activity.id,ConstraintSet.LEFT,screenUnit)
+
+        set.connect(highScoreB.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP,
+            (screenUnit*4.5).toInt()
+        )
+        set.connect(highScoreB.id,ConstraintSet.LEFT,login_activity.id,ConstraintSet.LEFT,screenUnit)
+
+        set.connect(totalScore.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP,
+            (screenUnit*6.5).toInt()
+        )
+        set.connect(totalScore.id,ConstraintSet.LEFT,login_activity.id,ConstraintSet.LEFT,screenUnit)
+
+        set.connect(highScoreAUser.id,ConstraintSet.TOP,highScoreA.id,ConstraintSet.TOP, 0)
+        set.connect(highScoreAUser.id,ConstraintSet.LEFT,highScoreA.id,ConstraintSet.RIGHT,0)
+
+        set.connect(highScoreBUser.id,ConstraintSet.TOP,highScoreB.id,ConstraintSet.TOP, 0)
+        set.connect(highScoreBUser.id,ConstraintSet.LEFT,highScoreB.id,ConstraintSet.RIGHT,0)
+
+        set.connect(totalScoreUser.id,ConstraintSet.TOP,totalScore.id,ConstraintSet.TOP, 0)
+        set.connect(totalScoreUser.id,ConstraintSet.LEFT,totalScore.id,ConstraintSet.RIGHT,0)
+
+        set.connect(back_to_game_linearLayout_et.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP, (screenUnit*8.5).toInt())
+        set.connect(back_to_game_linearLayout_et.id,ConstraintSet.LEFT,login_activity.id,ConstraintSet.LEFT,screenUnit)
+
+        set.connect(ranking_linearLayout.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP,
+            (screenUnit*2.5).toInt()
+        )
+        set.connect(ranking_linearLayout.id,ConstraintSet.RIGHT,login_activity.id,ConstraintSet.RIGHT, screenUnit)
+
+        set.connect(other_games_linearLayout.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP,
+            (screenUnit*4.5).toInt()
+        )
+        set.connect(other_games_linearLayout.id,ConstraintSet.RIGHT,login_activity.id,ConstraintSet.RIGHT, screenUnit)
+
+
+        set.connect(login_linearLayout.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP,
+            (screenUnit*8.5).toInt()
+        )
+        set.connect(login_linearLayout.id,ConstraintSet.RIGHT,login_activity.id,ConstraintSet.RIGHT, screenUnit)
+
+
+
+        set.applyTo(login_activity)
+
+    }
+
+    private fun setDrawable() {
+            user_name_tv.background = TextViewDrawable(this,userNameSize.width,userNameSize.height)
+            user_name_et.background = TextViewDrawable(this,userNameSize.width,userNameSize.height)
+        change_name_button.setImageDrawable(StartButton(this,changeNameButtonSize.width,changeNameButtonSize.height))
+        change_name_ok_button.setImageDrawable(StartButton(this,changeNameButtonSize.width,changeNameButtonSize.height))
+        highScoreAUser.background = TextViewDrawable(this,scoreUserSize.width,scoreUserSize.height)
+        highScoreBUser.background = TextViewDrawable(this,scoreUserSize.width,scoreUserSize.height)
+        totalScoreUser.background = TextViewDrawable(this,scoreUserSize.width,scoreUserSize.height)
+        backToGame.setImageDrawable(StartButton(this,backToGameButtonSize.width,backToGameButtonSize.height))
+        ranking.setImageDrawable(StartButton(this,rankingButtonSize.width,rankingButtonSize.height))
+        googleSignIn.setImageDrawable(StartButton(this,loginButtonSize.width,loginButtonSize.height))
+        other_games_button.setImageDrawable(StartButton(this,otherGamesButtonSize.width,otherGamesButtonSize.height))
+    }
+
+    private fun setViewSizes() {
+
+        userNameSize.height= (screenUnit*4/3).toDouble()
+        userNameSize.width= (screenUnit*10).toDouble()
+
+        user_name_tv.layoutParams = ConstraintLayout.LayoutParams((userNameSize.width).toInt(), (userNameSize.height).toInt())
+        user_name_tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+        user_name_et.layoutParams = ConstraintLayout.LayoutParams((userNameSize.width).toInt(), (userNameSize.height).toInt())
+        user_name_et.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+        changeNameButtonSize.width= (screenUnit*4/3).toDouble()
+        changeNameButtonSize.height = changeNameButtonSize.width
+
+        change_name_button.layoutParams = LinearLayout.LayoutParams((changeNameButtonSize.width).toInt(),(changeNameButtonSize.height).toInt())
+        change_name_textView.layoutParams = LinearLayout.LayoutParams((2*changeNameButtonSize.width).toInt(),(changeNameButtonSize.height).toInt())
+        change_name_textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+        change_name_ok_button.layoutParams = LinearLayout.LayoutParams((changeNameButtonSize.width).toInt(),(changeNameButtonSize.height).toInt())
+        change_name_ok_.layoutParams = LinearLayout.LayoutParams((2*changeNameButtonSize.width).toInt(),(changeNameButtonSize.height).toInt())
+        change_name_ok_.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+        scoreSize.width = (screenUnit*5).toDouble()
+        scoreSize.height = (screenUnit*4/3).toDouble()
+
+        scoreUserSize.width = (screenUnit*5).toDouble()
+        scoreUserSize.height = (screenUnit*4/3).toDouble()
+
+        highScoreA.layoutParams = ConstraintLayout.LayoutParams((scoreSize.width).toInt(),(scoreSize.height).toInt())
+        highScoreB.layoutParams = ConstraintLayout.LayoutParams((scoreSize.width).toInt(),(scoreSize.height).toInt())
+        totalScore.layoutParams = ConstraintLayout.LayoutParams((scoreSize.width).toInt(),(scoreSize.height).toInt())
+
+        highScoreA.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        highScoreB.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        totalScore.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+        highScoreAUser.layoutParams = ConstraintLayout.LayoutParams((scoreUserSize.width).toInt(),(scoreUserSize.height).toInt())
+        highScoreBUser.layoutParams = ConstraintLayout.LayoutParams((scoreUserSize.width).toInt(),(scoreUserSize.height).toInt())
+        totalScoreUser.layoutParams = ConstraintLayout.LayoutParams((scoreUserSize.width).toInt(),(scoreUserSize.height).toInt())
+
+        highScoreAUser.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        highScoreBUser.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        totalScoreUser.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+        backToGameButtonSize.width= (screenUnit*4/3).toDouble()
+        backToGameButtonSize.height = changeNameButtonSize.width
+
+        backToGame.layoutParams = LinearLayout.LayoutParams((backToGameButtonSize.width).toInt(),(backToGameButtonSize.height).toInt())
+        back_to_game_textView.layoutParams = LinearLayout.LayoutParams((4*backToGameButtonSize.width).toInt(),(backToGameButtonSize.height).toInt())
+        back_to_game_textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+        rankingButtonSize.width= (screenUnit*4/3).toDouble()
+        rankingButtonSize.height = rankingButtonSize.width
+
+        ranking.layoutParams = LinearLayout.LayoutParams((rankingButtonSize.width).toInt(),(rankingButtonSize.height).toInt())
+        ranking_tv.layoutParams = LinearLayout.LayoutParams((4*rankingButtonSize.width).toInt(),(rankingButtonSize.height).toInt())
+        ranking_tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+        loginButtonSize.width= (screenUnit*4/3).toDouble()
+        loginButtonSize.height = loginButtonSize.width
+
+        googleSignIn.layoutParams = LinearLayout.LayoutParams((loginButtonSize.width).toInt(),(loginButtonSize.height).toInt())
+        login_tv.layoutParams = LinearLayout.LayoutParams((4*loginButtonSize.width).toInt(),(loginButtonSize.height).toInt())
+        login_tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+        otherGamesButtonSize.width= (screenUnit*4/3).toDouble()
+        otherGamesButtonSize.height = loginButtonSize.width
+
+        other_games_button.layoutParams = LinearLayout.LayoutParams((otherGamesButtonSize.width).toInt(),(otherGamesButtonSize.height).toInt())
+        other_games_tv.layoutParams = LinearLayout.LayoutParams((4*otherGamesButtonSize.width).toInt(),(otherGamesButtonSize.height).toInt())
+        other_games_tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+    }
+
+    private fun getScreenHeightAndWidth() {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        screenHeight = displayMetrics.heightPixels
+        screenWidth = displayMetrics.widthPixels
+        val unitWidth = screenWidth/20
+        val unitHeight = screenHeight/10
+        screenUnit=if(unitWidth>unitHeight)unitHeight else unitWidth
 
     }
 
@@ -98,7 +296,7 @@ class LoginActivity : AppCompatActivity() {
     private fun displayUI(loggedInStatus: LoggedInStatus) {
 
         auth=Firebase.auth
-        googleSignIn.text=if(auth.currentUser!=null) "LOG OUT" else "LOG IN"
+        login_tv.text=if(auth.currentUser!=null) "LOG OUT" else "LOG IN"
 
         if(loggedInStatus.loggedIn){
             display(loggedInStatus.userid)
@@ -112,15 +310,11 @@ class LoginActivity : AppCompatActivity() {
     private fun displayNotLoggedIn() {
         user_name_tv.text="-"
         highScoreAUser.text="-"
-        totalScoreAUser.text="-"
         highScoreBUser.text="-"
-        totalScoreBUser.text="-"
         totalScoreUser.text="-"
-        highScoreACounter.text=""
-        highScoreBCounter.text=""
-        change_name_button.visibility=View.GONE
+        change_name_linearLayout.visibility=View.GONE
         user_name_et.visibility=View.GONE
-        update_name_button.visibility=View.GONE
+        change_name_linearLayout_et.visibility=View.GONE
     }
 
     //display user statistics
@@ -131,26 +325,28 @@ class LoginActivity : AppCompatActivity() {
         Functions.readGameBFromSharedPreferences(this,userID))
 
         user_name_tv.text=tUser.userName
-        highScoreAUser.text=tUser.gameA.highScoreA.toString()
-        totalScoreAUser.text=tUser.gameA.totalScoreA.toString()
-        highScoreBUser.text=tUser.gameB.highScoreB.toString()
-        totalScoreBUser.text=tUser.gameB.totalScoreB.toString()
-        totalScoreUser.text=(tUser.gameA.totalScoreA+tUser.gameB.totalScoreB).toString()
+
         if(tUser.gameA.counterA>0){
-        highScoreACounter.text="("+tUser.gameA.counterA+")"
+            highScoreAUser.text=""+tUser.gameA.highScoreA + "("+tUser.gameA.counterA+")"
         }
         else{
-            highScoreACounter.text=""
+            highScoreAUser.text=tUser.gameA.highScoreA.toString()
         }
+
         if(tUser.gameB.counterB>0){
-            highScoreBCounter.text="("+tUser.gameB.counterB+")"
+            highScoreBUser.text=""+tUser.gameB.highScoreB + "("+tUser.gameB.counterB+")"
         }
         else{
-            highScoreBCounter.text=""
+            highScoreBUser.text=tUser.gameB.highScoreB.toString()
         }
-        change_name_button.visibility=View.VISIBLE
+
+
+
+        totalScoreUser.text=(tUser.gameA.totalScoreA+tUser.gameB.totalScoreB).toString()
+
+        change_name_linearLayout.visibility=View.VISIBLE
         user_name_et.visibility = View.GONE
-        update_name_button.visibility=View.GONE
+        change_name_linearLayout_et.visibility=View.GONE
     }
 
 
@@ -160,6 +356,12 @@ class LoginActivity : AppCompatActivity() {
         // back to main screen
         backToGame.setOnClickListener {
             val intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        other_games_button.setOnClickListener {
+            val intent = Intent(this,OtherGamesActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -178,7 +380,8 @@ class LoginActivity : AppCompatActivity() {
         change_name_button.setOnClickListener {
             user_name_et.visibility=View.VISIBLE
             user_name_et.requestFocus()
-            update_name_button.visibility=View.VISIBLE
+            change_name_linearLayout_et.visibility=View.VISIBLE
+            change_name_linearLayout.visibility=View.GONE
             updateUserName(loggedInStatus.userid)
 
 
@@ -199,7 +402,7 @@ class LoginActivity : AppCompatActivity() {
             Functions.readGameBFromSharedPreferences(this,userID))
 
         user_name_et.setText(tUser.userName)
-        update_name_button.setOnClickListener {
+        change_name_ok_button.setOnClickListener {
             tUser.userName=user_name_et.text.toString()
             Functions.saveUserNameToSharedPreferences(this,userID,tUser.userName)
             val currentUser = auth.currentUser
@@ -207,9 +410,11 @@ class LoginActivity : AppCompatActivity() {
                 if (currentUser.uid.equals(userID)) {
                     val dbReference = Firebase.database.getReference("user").child(userID)
                     dbReference.setValue(tUser)
-                    updateUI()
+
                 }
             }
+            change_name_linearLayout.visibility = View.VISIBLE
+            updateUI()
         }
 
     }
