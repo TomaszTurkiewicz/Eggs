@@ -217,7 +217,7 @@ class LoginActivity : AppCompatActivity() {
         totalScoreUser.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
         backToGameButtonSize.width= (screenUnit*4/3).toDouble()
-        backToGameButtonSize.height = changeNameButtonSize.width
+        backToGameButtonSize.height = backToGameButtonSize.width
 
         backToGame.layoutParams = LinearLayout.LayoutParams((backToGameButtonSize.width).toInt(),(backToGameButtonSize.height).toInt())
         back_to_game_textView.layoutParams = LinearLayout.LayoutParams((4*backToGameButtonSize.width).toInt(),(backToGameButtonSize.height).toInt())
