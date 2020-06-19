@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import com.tt.eggs.classes.Dimension
 import com.tt.eggs.drawable.RoundedFrameDrawable
 import com.tt.eggs.drawable.StartButton
+import com.tt.eggs.drawable.StartButtonGray
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_other_games.*
 
@@ -106,7 +107,7 @@ class OtherGamesActivity : AppCompatActivity() {
     private fun setDrawable() {
         backToGameOtherGames.setImageDrawable(StartButton(this,backToGameButtonSize.width,backToGameButtonSize.height))
         back_to_game_linearLayout_other_games.background = RoundedFrameDrawable(this,5.5*backToGameButtonSize.width,backToGameButtonSize.height,backToGameButtonSize.height/20,backToGameButtonSize.height/2)
-        send_game_button.setImageDrawable(StartButton(this,sendGameButtonSize.width,sendGameButtonSize.height))
+        send_game_button.setImageDrawable(StartButtonGray(this,sendGameButtonSize.width,sendGameButtonSize.height))
         send_game_linear_layout.background = RoundedFrameDrawable(this,12*sendGameButtonSize.width,sendGameButtonSize.height, sendGameButtonSize.height/20,sendGameButtonSize.height/2)
         battle_ships_game_image_view.setImageResource(R.drawable.ship_icon)
         battle_ships_game_linear_layout.background = RoundedFrameDrawable(this,12*battleShipsGameButtonSize.width,3*battleShipsGameButtonSize.height,battleShipsGameButtonSize.height/20,battleShipsGameButtonSize.height/2)

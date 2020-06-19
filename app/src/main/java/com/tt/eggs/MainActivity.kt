@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 
     /**--------------------------- var and val-----------------------------**/
@@ -77,6 +77,10 @@ class MainActivity : AppCompatActivity() {
     private var pauseState = Static.ON
     private val mHandlerPause = Handler()
 
+    // for update loop
+    private var updateState = Static.ON
+    private val mHandlerUpdate = Handler()
+
     private lateinit var mInterstitialAd: InterstitialAd
 
     private var screenHeight = 0
@@ -114,6 +118,9 @@ class MainActivity : AppCompatActivity() {
         // set button listeners and text view displays
         buttonsOnClickListeners()
 
+        Functions.saveUpdateToSharedPreferences(context = this,isUpdate = false)
+
+        UpdateHelper.with(this).onUpdateNeeded(this).check()
 
 
     }
@@ -143,6 +150,7 @@ class MainActivity : AppCompatActivity() {
             Static.PLAY_A -> pauseGameA()
             Static.PLAY_B -> pauseGameB()
         }
+        mHandlerUpdate.removeCallbacksAndMessages(null)
     }
 
 
@@ -288,6 +296,21 @@ class MainActivity : AppCompatActivity() {
         }
         pauseState=!pauseState
         mHandlerPause.postDelayed(pause(pause),500)
+    }
+
+
+    private fun update():Runnable = Runnable {
+        if(updateState==Static.ON){
+            account.setImageDrawable(StartButtonGreen(this,screenUnit*userIdSize.height,
+                screenUnit*userIdSize.height
+            ))
+        }else{
+            account.setImageDrawable(StartButton(this,screenUnit*userIdSize.height,
+                screenUnit*userIdSize.height
+            ))
+        }
+        updateState=!updateState
+        mHandlerUpdate.postDelayed(update(),500)
     }
 
 
@@ -1178,7 +1201,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onUpdateNeeded(updateUrl: String) {
+        Functions.saveUpdateToSharedPreferences(context = this,isUpdate = true,url = updateUrl)
+        update().run()
     }
+
+}
 
 
 /*

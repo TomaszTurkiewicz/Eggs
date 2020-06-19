@@ -2,8 +2,10 @@ package com.tt.eggs
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
@@ -27,12 +29,8 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import kotlinx.android.synthetic.main.activity_login.*
 import com.google.firebase.ktx.Firebase
-import com.tt.eggs.classes.Dimension
-import com.tt.eggs.classes.Functions
-import com.tt.eggs.classes.LoggedInStatus
-import com.tt.eggs.classes.User
-import com.tt.eggs.drawable.StartButton
-import com.tt.eggs.drawable.TextViewDrawable
+import com.tt.eggs.classes.*
+import com.tt.eggs.drawable.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class LoginActivity : AppCompatActivity() {
@@ -51,7 +49,13 @@ class LoginActivity : AppCompatActivity() {
     private val rankingButtonSize = Dimension()
     private val loginButtonSize = Dimension()
     private val otherGamesButtonSize = Dimension()
+    private val updateButtonSize = Dimension()
 
+    // for update loop
+    private var updateState = Static.ON
+    private val mHandlerUpdate = Handler()
+
+    private var updateObject=Update()
 
     /**------------------ activity life cycle -------------------------------------**/
 
@@ -78,6 +82,23 @@ class LoginActivity : AppCompatActivity() {
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this,gso)
+
+        updateObject=Functions.readUpdateFromSharedPreferences(this)
+
+        if(updateObject.isUpdate){
+            update.setOnClickListener {
+                redirectToStore(updateObject.url)
+            }
+
+            update().run()
+        }
+
+    }
+
+    private fun redirectToStore(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
 
     }
 
@@ -136,20 +157,16 @@ class LoginActivity : AppCompatActivity() {
         set.connect(back_to_game_linearLayout_et.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP, (screenUnit*8.5).toInt())
         set.connect(back_to_game_linearLayout_et.id,ConstraintSet.LEFT,login_activity.id,ConstraintSet.LEFT,screenUnit)
 
-        set.connect(ranking_linearLayout.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP,
-            (screenUnit*2.5).toInt()
-        )
+        set.connect(ranking_linearLayout.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP, (screenUnit*2.5).toInt())
         set.connect(ranking_linearLayout.id,ConstraintSet.RIGHT,login_activity.id,ConstraintSet.RIGHT, screenUnit)
 
-        set.connect(other_games_linearLayout.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP,
-            (screenUnit*4.5).toInt()
-        )
+        set.connect(other_games_linearLayout.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP, (screenUnit*4.5).toInt())
         set.connect(other_games_linearLayout.id,ConstraintSet.RIGHT,login_activity.id,ConstraintSet.RIGHT, screenUnit)
 
+        set.connect(update_linearLayout.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP, (screenUnit*6.5).toInt())
+        set.connect(update_linearLayout.id,ConstraintSet.RIGHT,login_activity.id,ConstraintSet.RIGHT, screenUnit)
 
-        set.connect(login_linearLayout.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP,
-            (screenUnit*8.5).toInt()
-        )
+        set.connect(login_linearLayout.id,ConstraintSet.TOP,login_activity.id,ConstraintSet.TOP, (screenUnit*8.5).toInt())
         set.connect(login_linearLayout.id,ConstraintSet.RIGHT,login_activity.id,ConstraintSet.RIGHT, screenUnit)
 
 
@@ -170,6 +187,12 @@ class LoginActivity : AppCompatActivity() {
         ranking.setImageDrawable(StartButton(this,rankingButtonSize.width,rankingButtonSize.height))
         googleSignIn.setImageDrawable(StartButton(this,loginButtonSize.width,loginButtonSize.height))
         other_games_button.setImageDrawable(StartButton(this,otherGamesButtonSize.width,otherGamesButtonSize.height))
+        back_to_game_linearLayout_et.background = RoundedFrameDrawable(this,5.5*backToGameButtonSize.width,backToGameButtonSize.height,backToGameButtonSize.height/20,backToGameButtonSize.height/2)
+        login_linearLayout.background = RoundedFrameDrawable(this,5.5*loginButtonSize.width,loginButtonSize.height,loginButtonSize.height/20,loginButtonSize.height/2)
+        other_games_linearLayout.background = RoundedFrameDrawable(this,5.5*otherGamesButtonSize.width,otherGamesButtonSize.height,otherGamesButtonSize.height/20,otherGamesButtonSize.height/2)
+        ranking_linearLayout.background = RoundedFrameDrawable(this,5.5*rankingButtonSize.width,rankingButtonSize.height,rankingButtonSize.height/20,rankingButtonSize.height/2)
+        update_linearLayout.background = RoundedFrameDrawable(this,5.5*updateButtonSize.width,updateButtonSize.height,updateButtonSize.height/20,updateButtonSize.height/2)
+        update.setImageDrawable(StartButtonGray(this,updateButtonSize.width,updateButtonSize.height))
     }
 
     private fun setViewSizes() {
@@ -222,12 +245,14 @@ class LoginActivity : AppCompatActivity() {
         backToGame.layoutParams = LinearLayout.LayoutParams((backToGameButtonSize.width).toInt(),(backToGameButtonSize.height).toInt())
         back_to_game_textView.layoutParams = LinearLayout.LayoutParams((4*backToGameButtonSize.width).toInt(),(backToGameButtonSize.height).toInt())
         back_to_game_textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        back_to_game_textView_blank.layoutParams = LinearLayout.LayoutParams((backToGameButtonSize.width/2).toInt(),(backToGameButtonSize.height).toInt())
 
         rankingButtonSize.width= (screenUnit*4/3).toDouble()
         rankingButtonSize.height = rankingButtonSize.width
 
         ranking.layoutParams = LinearLayout.LayoutParams((rankingButtonSize.width).toInt(),(rankingButtonSize.height).toInt())
         ranking_tv.layoutParams = LinearLayout.LayoutParams((4*rankingButtonSize.width).toInt(),(rankingButtonSize.height).toInt())
+        ranking_tv_blank.layoutParams = LinearLayout.LayoutParams((0.5*rankingButtonSize.width).toInt(),(rankingButtonSize.height).toInt())
         ranking_tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
         loginButtonSize.width= (screenUnit*4/3).toDouble()
@@ -236,13 +261,24 @@ class LoginActivity : AppCompatActivity() {
         googleSignIn.layoutParams = LinearLayout.LayoutParams((loginButtonSize.width).toInt(),(loginButtonSize.height).toInt())
         login_tv.layoutParams = LinearLayout.LayoutParams((4*loginButtonSize.width).toInt(),(loginButtonSize.height).toInt())
         login_tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        login_tv_blank.layoutParams = LinearLayout.LayoutParams((0.5*loginButtonSize.width).toInt(),(loginButtonSize.height).toInt())
 
         otherGamesButtonSize.width= (screenUnit*4/3).toDouble()
-        otherGamesButtonSize.height = loginButtonSize.width
+        otherGamesButtonSize.height = otherGamesButtonSize.width
 
         other_games_button.layoutParams = LinearLayout.LayoutParams((otherGamesButtonSize.width).toInt(),(otherGamesButtonSize.height).toInt())
         other_games_tv.layoutParams = LinearLayout.LayoutParams((4*otherGamesButtonSize.width).toInt(),(otherGamesButtonSize.height).toInt())
+        other_games_tv_blank.layoutParams = LinearLayout.LayoutParams((0.5*otherGamesButtonSize.width).toInt(),(otherGamesButtonSize.height).toInt())
         other_games_tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
+        updateButtonSize.width= (screenUnit*4/3).toDouble()
+        updateButtonSize.height = updateButtonSize.width
+
+        update.layoutParams = LinearLayout.LayoutParams((updateButtonSize.width).toInt(),(updateButtonSize.height).toInt())
+        update_tv.layoutParams = LinearLayout.LayoutParams((4*updateButtonSize.width).toInt(),(updateButtonSize.height).toInt())
+        update_tv_blank.layoutParams = LinearLayout.LayoutParams((0.5*updateButtonSize.width).toInt(),(updateButtonSize.height).toInt())
+        update_tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
 
     }
 
@@ -534,8 +570,18 @@ class LoginActivity : AppCompatActivity() {
         private const val RC_SIGN_IN = 9001
     }
 
+
+    private fun update():Runnable = Runnable {
+        if(updateState==Static.ON){
+            update.setImageDrawable(StartButtonGreen(this,updateButtonSize.width,updateButtonSize.height))
+        }else{
+            update.setImageDrawable(StartButton(this,updateButtonSize.width,updateButtonSize.height))
+        }
+        updateState=!updateState
+        mHandlerUpdate.postDelayed(update(),500)
+    }
+
 }
 
-// TODO send game to a friend
 // TODO update button (invisible when there is no update needed)
 
