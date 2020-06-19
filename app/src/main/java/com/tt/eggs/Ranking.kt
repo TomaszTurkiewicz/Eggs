@@ -550,3 +550,6 @@ class Ranking : AppCompatActivity() {
 
 
 }
+
+// TODO progress bar
+// TODO show database error
