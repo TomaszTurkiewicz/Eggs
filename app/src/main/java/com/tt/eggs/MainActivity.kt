@@ -81,6 +81,10 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private var updateState = Static.ON
     private val mHandlerUpdate = Handler()
 
+    // for high score loop
+    private var highScoreState = Static.ON
+    private val mHandlerHighScore = Handler()
+
     private lateinit var mInterstitialAd: InterstitialAd
 
     private var screenHeight = 0
@@ -296,6 +300,16 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         }
         pauseState=!pauseState
         mHandlerPause.postDelayed(pause(pause),500)
+    }
+
+    private fun highScore(highScore:Int):Runnable = Runnable {
+        if(highScoreState==Static.ON){
+            score.text="HIGH SCORE"
+        }else {
+            score.text = highScore.toString()
+        }
+        highScoreState = !highScoreState
+        mHandlerHighScore.postDelayed(highScore(highScore),500)
     }
 
 
@@ -927,7 +941,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         mHandlerRabbit.removeCallbacksAndMessages(null)
         mHandlerFlash.removeCallbacksAndMessages(null)
         mHandlerLostEgg.removeCallbacksAndMessages(null)
-        newHighScore.visibility=View.GONE
+        mHandlerHighScore.removeCallbacksAndMessages(null)
         gameState=Static.DEMO
         game.clearEverything()
         displayState()
@@ -1060,7 +1074,8 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private fun loseA() {
         val newHighScore = savePointsLoseA()
         if(newHighScore){
-            showNewHighScore()
+            val score = game.getScore()
+            showNewHighScore(score)
         }
         game.clearEverything()
         clearSavedGame()
@@ -1068,8 +1083,8 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     }
 
-    private fun showNewHighScore() {
-        newHighScore.visibility = View.VISIBLE
+    private fun showNewHighScore(score:Int) {
+        highScore(score).run()
     }
 
     // game B has finished because of 3 faults
@@ -1077,7 +1092,8 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
         val newHighScore = savePointsLoseB()
         if(newHighScore){
-            showNewHighScore()
+            val score = game.getScore()
+            showNewHighScore(score)
         }
 
         clearSavedGame()
