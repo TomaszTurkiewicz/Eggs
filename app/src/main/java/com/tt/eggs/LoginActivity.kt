@@ -583,5 +583,5 @@ class LoginActivity : AppCompatActivity() {
 
 }
 
-// TODO update button (invisible when there is no update needed)
+
 

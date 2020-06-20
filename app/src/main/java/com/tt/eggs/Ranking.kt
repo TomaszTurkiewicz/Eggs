@@ -1,6 +1,8 @@
 package com.tt.eggs
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.ColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -18,10 +20,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.Dimension
 import com.tt.eggs.classes.User
-import com.tt.eggs.drawable.ArrowDown
-import com.tt.eggs.drawable.ArrowUp
-import com.tt.eggs.drawable.StartButton
-import com.tt.eggs.drawable.TextViewDrawableWithBorder
+import com.tt.eggs.drawable.*
 import kotlinx.android.synthetic.main.activity_ranking.*
 
 class Ranking : AppCompatActivity() {
@@ -59,6 +58,11 @@ class Ranking : AppCompatActivity() {
         }
 
 
+        progress_bar1.visibility = View.VISIBLE
+        progress_bar2.visibility = View.VISIBLE
+        progress_bar3.visibility = View.VISIBLE
+        progress_bar4.visibility = View.VISIBLE
+        progress_bar5.visibility = View.VISIBLE
 
 //        recyclerView.visibility = View.GONE
 //        ranking_error.visibility = View.GONE
@@ -106,23 +110,23 @@ class Ranking : AppCompatActivity() {
         val set = ConstraintSet()
         set.clone(ranking_layout)
 
-        set.connect(header.id,ConstraintSet.LEFT,ranking_layout.id,ConstraintSet.LEFT,0)
+        set.connect(header.id,ConstraintSet.LEFT,ranking_layout.id,ConstraintSet.LEFT,screenUnit/2)
         set.connect(header.id,ConstraintSet.TOP,ranking_layout.id,ConstraintSet.TOP,0)
 
         set.connect(position1.id,ConstraintSet.TOP,header.id,ConstraintSet.BOTTOM,0)
-        set.connect(position1.id,ConstraintSet.LEFT,ranking_layout.id,ConstraintSet.LEFT,0)
+        set.connect(position1.id,ConstraintSet.LEFT,ranking_layout.id,ConstraintSet.LEFT,screenUnit/2)
 
         set.connect(position2.id,ConstraintSet.TOP,position1.id,ConstraintSet.BOTTOM,0)
-        set.connect(position2.id,ConstraintSet.LEFT,ranking_layout.id,ConstraintSet.LEFT,0)
+        set.connect(position2.id,ConstraintSet.LEFT,ranking_layout.id,ConstraintSet.LEFT,screenUnit/2)
 
         set.connect(position3.id,ConstraintSet.TOP,position2.id,ConstraintSet.BOTTOM,0)
-        set.connect(position3.id,ConstraintSet.LEFT,ranking_layout.id,ConstraintSet.LEFT,0)
+        set.connect(position3.id,ConstraintSet.LEFT,ranking_layout.id,ConstraintSet.LEFT,screenUnit/2)
 
         set.connect(position4.id,ConstraintSet.TOP,position3.id,ConstraintSet.BOTTOM,0)
-        set.connect(position4.id,ConstraintSet.LEFT,ranking_layout.id,ConstraintSet.LEFT,0)
+        set.connect(position4.id,ConstraintSet.LEFT,ranking_layout.id,ConstraintSet.LEFT,screenUnit/2)
 
         set.connect(position5.id,ConstraintSet.TOP,position4.id,ConstraintSet.BOTTOM,0)
-        set.connect(position5.id,ConstraintSet.LEFT,ranking_layout.id,ConstraintSet.LEFT,0)
+        set.connect(position5.id,ConstraintSet.LEFT,ranking_layout.id,ConstraintSet.LEFT,screenUnit/2)
 
         set.connect(ranking_up.id,ConstraintSet.TOP,position1.id,ConstraintSet.TOP,0)
         set.connect(ranking_up.id,ConstraintSet.LEFT,position1.id,ConstraintSet.RIGHT,0)
@@ -133,9 +137,33 @@ class Ranking : AppCompatActivity() {
         set.connect(ranking_down.id,ConstraintSet.RIGHT,ranking_layout.id,ConstraintSet.RIGHT,0)
 
         set.connect(back_to_game_linearLayout_ranking.id,ConstraintSet.LEFT,position5.id,ConstraintSet.LEFT,0)
-        set.connect(back_to_game_linearLayout_ranking.id,ConstraintSet.RIGHT,position5.id,ConstraintSet.RIGHT,0)
         set.connect(back_to_game_linearLayout_ranking.id,ConstraintSet.BOTTOM,ranking_layout.id,ConstraintSet.BOTTOM,0)
         set.connect(back_to_game_linearLayout_ranking.id,ConstraintSet.TOP,position5.id,ConstraintSet.BOTTOM,0)
+
+        set.connect(progress_bar1.id,ConstraintSet.TOP,position1.id,ConstraintSet.TOP,0)
+        set.connect(progress_bar1.id,ConstraintSet.BOTTOM,position1.id,ConstraintSet.BOTTOM,0)
+        set.connect(progress_bar1.id,ConstraintSet.LEFT,position1.id,ConstraintSet.LEFT,0)
+        set.connect(progress_bar1.id,ConstraintSet.RIGHT,position1.id,ConstraintSet.RIGHT,0)
+
+        set.connect(progress_bar2.id,ConstraintSet.TOP,position2.id,ConstraintSet.TOP,0)
+        set.connect(progress_bar2.id,ConstraintSet.BOTTOM,position2.id,ConstraintSet.BOTTOM,0)
+        set.connect(progress_bar2.id,ConstraintSet.LEFT,position2.id,ConstraintSet.LEFT,0)
+        set.connect(progress_bar2.id,ConstraintSet.RIGHT,position2.id,ConstraintSet.RIGHT,0)
+
+        set.connect(progress_bar3.id,ConstraintSet.TOP,position3.id,ConstraintSet.TOP,0)
+        set.connect(progress_bar3.id,ConstraintSet.BOTTOM,position3.id,ConstraintSet.BOTTOM,0)
+        set.connect(progress_bar3.id,ConstraintSet.LEFT,position3.id,ConstraintSet.LEFT,0)
+        set.connect(progress_bar3.id,ConstraintSet.RIGHT,position3.id,ConstraintSet.RIGHT,0)
+
+        set.connect(progress_bar4.id,ConstraintSet.TOP,position4.id,ConstraintSet.TOP,0)
+        set.connect(progress_bar4.id,ConstraintSet.BOTTOM,position4.id,ConstraintSet.BOTTOM,0)
+        set.connect(progress_bar4.id,ConstraintSet.LEFT,position4.id,ConstraintSet.LEFT,0)
+        set.connect(progress_bar4.id,ConstraintSet.RIGHT,position4.id,ConstraintSet.RIGHT,0)
+
+        set.connect(progress_bar5.id,ConstraintSet.TOP,position5.id,ConstraintSet.TOP,0)
+        set.connect(progress_bar5.id,ConstraintSet.BOTTOM,position5.id,ConstraintSet.BOTTOM,0)
+        set.connect(progress_bar5.id,ConstraintSet.LEFT,position5.id,ConstraintSet.LEFT,0)
+        set.connect(progress_bar5.id,ConstraintSet.RIGHT,position5.id,ConstraintSet.RIGHT,0)
 
         set.applyTo(ranking_layout)
 
@@ -143,8 +171,8 @@ class Ranking : AppCompatActivity() {
 
     private fun setViewSizes() {
 
-        val username =3
-        val highscore = 2
+        val username =4
+        val highscore = 1.5
         val total = 2
 
         headerSize.height = (screenUnit).toDouble()
@@ -179,6 +207,7 @@ class Ranking : AppCompatActivity() {
         ranking_high_score_A.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_high_score_B.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_total_score.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
+        ranking_total_score.setPadding(0,0, (screenUnit*0.5).toInt(),0)
 
         userNameSize.width = (unit*username).toDouble()
         userNameSize.height = (screenUnit*1.5).toDouble()
@@ -200,6 +229,11 @@ class Ranking : AppCompatActivity() {
         position3.layoutParams=ConstraintLayout.LayoutParams((positionLayoutSize.width).toInt(),(positionLayoutSize.height).toInt())
         position4.layoutParams=ConstraintLayout.LayoutParams((positionLayoutSize.width).toInt(),(positionLayoutSize.height).toInt())
         position5.layoutParams=ConstraintLayout.LayoutParams((positionLayoutSize.width).toInt(),(positionLayoutSize.height).toInt())
+        progress_bar1.layoutParams=ConstraintLayout.LayoutParams((positionLayoutSize.width*0.9).toInt(),(positionLayoutSize.height).toInt())
+        progress_bar2.layoutParams=ConstraintLayout.LayoutParams((positionLayoutSize.width*0.9).toInt(),(positionLayoutSize.height).toInt())
+        progress_bar3.layoutParams=ConstraintLayout.LayoutParams((positionLayoutSize.width*0.9).toInt(),(positionLayoutSize.height).toInt())
+        progress_bar4.layoutParams=ConstraintLayout.LayoutParams((positionLayoutSize.width*0.9).toInt(),(positionLayoutSize.height).toInt())
+        progress_bar5.layoutParams=ConstraintLayout.LayoutParams((positionLayoutSize.width*0.9).toInt(),(positionLayoutSize.height).toInt())
 
 
         //        ranking_position.layoutParams = LinearLayout.LayoutParams((positionSize.width).toInt(),(positionSize.height).toInt())
@@ -207,18 +241,22 @@ class Ranking : AppCompatActivity() {
         ranking_high_score_A1.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height).toInt())
         ranking_high_score_B1.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height).toInt())
         ranking_total_score1.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height).toInt())
+        ranking_total_score1.setPadding(0,0, (screenUnit*0.5).toInt(),0)
 
 //        ranking_position.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_user_name1.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
+        ranking_user_name1.setPadding(screenUnit/2,0,0,0)
         ranking_high_score_A1.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_high_score_B1.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_total_score1.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
 
         //        ranking_position.layoutParams = LinearLayout.LayoutParams((positionSize.width).toInt(),(positionSize.height).toInt())
         ranking_user_name2.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height).toInt())
+        ranking_user_name2.setPadding(screenUnit/2,0,0,0)
         ranking_high_score_A2.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height).toInt())
         ranking_high_score_B2.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height).toInt())
         ranking_total_score2.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height).toInt())
+        ranking_total_score2.setPadding(0,0, (screenUnit*0.5).toInt(),0)
 
 //        ranking_position.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_user_name2.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
@@ -228,9 +266,11 @@ class Ranking : AppCompatActivity() {
 
         //        ranking_position.layoutParams = LinearLayout.LayoutParams((positionSize.width).toInt(),(positionSize.height).toInt())
         ranking_user_name3.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height).toInt())
+        ranking_user_name3.setPadding(screenUnit/2,0,0,0)
         ranking_high_score_A3.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height).toInt())
         ranking_high_score_B3.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height).toInt())
         ranking_total_score3.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height).toInt())
+        ranking_total_score3.setPadding(0,0, (screenUnit*0.5).toInt(),0)
 
 //        ranking_position.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_user_name3.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
@@ -247,9 +287,11 @@ class Ranking : AppCompatActivity() {
 
 //        ranking_position.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_user_name4.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
+        ranking_user_name4.setPadding(screenUnit/2,0,0,0)
         ranking_high_score_A4.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_high_score_B4.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_total_score4.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
+        ranking_total_score4.setPadding(0,0, (screenUnit*0.5).toInt(),0)
 
         //        ranking_position.layoutParams = LinearLayout.LayoutParams((positionSize.width).toInt(),(positionSize.height).toInt())
         ranking_user_name5.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height).toInt())
@@ -259,9 +301,11 @@ class Ranking : AppCompatActivity() {
 
 //        ranking_position.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_user_name5.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
+        ranking_user_name5.setPadding(screenUnit/2,0,0,0)
         ranking_high_score_A5.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_high_score_B5.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         ranking_total_score5.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
+        ranking_total_score5.setPadding(0,0, (screenUnit*0.5).toInt(),0)
 
         arrowSize.width= (screenUnit*4/3).toDouble()
         arrowSize.height = arrowSize.width*2
@@ -274,6 +318,7 @@ class Ranking : AppCompatActivity() {
 
         backToGameRanking.layoutParams = LinearLayout.LayoutParams((backToGameButtonSize.width).toInt(),(backToGameButtonSize.height).toInt())
         back_to_game_ranking.layoutParams = LinearLayout.LayoutParams((4*backToGameButtonSize.width).toInt(),(backToGameButtonSize.height).toInt())
+        back_to_game_blank.layoutParams = LinearLayout.LayoutParams((backToGameButtonSize.width/2).toInt(),(backToGameButtonSize.height).toInt())
         back_to_game_ranking.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
     }
@@ -287,7 +332,10 @@ class Ranking : AppCompatActivity() {
         ranking_up.setImageDrawable(ArrowUp(this,arrowSize.width,arrowSize.height))
         ranking_down.setImageDrawable(ArrowDown(this,arrowSize.width,arrowSize.height))
         backToGameRanking.setImageDrawable(StartButton(this,backToGameButtonSize.width,backToGameButtonSize.height))
-
+        back_to_game_linearLayout_ranking.background = RoundedFrameDrawable(this,5.5*backToGameButtonSize.width,backToGameButtonSize.height,
+            backToGameButtonSize.height/20,
+            backToGameButtonSize.height/2
+        )
     }
 
     private fun getScreenHeightAndWidth() {
@@ -305,9 +353,12 @@ class Ranking : AppCompatActivity() {
         val dbRef = Firebase.database.getReference("user")
         dbRef.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
-//                progress_bar.visibility = View.GONE
-//                ranking_error.text = "DATABASE ERROR"
-//                ranking_error.visibility = View.VISIBLE
+                progress_bar1.visibility = View.GONE
+                progress_bar2.visibility = View.GONE
+                progress_bar3.visibility = View.GONE
+                progress_bar4.visibility = View.GONE
+                progress_bar5.visibility = View.GONE
+                ranking_user_name1.text = "DATABASE ERROR"
             }
 
             override fun onDataChange(p0: DataSnapshot) {
@@ -319,9 +370,13 @@ class Ranking : AppCompatActivity() {
                     sortAndDisplay()
                 }
                 else{
-//                    progress_bar.visibility = View.GONE
-//                    ranking_error.text = "DATABASE EMPTY"
-//                    ranking_error.visibility = View.VISIBLE
+                    progress_bar1.visibility = View.GONE
+                    progress_bar2.visibility = View.GONE
+                    progress_bar3.visibility = View.GONE
+                    progress_bar4.visibility = View.GONE
+                    progress_bar5.visibility = View.GONE
+                    ranking_user_name1.text = "DATABASE EMPTY"
+
                 }
 
             }
@@ -346,6 +401,11 @@ class Ranking : AppCompatActivity() {
             }
         }
 
+        progress_bar1.visibility = View.GONE
+        progress_bar2.visibility = View.GONE
+        progress_bar3.visibility = View.GONE
+        progress_bar4.visibility = View.GONE
+        progress_bar5.visibility = View.GONE
 
         displayFiveUsers(userid,userPosition)
 
@@ -551,5 +611,3 @@ class Ranking : AppCompatActivity() {
 
 }
 
-// TODO progress bar
-// TODO show database error
