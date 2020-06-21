@@ -96,6 +96,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private val arrowSize = Dimension()
     private val startButtonSize = Dimension()
     private val userIdSize = Dimension()
+    private val rabbitSize = Dimension()
 
     /**---------------------- activity life cycle methods---------------------------**/
 
@@ -581,6 +582,11 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         set.connect(userID.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
         set.connect(userID.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.TOP,0)
 
+        set.connect(rabbit.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP,screenUnit)
+        set.connect(rabbit.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,
+            (2.9*screenUnit).toInt()
+        )
+
         set.applyTo(main_activity_layout)
 
 
@@ -686,6 +692,11 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         userID.layoutParams = ConstraintLayout.LayoutParams((userIdSize.width*screenUnit).toInt(), (userIdSize.height*screenUnit).toInt())
         userID.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
+        rabbitSize.width = screenUnit.toDouble()
+        rabbitSize.height = screenUnit.toDouble()
+
+        rabbit.layoutParams = ConstraintLayout.LayoutParams(rabbitSize.width.toInt(),rabbitSize.height.toInt())
+
     }
 
     private fun getScreenHighAndWidth() {
@@ -736,7 +747,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // display rabbit
     private fun displayRabbit(rabbitBoolean: Boolean){
        if(rabbitBoolean){
-           rabbit.setImageDrawable(getDrawable(R.drawable.rabbit))
+           rabbit.setImageDrawable(RabbitDrawable(this,rabbitSize.width))
        }
        else{
            rabbit.setImageDrawable(null)
