@@ -37,7 +37,7 @@ class TestEgg : AppCompatActivity() {
         }
 
         third.setOnClickListener {
-            eggImage.setImageDrawable(RunningChickenRightTwo(this,size.toDouble()))
+            eggImage.setImageDrawable(RunningChickenRightFirst(this,size.toDouble()))
         }
 
         fourth.setOnClickListener {
