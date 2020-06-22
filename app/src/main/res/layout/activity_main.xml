@@ -8,15 +8,6 @@
     android:id="@+id/main_activity_layout"
     android:background="@color/gray">
 
-    <Button
-        android:id="@+id/test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="TEST"/>
-
 
     <ImageView
         android:id="@+id/account"
@@ -357,7 +348,8 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         app:layout_constraintLeft_toLeftOf="@id/eggBottomLeftFifth"
-        app:layout_constraintBottom_toBottomOf="@id/screen"/>
+        app:layout_constraintBottom_toBottomOf="@id/screen"
+        android:background="@color/colorAccent"/>
 
 
 
@@ -366,22 +358,33 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         app:layout_constraintLeft_toLeftOf="@id/eggBottomLeftThird"
-        app:layout_constraintBottom_toBottomOf="@id/screen"/>
+        app:layout_constraintBottom_toBottomOf="@id/screen"
+        android:background="@color/colorAccent"/>
 
 
     <ImageView
         android:id="@+id/faultLeftThird"
         android:layout_width="25dp"
         android:layout_height="25dp"
+        app:layout_constraintLeft_toLeftOf="@id/eggBottomLeftSecond"
+        app:layout_constraintBottom_toBottomOf="@id/screen"
+        android:background="@color/colorAccent"/>
+
+    <ImageView
+        android:id="@+id/faultLeftFourth"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         app:layout_constraintLeft_toLeftOf="@id/eggBottomLeftFirst"
-        app:layout_constraintBottom_toBottomOf="@id/screen"/>
+        app:layout_constraintBottom_toBottomOf="@id/screen"
+        android:background="@color/colorAccent"/>
 
     <ImageView
         android:id="@+id/faultRightFirst"
         android:layout_width="25dp"
         android:layout_height="25dp"
         app:layout_constraintRight_toRightOf="@id/eggBottomRightFifth"
-        app:layout_constraintBottom_toBottomOf="@id/screen"/>
+        app:layout_constraintBottom_toBottomOf="@id/screen"
+        android:background="@color/colorAccent"/>
 
 
     <ImageView
@@ -389,14 +392,23 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         app:layout_constraintRight_toRightOf="@id/eggBottomRightThird"
-        app:layout_constraintBottom_toBottomOf="@id/screen"/>
+        app:layout_constraintBottom_toBottomOf="@id/screen"
+        android:background="@color/colorAccent"/>
 
 
     <ImageView
         android:id="@+id/faultRightThird"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        app:layout_constraintRight_toRightOf="@id/eggBottomRightFirst"
-        app:layout_constraintBottom_toBottomOf="@id/screen"/>
+        app:layout_constraintRight_toRightOf="@id/eggBottomRightSecond"
+        app:layout_constraintBottom_toBottomOf="@id/screen"
+        android:background="@color/colorAccent"/>
 
+    <ImageView
+        android:id="@+id/faultRightFourth"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintRight_toRightOf="@id/eggBottomRightFirst"
+        app:layout_constraintBottom_toBottomOf="@id/screen"
+        android:background="@color/colorAccent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

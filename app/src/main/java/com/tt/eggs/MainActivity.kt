@@ -98,6 +98,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private val userIdSize = Dimension()
     private val rabbitSize = Dimension()
     private val faultSize = Dimension()
+    private val bottomFaultSizeSmall = Dimension()
 
     /**---------------------- activity life cycle methods---------------------------**/
 
@@ -604,6 +605,24 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         set.connect(right_fault.id,ConstraintSet.TOP,middle_fault.id,ConstraintSet.TOP,0)
         set.connect(right_fault.id,ConstraintSet.LEFT,middle_fault.id,ConstraintSet.RIGHT, 0)
 
+        set.connect(faultLeftSecond.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
+        set.connect(faultLeftSecond.id,ConstraintSet.LEFT,faultLeftThird.id,ConstraintSet.RIGHT,(screenUnit*0.1).toInt())
+
+        set.connect(faultLeftThird.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
+        set.connect(faultLeftThird.id,ConstraintSet.LEFT,faultLeftFourth.id,ConstraintSet.RIGHT,(screenUnit*0.1).toInt())
+
+        set.connect(faultLeftFourth.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.5).toInt())
+        set.connect(faultLeftFourth.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,(screenUnit*0.9).toInt())
+
+        set.connect(faultRightSecond.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
+        set.connect(faultRightSecond.id,ConstraintSet.RIGHT,faultRightThird.id,ConstraintSet.LEFT,(screenUnit*0.1).toInt())
+
+        set.connect(faultRightThird.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
+        set.connect(faultRightThird.id,ConstraintSet.RIGHT,faultRightFourth.id,ConstraintSet.LEFT,(screenUnit*0.1).toInt())
+
+        set.connect(faultRightFourth.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.5).toInt())
+        set.connect(faultRightFourth.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,(screenUnit*0.9).toInt())
+
         set.applyTo(main_activity_layout)
 
 
@@ -720,6 +739,16 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         left_fault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
         right_fault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
 
+        bottomFaultSizeSmall.width = (screenUnit/2).toDouble()
+        bottomFaultSizeSmall.height=bottomFaultSizeSmall.width*1.5
+
+        faultLeftSecond.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
+        faultLeftThird.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
+        faultLeftFourth.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
+        faultRightSecond.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
+        faultRightThird.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
+        faultRightFourth.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
+
     }
 
     private fun getScreenHighAndWidth() {
@@ -783,11 +812,13 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         faultLeftFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,0))getDrawable(R.drawable.full_fault)else null)
         faultLeftSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,0))getDrawable(R.drawable.full_fault)else null)
         faultLeftThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,0))getDrawable(R.drawable.full_fault)else null)
+        faultLeftFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,0))RunningChickenLeftThree(this,bottomFaultSizeSmall.width)else null)
 
 
         faultRightFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,1))getDrawable(R.drawable.full_fault)else null)
         faultRightSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,1))getDrawable(R.drawable.full_fault)else null)
         faultRightThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,1))getDrawable(R.drawable.full_fault)else null)
+        faultRightFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,1))RunningChickenRightThree(this,bottomFaultSizeSmall.width)else null)
 
 
     }
