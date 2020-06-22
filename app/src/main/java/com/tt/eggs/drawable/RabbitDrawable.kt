@@ -9,7 +9,7 @@ import com.tt.eggs.classes.Functions
 import kotlinx.android.synthetic.main.activity_other_games.*
 
 class RabbitDrawable(private val context: Context, private val size: Double): Drawable() {
-    private var paint= Paint()
+    private val paint= Paint()
     private val stroke = size/100
 
 

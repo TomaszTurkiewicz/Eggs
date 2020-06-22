@@ -97,6 +97,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private val startButtonSize = Dimension()
     private val userIdSize = Dimension()
     private val rabbitSize = Dimension()
+    private val faultSize = Dimension()
 
     /**---------------------- activity life cycle methods---------------------------**/
 
@@ -119,6 +120,12 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
         // check if loggedIn
         checkLoggedInState()
+
+        // TODO for testing drawable
+//            val intent = Intent(this,TestEgg::class.java)
+//            startActivity(intent)
+//            finish()
+
 
         // set button listeners and text view displays
         buttonsOnClickListeners()
@@ -239,7 +246,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // flashing fault
     private fun flashFault(imageView: ImageView):Runnable = Runnable {
         if(faultFlash==Static.ON){
-            imageView.setImageDrawable(getDrawable(R.drawable.full_fault))
+            imageView.setImageDrawable(FaultTopDrawable(this,faultSize.height))
             faultFlash=Static.OFF
             mHandlerFlash.postDelayed(flashFault(imageView),500)
         }else{
@@ -587,6 +594,16 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             (2.9*screenUnit).toInt()
         )
 
+        set.connect(middle_fault.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (1.5*screenUnit).toInt())
+        set.connect(middle_fault.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,0)
+        set.connect(middle_fault.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
+
+        set.connect(left_fault.id,ConstraintSet.TOP,middle_fault.id,ConstraintSet.TOP,0)
+        set.connect(left_fault.id,ConstraintSet.RIGHT,middle_fault.id,ConstraintSet.LEFT, 0)
+
+        set.connect(right_fault.id,ConstraintSet.TOP,middle_fault.id,ConstraintSet.TOP,0)
+        set.connect(right_fault.id,ConstraintSet.LEFT,middle_fault.id,ConstraintSet.RIGHT, 0)
+
         set.applyTo(main_activity_layout)
 
 
@@ -696,6 +713,12 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         rabbitSize.height = screenUnit.toDouble()
 
         rabbit.layoutParams = ConstraintLayout.LayoutParams(rabbitSize.width.toInt(),rabbitSize.height.toInt())
+
+        faultSize.width = (screenUnit/2).toDouble()
+        faultSize.height = faultSize.width
+        middle_fault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
+        left_fault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
+        right_fault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
 
     }
 
@@ -921,11 +944,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             }
         }
 
-        test.setOnClickListener {
-            val intent = Intent(this,TestEgg::class.java)
-            startActivity(intent)
-            finish()
-        }
+
 
 
         if(loggedInStatus.loggedIn) {
@@ -1175,35 +1194,35 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         mHandlerFlash.removeCallbacksAndMessages(null)
         left_fault.setImageDrawable(null)
         middle_fault.setImageDrawable(null)
-        right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        right_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
     }
 
     private fun threeFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
         flashFault(middle_fault).run()
         left_fault.setImageDrawable(null)
-        right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        right_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
     }
 
     private fun fourFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
         left_fault.setImageDrawable(null)
-        middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
-        right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        middle_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        right_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
     }
 
     private fun fiveFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
         flashFault(left_fault).run()
-        middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
-        right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        middle_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        right_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
     }
 
     private fun sixFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
-        left_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
-        middle_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
-        right_fault.setImageDrawable(getDrawable(R.drawable.full_fault))
+        left_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        middle_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        right_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
     }
 
     // lost egg animation end game
@@ -1244,7 +1263,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 TODO add sounds
 TODO change UI
 TODO wolf
-TODO rabbit
 TODO faults up and down
 TODO firebase change write rules (user can write only his node)
 

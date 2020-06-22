@@ -28,7 +28,7 @@ class TestEgg : AppCompatActivity() {
         set.applyTo(eggActivityLayout)
 
 
-        eggImage.setImageDrawable(RabbitDrawable(this,size.toDouble()))
+        eggImage.setImageDrawable(FaultTopDrawable(this, size.toDouble()))
 
 
 
