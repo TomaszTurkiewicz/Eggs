@@ -27,12 +27,12 @@ class RunningChickenRightThree (private val context: Context, private val width:
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = (width*0.15).toFloat()
 
-        val c = Point((width*0.66).toInt(), (width*1.05).toInt())
+ //       val c = Point((width*0.66).toInt(), (width*1.05).toInt())
         val d = Point((width*0.85).toInt(), (width*1.05).toInt())
         val e = Point((width*0.87).toInt(), (width*0.83).toInt())
         val f = Point((width*0.83).toInt(), (width*1.27).toInt())
 
-        val g = Point((width*0.38).toInt(), (width*1.25).toInt())
+ //       val g = Point((width*0.38).toInt(), (width*1.25).toInt())
         val h = Point((width*0.3).toInt(), (width*1.4).toInt())
         val i = Point((width*0.08).toInt(), (width*1.35).toInt())
         val j = Point((width*0.52).toInt(), (width*1.45).toInt())
@@ -59,12 +59,12 @@ class RunningChickenRightThree (private val context: Context, private val width:
         paint.strokeWidth = (width*0.1).toFloat()
 
         val path1 = Path()
-        path1.moveTo(c.x.toFloat(), c.y.toFloat())
+        path1.moveTo(b.x.toFloat(), b.y.toFloat())
         path1.lineTo(d.x.toFloat(), d.y.toFloat())
         path1.moveTo(e.x.toFloat(), e.y.toFloat())
         path1.lineTo(f.x.toFloat(), f.y.toFloat())
 
-        path1.moveTo(g.x.toFloat(), g.y.toFloat())
+        path1.moveTo(b.x.toFloat(), b.y.toFloat())
         path1.lineTo(h.x.toFloat(), h.y.toFloat())
         path1.moveTo(i.x.toFloat(), i.y.toFloat())
         path1.lineTo(j.x.toFloat(), j.y.toFloat())

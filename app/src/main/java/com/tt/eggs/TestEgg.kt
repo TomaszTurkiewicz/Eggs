@@ -27,11 +27,21 @@ class TestEgg : AppCompatActivity() {
 
         set.applyTo(eggActivityLayout)
 
+
+
         first.setOnClickListener {
             eggImage.setImageDrawable(RunningChickenRightThree(this, size.toDouble()))
         }
         second.setOnClickListener {
             eggImage.setImageDrawable(RunningChickenLeftThree(this, size.toDouble()))
+        }
+
+        third.setOnClickListener {
+            eggImage.setImageDrawable(RunningChickenRightTwo(this,size.toDouble()))
+        }
+
+        fourth.setOnClickListener {
+            eggImage.setImageDrawable(RunningChickenLeftTwo(this,size.toDouble()))
         }
 
 

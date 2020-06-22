@@ -57,6 +57,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@drawable/running_chicken_3"/>
+        android:background="@drawable/fault_egg_background_1"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

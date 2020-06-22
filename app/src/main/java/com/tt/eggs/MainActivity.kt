@@ -810,14 +810,14 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // display running chicken during animation
     private fun displayRunningChicken(fallenEgg: FallenEgg) {
         faultLeftFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,0))getDrawable(R.drawable.full_fault)else null)
-        faultLeftSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,0))getDrawable(R.drawable.full_fault)else null)
-        faultLeftThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,0))getDrawable(R.drawable.full_fault)else null)
+        faultLeftSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,0))RunningChickenLeftThree(this,bottomFaultSizeSmall.width)else null)
+        faultLeftThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,0))RunningChickenLeftTwo(this,bottomFaultSizeSmall.width)else null)
         faultLeftFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,0))RunningChickenLeftThree(this,bottomFaultSizeSmall.width)else null)
 
 
         faultRightFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,1))getDrawable(R.drawable.full_fault)else null)
-        faultRightSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,1))getDrawable(R.drawable.full_fault)else null)
-        faultRightThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,1))getDrawable(R.drawable.full_fault)else null)
+        faultRightSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,1))RunningChickenRightThree(this,bottomFaultSizeSmall.width)else null)
+        faultRightThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,1))RunningChickenRightTwo(this,bottomFaultSizeSmall.width)else null)
         faultRightFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,1))RunningChickenRightThree(this,bottomFaultSizeSmall.width)else null)
 
 
