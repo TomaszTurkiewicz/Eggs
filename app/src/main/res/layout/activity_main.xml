@@ -193,12 +193,26 @@
         app:layout_constraintLeft_toRightOf="@id/eggTopLeftFourth"
         app:layout_constraintTop_toBottomOf="@id/eggTopLeftFourth"
         android:layout_marginLeft="20dp"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/basketTopLeft"-->
+<!--        android:layout_width="25dp"-->
+<!--        android:layout_height="25dp"-->
+<!--        app:layout_constraintLeft_toRightOf="@id/eggTopLeftFifth"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/eggTopLeftFifth"/>-->
+
     <ImageView
-        android:id="@+id/basketTopLeft"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        app:layout_constraintLeft_toRightOf="@id/eggTopLeftFifth"
-        app:layout_constraintTop_toBottomOf="@id/eggTopLeftFifth"/>
+        android:id="@+id/left_wolf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <ImageView
+        android:id="@+id/right_wolf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 
     <ImageView
@@ -241,12 +255,12 @@
         app:layout_constraintTop_toBottomOf="@id/eggBottomLeftFourth"
         android:layout_marginLeft="20dp"/>
 
-    <ImageView
-        android:id="@+id/basketBottomLeft"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        app:layout_constraintLeft_toRightOf="@id/eggBottomLeftFifth"
-        app:layout_constraintTop_toBottomOf="@id/eggBottomLeftFifth"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/basketBottomLeft"-->
+<!--        android:layout_width="25dp"-->
+<!--        android:layout_height="25dp"-->
+<!--        app:layout_constraintLeft_toRightOf="@id/eggBottomLeftFifth"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/eggBottomLeftFifth"/>-->
 
 
     <ImageView
@@ -288,12 +302,12 @@
         app:layout_constraintTop_toBottomOf="@id/eggTopRightFourth"
         android:layout_marginRight="20dp"/>
 
-    <ImageView
-        android:id="@+id/basketTopRight"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        app:layout_constraintRight_toLeftOf="@id/eggTopRightFifth"
-        app:layout_constraintTop_toBottomOf="@id/eggTopRightFifth"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/basketTopRight"-->
+<!--        android:layout_width="25dp"-->
+<!--        android:layout_height="25dp"-->
+<!--        app:layout_constraintRight_toLeftOf="@id/eggTopRightFifth"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/eggTopRightFifth"/>-->
 
 
     <ImageView
@@ -336,12 +350,12 @@
         app:layout_constraintTop_toBottomOf="@id/eggBottomRightFourth"
         android:layout_marginRight="20dp"/>
 
-    <ImageView
-        android:id="@+id/basketBottomRight"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        app:layout_constraintRight_toLeftOf="@id/eggBottomRightFifth"
-        app:layout_constraintTop_toBottomOf="@id/eggBottomRightFifth"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/basketBottomRight"-->
+<!--        android:layout_width="25dp"-->
+<!--        android:layout_height="25dp"-->
+<!--        app:layout_constraintRight_toLeftOf="@id/eggBottomRightFifth"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/eggBottomRightFifth"/>-->
 
     <ImageView
         android:id="@+id/faultLeftFirst"
