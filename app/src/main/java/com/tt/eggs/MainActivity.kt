@@ -631,10 +631,10 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         set.connect(faultRightFirst.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*0.83).toInt())
         set.connect(faultRightFirst.id,ConstraintSet.RIGHT,faultRightSecond.id,ConstraintSet.LEFT,(screenUnit*0.2).toInt())
 
-        set.connect(left_wolf.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.3).toInt())
+        set.connect(left_wolf.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
         set.connect(left_wolf.id,ConstraintSet.LEFT,eggBottomLeftFifth.id,ConstraintSet.LEFT,0)
 
-        set.connect(right_wolf.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.3).toInt())
+        set.connect(right_wolf.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
         set.connect(right_wolf.id,ConstraintSet.RIGHT,eggBottomRightFifth.id,ConstraintSet.RIGHT,0)
 
         set.applyTo(main_activity_layout)
@@ -851,7 +851,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // display demo basket
     private fun displayDemoBasket() {
         if(game.position[Static.LEFT_TOP]){
-            left_wolf.setImageDrawable(WolfLeftBottom(this,wolfSize.width))
+            left_wolf.setImageDrawable(WolfLeftTop(this,wolfSize.width))
             right_wolf.setImageDrawable(null)
         }
 
@@ -865,7 +865,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         }
         if(game.position[Static.RIGHT_TOP]){
             left_wolf.setImageDrawable(null)
-            right_wolf.setImageDrawable(WolfRightBottom(this,wolfSize.width))
+            right_wolf.setImageDrawable(WolfRightTop(this,wolfSize.width))
         }
 
     }
@@ -898,7 +898,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private fun displayBasket(){
         game.setBasket(basket)
         if(game.position[Static.LEFT_TOP]){
-            left_wolf.setImageDrawable(WolfLeftBottom(this,wolfSize.width))
+            left_wolf.setImageDrawable(WolfLeftTop(this,wolfSize.width))
             right_wolf.setImageDrawable(null)
         }
         if(game.position[Static.LEFT_BOTTOM]){
@@ -911,7 +911,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         }
         if(game.position[Static.RIGHT_TOP]){
             left_wolf.setImageDrawable(null)
-            right_wolf.setImageDrawable(WolfRightBottom(this,wolfSize.width))
+            right_wolf.setImageDrawable(WolfRightTop(this,wolfSize.width))
         }
     }
 
