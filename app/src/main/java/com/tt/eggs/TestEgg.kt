@@ -30,7 +30,7 @@ class TestEgg : AppCompatActivity() {
 
 
 
-            eggImage.setImageDrawable(WolfLeftBottom(this, size.toDouble()))
+            eggImage.setImageDrawable(WolfLeftTop(this, size.toDouble()))
 
 
 
