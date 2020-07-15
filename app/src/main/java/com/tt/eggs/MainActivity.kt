@@ -125,9 +125,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         checkLoggedInState()
 
         // TODO for testing drawable
-//            val intent = Intent(this,TestEgg::class.java)
-//            startActivity(intent)
-//            finish()
+            val intent = Intent(this,TestEgg::class.java)
+            startActivity(intent)
+            finish()
 
 
         // set button listeners and text view displays
@@ -632,10 +632,10 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         set.connect(faultRightFirst.id,ConstraintSet.RIGHT,faultRightSecond.id,ConstraintSet.LEFT,(screenUnit*0.2).toInt())
 
         set.connect(left_wolf.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
-        set.connect(left_wolf.id,ConstraintSet.LEFT,eggBottomLeftFifth.id,ConstraintSet.LEFT,0)
+        set.connect(left_wolf.id,ConstraintSet.LEFT,eggBottomLeftFifth.id,ConstraintSet.LEFT, (screenUnit*0.13).toInt())
 
         set.connect(right_wolf.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
-        set.connect(right_wolf.id,ConstraintSet.RIGHT,eggBottomRightFifth.id,ConstraintSet.RIGHT,0)
+        set.connect(right_wolf.id,ConstraintSet.RIGHT,eggBottomRightFifth.id,ConstraintSet.RIGHT, (screenUnit*0.13).toInt())
 
         set.applyTo(main_activity_layout)
 
