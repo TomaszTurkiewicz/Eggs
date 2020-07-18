@@ -99,6 +99,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private val rabbitSize = Dimension()
     private val faultSize = Dimension()
     private val bottomFaultSizeSmall = Dimension()
+    private val bottomFaultSizeSmallDifferent = Dimension()
     private val bottomFaultSizeFirst = Dimension()
     private val wolfSize = Dimension()
 
@@ -125,9 +126,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         checkLoggedInState()
 
         // TODO for testing drawable
-            val intent = Intent(this,TestEgg::class.java)
-            startActivity(intent)
-            finish()
+//            val intent = Intent(this,TestEgg::class.java)
+//            startActivity(intent)
+//            finish()
 
 
         // set button listeners and text view displays
@@ -756,10 +757,15 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         bottomFaultSizeSmall.width = (screenUnit/2).toDouble()
         bottomFaultSizeSmall.height=bottomFaultSizeSmall.width*1.5
 
-        faultLeftSecond.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
+        bottomFaultSizeSmallDifferent.height = bottomFaultSizeSmall.height
+        bottomFaultSizeSmallDifferent.width = bottomFaultSizeSmallDifferent.height/1.2
+
+
+
+        faultLeftSecond.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmallDifferent.width.toInt(),bottomFaultSizeSmallDifferent.height.toInt())
         faultLeftThird.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
         faultLeftFourth.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
-        faultRightSecond.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
+        faultRightSecond.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmallDifferent.width.toInt(),bottomFaultSizeSmallDifferent.height.toInt())
         faultRightThird.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
         faultRightFourth.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
 
@@ -835,13 +841,13 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // display running chicken during animation
     private fun displayRunningChicken(fallenEgg: FallenEgg) {
         faultLeftFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,0))BrokenEggLeft(this,bottomFaultSizeFirst.width)else null)
-        faultLeftSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,0))RunningChickenLeftFirst(this,bottomFaultSizeSmall.width)else null)
+        faultLeftSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,0))RunningChickenLeftFirst(this,bottomFaultSizeSmallDifferent.width)else null)
         faultLeftThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,0))RunningChickenLeftTwo(this,bottomFaultSizeSmall.width)else null)
         faultLeftFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,0))RunningChickenLeftThree(this,bottomFaultSizeSmall.width)else null)
 
 
         faultRightFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,1))BrokenEggRight(this,bottomFaultSizeFirst.width)else null)
-        faultRightSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,1))RunningChickenRightFirst(this,bottomFaultSizeSmall.width)else null)
+        faultRightSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,1))RunningChickenRightFirst(this,bottomFaultSizeSmallDifferent.width)else null)
         faultRightThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,1))RunningChickenRightTwo(this,bottomFaultSizeSmall.width)else null)
         faultRightFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,1))RunningChickenRightThree(this,bottomFaultSizeSmall.width)else null)
 
@@ -1038,13 +1044,13 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private fun displayDemoFaults() {
 
         faultLeftFirst.setImageDrawable(BrokenEggLeft(this,bottomFaultSizeFirst.width))
-        faultLeftSecond.setImageDrawable(RunningChickenLeftFirst(this,bottomFaultSizeSmall.width))
+        faultLeftSecond.setImageDrawable(RunningChickenLeftFirst(this,bottomFaultSizeSmallDifferent.width))
         faultLeftThird.setImageDrawable(RunningChickenLeftTwo(this,bottomFaultSizeSmall.width))
         faultLeftFourth.setImageDrawable(RunningChickenLeftThree(this,bottomFaultSizeSmall.width))
 
 
         faultRightFirst.setImageDrawable(BrokenEggRight(this,bottomFaultSizeFirst.width))
-        faultRightSecond.setImageDrawable(RunningChickenRightFirst(this,bottomFaultSizeSmall.width))
+        faultRightSecond.setImageDrawable(RunningChickenRightFirst(this,bottomFaultSizeSmallDifferent.width))
         faultRightThird.setImageDrawable(RunningChickenRightTwo(this,bottomFaultSizeSmall.width))
         faultRightFourth.setImageDrawable(RunningChickenRightThree(this,bottomFaultSizeSmall.width))
 
