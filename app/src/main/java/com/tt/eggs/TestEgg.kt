@@ -14,8 +14,8 @@ class TestEgg : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test_egg)
 
-        val size = 800
-        eggImage.layoutParams = ConstraintLayout.LayoutParams(size, (size*1.2).toInt())
+        val size = 1000
+        eggImage.layoutParams = ConstraintLayout.LayoutParams(size, (size*1.5).toInt())
 
         val set = ConstraintSet()
         set.clone(eggActivityLayout)
@@ -30,7 +30,7 @@ class TestEgg : AppCompatActivity() {
 
 
 
-            eggImage.setImageDrawable(RunningChickenLeftFirst(this, size.toDouble()))
+            eggImage.setImageDrawable(RunningChickenLeftThree(this, size.toDouble()))
 
 
 

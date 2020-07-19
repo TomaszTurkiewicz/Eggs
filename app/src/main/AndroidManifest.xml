@@ -17,7 +17,7 @@
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".TestEgg"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Ranking"
