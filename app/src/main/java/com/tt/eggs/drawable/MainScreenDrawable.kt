@@ -26,6 +26,7 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
         drawChickenRightTop(canvas, margin)
         drawChickenRightBottom(canvas,margin)
         drawRoosts(canvas, margin)
+        drawGrass(canvas, margin)
 
     }
 
@@ -164,7 +165,6 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
 
     }
 
-
     private fun drawRabbitWindow(canvas: Canvas, margin: Double) {
         val stroke = screenUnit/7
         val leftMargin = margin*screenUnit
@@ -275,6 +275,7 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
 
 
     }
+
     private fun drawChickenLeftBottom(canvas: Canvas, margin: Double) {
 
         val paint1 = Paint()
@@ -482,6 +483,16 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
         canvas.drawCircle(d.x.toFloat(), d.y.toFloat(), (screenUnit/15).toFloat(),paint1)
         canvas.drawLine(e.x.toFloat(), e.y.toFloat(), f.x.toFloat(), f.y.toFloat(),paint2)
         canvas.drawLine(e.x.toFloat(), e.y.toFloat(), g.x.toFloat(), g.y.toFloat(),paint2)
+
+    }
+
+    private fun drawGrass(canvas: Canvas, margin: Double) {
+        paint.strokeWidth= (screenUnit/10).toFloat()
+        paint.color= ContextCompat.getColor(context, R.color.green)
+        paint.style = Paint.Style.STROKE
+
+
+
 
     }
 
