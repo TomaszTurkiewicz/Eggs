@@ -27,12 +27,11 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
         drawChickenRightTop(canvas, margin)
         drawChickenRightBottom(canvas,margin)
         drawRoosts(canvas, margin)
-        drawGrass(canvas, margin)
+        drawGrassLeft(canvas, margin)
+        drawGrassRight(canvas, margin)
         coverEdges(canvas)
 
     }
-
-
 
 
     override fun setAlpha(alpha: Int) {
@@ -485,7 +484,7 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
 
     }
 
-    private fun drawGrass(canvas: Canvas, margin: Double) {
+    private fun drawGrassLeft(canvas: Canvas, margin: Double) {
         paint.strokeWidth= (screenUnit/20).toFloat()
         paint.color= ContextCompat.getColor(context, R.color.green)
         paint.style = Paint.Style.FILL_AND_STROKE
@@ -592,4 +591,110 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
 
     }
 
+    private fun drawGrassRight(canvas: Canvas, margin: Double) {
+        paint.strokeWidth= (screenUnit/20).toFloat()
+        paint.color= ContextCompat.getColor(context, R.color.green)
+        paint.style = Paint.Style.FILL_AND_STROKE
+
+        val top = screenUnit*5.55
+        val right = screenUnit*(width - margin)
+
+        val a = Point(right.toInt(), top.toInt())
+        val b = Point(((a.x-screenUnit*0.1).toInt()),(top-screenUnit*0.15).toInt())
+        val curvedAB = Functions.curvedPath(a,b, screenUnit*0.05,true)
+        val c = Point(((b.x-screenUnit*0.15).toInt()),(top-screenUnit*0.15).toInt())
+        val curvedBC = Functions.curvedPath(b,c, screenUnit*0.3,true)
+        val d = Point(((c.x-screenUnit*0.1).toInt()),(top+screenUnit*0.05).toInt())
+        val curvedCD = Functions.curvedPath(c,d, screenUnit*0.05,false)
+        val e = Point(((d.x-screenUnit*0.1).toInt()),(top).toInt())
+        val curvedDE = Functions.curvedPath(d,e, screenUnit*0.05,true)
+        val f = Point(((e.x-screenUnit*0.1).toInt()),(top).toInt())
+        val curvedEF = Functions.curvedPath(e,f, screenUnit*0.05,false)
+        val g = Point(((f.x-screenUnit*0.1).toInt()),(top-screenUnit*0.15).toInt())
+        val curvedFG = Functions.curvedPath(f,g, screenUnit*0.05,false)
+        val h = Point(((g.x-screenUnit*0.1).toInt()),(top-screenUnit*0.05).toInt())
+        val curvedGH = Functions.curvedPath(g,h, screenUnit*0.05,true)
+        val i = Point(((h.x-screenUnit*0.15).toInt()),(top-screenUnit*0.05).toInt())
+        val curvedHI = Functions.curvedPath(h,i, screenUnit*0.05,true)
+        val j = Point(((i.x-screenUnit*0.15).toInt()),(top-screenUnit*0.05).toInt())
+        val curvedIJ = Functions.curvedPath(i,j, screenUnit*0.05,false)
+        val k = Point(((j.x-screenUnit*0.15).toInt()),(top-screenUnit*0.2).toInt())
+        val curvedJK = Functions.curvedPath(j,k, screenUnit*0.05,false)
+        val l = Point(((k.x-screenUnit*0.1).toInt()),(top-screenUnit*0.1).toInt())
+        val curvedKL = Functions.curvedPath(k,l, screenUnit*0.05,true)
+        val m = Point(((l.x-screenUnit*0.2).toInt()),(top-screenUnit*0.05).toInt())
+        val curvedLM = Functions.curvedPath(l,m, screenUnit*0.05,false)
+        val n = Point(((m.x-screenUnit*0.2).toInt()),(top-screenUnit*0.1).toInt())
+        val curvedMN = Functions.curvedPath(m,n, screenUnit*0.05,true)
+        val o = Point(((n.x-screenUnit*0.1).toInt()),(top-screenUnit*0.05).toInt())
+        val curvedNO = Functions.curvedPath(n,o, screenUnit*0.05,false)
+        val p = Point(((o.x-screenUnit*0.1).toInt()),(top-screenUnit*0.25).toInt())
+        val curvedOP = Functions.curvedPath(o,p, screenUnit*0.05,false)
+        val q = Point(((p.x-screenUnit*0.1).toInt()),(top-screenUnit*0.1).toInt())
+        val curvedPQ = Functions.curvedPath(p,q, screenUnit*0.05,false)
+        val r = Point(((q.x-screenUnit*0.2).toInt()),(top-screenUnit*0.1).toInt())
+        val curvedQR = Functions.curvedPath(q,r, screenUnit*0.05,false)
+        val s = Point(((r.x+screenUnit*0.1).toInt()),(top+screenUnit*0.05).toInt())
+        val curvedRS = Functions.curvedPath(r,s, screenUnit*0.05,true)
+        val t = Point(((s.x+screenUnit*0.2).toInt()),(top+screenUnit*0.15).toInt())
+        val curvedST = Functions.curvedPath(s,t, screenUnit*0.05,false)
+        val u = Point(((t.x+screenUnit*0.2).toInt()),(top+screenUnit*0.15).toInt())
+        val curvedTU = Functions.curvedPath(t,u, screenUnit*0.05,true)
+        val v = Point(((u.x+screenUnit*0.2).toInt()),(top+screenUnit*0.15).toInt())
+        val curvedUV = Functions.curvedPath(u,v, screenUnit*0.05,false)
+        val w = Point(((v.x+screenUnit*0.2).toInt()),(top+screenUnit*0.15).toInt())
+        val curvedVW = Functions.curvedPath(v,w, screenUnit*0.05,true)
+        val x = Point(((w.x+screenUnit*0.2).toInt()),(top+screenUnit*0.15).toInt())
+        val curvedWX = Functions.curvedPath(w,x, screenUnit*0.05,false)
+        val y = Point(((x.x+screenUnit*0.2).toInt()),(top+screenUnit*0.15).toInt())
+        val curvedXY = Functions.curvedPath(x,y, screenUnit*0.05,true)
+        val z = Point(((y.x+screenUnit*0.2).toInt()),(top+screenUnit*0.15).toInt())
+        val curvedYZ = Functions.curvedPath(y,z, screenUnit*0.05,false)
+        val a1 = Point(((z.x+screenUnit*0.2).toInt()),(top+screenUnit*0.15).toInt())
+        val curvedZA = Functions.curvedPath(z,a1, screenUnit*0.05,true)
+        val b1 = Point(((a1.x+screenUnit*0.2).toInt()),(top+screenUnit*0.2).toInt())
+        val curvedAB1 = Functions.curvedPath(a1,b1, screenUnit*0.05,false)
+        val c1 = Point(((b1.x+screenUnit*0.2).toInt()),(top+screenUnit*0.15).toInt())
+        val curvedBC1 = Functions.curvedPath(b1,c1, screenUnit*0.05,false)
+        val d1 = Point(((c1.x+screenUnit*0.2).toInt()),(top+screenUnit*0.15).toInt())
+        val curvedCD1 = Functions.curvedPath(c1,d1, screenUnit*0.05,true)
+
+
+        val path = Path()
+        path.moveTo(a.x.toFloat(), a.y.toFloat())
+        path.cubicTo(a.x.toFloat(), a.y.toFloat(),curvedAB.x,curvedAB.y, b.x.toFloat(), b.y.toFloat())
+        path.cubicTo(b.x.toFloat(), b.y.toFloat(),curvedBC.x,curvedBC.y, c.x.toFloat(), c.y.toFloat())
+        path.cubicTo(c.x.toFloat(), c.y.toFloat(),curvedCD.x,curvedCD.y, d.x.toFloat(), d.y.toFloat())
+        path.cubicTo(d.x.toFloat(), d.y.toFloat(),curvedDE.x,curvedDE.y, e.x.toFloat(), e.y.toFloat())
+        path.cubicTo(e.x.toFloat(), e.y.toFloat(),curvedEF.x,curvedEF.y, f.x.toFloat(), f.y.toFloat())
+        path.cubicTo(f.x.toFloat(), f.y.toFloat(),curvedFG.x,curvedFG.y, g.x.toFloat(), g.y.toFloat())
+        path.cubicTo(g.x.toFloat(), g.y.toFloat(),curvedGH.x,curvedGH.y, h.x.toFloat(), h.y.toFloat())
+        path.cubicTo(h.x.toFloat(), h.y.toFloat(),curvedHI.x,curvedHI.y, i.x.toFloat(), i.y.toFloat())
+        path.cubicTo(i.x.toFloat(), i.y.toFloat(),curvedIJ.x,curvedIJ.y, j.x.toFloat(), j.y.toFloat())
+        path.cubicTo(j.x.toFloat(), j.y.toFloat(),curvedJK.x,curvedJK.y, k.x.toFloat(), k.y.toFloat())
+        path.cubicTo(k.x.toFloat(), k.y.toFloat(),curvedKL.x,curvedKL.y, l.x.toFloat(), l.y.toFloat())
+        path.cubicTo(l.x.toFloat(), l.y.toFloat(),curvedLM.x,curvedLM.y, m.x.toFloat(), m.y.toFloat())
+        path.cubicTo(m.x.toFloat(), m.y.toFloat(),curvedMN.x,curvedMN.y, n.x.toFloat(), n.y.toFloat())
+        path.cubicTo(n.x.toFloat(), n.y.toFloat(),curvedNO.x,curvedNO.y, o.x.toFloat(), o.y.toFloat())
+        path.cubicTo(o.x.toFloat(), o.y.toFloat(),curvedOP.x,curvedOP.y, p.x.toFloat(), p.y.toFloat())
+        path.cubicTo(p.x.toFloat(), p.y.toFloat(),curvedPQ.x,curvedPQ.y, q.x.toFloat(), q.y.toFloat())
+        path.cubicTo(q.x.toFloat(), q.y.toFloat(),curvedQR.x,curvedQR.y, r.x.toFloat(), r.y.toFloat())
+        path.cubicTo(r.x.toFloat(), r.y.toFloat(),curvedRS.x,curvedRS.y, s.x.toFloat(), s.y.toFloat())
+        path.cubicTo(s.x.toFloat(), s.y.toFloat(),curvedST.x,curvedST.y, t.x.toFloat(), t.y.toFloat())
+        path.cubicTo(t.x.toFloat(), t.y.toFloat(),curvedTU.x,curvedTU.y, u.x.toFloat(), u.y.toFloat())
+        path.cubicTo(u.x.toFloat(), u.y.toFloat(),curvedUV.x,curvedUV.y, v.x.toFloat(), v.y.toFloat())
+        path.cubicTo(v.x.toFloat(), v.y.toFloat(),curvedVW.x,curvedVW.y, w.x.toFloat(), w.y.toFloat())
+        path.cubicTo(w.x.toFloat(), w.y.toFloat(),curvedWX.x,curvedWX.y, x.x.toFloat(), x.y.toFloat())
+        path.cubicTo(x.x.toFloat(), x.y.toFloat(),curvedXY.x,curvedXY.y, y.x.toFloat(), y.y.toFloat())
+        path.cubicTo(y.x.toFloat(), y.y.toFloat(),curvedYZ.x,curvedYZ.y, z.x.toFloat(), z.y.toFloat())
+        path.cubicTo(z.x.toFloat(), z.y.toFloat(),curvedZA.x,curvedZA.y, a1.x.toFloat(), a1.y.toFloat())
+        path.cubicTo(a1.x.toFloat(), a1.y.toFloat(),curvedAB1.x,curvedAB1.y, b1.x.toFloat(), b1.y.toFloat())
+        path.cubicTo(b1.x.toFloat(), b1.y.toFloat(),curvedBC1.x,curvedBC1.y, c1.x.toFloat(), c1.y.toFloat())
+        path.cubicTo(c1.x.toFloat(), c1.y.toFloat(),curvedCD1.x,curvedCD1.y, d1.x.toFloat(), d1.y.toFloat())
+        path.lineTo(a.x.toFloat(), a.y.toFloat())
+        path.close()
+
+        canvas.drawPath(path,paint)
+
+    }
 }
