@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 
 import com.tt.eggs.R
+import com.tt.eggs.classes.Functions
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
@@ -27,6 +28,7 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
         drawChickenRightBottom(canvas,margin)
         drawRoosts(canvas, margin)
         drawGrass(canvas, margin)
+        coverEdges(canvas)
 
     }
 
@@ -153,6 +155,11 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
 
         canvas.drawLine((rMarginHorizontal).toFloat(),bottomHeightMargin.toFloat(),(rMarginHorizontal).toFloat(), (bottomHeightMargin+h).toFloat(),paint)
 
+
+
+    }
+
+    private fun coverEdges(canvas: Canvas) {
         // draw rounded rectangle dark gray
         val margin1 = 0.7
         val margin2 = 0.8
@@ -263,16 +270,8 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
 
         canvas.drawCircle(d.x.toFloat(), d.y.toFloat(), (screenUnit/15).toFloat(),paint1)
 
-
-
-
         canvas.drawLine(e.x.toFloat(), e.y.toFloat(), f.x.toFloat(), f.y.toFloat(),paint2)
         canvas.drawLine(e.x.toFloat(), e.y.toFloat(), g.x.toFloat(), g.y.toFloat(),paint2)
-
-
-
-
-
 
     }
 
@@ -487,11 +486,34 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
     }
 
     private fun drawGrass(canvas: Canvas, margin: Double) {
-        paint.strokeWidth= (screenUnit/10).toFloat()
+        paint.strokeWidth= (screenUnit/20).toFloat()
         paint.color= ContextCompat.getColor(context, R.color.green)
         paint.style = Paint.Style.STROKE
 
+        val top = screenUnit*5.55
+        val left = margin*screenUnit
 
+        val a = Point(left.toInt(), top.toInt())
+        val b = Point(((a.x+screenUnit*0.1).toInt()),(top-screenUnit*0.15).toInt())
+        val curvedAB = Functions.curvedPath(a,b, screenUnit*0.05,false)
+        val c = Point(((b.x+screenUnit*0.2).toInt()),(top-screenUnit*0.15).toInt())
+        val curvedBC = Functions.curvedPath(b,c, screenUnit*0.3,false)
+        val d = Point(((c.x+screenUnit*0.1).toInt()),(top+screenUnit*0.05).toInt())
+        val curvedCD = Functions.curvedPath(c,d, screenUnit*0.05,true)
+        val e = Point(((d.x+screenUnit*0.1).toInt()),(top).toInt())
+        val curvedDE = Functions.curvedPath(d,e, screenUnit*0.05,false)
+        val f = Point(((e.x+screenUnit*0.1).toInt()),(top).toInt())
+        val curvedEF = Functions.curvedPath(e,f, screenUnit*0.05,true)
+
+        val path = Path()
+        path.moveTo(a.x.toFloat(), a.y.toFloat())
+        path.cubicTo(a.x.toFloat(), a.y.toFloat(),curvedAB.x,curvedAB.y, b.x.toFloat(), b.y.toFloat())
+        path.cubicTo(b.x.toFloat(), b.y.toFloat(),curvedBC.x,curvedBC.y, c.x.toFloat(), c.y.toFloat())
+        path.cubicTo(c.x.toFloat(), c.y.toFloat(),curvedCD.x,curvedCD.y, d.x.toFloat(), d.y.toFloat())
+        path.cubicTo(d.x.toFloat(), d.y.toFloat(),curvedDE.x,curvedDE.y, e.x.toFloat(), e.y.toFloat())
+        path.cubicTo(e.x.toFloat(), e.y.toFloat(),curvedEF.x,curvedEF.y, f.x.toFloat(), f.y.toFloat())
+
+        canvas.drawPath(path,paint)
 
 
     }

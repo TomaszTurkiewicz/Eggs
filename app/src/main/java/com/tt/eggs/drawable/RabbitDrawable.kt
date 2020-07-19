@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
-import kotlinx.android.synthetic.main.activity_other_games.*
 
 class RabbitDrawable(private val context: Context, private val size: Double): Drawable() {
     private val paint= Paint()
