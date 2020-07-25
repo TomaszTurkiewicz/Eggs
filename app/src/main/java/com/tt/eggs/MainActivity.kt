@@ -125,12 +125,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         // check if loggedIn
         checkLoggedInState()
 
-        // TODO for testing drawable
-//            val intent = Intent(this,TestEgg::class.java)
-//            startActivity(intent)
-//            finish()
-
-
         // set button listeners and text view displays
         buttonsOnClickListeners()
 
@@ -1032,30 +1026,12 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         displayState()
         displayBasket()
         updateFaultsView()
-
-        displayDemoFaults()
-
         score.text=getString(R.string.demo)
         loopCounter = 0
         demo().run()
 
     }
 
-    private fun displayDemoFaults() {
-
-        faultLeftFirst.setImageDrawable(BrokenEggLeft(this,bottomFaultSizeFirst.width))
-        faultLeftSecond.setImageDrawable(RunningChickenLeftFirst(this,bottomFaultSizeSmallDifferent.width))
-        faultLeftThird.setImageDrawable(RunningChickenLeftTwo(this,bottomFaultSizeSmall.width))
-        faultLeftFourth.setImageDrawable(RunningChickenLeftThree(this,bottomFaultSizeSmall.width))
-
-
-        faultRightFirst.setImageDrawable(BrokenEggRight(this,bottomFaultSizeFirst.width))
-        faultRightSecond.setImageDrawable(RunningChickenRightFirst(this,bottomFaultSizeSmallDifferent.width))
-        faultRightThird.setImageDrawable(RunningChickenRightTwo(this,bottomFaultSizeSmall.width))
-        faultRightFourth.setImageDrawable(RunningChickenRightThree(this,bottomFaultSizeSmall.width))
-
-
-    }
 
     // play game A
     private fun startGameA() {
