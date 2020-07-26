@@ -2,6 +2,7 @@ package com.tt.eggs
 
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -20,6 +21,7 @@ import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.*
 import com.tt.eggs.drawable.*
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.Exception
 import kotlin.random.Random
 
 
@@ -103,6 +105,15 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private val bottomFaultSizeFirst = Dimension()
     private val wolfSize = Dimension()
 
+    private var runningEggFirstSound: MediaPlayer?=null
+    private var runningEggSecondSound: MediaPlayer?=null
+    private var caughtEggSound: MediaPlayer?=null
+    private var faultSound: MediaPlayer?=null
+    private var brokenEggSound: MediaPlayer?=null
+    private var runningChickenSound: MediaPlayer?=null
+    private var winningSound: MediaPlayer?=null
+    private var runningEggSoundBoolean = true
+
     /**---------------------- activity life cycle methods---------------------------**/
 
     // on create
@@ -128,13 +139,13 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         // set button listeners and text view displays
         buttonsOnClickListeners()
 
+
         Functions.saveUpdateToSharedPreferences(context = this,isUpdate = false)
 
         UpdateHelper.with(this).onUpdateNeeded(this).check()
 
 
     }
-
 
 
     private fun checkLoggedInState() {
@@ -175,6 +186,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             eggCaught = game.moveDown()
             // display move
             displayState()
+            //sound of running eggs
+            makeSoundRunningEggs()
+
             //check fault, egg in basket
             checkNextMove(eggCaught)
         }
@@ -193,9 +207,73 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             winLoopCounter=0
             winLoop().run()
 
+            stopAllSounds()
+            winningSound = MediaPlayer.create(this,R.raw.win_sound_first)
+            winningSound?.start()
+            winningSound?.setOnCompletionListener {
+                winningSound?.stop()
+                winningSound?.release()
+                winningSound = MediaPlayer.create(this,R.raw.win_sound_second)
+                winningSound?.start()
+                winningSound?.setOnCompletionListener {
+                    winningSound?.stop()
+                    winningSound?.release()
+                    winningSound=null
+                }
+            }
+
 
 
         }
+    }
+
+    private fun makeSoundRunningEggs() {
+        stopAllSounds()
+        runningEggSoundBoolean = if(runningEggSoundBoolean){
+            runningEggFirstSound = MediaPlayer.create(this, R.raw.egg_sound_first)
+            runningEggFirstSound?.start()
+            !runningEggSoundBoolean
+        } else{
+            runningEggSecondSound = MediaPlayer.create(this, R.raw.egg_sound_second)
+            runningEggSecondSound?.start()
+            !runningEggSoundBoolean
+        }
+
+    }
+
+    private fun stopAllSounds() {
+        try{
+
+            runningEggFirstSound?.stop()
+            runningEggFirstSound?.release()
+            runningEggFirstSound=null
+
+
+            runningEggSecondSound?.stop()
+            runningEggSecondSound?.release()
+            runningEggSecondSound=null
+
+
+            caughtEggSound?.stop()
+            caughtEggSound?.release()
+            caughtEggSound=null
+
+            faultSound?.stop()
+            faultSound?.release()
+            faultSound=null
+
+            brokenEggSound?.stop()
+            brokenEggSound?.release()
+            brokenEggSound=null
+
+            runningChickenSound?.stop()
+            runningChickenSound?.release()
+            runningChickenSound=null
+        }
+        catch (e:Exception){
+            e.printStackTrace()
+        }
+
     }
 
     // win loop
@@ -257,6 +335,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // fallen egg runnable
     private fun fallenEgg(fallenEgg: FallenEgg):Runnable = Runnable {
         val finished = fallenEgg.moveDown()
+        stopAllSounds()
+        runningChickenSound = MediaPlayer.create(this,R.raw.running_chicken)
+        runningChickenSound?.start()
         displayRunningChicken(fallenEgg)
         if(!finished){
             mHandlerLostEgg.postDelayed(fallenEgg(fallenEgg),1000)
@@ -1121,6 +1202,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
             // egg has been caught
             if(eggCaught.logicProduct==1){
+
+               caughtEggSound = MediaPlayer.create(this,R.raw.caught_egg_sound)
+                caughtEggSound?.start()
                 updateScoreTextView()
 
                 // clear faults when get 200 or 500 points
@@ -1141,9 +1225,17 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             mHandler.removeCallbacks(gameLoop())
             game.addFault(rabbitBoolean)
             updateFaultsView()
+
             if(game.getFault()<=Static.FAULT_TWO_AND_HALF) {
+                stopAllSounds()
+                brokenEggSound = MediaPlayer.create(this,R.raw.broken_egg)
+                brokenEggSound?.start()
+
                 lostEggAnimation(eggCaught.positionFallenEgg)
             }else{
+                stopAllSounds()
+                faultSound = MediaPlayer.create(this,R.raw.fault_sound)
+                faultSound?.start()
                 lostEggAnimationEndGame(eggCaught.positionFallenEgg)
 
             }
