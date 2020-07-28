@@ -73,7 +73,7 @@ class Game {
 
     // add point when egg caught
     private fun addPoint(){
-        score+=100
+        score+=1
     }
 
     // add fault when egg not caught

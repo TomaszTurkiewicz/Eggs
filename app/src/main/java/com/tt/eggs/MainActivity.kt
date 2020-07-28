@@ -557,6 +557,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         setViewSizes()
 
         setDrawable()
+
         val eggJumpDown = screenUnit*0.25
         val set = ConstraintSet()
         set.clone(main_activity_layout)
@@ -678,7 +679,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         set.connect(userID.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
         set.connect(userID.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.TOP,0)
 
-        set.connect(rabbit.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP,screenUnit)
+        set.connect(rabbit.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (screenUnit*0.8).toInt())
         set.connect(rabbit.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,
             (2.9*screenUnit).toInt()
         )
@@ -828,12 +829,12 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         userID.layoutParams = ConstraintLayout.LayoutParams((userIdSize.width*screenUnit).toInt(), (userIdSize.height*screenUnit).toInt())
         userID.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
-        rabbitSize.width = screenUnit.toDouble()
-        rabbitSize.height = screenUnit.toDouble()
+        rabbitSize.width = screenUnit*1.4
+        rabbitSize.height = screenUnit*1.4
 
         rabbit.layoutParams = ConstraintLayout.LayoutParams(rabbitSize.width.toInt(),rabbitSize.height.toInt())
 
-        faultSize.width = (screenUnit/2).toDouble()
+        faultSize.width = (screenUnit*0.7).toDouble()
         faultSize.height = faultSize.width
         middle_fault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
         left_fault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
