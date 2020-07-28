@@ -80,7 +80,6 @@ class FaultTopDrawable (private val context: Context, private val size: Double):
         path.cubicTo(u.x.toFloat(), u.y.toFloat(),radiusUV.x,radiusUV.y, v.x.toFloat(), v.y.toFloat())
         path.cubicTo(v.x.toFloat(), v.y.toFloat(),radiusVA.x,radiusVA.y, a.x.toFloat(), a.y.toFloat())
 
-// TODO finish this first!!!
 
         canvas.drawPath(path,paint)
 

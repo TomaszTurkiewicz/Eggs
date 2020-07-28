@@ -114,6 +114,8 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private var winningSound: MediaPlayer?=null
     private var runningEggSoundBoolean = true
 
+    private var chickenPlace = 0
+
     /**---------------------- activity life cycle methods---------------------------**/
 
     // on create
@@ -336,9 +338,17 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private fun fallenEgg(fallenEgg: FallenEgg):Runnable = Runnable {
         val finished = fallenEgg.moveDown()
         stopAllSounds()
-        runningChickenSound = MediaPlayer.create(this,R.raw.running_chicken)
-        runningChickenSound?.start()
+        if(chickenPlace==0){
+            brokenEggSound = MediaPlayer.create(this,R.raw.broken_egg)
+            brokenEggSound?.start()
+        }
+        else {
+            runningChickenSound = MediaPlayer.create(this, R.raw.running_chicken)
+            runningChickenSound?.start()
+        }
         displayRunningChicken(fallenEgg)
+        chickenPlace+=1
+
         if(!finished){
             mHandlerLostEgg.postDelayed(fallenEgg(fallenEgg),1000)
         }
@@ -1228,8 +1238,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
             if(game.getFault()<=Static.FAULT_TWO_AND_HALF) {
                 stopAllSounds()
-                brokenEggSound = MediaPlayer.create(this,R.raw.broken_egg)
-                brokenEggSound?.start()
+                chickenPlace = 0
 
                 lostEggAnimation(eggCaught.positionFallenEgg)
             }else{
@@ -1398,16 +1407,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 
 /*
-
-
-
-
-TODO add sounds
-TODO change UI
-TODO wolf
-TODO faults up and down
+TODO demo mode clear bottom faults
 TODO firebase change write rules (user can write only his node)
-
+TODO game icon
 */
 
 
