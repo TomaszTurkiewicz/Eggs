@@ -1410,7 +1410,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 /*
 TODO demo mode clear bottom faults
 TODO firebase change write rules (user can write only his node)
-TODO game icon
+TODO link to music website
 */
 
 
