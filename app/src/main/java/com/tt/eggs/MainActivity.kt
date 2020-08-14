@@ -3,6 +3,7 @@ package com.tt.eggs
 
 import android.content.Intent
 import android.media.MediaPlayer
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -724,6 +725,11 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         set.connect(right_wolf.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
         set.connect(right_wolf.id,ConstraintSet.RIGHT,eggBottomRightFifth.id,ConstraintSet.RIGHT, (screenUnit*0.13).toInt())
 
+        set.connect(linearLayoutMusic.id,ConstraintSet.TOP,screen.id,ConstraintSet.BOTTOM,0)
+        set.connect(linearLayoutMusic.id,ConstraintSet.BOTTOM,main_activity_layout.id,ConstraintSet.BOTTOM,0)
+        set.connect(linearLayoutMusic.id,ConstraintSet.LEFT,main_activity_layout.id,ConstraintSet.LEFT,0)
+        set.connect(linearLayoutMusic.id,ConstraintSet.RIGHT,main_activity_layout.id,ConstraintSet.RIGHT,0)
+
         set.applyTo(main_activity_layout)
 
 
@@ -865,6 +871,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
         left_wolf.layoutParams = ConstraintLayout.LayoutParams(wolfSize.width.toInt(),wolfSize.height.toInt())
         right_wolf.layoutParams = ConstraintLayout.LayoutParams(wolfSize.width.toInt(),wolfSize.height.toInt())
+
+        music_from.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        music_link.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
     }
 
@@ -1085,6 +1094,10 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             }
         }
 
+        music_link.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.zapsplat.com"))
+            startActivity(intent)
+        }
 
 
 
@@ -1105,6 +1118,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     // demo mode
     private fun demoMode() {
+        linearLayoutMusic.visibility = View.VISIBLE
         mHandler.removeCallbacksAndMessages(null)
         mHandlerDemo.removeCallbacksAndMessages(null)
         mHandlerPause.removeCallbacksAndMessages(null)
@@ -1128,6 +1142,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // play game A
     private fun startGameA() {
 
+        linearLayoutMusic.visibility = View.GONE
         mHandlerPause.removeCallbacksAndMessages(null)
         gameState=Static.PLAY_A
         game.clearEggArray()
@@ -1143,7 +1158,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     // play game B
     private fun startGameB() {
-
+        linearLayoutMusic.visibility = View.GONE
         mHandlerPause.removeCallbacksAndMessages(null)
         gameState=Static.PLAY_B
         game.clearEggArray()
@@ -1160,7 +1175,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     // pause game A
     private fun pauseGameA() {
-
+        linearLayoutMusic.visibility = View.GONE
         gameState=Static.PAUSE_A
         updateFaultsView()
         updateScoreTextView()
@@ -1182,6 +1197,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 
     private fun pauseGameB() {
+        linearLayoutMusic.visibility = View.GONE
         gameState=Static.PAUSE_B
         updateFaultsView()
         updateScoreTextView()

@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Eggs</string>
     <string name="demo">DEMO</string>
-        <string name="admob_big">ca-app-pub-6785166837488087/6105265506</string>
+<!--        <string name="admob_big">ca-app-pub-6785166837488087/6105265506</string>-->
 
-    <!--  for test  -->
-<!--    <string name="admob_big">ca-app-pub-3940256099942544/1033173712</string>-->
+<!--      for test  -->
+    <string name="admob_big">ca-app-pub-3940256099942544/1033173712</string>
 </resources>
