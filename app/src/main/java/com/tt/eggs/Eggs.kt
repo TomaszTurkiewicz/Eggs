@@ -15,7 +15,7 @@ class Eggs:Application() {
         remoteConfigDefaults.put(UpdateHelper.KEY_UPDATE_ENABLE,false)
         remoteConfigDefaults.put(UpdateHelper.KEY_UPDATE_VERSION,"1.0.0")
         remoteConfigDefaults.put(UpdateHelper.KEY_UPDATE_URL,
-            "https://play.google.com/store/apps/details?id=com.tt.battleshipsgame")
+            "https://play.google.com/store/apps/details?id=com.tt.eggs")
 
 
         firebaseRemoteConfig.setDefaultsAsync(remoteConfigDefaults)
