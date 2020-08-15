@@ -97,6 +97,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private val screenSize = Dimension()
     private val eggSize = Dimension()
     private val arrowSize = Dimension()
+    private val digitSize = Dimension()
     private val startButtonSize = Dimension()
     private val userIdSize = Dimension()
     private val rabbitSize = Dimension()
@@ -127,6 +128,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         fullScreen()
         setContentView(R.layout.activity_main)
 
+//        val intent = Intent(this,Test::class.java)
+//        startActivity(intent)
+
         // makeUI
         makeUI()
 
@@ -146,6 +150,8 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         Functions.saveUpdateToSharedPreferences(context = this,isUpdate = false)
 
         UpdateHelper.with(this).onUpdateNeeded(this).check()
+
+
 
 
     }
@@ -206,7 +212,10 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             }
             game.clearEggArray()
             game.setWinEggArray()
-            score.text=Static.MAX_POINTS.toString()
+
+
+        //TODO    score.text=Static.MAX_POINTS.toString()
+
             winLoopCounter=0
             winLoop().run()
 
@@ -281,7 +290,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     // win loop
     private fun winLoop(): Runnable = Runnable {
-        score.visibility=if(display) View.VISIBLE else View.GONE
+      //TODo  score.visibility=if(display) View.VISIBLE else View.GONE
         display = !display
         game.eggArrayWinAnimation()
         displayState()
@@ -290,7 +299,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             mHandlerWin.postDelayed(winLoop(),500)
         }else{
             mHandlerWin.removeCallbacks(winLoop())
-            score.visibility=View.VISIBLE
+        //TODO    score.visibility=View.VISIBLE
             demoMode()
             if(mInterstitialAd.isLoaded){
                 mInterstitialAd.show()
@@ -402,9 +411,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     private fun highScore(highScore:Int):Runnable = Runnable {
         if(highScoreState==Static.ON){
-            score.text="HIGH SCORE"
+       //TODO     score.text="HIGH SCORE"
         }else {
-            score.text = highScore.toString()
+            //TODO     score.text = highScore.toString()
         }
         highScoreState = !highScoreState
         mHandlerHighScore.postDelayed(highScore(highScore),500)
@@ -628,11 +637,18 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         set.connect(eggBottomRightFifth.id,ConstraintSet.RIGHT,eggBottomRightFourth.id,ConstraintSet.LEFT,0)
         set.connect(eggBottomRightFifth.id,ConstraintSet.TOP,eggBottomRightFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(score.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP,
-            (screenUnit*0.6).toInt()
-        )
-        set.connect(score.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,0)
-        set.connect(score.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
+        set.connect(digitTen.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (screenUnit*0.9).toInt())
+        set.connect(digitTen.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,0)
+        set.connect(digitTen.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
+
+        set.connect(digitOne.id,ConstraintSet.TOP,digitTen.id,ConstraintSet.TOP,0)
+        set.connect(digitOne.id,ConstraintSet.LEFT,digitTen.id,ConstraintSet.RIGHT, (screenUnit*0.1).toInt())
+
+        set.connect(digitHundred.id,ConstraintSet.TOP,digitTen.id,ConstraintSet.TOP,0)
+        set.connect(digitHundred.id,ConstraintSet.RIGHT,digitTen.id,ConstraintSet.LEFT, (screenUnit*0.1).toInt())
+
+        set.connect(digitThousand.id,ConstraintSet.TOP,digitTen.id,ConstraintSet.TOP,0)
+        set.connect(digitThousand.id,ConstraintSet.RIGHT,digitHundred.id,ConstraintSet.LEFT, (screenUnit*0.1).toInt())
 
         set.connect(buttonBottomLeft.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.LEFT,0)
         set.connect(buttonBottomLeft.id,ConstraintSet.LEFT,main_activity_layout.id,ConstraintSet.LEFT,0)
@@ -685,7 +701,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             (2.9*screenUnit).toInt()
         )
 
-        set.connect(middle_fault.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (1.5*screenUnit).toInt())
+        set.connect(middle_fault.id,ConstraintSet.TOP,digitTen.id,ConstraintSet.BOTTOM, (0.1*screenUnit).toInt())
         set.connect(middle_fault.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,0)
         set.connect(middle_fault.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
 
@@ -774,6 +790,8 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         userID.background = TextViewDrawable(this,userIdSize.width*screenUnit,userIdSize.height*screenUnit)
 
 
+
+
     }
 
     private fun setViewSizes() {
@@ -804,9 +822,15 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         eggBottomRightFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
         eggBottomRightFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
 
-        score.layoutParams = ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
-        score.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.8).toFloat())
-        score.setTextColor(getColor(R.color.black))
+
+        digitSize.width = 0.3
+        digitSize.height = digitSize.width*2
+
+        digitOne.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
+        digitTen.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
+        digitHundred.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
+        digitThousand.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
+
 
         arrowSize.width= 2.0
         arrowSize.height=arrowSize.width*2/3
@@ -840,7 +864,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
         rabbit.layoutParams = ConstraintLayout.LayoutParams(rabbitSize.width.toInt(),rabbitSize.height.toInt())
 
-        faultSize.width = (screenUnit*0.7).toDouble()
+        faultSize.width = (screenUnit*0.6).toDouble()
         faultSize.height = faultSize.width
         middle_fault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
         left_fault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
@@ -973,12 +997,51 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     // update score in text view
     private fun updateScoreTextView(){
-        score.text = game.getScore().toString()
+
+        val thousand = game.getScore()/1000
+        var reszta = game.getScore()%1000
+        val hundred = reszta/100
+        reszta %= 100
+        val ten = reszta/10
+        reszta %= 10
+        val one = reszta
+
+
+
+        when(game.getScore()){
+            in 0..9 -> displayScoreImageViews(oneDigit = one,tenDigit = null,hundredDigit = null,thousandDigit = null)
+            in 10..99 -> displayScoreImageViews(oneDigit = one,tenDigit = ten,hundredDigit = null,thousandDigit = null)
+            in 100..999 -> displayScoreImageViews(oneDigit = one,tenDigit = ten,hundredDigit = hundred,thousandDigit = null)
+            1000 -> displayScoreImageViews(oneDigit = one,tenDigit = ten,hundredDigit = hundred,thousandDigit = thousand)
+        }
+
+
+
+    }
+
+    private fun displayScoreImageViews(oneDigit:Int?,tenDigit:Int?,hundredDigit:Int?, thousandDigit:Int?) {
+        if(thousandDigit!=null) digitThousand.setImageDrawable(Digit(this,
+            (digitSize.width*screenUnit).toInt(),thousandDigit))
+        else digitThousand.setImageDrawable(null)
+
+        if(hundredDigit!=null) digitHundred.setImageDrawable(Digit(this,
+            (digitSize.width*screenUnit).toInt(),hundredDigit))
+        else digitHundred.setImageDrawable(null)
+
+        if(tenDigit!=null) digitTen.setImageDrawable(Digit(this,
+            (digitSize.width*screenUnit).toInt(),tenDigit))
+        else digitTen.setImageDrawable(null)
+
+        if(oneDigit!=null) digitOne.setImageDrawable(Digit(this,
+            (digitSize.width*screenUnit).toInt(),oneDigit))
+        else digitOne.setImageDrawable(null)
+
+
     }
 
     // update pause in text view
     private fun updatePauseTextView(pause: String){
-        score.text = pause
+        //TODO   score.text = pause
     }
 
     // display faults
@@ -1118,6 +1181,12 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     // demo mode
     private fun demoMode() {
+
+        digitThousand.setImageDrawable(Digit(this, (digitSize.width*screenUnit).toInt(),8))
+        digitHundred.setImageDrawable(Digit(this, (digitSize.width*screenUnit).toInt(),8))
+        digitTen.setImageDrawable(Digit(this, (digitSize.width*screenUnit).toInt(),8))
+        digitOne.setImageDrawable(Digit(this, (digitSize.width*screenUnit).toInt(),8))
+
         linearLayoutMusic.visibility = View.VISIBLE
         mHandler.removeCallbacksAndMessages(null)
         mHandlerDemo.removeCallbacksAndMessages(null)
@@ -1132,7 +1201,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         displayState()
         displayBasket()
         updateFaultsView()
-        score.text=getString(R.string.demo)
+        //TODO  score.text=getString(R.string.demo)
         loopCounter = 0
         demo().run()
 
@@ -1424,9 +1493,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 
 /*
-TODO demo mode clear bottom faults
-TODO firebase change write rules (user can write only his node)
-TODO link to music website
+
+TODO change points (not text view - wyświetlacz 7 segmentowy
+
 */
 
 
