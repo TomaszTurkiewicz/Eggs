@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // for win loop
     private var winLoopCounter = 0
     private val mHandlerWin = Handler()
-    private var display = Static.ON
+
 
     // for game loop
     private val mHandler = Handler()
@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             game.setWinEggArray()
 
 
-        //TODO    score.text=Static.MAX_POINTS.toString()
+            displayScoreImageViews(oneDigit = 0,tenDigit = 0,hundredDigit = 0, thousandDigit = 1)
 
             winLoopCounter=0
             winLoop().run()
@@ -290,8 +290,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     // win loop
     private fun winLoop(): Runnable = Runnable {
-      //TODo  score.visibility=if(display) View.VISIBLE else View.GONE
-        display = !display
+
         game.eggArrayWinAnimation()
         displayState()
         winLoopCounter+=1
@@ -299,7 +298,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             mHandlerWin.postDelayed(winLoop(),500)
         }else{
             mHandlerWin.removeCallbacks(winLoop())
-        //TODO    score.visibility=View.VISIBLE
+
             demoMode()
             if(mInterstitialAd.isLoaded){
                 mInterstitialAd.show()
@@ -399,21 +398,37 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         mHandlerDemo.postDelayed(demo(),600)
     }
 
-    private fun pause(pause:String):Runnable = Runnable {
+    private fun pauseA():Runnable = Runnable {
         if(pauseState==Static.ON){
-            updatePauseTextView(pause)
+            start_A.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
         }else {
-            updateScoreTextView()
+            start_A.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
         }
         pauseState=!pauseState
-        mHandlerPause.postDelayed(pause(pause),500)
+        mHandlerPause.postDelayed(pauseA(),500)
+    }
+
+    private fun pauseB():Runnable = Runnable {
+        if(pauseState==Static.ON){
+            start_B.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+        }else {
+            start_B.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+        }
+        pauseState=!pauseState
+        mHandlerPause.postDelayed(pauseB(),500)
     }
 
     private fun highScore(highScore:Int):Runnable = Runnable {
         if(highScoreState==Static.ON){
-       //TODO     score.text="HIGH SCORE"
+            digitOne.visibility = View.GONE
+            digitTen.visibility = View.GONE
+            digitHundred.visibility = View.GONE
+            digitThousand.visibility = View.GONE
         }else {
-            //TODO     score.text = highScore.toString()
+            digitOne.visibility = View.VISIBLE
+            digitTen.visibility = View.VISIBLE
+            digitHundred.visibility = View.VISIBLE
+            digitThousand.visibility = View.VISIBLE
         }
         highScoreState = !highScoreState
         mHandlerHighScore.postDelayed(highScore(highScore),500)
@@ -701,7 +716,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             (2.9*screenUnit).toInt()
         )
 
-        set.connect(middle_fault.id,ConstraintSet.TOP,digitTen.id,ConstraintSet.BOTTOM, (0.1*screenUnit).toInt())
+        set.connect(middle_fault.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (1.6*screenUnit).toInt())
         set.connect(middle_fault.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,0)
         set.connect(middle_fault.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
 
@@ -848,6 +863,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
         letterA.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
         letterB.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+
 
         closeApp.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
         exit.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
@@ -1006,17 +1022,12 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         reszta %= 10
         val one = reszta
 
-
-
         when(game.getScore()){
             in 0..9 -> displayScoreImageViews(oneDigit = one,tenDigit = null,hundredDigit = null,thousandDigit = null)
             in 10..99 -> displayScoreImageViews(oneDigit = one,tenDigit = ten,hundredDigit = null,thousandDigit = null)
             in 100..999 -> displayScoreImageViews(oneDigit = one,tenDigit = ten,hundredDigit = hundred,thousandDigit = null)
             1000 -> displayScoreImageViews(oneDigit = one,tenDigit = ten,hundredDigit = hundred,thousandDigit = thousand)
         }
-
-
-
     }
 
     private fun displayScoreImageViews(oneDigit:Int?,tenDigit:Int?,hundredDigit:Int?, thousandDigit:Int?) {
@@ -1039,10 +1050,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     }
 
-    // update pause in text view
-    private fun updatePauseTextView(pause: String){
-        //TODO   score.text = pause
-    }
 
     // display faults
     private fun updateFaultsView(){
@@ -1182,10 +1189,14 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // demo mode
     private fun demoMode() {
 
-        digitThousand.setImageDrawable(Digit(this, (digitSize.width*screenUnit).toInt(),8))
-        digitHundred.setImageDrawable(Digit(this, (digitSize.width*screenUnit).toInt(),8))
-        digitTen.setImageDrawable(Digit(this, (digitSize.width*screenUnit).toInt(),8))
-        digitOne.setImageDrawable(Digit(this, (digitSize.width*screenUnit).toInt(),8))
+        digitOne.visibility = View.VISIBLE
+        digitTen.visibility = View.VISIBLE
+        digitHundred.visibility = View.VISIBLE
+        digitThousand.visibility = View.VISIBLE
+        displayScoreImageViews(0,0,0,0)
+
+        start_A.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+        start_B.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
 
         linearLayoutMusic.visibility = View.VISIBLE
         mHandler.removeCallbacksAndMessages(null)
@@ -1201,7 +1212,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         displayState()
         displayBasket()
         updateFaultsView()
-        //TODO  score.text=getString(R.string.demo)
+
         loopCounter = 0
         demo().run()
 
@@ -1223,6 +1234,8 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         displayState()
         gameLoop().run()
         rabbitShow().run()
+        start_A.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+
     }
 
     // play game B
@@ -1239,6 +1252,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         displayState()
         gameLoop().run()
         rabbitShow().run()
+        start_B.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
 
     }
 
@@ -1256,7 +1270,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         clearAnimationFallenEgg()
         // save game state to shared preferences
         saveGameState()
-        pause("PAUSE A").run()
+        pauseA().run()
     }
 
 
@@ -1276,7 +1290,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         mHandlerLostEgg.removeCallbacksAndMessages(null)
         clearAnimationFallenEgg()
         saveGameState()
-        pause("PAUSE B").run()
+        pauseB().run()
     }
 
     private fun clearAnimationFallenEgg() {
@@ -1492,10 +1506,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 }
 
 
-/*
 
-TODO change points (not text view - wyświetlacz 7 segmentowy
-
-*/
 
 
