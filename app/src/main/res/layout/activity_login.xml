@@ -24,7 +24,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:gravity="center"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:maxLines="1"
+        android:inputType="text"/>
 
     <LinearLayout
         android:id="@+id/change_name_linearLayout_et"
