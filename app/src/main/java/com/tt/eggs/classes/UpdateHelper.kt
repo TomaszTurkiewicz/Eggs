@@ -54,7 +54,7 @@ class UpdateHelper(
             result=result.replace(Regex("[a-zA-Z]|-"),"")
         }
         catch(e:PackageManager.NameNotFoundException){
-            Log.e(TAG,e.message)
+            e.message?.let { Log.e(TAG, it) }
         }
 
         return result

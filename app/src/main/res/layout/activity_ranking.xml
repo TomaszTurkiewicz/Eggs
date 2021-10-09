@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Ranking"
-    android:id="@+id/ranking_layout"
+    android:id="@+id/rankingActivity"
     android:background="@color/gray">
 
     <LinearLayout
@@ -16,17 +16,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:orientation="horizontal">
 
-<!--        <TextView-->
-<!--            android:id="@+id/ranking_position"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="POSITION"-->
-<!--            android:gravity="center"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:textColor="@color/black"/>-->
         <TextView
-            android:id="@+id/ranking_user_name"
+            android:id="@+id/rankingUserName"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -35,7 +26,7 @@
             android:layout_gravity="center"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_high_score_A"
+            android:id="@+id/rankingHighScoreA"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -44,7 +35,7 @@
             android:gravity="center_vertical|right"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_high_score_B"
+            android:id="@+id/rankingHighScoreB"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -53,7 +44,7 @@
             android:gravity="center_vertical|right"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_total_score"
+            android:id="@+id/rankingTotalScore"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -72,17 +63,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:orientation="horizontal">
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/ranking_position"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="POSITION"-->
-        <!--            android:gravity="center"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:textColor="@color/black"/>-->
         <TextView
-            android:id="@+id/ranking_user_name1"
+            android:id="@+id/rankingUserName1"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -90,7 +72,7 @@
             android:layout_gravity="center"
             android:textColor="@color/black" />
         <TextView
-            android:id="@+id/ranking_high_score_A1"
+            android:id="@+id/rankingHighScoreA1"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -98,7 +80,7 @@
             android:gravity="center_vertical|right"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_high_score_B1"
+            android:id="@+id/rankingHighScoreB1"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -106,7 +88,7 @@
             android:gravity="center_vertical|right"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_total_score1"
+            android:id="@+id/rankingTotalScore1"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -124,17 +106,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:orientation="horizontal">
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/ranking_position"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="POSITION"-->
-        <!--            android:gravity="center"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:textColor="@color/black"/>-->
         <TextView
-            android:id="@+id/ranking_user_name2"
+            android:id="@+id/rankingUserName2"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -142,7 +115,7 @@
             android:layout_gravity="center"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_high_score_A2"
+            android:id="@+id/rankingHighScoreA2"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -150,7 +123,7 @@
             android:gravity="center_vertical|right"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_high_score_B2"
+            android:id="@+id/rankingHighScoreB2"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -158,7 +131,7 @@
             android:gravity="center_vertical|right"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_total_score2"
+            android:id="@+id/rankingTotalScore2"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -176,17 +149,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:orientation="horizontal">
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/ranking_position"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="POSITION"-->
-        <!--            android:gravity="center"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:textColor="@color/black"/>-->
         <TextView
-            android:id="@+id/ranking_user_name3"
+            android:id="@+id/rankingUserName3"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -194,7 +158,7 @@
             android:layout_gravity="center"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_high_score_A3"
+            android:id="@+id/rankingHighScoreA3"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -202,7 +166,7 @@
             android:gravity="center_vertical|right"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_high_score_B3"
+            android:id="@+id/rankingHighScoreB3"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -210,7 +174,7 @@
             android:gravity="center_vertical|right"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_total_score3"
+            android:id="@+id/rankingTotalScore3"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -228,17 +192,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:orientation="horizontal">
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/ranking_position"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="POSITION"-->
-        <!--            android:gravity="center"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:textColor="@color/black"/>-->
+
         <TextView
-            android:id="@+id/ranking_user_name4"
+            android:id="@+id/rankingUserName4"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -246,7 +202,7 @@
             android:layout_gravity="center"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_high_score_A4"
+            android:id="@+id/rankingHighScoreA4"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -254,7 +210,7 @@
             android:gravity="center_vertical|right"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_high_score_B4"
+            android:id="@+id/rankingHighScoreB4"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -262,7 +218,7 @@
             android:gravity="center_vertical|right"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_total_score4"
+            android:id="@+id/rankingTotalScore4"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -280,17 +236,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:orientation="horizontal">
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/ranking_position"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="POSITION"-->
-        <!--            android:gravity="center"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:textColor="@color/black"/>-->
+
         <TextView
-            android:id="@+id/ranking_user_name5"
+            android:id="@+id/rankingUserName5"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -298,7 +246,7 @@
             android:layout_gravity="center"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_high_score_A5"
+            android:id="@+id/rankingHighScoreA5"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -306,7 +254,7 @@
             android:gravity="center_vertical|right"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_high_score_B5"
+            android:id="@+id/rankingHighScoreB5"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -314,7 +262,7 @@
             android:gravity="center_vertical|right"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/ranking_total_score5"
+            android:id="@+id/rankingTotalScore5"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -325,7 +273,7 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progress_bar1"
+        android:id="@+id/progressBar1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -336,7 +284,7 @@
         android:indeterminateTint="@color/black"/>
 
     <ProgressBar
-        android:id="@+id/progress_bar2"
+        android:id="@+id/progressBar2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -347,7 +295,7 @@
         android:indeterminateTint="@color/black"/>
 
     <ProgressBar
-        android:id="@+id/progress_bar3"
+        android:id="@+id/progressBar3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -358,7 +306,7 @@
         android:indeterminateTint="@color/black"/>
 
     <ProgressBar
-        android:id="@+id/progress_bar4"
+        android:id="@+id/progressBar4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -369,7 +317,7 @@
         android:indeterminateTint="@color/black"/>
 
     <ProgressBar
-        android:id="@+id/progress_bar5"
+        android:id="@+id/progressBar5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -380,7 +328,7 @@
         android:indeterminateTint="@color/black"/>
 
     <LinearLayout
-        android:id="@+id/back_to_game_linearLayout_ranking"
+        android:id="@+id/backToGameLinearLayoutRanking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -388,17 +336,17 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/back_to_game_blank"
+            android:id="@+id/backToGameBlankRanking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <ImageView
-            android:id="@+id/backToGameRanking"
+            android:id="@+id/backToGameRankingImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/back_to_game_ranking"
+            android:id="@+id/backToGmeRanking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="BACK TO GAME"
@@ -411,14 +359,14 @@
 
 
     <ImageView
-        android:id="@+id/ranking_up"
+        android:id="@+id/rankingUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
     <ImageView
-        android:id="@+id/ranking_down"
+        android:id="@+id/rankingDown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"

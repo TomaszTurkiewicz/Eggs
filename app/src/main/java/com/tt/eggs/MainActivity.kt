@@ -7,21 +7,27 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.*
+import com.tt.eggs.databinding.ActivityMainBinding
 import com.tt.eggs.drawable.*
-import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Exception
 import kotlin.random.Random
 
@@ -31,7 +37,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     /**--------------------------- var and val-----------------------------**/
     // loggedInState
-    var loggedInStatus = LoggedInStatus()
+    private var loggedInStatus = LoggedInStatus()
 
     // game state
     private var gameState = Static.DEMO
@@ -56,39 +62,39 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     // for win loop
     private var winLoopCounter = 0
-    private val mHandlerWin = Handler()
+    private val mHandlerWin = Handler(Looper.getMainLooper())
 
 
     // for game loop
-    private val mHandler = Handler()
+    private val mHandler = Handler(Looper.getMainLooper())
 
     // for rabbit loop
-    private val mHandlerRabbit = Handler()
+    private val mHandlerRabbit = Handler(Looper.getMainLooper())
 
     // for faults loop
-    private val mHandlerFlash = Handler()
+    private val mHandlerFlash = Handler(Looper.getMainLooper())
     private var faultFlash = Static.ON
 
     // for lost egg loops
-    private val mHandlerLostEgg = Handler()
+    private val mHandlerLostEgg = Handler(Looper.getMainLooper())
 
     // for demo loop
     private var loopCounter=0
-    private val mHandlerDemo = Handler()
+    private val mHandlerDemo = Handler(Looper.getMainLooper())
 
     // for pause loop
     private var pauseState = Static.ON
-    private val mHandlerPause = Handler()
+    private val mHandlerPause = Handler(Looper.getMainLooper())
 
     // for update loop
     private var updateState = Static.ON
-    private val mHandlerUpdate = Handler()
+    private val mHandlerUpdate = Handler(Looper.getMainLooper())
 
     // for high score loop
     private var highScoreState = Static.ON
-    private val mHandlerHighScore = Handler()
+    private val mHandlerHighScore = Handler(Looper.getMainLooper())
 
-    private lateinit var mInterstitialAd: InterstitialAd
+    private var mInterstitialAd: InterstitialAd? = null
 
     private var screenHeight = 0
     private var screenWidth = 0
@@ -118,6 +124,8 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     private var chickenPlace = 0
 
+    private lateinit var binding: ActivityMainBinding
+
     /**---------------------- activity life cycle methods---------------------------**/
 
     // on create
@@ -125,8 +133,13 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         super.onCreate(savedInstanceState)
 
         // make full screen
-        fullScreen()
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        fullScreen(view)
+
+
+        MobileAds.initialize(this)
 
 //        val intent = Intent(this,Test::class.java)
 //        startActivity(intent)
@@ -167,9 +180,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         super.onResume()
         // check if there is stored game
         checkGameState()
-        mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = getString(R.string.admob_big)
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
     }
 
     // stop game loop when activity is disrupted by anything else (another app)
@@ -300,8 +311,8 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             mHandlerWin.removeCallbacks(winLoop())
 
             demoMode()
-            if(mInterstitialAd.isLoaded){
-                mInterstitialAd.show()
+            if(mInterstitialAd != null){
+                mInterstitialAd?.show(this)
             }
         }
 
@@ -378,8 +389,8 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             mHandlerRabbit.removeCallbacksAndMessages(null)
             mHandlerFlash.removeCallbacksAndMessages(null)
             demoMode()
-            if(mInterstitialAd.isLoaded){
-                mInterstitialAd.show()
+            if(mInterstitialAd != null){
+                mInterstitialAd?.show(this)
             }
 
 
@@ -400,9 +411,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     private fun pauseA():Runnable = Runnable {
         if(pauseState==Static.ON){
-            start_A.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+            binding.startA.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
         }else {
-            start_A.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+            binding.startA.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
         }
         pauseState=!pauseState
         mHandlerPause.postDelayed(pauseA(),500)
@@ -410,9 +421,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     private fun pauseB():Runnable = Runnable {
         if(pauseState==Static.ON){
-            start_B.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+            binding.startB.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
         }else {
-            start_B.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+            binding.startB.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
         }
         pauseState=!pauseState
         mHandlerPause.postDelayed(pauseB(),500)
@@ -420,15 +431,15 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     private fun highScore(highScore:Int):Runnable = Runnable {
         if(highScoreState==Static.ON){
-            digitOne.visibility = View.GONE
-            digitTen.visibility = View.GONE
-            digitHundred.visibility = View.GONE
-            digitThousand.visibility = View.GONE
+            binding.digitOne.visibility = View.GONE
+            binding.digitTen.visibility = View.GONE
+            binding.digitHundred.visibility = View.GONE
+            binding.digitThousand.visibility = View.GONE
         }else {
-            digitOne.visibility = View.VISIBLE
-            digitTen.visibility = View.VISIBLE
-            digitHundred.visibility = View.VISIBLE
-            digitThousand.visibility = View.VISIBLE
+            binding.digitOne.visibility = View.VISIBLE
+            binding.digitTen.visibility = View.VISIBLE
+            binding.digitHundred.visibility = View.VISIBLE
+            binding.digitThousand.visibility = View.VISIBLE
         }
         highScoreState = !highScoreState
         mHandlerHighScore.postDelayed(highScore(highScore),500)
@@ -437,11 +448,11 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     private fun update():Runnable = Runnable {
         if(updateState==Static.ON){
-            account.setImageDrawable(StartButtonGreen(this,screenUnit*userIdSize.height,
+            binding.account.setImageDrawable(StartButtonGreen(this,screenUnit*userIdSize.height,
                 screenUnit*userIdSize.height
             ))
         }else{
-            account.setImageDrawable(StartButton(this,screenUnit*userIdSize.height,
+            binding.account.setImageDrawable(StartButton(this,screenUnit*userIdSize.height,
                 screenUnit*userIdSize.height
             ))
         }
@@ -466,7 +477,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private fun saveUserToFirebaseDatabase() {
         val currentUser = Firebase.auth.currentUser
         if (currentUser != null) {
-            if (currentUser.uid.equals(loggedInStatus.userid)) {
+            if (currentUser.uid == loggedInStatus.userid) {
                 val userDB =
                     User(
                         id = loggedInStatus.userid,
@@ -557,20 +568,11 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     /**-------------------------- displaying functions -------------------------------**/
 
     // full screen
-    private fun fullScreen(){
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
-
-        val decorView:View = window.decorView
-        decorView.setOnSystemUiVisibilityChangeListener { visibility ->
-            if(visibility and View.SYSTEM_UI_FLAG_FULLSCREEN==0){
-                decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
-            }
+    private fun fullScreen(mainActivityLayout:View){
+        WindowCompat.setDecorFitsSystemWindows(window,false)
+        WindowInsetsControllerCompat(window, mainActivityLayout).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
     }
 
@@ -585,224 +587,224 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
         val eggJumpDown = screenUnit*0.25
         val set = ConstraintSet()
-        set.clone(main_activity_layout)
+        set.clone(binding.mainActivity)
 
-        set.connect(screen.id,ConstraintSet.LEFT,main_activity_layout.id,ConstraintSet.LEFT,0)
-        set.connect(screen.id,ConstraintSet.RIGHT,main_activity_layout.id,ConstraintSet.RIGHT,0)
-        set.connect(screen.id,ConstraintSet.TOP,main_activity_layout.id,ConstraintSet.TOP,0)
-        set.connect(screen.id,ConstraintSet.BOTTOM,main_activity_layout.id,ConstraintSet.BOTTOM,0)
+        set.connect(binding.screen.id,ConstraintSet.LEFT,binding.mainActivity.id,ConstraintSet.LEFT,0)
+        set.connect(binding.screen.id,ConstraintSet.RIGHT,binding.mainActivity.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.screen.id,ConstraintSet.TOP,binding.mainActivity.id,ConstraintSet.TOP,0)
+        set.connect(binding.screen.id,ConstraintSet.BOTTOM,binding.mainActivity.id,ConstraintSet.BOTTOM,0)
 
-        set.connect(eggTopLeftFirst.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,screenUnit+screenUnit/2)
-        set.connect(eggTopLeftFirst.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (screenUnit*1.6).toInt())
+        set.connect(binding.eggTopLeftFirst.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,screenUnit+screenUnit/2)
+        set.connect(binding.eggTopLeftFirst.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*1.6).toInt())
 
-        set.connect(eggTopLeftSecond.id,ConstraintSet.LEFT,eggTopLeftFirst.id,ConstraintSet.RIGHT,0)
-        set.connect(eggTopLeftSecond.id,ConstraintSet.TOP,eggTopLeftFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
+        set.connect(binding.eggTopLeftSecond.id,ConstraintSet.LEFT,binding.eggTopLeftFirst.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.eggTopLeftSecond.id,ConstraintSet.TOP,binding.eggTopLeftFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
 
-        set.connect(eggTopLeftThird.id,ConstraintSet.LEFT,eggTopLeftSecond.id,ConstraintSet.RIGHT,0)
-        set.connect(eggTopLeftThird.id,ConstraintSet.TOP,eggTopLeftSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
+        set.connect(binding.eggTopLeftThird.id,ConstraintSet.LEFT,binding.eggTopLeftSecond.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.eggTopLeftThird.id,ConstraintSet.TOP,binding.eggTopLeftSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(eggTopLeftFourth.id,ConstraintSet.LEFT,eggTopLeftThird.id,ConstraintSet.RIGHT,0)
-        set.connect(eggTopLeftFourth.id,ConstraintSet.TOP,eggTopLeftThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
+        set.connect(binding.eggTopLeftFourth.id,ConstraintSet.LEFT,binding.eggTopLeftThird.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.eggTopLeftFourth.id,ConstraintSet.TOP,binding.eggTopLeftThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(eggTopLeftFifth.id,ConstraintSet.LEFT,eggTopLeftFourth.id,ConstraintSet.RIGHT,0)
-        set.connect(eggTopLeftFifth.id,ConstraintSet.TOP,eggTopLeftFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
+        set.connect(binding.eggTopLeftFifth.id,ConstraintSet.LEFT,binding.eggTopLeftFourth.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.eggTopLeftFifth.id,ConstraintSet.TOP,binding.eggTopLeftFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(eggBottomLeftFirst.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,screenUnit+screenUnit/2)
-        set.connect(eggBottomLeftFirst.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (screenUnit*3.1).toInt())
+        set.connect(binding.eggBottomLeftFirst.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,screenUnit+screenUnit/2)
+        set.connect(binding.eggBottomLeftFirst.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*3.1).toInt())
 
-        set.connect(eggBottomLeftSecond.id,ConstraintSet.LEFT,eggBottomLeftFirst.id,ConstraintSet.RIGHT,0)
-        set.connect(eggBottomLeftSecond.id,ConstraintSet.TOP,eggBottomLeftFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
+        set.connect(binding.eggBottomLeftSecond.id,ConstraintSet.LEFT,binding.eggBottomLeftFirst.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.eggBottomLeftSecond.id,ConstraintSet.TOP,binding.eggBottomLeftFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
 
-        set.connect(eggBottomLeftThird.id,ConstraintSet.LEFT,eggBottomLeftSecond.id,ConstraintSet.RIGHT,0)
-        set.connect(eggBottomLeftThird.id,ConstraintSet.TOP,eggBottomLeftSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
+        set.connect(binding.eggBottomLeftThird.id,ConstraintSet.LEFT,binding.eggBottomLeftSecond.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.eggBottomLeftThird.id,ConstraintSet.TOP,binding.eggBottomLeftSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(eggBottomLeftFourth.id,ConstraintSet.LEFT,eggBottomLeftThird.id,ConstraintSet.RIGHT,0)
-        set.connect(eggBottomLeftFourth.id,ConstraintSet.TOP,eggBottomLeftThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
+        set.connect(binding.eggBottomLeftFourth.id,ConstraintSet.LEFT,binding.eggBottomLeftThird.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.eggBottomLeftFourth.id,ConstraintSet.TOP,binding.eggBottomLeftThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(eggBottomLeftFifth.id,ConstraintSet.LEFT,eggBottomLeftFourth.id,ConstraintSet.RIGHT,0)
-        set.connect(eggBottomLeftFifth.id,ConstraintSet.TOP,eggBottomLeftFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
+        set.connect(binding.eggBottomLeftFifth.id,ConstraintSet.LEFT,binding.eggBottomLeftFourth.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.eggBottomLeftFifth.id,ConstraintSet.TOP,binding.eggBottomLeftFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(eggTopRightFirst.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,screenUnit+screenUnit/2)
-        set.connect(eggTopRightFirst.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (screenUnit*1.6).toInt())
+        set.connect(binding.eggTopRightFirst.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,screenUnit+screenUnit/2)
+        set.connect(binding.eggTopRightFirst.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*1.6).toInt())
 
-        set.connect(eggTopRightSecond.id,ConstraintSet.RIGHT,eggTopRightFirst.id,ConstraintSet.LEFT,0)
-        set.connect(eggTopRightSecond.id,ConstraintSet.TOP,eggTopRightFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
+        set.connect(binding.eggTopRightSecond.id,ConstraintSet.RIGHT,binding.eggTopRightFirst.id,ConstraintSet.LEFT,0)
+        set.connect(binding.eggTopRightSecond.id,ConstraintSet.TOP,binding.eggTopRightFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
 
-        set.connect(eggTopRightThird.id,ConstraintSet.RIGHT,eggTopRightSecond.id,ConstraintSet.LEFT,0)
-        set.connect(eggTopRightThird.id,ConstraintSet.TOP,eggTopRightSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
+        set.connect(binding.eggTopRightThird.id,ConstraintSet.RIGHT,binding.eggTopRightSecond.id,ConstraintSet.LEFT,0)
+        set.connect(binding.eggTopRightThird.id,ConstraintSet.TOP,binding.eggTopRightSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(eggTopRightFourth.id,ConstraintSet.RIGHT,eggTopRightThird.id,ConstraintSet.LEFT,0)
-        set.connect(eggTopRightFourth.id,ConstraintSet.TOP,eggTopRightThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
+        set.connect(binding.eggTopRightFourth.id,ConstraintSet.RIGHT,binding.eggTopRightThird.id,ConstraintSet.LEFT,0)
+        set.connect(binding.eggTopRightFourth.id,ConstraintSet.TOP,binding.eggTopRightThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(eggTopRightFifth.id,ConstraintSet.RIGHT,eggTopRightFourth.id,ConstraintSet.LEFT,0)
-        set.connect(eggTopRightFifth.id,ConstraintSet.TOP,eggTopRightFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
+        set.connect(binding.eggTopRightFifth.id,ConstraintSet.RIGHT,binding.eggTopRightFourth.id,ConstraintSet.LEFT,0)
+        set.connect(binding.eggTopRightFifth.id,ConstraintSet.TOP,binding.eggTopRightFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(eggBottomRightFirst.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,screenUnit+screenUnit/2)
-        set.connect(eggBottomRightFirst.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (screenUnit*3.1).toInt())
+        set.connect(binding.eggBottomRightFirst.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,screenUnit+screenUnit/2)
+        set.connect(binding.eggBottomRightFirst.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*3.1).toInt())
 
-        set.connect(eggBottomRightSecond.id,ConstraintSet.RIGHT,eggBottomRightFirst.id,ConstraintSet.LEFT,0)
-        set.connect(eggBottomRightSecond.id,ConstraintSet.TOP,eggBottomRightFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
+        set.connect(binding.eggBottomRightSecond.id,ConstraintSet.RIGHT,binding.eggBottomRightFirst.id,ConstraintSet.LEFT,0)
+        set.connect(binding.eggBottomRightSecond.id,ConstraintSet.TOP,binding.eggBottomRightFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
 
-        set.connect(eggBottomRightThird.id,ConstraintSet.RIGHT,eggBottomRightSecond.id,ConstraintSet.LEFT,0)
-        set.connect(eggBottomRightThird.id,ConstraintSet.TOP,eggBottomRightSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
+        set.connect(binding.eggBottomRightThird.id,ConstraintSet.RIGHT,binding.eggBottomRightSecond.id,ConstraintSet.LEFT,0)
+        set.connect(binding.eggBottomRightThird.id,ConstraintSet.TOP,binding.eggBottomRightSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(eggBottomRightFourth.id,ConstraintSet.RIGHT,eggBottomRightThird.id,ConstraintSet.LEFT,0)
-        set.connect(eggBottomRightFourth.id,ConstraintSet.TOP,eggBottomRightThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
+        set.connect(binding.eggBottomRightFourth.id,ConstraintSet.RIGHT,binding.eggBottomRightThird.id,ConstraintSet.LEFT,0)
+        set.connect(binding.eggBottomRightFourth.id,ConstraintSet.TOP,binding.eggBottomRightThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(eggBottomRightFifth.id,ConstraintSet.RIGHT,eggBottomRightFourth.id,ConstraintSet.LEFT,0)
-        set.connect(eggBottomRightFifth.id,ConstraintSet.TOP,eggBottomRightFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
+        set.connect(binding.eggBottomRightFifth.id,ConstraintSet.RIGHT,binding.eggBottomRightFourth.id,ConstraintSet.LEFT,0)
+        set.connect(binding.eggBottomRightFifth.id,ConstraintSet.TOP,binding.eggBottomRightFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(digitTen.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (screenUnit*0.9).toInt())
-        set.connect(digitTen.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,0)
-        set.connect(digitTen.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.digitTen.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*0.9).toInt())
+        set.connect(binding.digitTen.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,0)
+        set.connect(binding.digitTen.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,0)
 
-        set.connect(digitOne.id,ConstraintSet.TOP,digitTen.id,ConstraintSet.TOP,0)
-        set.connect(digitOne.id,ConstraintSet.LEFT,digitTen.id,ConstraintSet.RIGHT, (screenUnit*0.1).toInt())
+        set.connect(binding.digitOne.id,ConstraintSet.TOP,binding.digitTen.id,ConstraintSet.TOP,0)
+        set.connect(binding.digitOne.id,ConstraintSet.LEFT,binding.digitTen.id,ConstraintSet.RIGHT, (screenUnit*0.1).toInt())
 
-        set.connect(digitHundred.id,ConstraintSet.TOP,digitTen.id,ConstraintSet.TOP,0)
-        set.connect(digitHundred.id,ConstraintSet.RIGHT,digitTen.id,ConstraintSet.LEFT, (screenUnit*0.1).toInt())
+        set.connect(binding.digitHundred.id,ConstraintSet.TOP,binding.digitTen.id,ConstraintSet.TOP,0)
+        set.connect(binding.digitHundred.id,ConstraintSet.RIGHT,binding.digitTen.id,ConstraintSet.LEFT, (screenUnit*0.1).toInt())
 
-        set.connect(digitThousand.id,ConstraintSet.TOP,digitTen.id,ConstraintSet.TOP,0)
-        set.connect(digitThousand.id,ConstraintSet.RIGHT,digitHundred.id,ConstraintSet.LEFT, (screenUnit*0.1).toInt())
+        set.connect(binding.digitThousand.id,ConstraintSet.TOP,binding.digitTen.id,ConstraintSet.TOP,0)
+        set.connect(binding.digitThousand.id,ConstraintSet.RIGHT,binding.digitHundred.id,ConstraintSet.LEFT, (screenUnit*0.1).toInt())
 
-        set.connect(buttonBottomLeft.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.LEFT,0)
-        set.connect(buttonBottomLeft.id,ConstraintSet.LEFT,main_activity_layout.id,ConstraintSet.LEFT,0)
-        set.connect(buttonBottomLeft.id,ConstraintSet.BOTTOM,main_activity_layout.id,ConstraintSet.BOTTOM,screenUnit)
+        set.connect(binding.buttonBottomLeft.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.LEFT,0)
+        set.connect(binding.buttonBottomLeft.id,ConstraintSet.LEFT,binding.mainActivity.id,ConstraintSet.LEFT,0)
+        set.connect(binding.buttonBottomLeft.id,ConstraintSet.BOTTOM,binding.mainActivity.id,ConstraintSet.BOTTOM,screenUnit)
 
-        set.connect(buttonTopLeft.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.LEFT,0)
-        set.connect(buttonTopLeft.id,ConstraintSet.LEFT,main_activity_layout.id,ConstraintSet.LEFT,0)
-        set.connect(buttonTopLeft.id,ConstraintSet.BOTTOM,buttonBottomLeft.id,ConstraintSet.TOP,screenUnit)
+        set.connect(binding.buttonTopLeft.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.LEFT,0)
+        set.connect(binding.buttonTopLeft.id,ConstraintSet.LEFT,binding.mainActivity.id,ConstraintSet.LEFT,0)
+        set.connect(binding.buttonTopLeft.id,ConstraintSet.BOTTOM,binding.buttonBottomLeft.id,ConstraintSet.TOP,screenUnit)
 
-        set.connect(buttonBottomRight.id,ConstraintSet.LEFT,screen.id,ConstraintSet.RIGHT,0)
-        set.connect(buttonBottomRight.id,ConstraintSet.RIGHT,main_activity_layout.id,ConstraintSet.RIGHT,0)
-        set.connect(buttonBottomRight.id,ConstraintSet.BOTTOM,main_activity_layout.id,ConstraintSet.BOTTOM,screenUnit)
+        set.connect(binding.buttonBottomRight.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.buttonBottomRight.id,ConstraintSet.RIGHT,binding.mainActivity.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.buttonBottomRight.id,ConstraintSet.BOTTOM,binding.mainActivity.id,ConstraintSet.BOTTOM,screenUnit)
 
-        set.connect(buttonTopRight.id,ConstraintSet.LEFT,screen.id,ConstraintSet.RIGHT,0)
-        set.connect(buttonTopRight.id,ConstraintSet.RIGHT,main_activity_layout.id,ConstraintSet.RIGHT,0)
-        set.connect(buttonTopRight.id,ConstraintSet.BOTTOM,buttonBottomRight.id,ConstraintSet.TOP,screenUnit)
+        set.connect(binding.buttonTopRight.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.buttonTopRight.id,ConstraintSet.RIGHT,binding.mainActivity.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.buttonTopRight.id,ConstraintSet.BOTTOM,binding.buttonBottomRight.id,ConstraintSet.TOP,screenUnit)
 
-        set.connect(start_A.id,ConstraintSet.LEFT,buttonTopRight.id,ConstraintSet.LEFT,0)
-        set.connect(start_A.id,ConstraintSet.TOP,main_activity_layout.id,ConstraintSet.TOP,screenUnit)
+        set.connect(binding.startA.id,ConstraintSet.LEFT,binding.buttonTopRight.id,ConstraintSet.LEFT,0)
+        set.connect(binding.startA.id,ConstraintSet.TOP,binding.mainActivity.id,ConstraintSet.TOP,screenUnit)
 
-        set.connect(start_B.id,ConstraintSet.LEFT,buttonTopRight.id,ConstraintSet.LEFT,0)
-        set.connect(start_B.id,ConstraintSet.TOP,start_A.id,ConstraintSet.BOTTOM,screenUnit/2)
+        set.connect(binding.startB.id,ConstraintSet.LEFT,binding.buttonTopRight.id,ConstraintSet.LEFT,0)
+        set.connect(binding.startB.id,ConstraintSet.TOP,binding.startA.id,ConstraintSet.BOTTOM,screenUnit/2)
 
-        set.connect(letterA.id,ConstraintSet.LEFT,start_A.id,ConstraintSet.LEFT,0)
-        set.connect(letterA.id,ConstraintSet.RIGHT,start_A.id,ConstraintSet.RIGHT,0)
-        set.connect(letterA.id,ConstraintSet.BOTTOM,start_A.id,ConstraintSet.BOTTOM,screenUnit)
+        set.connect(binding.letterA.id,ConstraintSet.LEFT,binding.startA.id,ConstraintSet.LEFT,0)
+        set.connect(binding.letterA.id,ConstraintSet.RIGHT,binding.startA.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.letterA.id,ConstraintSet.BOTTOM,binding.startA.id,ConstraintSet.BOTTOM,screenUnit)
 
-        set.connect(letterB.id,ConstraintSet.LEFT,start_B.id,ConstraintSet.LEFT,0)
-        set.connect(letterB.id,ConstraintSet.RIGHT,start_B.id,ConstraintSet.RIGHT,0)
-        set.connect(letterB.id,ConstraintSet.BOTTOM,start_B.id,ConstraintSet.BOTTOM,screenUnit)
+        set.connect(binding.letterB.id,ConstraintSet.LEFT,binding.startB.id,ConstraintSet.LEFT,0)
+        set.connect(binding.letterB.id,ConstraintSet.RIGHT,binding.startB.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.letterB.id,ConstraintSet.BOTTOM,binding.startB.id,ConstraintSet.BOTTOM,screenUnit)
 
-        set.connect(closeApp.id,ConstraintSet.RIGHT,buttonTopLeft.id,ConstraintSet.RIGHT,0)
-        set.connect(closeApp.id,ConstraintSet.TOP,start_A.id,ConstraintSet.TOP,0)
+        set.connect(binding.closeApp.id,ConstraintSet.RIGHT,binding.buttonTopLeft.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.closeApp.id,ConstraintSet.TOP,binding.startA.id,ConstraintSet.TOP,0)
 
-        set.connect(exit.id,ConstraintSet.LEFT,closeApp.id,ConstraintSet.LEFT,0)
-        set.connect(exit.id,ConstraintSet.RIGHT,closeApp.id,ConstraintSet.RIGHT,0)
-        set.connect(exit.id,ConstraintSet.BOTTOM,closeApp.id,ConstraintSet.BOTTOM,screenUnit)
+        set.connect(binding.exit.id,ConstraintSet.LEFT,binding.closeApp.id,ConstraintSet.LEFT,0)
+        set.connect(binding.exit.id,ConstraintSet.RIGHT,binding.closeApp.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.exit.id,ConstraintSet.BOTTOM,binding.closeApp.id,ConstraintSet.BOTTOM,screenUnit)
 
-        set.connect(account.id,ConstraintSet.TOP,main_activity_layout.id,ConstraintSet.TOP,0)
-        set.connect(account.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
-        set.connect(account.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.TOP,0)
+        set.connect(binding.account.id,ConstraintSet.TOP,binding.mainActivity.id,ConstraintSet.TOP,0)
+        set.connect(binding.account.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.account.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.TOP,0)
 
-        set.connect(userID.id,ConstraintSet.TOP,main_activity_layout.id,ConstraintSet.TOP,0)
-        set.connect(userID.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,0)
-        set.connect(userID.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
-        set.connect(userID.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.TOP,0)
+        set.connect(binding.userID.id,ConstraintSet.TOP,binding.mainActivity.id,ConstraintSet.TOP,0)
+        set.connect(binding.userID.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,0)
+        set.connect(binding.userID.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.userID.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.TOP,0)
 
-        set.connect(rabbit.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (screenUnit*0.8).toInt())
-        set.connect(rabbit.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,
+        set.connect(binding.rabbit.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*0.8).toInt())
+        set.connect(binding.rabbit.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,
             (2.9*screenUnit).toInt()
         )
 
-        set.connect(middle_fault.id,ConstraintSet.TOP,screen.id,ConstraintSet.TOP, (1.6*screenUnit).toInt())
-        set.connect(middle_fault.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,0)
-        set.connect(middle_fault.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.middleFault.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (1.6*screenUnit).toInt())
+        set.connect(binding.middleFault.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,0)
+        set.connect(binding.middleFault.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,0)
 
-        set.connect(left_fault.id,ConstraintSet.TOP,middle_fault.id,ConstraintSet.TOP,0)
-        set.connect(left_fault.id,ConstraintSet.RIGHT,middle_fault.id,ConstraintSet.LEFT, 0)
+        set.connect(binding.leftFault.id,ConstraintSet.TOP,binding.middleFault.id,ConstraintSet.TOP,0)
+        set.connect(binding.leftFault.id,ConstraintSet.RIGHT,binding.middleFault.id,ConstraintSet.LEFT, 0)
 
-        set.connect(right_fault.id,ConstraintSet.TOP,middle_fault.id,ConstraintSet.TOP,0)
-        set.connect(right_fault.id,ConstraintSet.LEFT,middle_fault.id,ConstraintSet.RIGHT, 0)
+        set.connect(binding.rightFault.id,ConstraintSet.TOP,binding.middleFault.id,ConstraintSet.TOP,0)
+        set.connect(binding.rightFault.id,ConstraintSet.LEFT,binding.middleFault.id,ConstraintSet.RIGHT, 0)
 
-        set.connect(faultLeftSecond.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
-        set.connect(faultLeftSecond.id,ConstraintSet.LEFT,faultLeftThird.id,ConstraintSet.RIGHT,(screenUnit*0.1).toInt())
+        set.connect(binding.faultLeftSecond.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
+        set.connect(binding.faultLeftSecond.id,ConstraintSet.LEFT,binding.faultLeftThird.id,ConstraintSet.RIGHT,(screenUnit*0.1).toInt())
 
-        set.connect(faultLeftThird.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
-        set.connect(faultLeftThird.id,ConstraintSet.LEFT,faultLeftFourth.id,ConstraintSet.RIGHT,(screenUnit*0.1).toInt())
+        set.connect(binding.faultLeftThird.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
+        set.connect(binding.faultLeftThird.id,ConstraintSet.LEFT,binding.faultLeftFourth.id,ConstraintSet.RIGHT,(screenUnit*0.1).toInt())
 
-        set.connect(faultLeftFourth.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.5).toInt())
-        set.connect(faultLeftFourth.id,ConstraintSet.LEFT,screen.id,ConstraintSet.LEFT,(screenUnit*0.9).toInt())
+        set.connect(binding.faultLeftFourth.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*1.5).toInt())
+        set.connect(binding.faultLeftFourth.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,(screenUnit*0.9).toInt())
 
-        set.connect(faultLeftFirst.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*0.83).toInt())
-        set.connect(faultLeftFirst.id,ConstraintSet.LEFT,faultLeftSecond.id,ConstraintSet.RIGHT,(screenUnit*0.2).toInt())
+        set.connect(binding.faultLeftFirst.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*0.83).toInt())
+        set.connect(binding.faultLeftFirst.id,ConstraintSet.LEFT,binding.faultLeftSecond.id,ConstraintSet.RIGHT,(screenUnit*0.2).toInt())
 
-        set.connect(faultRightSecond.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
-        set.connect(faultRightSecond.id,ConstraintSet.RIGHT,faultRightThird.id,ConstraintSet.LEFT,(screenUnit*0.1).toInt())
+        set.connect(binding.faultRightSecond.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
+        set.connect(binding.faultRightSecond.id,ConstraintSet.RIGHT,binding.faultRightThird.id,ConstraintSet.LEFT,(screenUnit*0.1).toInt())
 
-        set.connect(faultRightThird.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
-        set.connect(faultRightThird.id,ConstraintSet.RIGHT,faultRightFourth.id,ConstraintSet.LEFT,(screenUnit*0.1).toInt())
+        set.connect(binding.faultRightThird.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
+        set.connect(binding.faultRightThird.id,ConstraintSet.RIGHT,binding.faultRightFourth.id,ConstraintSet.LEFT,(screenUnit*0.1).toInt())
 
-        set.connect(faultRightFourth.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.5).toInt())
-        set.connect(faultRightFourth.id,ConstraintSet.RIGHT,screen.id,ConstraintSet.RIGHT,(screenUnit*0.9).toInt())
+        set.connect(binding.faultRightFourth.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*1.5).toInt())
+        set.connect(binding.faultRightFourth.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,(screenUnit*0.9).toInt())
 
-        set.connect(faultRightFirst.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*0.83).toInt())
-        set.connect(faultRightFirst.id,ConstraintSet.RIGHT,faultRightSecond.id,ConstraintSet.LEFT,(screenUnit*0.2).toInt())
+        set.connect(binding.faultRightFirst.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*0.83).toInt())
+        set.connect(binding.faultRightFirst.id,ConstraintSet.RIGHT,binding.faultRightSecond.id,ConstraintSet.LEFT,(screenUnit*0.2).toInt())
 
-        set.connect(left_wolf.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
-        set.connect(left_wolf.id,ConstraintSet.LEFT,eggBottomLeftFifth.id,ConstraintSet.LEFT, (screenUnit*0.13).toInt())
+        set.connect(binding.leftWolf.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
+        set.connect(binding.leftWolf.id,ConstraintSet.LEFT,binding.eggBottomLeftFifth.id,ConstraintSet.LEFT, (screenUnit*0.13).toInt())
 
-        set.connect(right_wolf.id,ConstraintSet.BOTTOM,screen.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
-        set.connect(right_wolf.id,ConstraintSet.RIGHT,eggBottomRightFifth.id,ConstraintSet.RIGHT, (screenUnit*0.13).toInt())
+        set.connect(binding.rightWolf.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
+        set.connect(binding.rightWolf.id,ConstraintSet.RIGHT,binding.eggBottomRightFifth.id,ConstraintSet.RIGHT, (screenUnit*0.13).toInt())
 
-        set.connect(linearLayoutMusic.id,ConstraintSet.TOP,screen.id,ConstraintSet.BOTTOM,0)
-        set.connect(linearLayoutMusic.id,ConstraintSet.BOTTOM,main_activity_layout.id,ConstraintSet.BOTTOM,0)
-        set.connect(linearLayoutMusic.id,ConstraintSet.LEFT,main_activity_layout.id,ConstraintSet.LEFT,0)
-        set.connect(linearLayoutMusic.id,ConstraintSet.RIGHT,main_activity_layout.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.linearLayoutMusic.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.BOTTOM,0)
+        set.connect(binding.linearLayoutMusic.id,ConstraintSet.BOTTOM,binding.mainActivity.id,ConstraintSet.BOTTOM,0)
+        set.connect(binding.linearLayoutMusic.id,ConstraintSet.LEFT,binding.mainActivity.id,ConstraintSet.LEFT,0)
+        set.connect(binding.linearLayoutMusic.id,ConstraintSet.RIGHT,binding.mainActivity.id,ConstraintSet.RIGHT,0)
 
-        set.applyTo(main_activity_layout)
+        set.applyTo(binding.mainActivity)
 
 
     }
 
     private fun setDrawable() {
         val mainScreen = MainScreenDrawable(this,screenUnit,screenSize.width,screenSize.height)
-        screen.setImageDrawable(mainScreen)
+        binding.screen.setImageDrawable(mainScreen)
 
-        buttonBottomLeft.setImageDrawable(ArrowBottomLeft(this,screenUnit*arrowSize.width,
+        binding.buttonBottomLeft.setImageDrawable(ArrowBottomLeft(this,screenUnit*arrowSize.width,
             screenUnit*arrowSize.height
         ))
 
-        buttonTopLeft.setImageDrawable(ArrowTopLeft(this,screenUnit*arrowSize.width,
+        binding.buttonTopLeft.setImageDrawable(ArrowTopLeft(this,screenUnit*arrowSize.width,
             screenUnit*arrowSize.height
         ))
 
-        buttonTopRight.setImageDrawable(ArrowTopRight(this,screenUnit*arrowSize.width,
+        binding.buttonTopRight.setImageDrawable(ArrowTopRight(this,screenUnit*arrowSize.width,
             screenUnit*arrowSize.height
         ))
 
-        buttonBottomRight.setImageDrawable(ArrowBottomRight(this,screenUnit*arrowSize.width,
+        binding.buttonBottomRight.setImageDrawable(ArrowBottomRight(this,screenUnit*arrowSize.width,
             screenUnit*arrowSize.height
         ))
 
-        start_A.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
+        binding.startA.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
             screenUnit*startButtonSize.height
         ))
 
-        start_B.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
+        binding.startB.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
             screenUnit*startButtonSize.height
         ))
 
-        closeApp.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
+        binding.closeApp.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
             screenUnit*startButtonSize.height
         ))
 
-        account.setImageDrawable(StartButton(this,screenUnit*userIdSize.height,
+        binding.account.setImageDrawable(StartButton(this,screenUnit*userIdSize.height,
             screenUnit*userIdSize.height
         ))
 
-        userID.background = TextViewDrawable(this,userIdSize.width*screenUnit,userIdSize.height*screenUnit)
+        binding.userID.background = TextViewDrawable(this,userIdSize.width*screenUnit,userIdSize.height*screenUnit)
 
 
 
@@ -812,79 +814,79 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private fun setViewSizes() {
         screenSize.width = 14.0
         screenSize.height = 7.0
-        screen.layoutParams = ConstraintLayout.LayoutParams((screenSize.width*screenUnit).toInt(),(screenSize.height*screenUnit).toInt())
+        binding.screen.layoutParams = ConstraintLayout.LayoutParams((screenSize.width*screenUnit).toInt(),(screenSize.height*screenUnit).toInt())
 
         eggSize.width=0.5
         eggSize.height=0.5
-        eggTopLeftFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggTopLeftSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggTopLeftThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggTopLeftFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggTopLeftFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggBottomLeftFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggBottomLeftSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggBottomLeftThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggBottomLeftFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggBottomLeftFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggTopRightFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggTopRightSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggTopRightThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggTopRightFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggTopRightFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggBottomRightFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggBottomRightSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggBottomRightThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggBottomRightFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
-        eggBottomRightFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggTopLeftFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggTopLeftSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggTopLeftThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggTopLeftFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggTopLeftFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggBottomLeftFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggBottomLeftSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggBottomLeftThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggBottomLeftFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggBottomLeftFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggTopRightFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggTopRightSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggTopRightThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggTopRightFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggTopRightFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggBottomRightFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggBottomRightSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggBottomRightThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggBottomRightFourth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
+        binding.eggBottomRightFifth.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
 
 
         digitSize.width = 0.3
         digitSize.height = digitSize.width*2
 
-        digitOne.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
-        digitTen.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
-        digitHundred.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
-        digitThousand.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
+        binding.digitOne.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
+        binding.digitTen.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
+        binding.digitHundred.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
+        binding.digitThousand.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
 
 
         arrowSize.width= 2.0
         arrowSize.height=arrowSize.width*2/3
 
-        buttonBottomLeft.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
-        buttonTopLeft.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
-        buttonBottomRight.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
-        buttonTopRight.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
+        binding.buttonBottomLeft.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
+        binding.buttonTopLeft.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
+        binding.buttonBottomRight.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
+        binding.buttonTopRight.layoutParams = ConstraintLayout.LayoutParams((arrowSize.width*screenUnit).toInt(), (arrowSize.height*screenUnit).toInt())
 
         startButtonSize.width = arrowSize.height
         startButtonSize.height = arrowSize.height
 
-        start_A.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
-        start_B.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
+        binding.startA.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
+        binding.startB.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
 
-        letterA.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
-        letterB.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        binding.letterA.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        binding.letterB.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
 
-        closeApp.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
-        exit.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        binding.closeApp.layoutParams = ConstraintLayout.LayoutParams((startButtonSize.width*screenUnit).toInt(), (startButtonSize.height*screenUnit).toInt())
+        binding.exit.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
         userIdSize.height = arrowSize.height
         userIdSize.width = screenSize.width-3*userIdSize.height
 
-        account.layoutParams = ConstraintLayout.LayoutParams((userIdSize.height*screenUnit).toInt(), (userIdSize.height*screenUnit).toInt())
-        userID.layoutParams = ConstraintLayout.LayoutParams((userIdSize.width*screenUnit).toInt(), (userIdSize.height*screenUnit).toInt())
-        userID.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        binding.account.layoutParams = ConstraintLayout.LayoutParams((userIdSize.height*screenUnit).toInt(), (userIdSize.height*screenUnit).toInt())
+        binding.userID.layoutParams = ConstraintLayout.LayoutParams((userIdSize.width*screenUnit).toInt(), (userIdSize.height*screenUnit).toInt())
+        binding.userID.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
         rabbitSize.width = screenUnit*1.4
         rabbitSize.height = screenUnit*1.4
 
-        rabbit.layoutParams = ConstraintLayout.LayoutParams(rabbitSize.width.toInt(),rabbitSize.height.toInt())
+        binding.rabbit.layoutParams = ConstraintLayout.LayoutParams(rabbitSize.width.toInt(),rabbitSize.height.toInt())
 
-        faultSize.width = (screenUnit*0.6).toDouble()
+        faultSize.width = (screenUnit*0.6)
         faultSize.height = faultSize.width
-        middle_fault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
-        left_fault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
-        right_fault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
+        binding.middleFault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
+        binding.leftFault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
+        binding.rightFault.layoutParams = ConstraintLayout.LayoutParams(faultSize.width.toInt(),faultSize.height.toInt())
 
         bottomFaultSizeSmall.width = (screenUnit/2).toDouble()
         bottomFaultSizeSmall.height=bottomFaultSizeSmall.width*1.5
@@ -894,32 +896,41 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 
 
-        faultLeftSecond.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmallDifferent.width.toInt(),bottomFaultSizeSmallDifferent.height.toInt())
-        faultLeftThird.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
-        faultLeftFourth.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
-        faultRightSecond.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmallDifferent.width.toInt(),bottomFaultSizeSmallDifferent.height.toInt())
-        faultRightThird.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
-        faultRightFourth.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
+        binding.faultLeftSecond.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmallDifferent.width.toInt(),bottomFaultSizeSmallDifferent.height.toInt())
+        binding.faultLeftThird.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
+        binding.faultLeftFourth.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
+        binding.faultRightSecond.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmallDifferent.width.toInt(),bottomFaultSizeSmallDifferent.height.toInt())
+        binding.faultRightThird.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
+        binding.faultRightFourth.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeSmall.width.toInt(),bottomFaultSizeSmall.height.toInt())
 
         bottomFaultSizeFirst.width = (screenUnit*2).toDouble()
-        bottomFaultSizeFirst.height = (screenUnit*1.5).toDouble()
-        faultLeftFirst.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeFirst.width.toInt(),bottomFaultSizeFirst.height.toInt())
-        faultRightFirst.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeFirst.width.toInt(),bottomFaultSizeFirst.height.toInt())
+        bottomFaultSizeFirst.height = (screenUnit*1.5)
+        binding.faultLeftFirst.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeFirst.width.toInt(),bottomFaultSizeFirst.height.toInt())
+        binding.faultRightFirst.layoutParams = ConstraintLayout.LayoutParams(bottomFaultSizeFirst.width.toInt(),bottomFaultSizeFirst.height.toInt())
 
-        wolfSize.width = (screenUnit*3.5).toDouble()
+        wolfSize.width = (screenUnit*3.5)
         wolfSize.height = wolfSize.width
 
-        left_wolf.layoutParams = ConstraintLayout.LayoutParams(wolfSize.width.toInt(),wolfSize.height.toInt())
-        right_wolf.layoutParams = ConstraintLayout.LayoutParams(wolfSize.width.toInt(),wolfSize.height.toInt())
+        binding.leftWolf.layoutParams = ConstraintLayout.LayoutParams(wolfSize.width.toInt(),wolfSize.height.toInt())
+        binding.rightWolf.layoutParams = ConstraintLayout.LayoutParams(wolfSize.width.toInt(),wolfSize.height.toInt())
 
-        music_from.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
-        music_link.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        binding.musicFrom.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        binding.musicLink.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
     }
 
     private fun getScreenHighAndWidth() {
         val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R){
+            val display = this.display
+            display?.getRealMetrics(displayMetrics)
+        }
+        else{
+            @Suppress("DEPRECATION")
+            val display = this.windowManager.defaultDisplay
+            @Suppress("DEPRECATION")
+            display.getMetrics(displayMetrics)
+        }
         screenHeight = displayMetrics.heightPixels
         screenWidth = displayMetrics.widthPixels
         val unitWidth = screenWidth/20
@@ -930,32 +941,32 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     // display all fallen eggs
     private fun displayState(){
-        eggTopLeftFirst.setImageDrawable(if(game.displayCell(1,Static.LEFT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
-        eggTopLeftSecond.setImageDrawable(if(game.displayCell(2,Static.LEFT_TOP)) EggPlus45(this,screenUnit*eggSize.width) else null)
-        eggTopLeftThird.setImageDrawable(if(game.displayCell(3,Static.LEFT_TOP)) EggPlus90(this,screenUnit*eggSize.width) else null)
-        eggTopLeftFourth.setImageDrawable(if(game.displayCell(4,Static.LEFT_TOP)) EggPlus135(this,screenUnit*eggSize.width) else null)
-        eggTopLeftFifth.setImageDrawable(if(game.displayCell(5,Static.LEFT_TOP)) EggPlus225(this,screenUnit*eggSize.width) else null)
+        binding.eggTopLeftFirst.setImageDrawable(if(game.displayCell(1,Static.LEFT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+        binding.eggTopLeftSecond.setImageDrawable(if(game.displayCell(2,Static.LEFT_TOP)) EggPlus45(this,screenUnit*eggSize.width) else null)
+        binding.eggTopLeftThird.setImageDrawable(if(game.displayCell(3,Static.LEFT_TOP)) EggPlus90(this,screenUnit*eggSize.width) else null)
+        binding.eggTopLeftFourth.setImageDrawable(if(game.displayCell(4,Static.LEFT_TOP)) EggPlus135(this,screenUnit*eggSize.width) else null)
+        binding.eggTopLeftFifth.setImageDrawable(if(game.displayCell(5,Static.LEFT_TOP)) EggPlus225(this,screenUnit*eggSize.width) else null)
 
 
-        eggBottomLeftFirst.setImageDrawable(if(game.displayCell(1,Static.LEFT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
-        eggBottomLeftSecond.setImageDrawable(if(game.displayCell(2,Static.LEFT_BOTTOM)) EggPlus45(this,screenUnit*eggSize.width) else null)
-        eggBottomLeftThird.setImageDrawable(if(game.displayCell(3,Static.LEFT_BOTTOM)) EggPlus90(this,screenUnit*eggSize.width) else null)
-        eggBottomLeftFourth.setImageDrawable(if(game.displayCell(4,Static.LEFT_BOTTOM)) EggPlus135(this,screenUnit*eggSize.width) else null)
-        eggBottomLeftFifth.setImageDrawable(if(game.displayCell(5,Static.LEFT_BOTTOM)) EggPlus225(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomLeftFirst.setImageDrawable(if(game.displayCell(1,Static.LEFT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomLeftSecond.setImageDrawable(if(game.displayCell(2,Static.LEFT_BOTTOM)) EggPlus45(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomLeftThird.setImageDrawable(if(game.displayCell(3,Static.LEFT_BOTTOM)) EggPlus90(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomLeftFourth.setImageDrawable(if(game.displayCell(4,Static.LEFT_BOTTOM)) EggPlus135(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomLeftFifth.setImageDrawable(if(game.displayCell(5,Static.LEFT_BOTTOM)) EggPlus225(this,screenUnit*eggSize.width) else null)
 
 
-        eggBottomRightFirst.setImageDrawable(if(game.displayCell(1,Static.RIGHT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
-        eggBottomRightSecond.setImageDrawable(if(game.displayCell(2,Static.RIGHT_BOTTOM)) EggMinus45(this,screenUnit*eggSize.width) else null)
-        eggBottomRightThird.setImageDrawable(if(game.displayCell(3,Static.RIGHT_BOTTOM)) EggMinus90(this,screenUnit*eggSize.width) else null)
-        eggBottomRightFourth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_BOTTOM)) EggPlus225(this,screenUnit*eggSize.width) else null)
-        eggBottomRightFifth.setImageDrawable(if(game.displayCell(5,Static.RIGHT_BOTTOM)) EggPlus135(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomRightFirst.setImageDrawable(if(game.displayCell(1,Static.RIGHT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomRightSecond.setImageDrawable(if(game.displayCell(2,Static.RIGHT_BOTTOM)) EggMinus45(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomRightThird.setImageDrawable(if(game.displayCell(3,Static.RIGHT_BOTTOM)) EggMinus90(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomRightFourth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_BOTTOM)) EggPlus225(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomRightFifth.setImageDrawable(if(game.displayCell(5,Static.RIGHT_BOTTOM)) EggPlus135(this,screenUnit*eggSize.width) else null)
 
 
-        eggTopRightFirst.setImageDrawable(if(game.displayCell(1,Static.RIGHT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
-        eggTopRightSecond.setImageDrawable(if(game.displayCell(2,Static.RIGHT_TOP)) EggMinus45(this,screenUnit*eggSize.width) else null)
-        eggTopRightThird.setImageDrawable(if(game.displayCell(3,Static.RIGHT_TOP)) EggMinus90(this,screenUnit*eggSize.width) else null)
-        eggTopRightFourth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_TOP)) EggPlus225(this,screenUnit*eggSize.width) else null)
-        eggTopRightFifth.setImageDrawable(if(game.displayCell(5,Static.RIGHT_TOP)) EggPlus135(this,screenUnit*eggSize.width) else null)
+        binding.eggTopRightFirst.setImageDrawable(if(game.displayCell(1,Static.RIGHT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+        binding.eggTopRightSecond.setImageDrawable(if(game.displayCell(2,Static.RIGHT_TOP)) EggMinus45(this,screenUnit*eggSize.width) else null)
+        binding.eggTopRightThird.setImageDrawable(if(game.displayCell(3,Static.RIGHT_TOP)) EggMinus90(this,screenUnit*eggSize.width) else null)
+        binding.eggTopRightFourth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_TOP)) EggPlus225(this,screenUnit*eggSize.width) else null)
+        binding.eggTopRightFifth.setImageDrawable(if(game.displayCell(5,Static.RIGHT_TOP)) EggPlus135(this,screenUnit*eggSize.width) else null)
 
 
     }
@@ -965,26 +976,26 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // display rabbit
     private fun displayRabbit(rabbitBoolean: Boolean){
        if(rabbitBoolean){
-           rabbit.setImageDrawable(RabbitDrawable(this,rabbitSize.width))
+           binding.rabbit.setImageDrawable(RabbitDrawable(this,rabbitSize.width))
        }
        else{
-           rabbit.setImageDrawable(null)
+           binding.rabbit.setImageDrawable(null)
        }
    }
 
 
     // display running chicken during animation
     private fun displayRunningChicken(fallenEgg: FallenEgg) {
-        faultLeftFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,0))BrokenEggLeft(this,bottomFaultSizeFirst.width)else null)
-        faultLeftSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,0))RunningChickenLeftFirst(this,bottomFaultSizeSmallDifferent.width)else null)
-        faultLeftThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,0))RunningChickenLeftTwo(this,bottomFaultSizeSmall.width)else null)
-        faultLeftFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,0))RunningChickenLeftThree(this,bottomFaultSizeSmall.width)else null)
+        binding.faultLeftFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,0))BrokenEggLeft(this,bottomFaultSizeFirst.width)else null)
+        binding.faultLeftSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,0))RunningChickenLeftFirst(this,bottomFaultSizeSmallDifferent.width)else null)
+        binding.faultLeftThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,0))RunningChickenLeftTwo(this,bottomFaultSizeSmall.width)else null)
+        binding.faultLeftFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,0))RunningChickenLeftThree(this,bottomFaultSizeSmall.width)else null)
 
 
-        faultRightFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,1))BrokenEggRight(this,bottomFaultSizeFirst.width)else null)
-        faultRightSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,1))RunningChickenRightFirst(this,bottomFaultSizeSmallDifferent.width)else null)
-        faultRightThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,1))RunningChickenRightTwo(this,bottomFaultSizeSmall.width)else null)
-        faultRightFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,1))RunningChickenRightThree(this,bottomFaultSizeSmall.width)else null)
+        binding.faultRightFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,1))BrokenEggRight(this,bottomFaultSizeFirst.width)else null)
+        binding.faultRightSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,1))RunningChickenRightFirst(this,bottomFaultSizeSmallDifferent.width)else null)
+        binding.faultRightThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,1))RunningChickenRightTwo(this,bottomFaultSizeSmall.width)else null)
+        binding.faultRightFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,1))RunningChickenRightThree(this,bottomFaultSizeSmall.width)else null)
 
 
     }
@@ -992,21 +1003,21 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // display demo basket
     private fun displayDemoBasket() {
         if(game.position[Static.LEFT_TOP]){
-            left_wolf.setImageDrawable(WolfLeftTop(this,wolfSize.width))
-            right_wolf.setImageDrawable(null)
+            binding.leftWolf.setImageDrawable(WolfLeftTop(this,wolfSize.width))
+            binding.rightWolf.setImageDrawable(null)
         }
 
         if(game.position[Static.LEFT_BOTTOM]){
-            left_wolf.setImageDrawable(WolfLeftBottom(this,wolfSize.width))
-            right_wolf.setImageDrawable(null)
+            binding.leftWolf.setImageDrawable(WolfLeftBottom(this,wolfSize.width))
+            binding.rightWolf.setImageDrawable(null)
         }
         if(game.position[Static.RIGHT_BOTTOM]){
-            left_wolf.setImageDrawable(null)
-            right_wolf.setImageDrawable(WolfRightBottom(this,wolfSize.width))
+            binding.leftWolf.setImageDrawable(null)
+            binding.rightWolf.setImageDrawable(WolfRightBottom(this,wolfSize.width))
         }
         if(game.position[Static.RIGHT_TOP]){
-            left_wolf.setImageDrawable(null)
-            right_wolf.setImageDrawable(WolfRightTop(this,wolfSize.width))
+            binding.leftWolf.setImageDrawable(null)
+            binding.rightWolf.setImageDrawable(WolfRightTop(this,wolfSize.width))
         }
 
     }
@@ -1015,12 +1026,12 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private fun updateScoreTextView(){
 
         val thousand = game.getScore()/1000
-        var reszta = game.getScore()%1000
-        val hundred = reszta/100
-        reszta %= 100
-        val ten = reszta/10
-        reszta %= 10
-        val one = reszta
+        var rest = game.getScore()%1000
+        val hundred = rest/100
+        rest %= 100
+        val ten = rest/10
+        rest %= 10
+        val one = rest
 
         when(game.getScore()){
             in 0..9 -> displayScoreImageViews(oneDigit = one,tenDigit = null,hundredDigit = null,thousandDigit = null)
@@ -1031,21 +1042,21 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     }
 
     private fun displayScoreImageViews(oneDigit:Int?,tenDigit:Int?,hundredDigit:Int?, thousandDigit:Int?) {
-        if(thousandDigit!=null) digitThousand.setImageDrawable(Digit(this,
+        if(thousandDigit!=null) binding.digitThousand.setImageDrawable(Digit(this,
             (digitSize.width*screenUnit).toInt(),thousandDigit))
-        else digitThousand.setImageDrawable(null)
+        else binding.digitThousand.setImageDrawable(null)
 
-        if(hundredDigit!=null) digitHundred.setImageDrawable(Digit(this,
+        if(hundredDigit!=null) binding.digitHundred.setImageDrawable(Digit(this,
             (digitSize.width*screenUnit).toInt(),hundredDigit))
-        else digitHundred.setImageDrawable(null)
+        else binding.digitHundred.setImageDrawable(null)
 
-        if(tenDigit!=null) digitTen.setImageDrawable(Digit(this,
+        if(tenDigit!=null) binding.digitTen.setImageDrawable(Digit(this,
             (digitSize.width*screenUnit).toInt(),tenDigit))
-        else digitTen.setImageDrawable(null)
+        else binding.digitTen.setImageDrawable(null)
 
-        if(oneDigit!=null) digitOne.setImageDrawable(Digit(this,
+        if(oneDigit!=null) binding.digitOne.setImageDrawable(Digit(this,
             (digitSize.width*screenUnit).toInt(),oneDigit))
-        else digitOne.setImageDrawable(null)
+        else binding.digitOne.setImageDrawable(null)
 
 
     }
@@ -1069,20 +1080,20 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private fun displayBasket(){
         game.setBasket(basket)
         if(game.position[Static.LEFT_TOP]){
-            left_wolf.setImageDrawable(WolfLeftTop(this,wolfSize.width))
-            right_wolf.setImageDrawable(null)
+            binding.leftWolf.setImageDrawable(WolfLeftTop(this,wolfSize.width))
+            binding.rightWolf.setImageDrawable(null)
         }
         if(game.position[Static.LEFT_BOTTOM]){
-            left_wolf.setImageDrawable(WolfLeftBottom(this,wolfSize.width))
-            right_wolf.setImageDrawable(null)
+            binding.leftWolf.setImageDrawable(WolfLeftBottom(this,wolfSize.width))
+            binding.rightWolf.setImageDrawable(null)
         }
         if(game.position[Static.RIGHT_BOTTOM]){
-            left_wolf.setImageDrawable(null)
-            right_wolf.setImageDrawable(WolfRightBottom(this,wolfSize.width))
+            binding.leftWolf.setImageDrawable(null)
+            binding.rightWolf.setImageDrawable(WolfRightBottom(this,wolfSize.width))
         }
         if(game.position[Static.RIGHT_TOP]){
-            left_wolf.setImageDrawable(null)
-            right_wolf.setImageDrawable(WolfRightTop(this,wolfSize.width))
+            binding.leftWolf.setImageDrawable(null)
+            binding.rightWolf.setImageDrawable(WolfRightTop(this,wolfSize.width))
         }
     }
 
@@ -1097,32 +1108,46 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     // set click listeners for all buttons
     private fun buttonsOnClickListeners(){
-        buttonTopLeft.setOnClickListener {
+        binding.buttonTopLeft.setOnClickListener {
             if(playOrPause()) {
                 basket = Static.LEFT_TOP
                 displayBasket()
             }
         }
-        buttonBottomLeft.setOnClickListener {
+        binding.buttonBottomLeft.setOnClickListener {
             if(playOrPause()){
                 basket=Static.LEFT_BOTTOM
                 displayBasket()
             }
         }
-        buttonBottomRight.setOnClickListener {
+        binding.buttonBottomRight.setOnClickListener {
             if(playOrPause()) {
                 basket = Static.RIGHT_BOTTOM
                 displayBasket()
             }
         }
-        buttonTopRight.setOnClickListener {
+        binding.buttonTopRight.setOnClickListener {
             if(playOrPause()){
                 basket=Static.RIGHT_TOP
                 displayBasket()
             }
         }
 
-        start_A.setOnClickListener {
+        binding.startA.setOnClickListener {
+
+            val adRequest = AdRequest.Builder().build()
+            val adId = getString(R.string.admob_big)
+            InterstitialAd.load(this,adId,adRequest, object  : InterstitialAdLoadCallback(){
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    mInterstitialAd = interstitialAd
+                }
+            })
+
+
             when (gameState) {
                 Static.DEMO -> {
                     mHandlerDemo.removeCallbacksAndMessages(null)
@@ -1137,7 +1162,20 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
                 else -> {/* do nothing*/}
             }
         }
-        start_B.setOnClickListener {
+        binding.startB.setOnClickListener {
+
+            val adRequest = AdRequest.Builder().build()
+            val adId = getString(R.string.admob_big)
+            InterstitialAd.load(this,adId,adRequest, object  : InterstitialAdLoadCallback(){
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    mInterstitialAd = interstitialAd
+                }
+            })
+
             when (gameState) {
                 Static.DEMO -> {
                     mHandlerDemo.removeCallbacksAndMessages(null)
@@ -1153,10 +1191,10 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             }
         }
 
-        closeApp.setOnClickListener {
+        binding.closeApp.setOnClickListener {
             finish()
         }
-        account.setOnClickListener {
+        binding.account.setOnClickListener {
             if(gameState==Static.DEMO||gameState==Static.PAUSE_A||gameState==Static.PAUSE_B){
                 val intent = Intent(this,LoginActivity::class.java)
                 startActivity(intent)
@@ -1164,7 +1202,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             }
         }
 
-        music_link.setOnClickListener {
+        binding.musicLink.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.zapsplat.com"))
             startActivity(intent)
         }
@@ -1172,11 +1210,11 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 
         if(loggedInStatus.loggedIn) {
-            userID.text = Functions.checkUserNameFromSharedPreferences(this, loggedInStatus.userid)
+            binding.userID.text = Functions.checkUserNameFromSharedPreferences(this, loggedInStatus.userid)
         }
         else
         {
-            userID.text="NOT LOGGED IN"
+            binding.userID.text=getString(R.string.not_logged_in)
         }
 
 
@@ -1189,16 +1227,16 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // demo mode
     private fun demoMode() {
 
-        digitOne.visibility = View.VISIBLE
-        digitTen.visibility = View.VISIBLE
-        digitHundred.visibility = View.VISIBLE
-        digitThousand.visibility = View.VISIBLE
+        binding.digitOne.visibility = View.VISIBLE
+        binding.digitTen.visibility = View.VISIBLE
+        binding.digitHundred.visibility = View.VISIBLE
+        binding.digitThousand.visibility = View.VISIBLE
         displayScoreImageViews(0,0,0,0)
 
-        start_A.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
-        start_B.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+        binding.startA.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+        binding.startB.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
 
-        linearLayoutMusic.visibility = View.VISIBLE
+        binding.linearLayoutMusic.visibility = View.VISIBLE
         mHandler.removeCallbacksAndMessages(null)
         mHandlerDemo.removeCallbacksAndMessages(null)
         mHandlerPause.removeCallbacksAndMessages(null)
@@ -1222,7 +1260,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // play game A
     private fun startGameA() {
 
-        linearLayoutMusic.visibility = View.GONE
+        binding.linearLayoutMusic.visibility = View.GONE
         mHandlerPause.removeCallbacksAndMessages(null)
         gameState=Static.PLAY_A
         game.clearEggArray()
@@ -1234,13 +1272,13 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         displayState()
         gameLoop().run()
         rabbitShow().run()
-        start_A.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+        binding.startA.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
 
     }
 
     // play game B
     private fun startGameB() {
-        linearLayoutMusic.visibility = View.GONE
+        binding.linearLayoutMusic.visibility = View.GONE
         mHandlerPause.removeCallbacksAndMessages(null)
         gameState=Static.PLAY_B
         game.clearEggArray()
@@ -1252,13 +1290,13 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         displayState()
         gameLoop().run()
         rabbitShow().run()
-        start_B.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+        binding.startB.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
 
     }
 
     // pause game A
     private fun pauseGameA() {
-        linearLayoutMusic.visibility = View.GONE
+        binding.linearLayoutMusic.visibility = View.GONE
         gameState=Static.PAUSE_A
         updateFaultsView()
         updateScoreTextView()
@@ -1280,7 +1318,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 
     private fun pauseGameB() {
-        linearLayoutMusic.visibility = View.GONE
+        binding.linearLayoutMusic.visibility = View.GONE
         gameState=Static.PAUSE_B
         updateFaultsView()
         updateScoreTextView()
@@ -1428,52 +1466,52 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     private fun zeroFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
-        right_fault.setImageDrawable(null)
-        middle_fault.setImageDrawable(null)
-        left_fault.setImageDrawable(null)
+        binding.rightFault.setImageDrawable(null)
+        binding.middleFault.setImageDrawable(null)
+        binding.leftFault.setImageDrawable(null)
     }
 
     private fun oneFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
-        flashFault(right_fault).run()
-        left_fault.setImageDrawable(null)
-        middle_fault.setImageDrawable(null)
+        flashFault(binding.rightFault).run()
+        binding.leftFault.setImageDrawable(null)
+        binding.middleFault.setImageDrawable(null)
 
     }
 
     private fun twoFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
-        left_fault.setImageDrawable(null)
-        middle_fault.setImageDrawable(null)
-        right_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        binding.leftFault.setImageDrawable(null)
+        binding.middleFault.setImageDrawable(null)
+        binding.rightFault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
     }
 
     private fun threeFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
-        flashFault(middle_fault).run()
-        left_fault.setImageDrawable(null)
-        right_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        flashFault(binding.middleFault).run()
+        binding.leftFault.setImageDrawable(null)
+        binding.rightFault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
     }
 
     private fun fourFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
-        left_fault.setImageDrawable(null)
-        middle_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
-        right_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        binding.leftFault.setImageDrawable(null)
+        binding.middleFault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        binding.rightFault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
     }
 
     private fun fiveFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
-        flashFault(left_fault).run()
-        middle_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
-        right_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        flashFault(binding.leftFault).run()
+        binding.middleFault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        binding.rightFault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
     }
 
     private fun sixFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
-        left_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
-        middle_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
-        right_fault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        binding.leftFault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        binding.middleFault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
+        binding.rightFault.setImageDrawable(FaultTopDrawable(this,faultSize.height))
     }
 
     // lost egg animation end game
@@ -1504,6 +1542,11 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     }
 
 }
+// todo UI for every phone
+//todo sound
+//todo other games
+//todo user name max 14 zankow
+//todo ontouch
 
 
 

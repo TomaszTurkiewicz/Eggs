@@ -10,12 +10,14 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.tt.eggs.classes.Dimension
+import com.tt.eggs.databinding.ActivityOtherGamesBinding
 import com.tt.eggs.drawable.RoundedFrameDrawable
 import com.tt.eggs.drawable.StartButton
-import com.tt.eggs.drawable.StartButtonGray
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_other_games.*
+
 
 class OtherGamesActivity : AppCompatActivity() {
 
@@ -27,10 +29,16 @@ class OtherGamesActivity : AppCompatActivity() {
     private val sendGameButtonSize = Dimension()
     private val battleShipsGameButtonSize = Dimension()
 
+    private lateinit var binding: ActivityOtherGamesBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fullScreen()
-        setContentView(R.layout.activity_other_games)
+
+        binding = ActivityOtherGamesBinding.inflate(layoutInflater)
+        val view = binding.root
+
+        setContentView(view)
+        fullScreen(view)
 
         makeUI()
 
@@ -41,14 +49,14 @@ class OtherGamesActivity : AppCompatActivity() {
 
     private fun setOnClickListeners() {
 
-        backToGameOtherGames.setOnClickListener {
+        binding.backToGameOtherGames.setOnClickListener {
             val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
             finish()
         }
 
 
-        send_game_button.setOnClickListener {
+        binding.sendGameButton.setOnClickListener {
             try{
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
@@ -63,7 +71,7 @@ class OtherGamesActivity : AppCompatActivity() {
         }
 
 
-        battle_ships_game_button.setOnClickListener {
+        binding.battleShipsGameButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.tt.battleshipsgame"))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
@@ -84,65 +92,74 @@ class OtherGamesActivity : AppCompatActivity() {
 
     private fun connectViews() {
         val set = ConstraintSet()
-        set.clone(other_games_layout)
+        set.clone(binding.otherGames)
 
-        set.connect(back_to_game_linearLayout_other_games.id,ConstraintSet.BOTTOM,other_games_layout.id,ConstraintSet.BOTTOM,screenUnit)
-        set.connect(back_to_game_linearLayout_other_games.id,ConstraintSet.LEFT,other_games_layout.id,ConstraintSet.LEFT,screenUnit)
+        set.connect(binding.backToGameLinearLayoutOtherGames.id,ConstraintSet.BOTTOM,binding.otherGames.id,ConstraintSet.BOTTOM,screenUnit)
+        set.connect(binding.backToGameLinearLayoutOtherGames.id,ConstraintSet.LEFT,binding.otherGames.id,ConstraintSet.LEFT,screenUnit)
 
-        set.connect(send_game_linear_layout.id,ConstraintSet.TOP,other_games_layout.id,ConstraintSet.TOP,screenUnit)
-        set.connect(send_game_linear_layout.id,ConstraintSet.LEFT,other_games_layout.id,ConstraintSet.LEFT,0)
-        set.connect(send_game_linear_layout.id,ConstraintSet.RIGHT,other_games_layout.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.sendGameLinearlayout.id,ConstraintSet.TOP,binding.otherGames.id,ConstraintSet.TOP,screenUnit)
+        set.connect(binding.sendGameLinearlayout.id,ConstraintSet.LEFT,binding.otherGames.id,ConstraintSet.LEFT,0)
+        set.connect(binding.sendGameLinearlayout.id,ConstraintSet.RIGHT,binding.otherGames.id,ConstraintSet.RIGHT,0)
 
-        set.connect(battle_ships_game_linear_layout.id,ConstraintSet.TOP,send_game_linear_layout.id,ConstraintSet.BOTTOM,screenUnit)
-        set.connect(battle_ships_game_linear_layout.id,ConstraintSet.LEFT,other_games_layout.id,ConstraintSet.LEFT,0)
-        set.connect(battle_ships_game_linear_layout.id,ConstraintSet.RIGHT,other_games_layout.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.battleShipsGameLinearlayout.id,ConstraintSet.TOP,binding.sendGameLinearlayout.id,ConstraintSet.BOTTOM,screenUnit)
+        set.connect(binding.battleShipsGameLinearlayout.id,ConstraintSet.LEFT,binding.otherGames.id,ConstraintSet.LEFT,0)
+        set.connect(binding.battleShipsGameLinearlayout.id,ConstraintSet.RIGHT,binding.otherGames.id,ConstraintSet.RIGHT,0)
 
 
 
-        set.applyTo(other_games_layout)
+        set.applyTo(binding.otherGames)
 
     }
 
     private fun setDrawable() {
-        backToGameOtherGames.setImageDrawable(StartButton(this,backToGameButtonSize.width,backToGameButtonSize.height))
-        back_to_game_linearLayout_other_games.background = RoundedFrameDrawable(this,5.5*backToGameButtonSize.width,backToGameButtonSize.height,backToGameButtonSize.height/20,backToGameButtonSize.height/2)
-        send_game_button.setImageDrawable(StartButton(this,sendGameButtonSize.width,sendGameButtonSize.height))
-        send_game_linear_layout.background = RoundedFrameDrawable(this,12*sendGameButtonSize.width,sendGameButtonSize.height, sendGameButtonSize.height/20,sendGameButtonSize.height/2)
-        battle_ships_game_image_view.setImageResource(R.drawable.ship_icon)
-        battle_ships_game_linear_layout.background = RoundedFrameDrawable(this,12*battleShipsGameButtonSize.width,3*battleShipsGameButtonSize.height,battleShipsGameButtonSize.height/20,battleShipsGameButtonSize.height/2)
-        battle_ships_game_button.setImageDrawable(StartButton(this,battleShipsGameButtonSize.width,battleShipsGameButtonSize.height))
+        binding.backToGameOtherGames.setImageDrawable(StartButton(this,backToGameButtonSize.width,backToGameButtonSize.height))
+        binding.backToGameLinearLayoutOtherGames.background = RoundedFrameDrawable(this,5.5*backToGameButtonSize.width,backToGameButtonSize.height,backToGameButtonSize.height/20,backToGameButtonSize.height/2)
+        binding.sendGameButton.setImageDrawable(StartButton(this,sendGameButtonSize.width,sendGameButtonSize.height))
+        binding.sendGameLinearlayout.background = RoundedFrameDrawable(this,12*sendGameButtonSize.width,sendGameButtonSize.height, sendGameButtonSize.height/20,sendGameButtonSize.height/2)
+        binding.battleShipsGameImageView.setImageResource(R.drawable.ship_icon)
+        binding.battleShipsGameLinearlayout.background = RoundedFrameDrawable(this,12*battleShipsGameButtonSize.width,3*battleShipsGameButtonSize.height,battleShipsGameButtonSize.height/20,battleShipsGameButtonSize.height/2)
+        binding.battleShipsGameButton.setImageDrawable(StartButton(this,battleShipsGameButtonSize.width,battleShipsGameButtonSize.height))
     }
 
     private fun setViewSizes() {
         backToGameButtonSize.width= (screenUnit*4/3).toDouble()
         backToGameButtonSize.height = backToGameButtonSize.width
-        back_toGame_tv_blank.layoutParams = LinearLayout.LayoutParams((backToGameButtonSize.width/2).toInt(),(backToGameButtonSize.height).toInt())
-        backToGameOtherGames.layoutParams = LinearLayout.LayoutParams((backToGameButtonSize.width).toInt(),(backToGameButtonSize.height).toInt())
-        back_to_game_textView_other_games.layoutParams = LinearLayout.LayoutParams((4*backToGameButtonSize.width).toInt(),(backToGameButtonSize.height).toInt())
-        back_to_game_textView_other_games.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        binding.backToGameTvBlank.layoutParams = LinearLayout.LayoutParams((backToGameButtonSize.width/2).toInt(),(backToGameButtonSize.height).toInt())
+        binding.backToGameOtherGames.layoutParams = LinearLayout.LayoutParams((backToGameButtonSize.width).toInt(),(backToGameButtonSize.height).toInt())
+        binding.backToGameTextViewOtherGames.layoutParams = LinearLayout.LayoutParams((4*backToGameButtonSize.width).toInt(),(backToGameButtonSize.height).toInt())
+        binding.backToGameTextViewOtherGames.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
         sendGameButtonSize.width = (screenUnit*4/3).toDouble()
         sendGameButtonSize.height = sendGameButtonSize.width
-        send_game_text.layoutParams = LinearLayout.LayoutParams((10.5*sendGameButtonSize.width).toInt(),(sendGameButtonSize.height).toInt())
-        send_game_button.layoutParams = LinearLayout.LayoutParams((sendGameButtonSize.width).toInt(),(sendGameButtonSize.height).toInt())
-        send_game_tv_blank.layoutParams = LinearLayout.LayoutParams((sendGameButtonSize.width/2).toInt(),(sendGameButtonSize.height).toInt())
-        send_game_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        binding.sendGameText.layoutParams = LinearLayout.LayoutParams((10.5*sendGameButtonSize.width).toInt(),(sendGameButtonSize.height).toInt())
+        binding.sendGameButton.layoutParams = LinearLayout.LayoutParams((sendGameButtonSize.width).toInt(),(sendGameButtonSize.height).toInt())
+        binding.sendGameTvBlank.layoutParams = LinearLayout.LayoutParams((sendGameButtonSize.width/2).toInt(),(sendGameButtonSize.height).toInt())
+        binding.sendGameText.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
         battleShipsGameButtonSize.width = (screenUnit*4/3).toDouble()
         battleShipsGameButtonSize.height = battleShipsGameButtonSize.width
-        battle_ships_game_image_view.layoutParams = LinearLayout.LayoutParams((2*battleShipsGameButtonSize.width).toInt(),(2*battleShipsGameButtonSize.height).toInt())
-        battle_ships_game_text.layoutParams = LinearLayout.LayoutParams((8*battleShipsGameButtonSize.width).toInt(),(2*battleShipsGameButtonSize.height).toInt())
-        battle_ships_game_button.layoutParams = LinearLayout.LayoutParams((battleShipsGameButtonSize.width).toInt(),(battleShipsGameButtonSize.height).toInt())
-        battle_ships_game_tv_blank.layoutParams = LinearLayout.LayoutParams((battleShipsGameButtonSize.width/2).toInt(),(battleShipsGameButtonSize.height).toInt())
-        battle_ships_game_tv_blank_front.layoutParams = LinearLayout.LayoutParams((battleShipsGameButtonSize.width/2).toInt(),(battleShipsGameButtonSize.height).toInt())
-        battle_ships_game_linear_layout.layoutParams = ConstraintLayout.LayoutParams((12*battleShipsGameButtonSize.width).toInt(),(3*battleShipsGameButtonSize.height).toInt())
-        battle_ships_game_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        binding.battleShipsGameImageView.layoutParams = LinearLayout.LayoutParams((2*battleShipsGameButtonSize.width).toInt(),(2*battleShipsGameButtonSize.height).toInt())
+        binding.battleShipsGameText.layoutParams = LinearLayout.LayoutParams((8*battleShipsGameButtonSize.width).toInt(),(2*battleShipsGameButtonSize.height).toInt())
+        binding.battleShipsGameButton.layoutParams = LinearLayout.LayoutParams((battleShipsGameButtonSize.width).toInt(),(battleShipsGameButtonSize.height).toInt())
+        binding.battleShipsGameTvBlank.layoutParams = LinearLayout.LayoutParams((battleShipsGameButtonSize.width/2).toInt(),(battleShipsGameButtonSize.height).toInt())
+        binding.battleShipsGameTvBlankFront.layoutParams = LinearLayout.LayoutParams((battleShipsGameButtonSize.width/2).toInt(),(battleShipsGameButtonSize.height).toInt())
+        binding.battleShipsGameLinearlayout.layoutParams = ConstraintLayout.LayoutParams((12*battleShipsGameButtonSize.width).toInt(),(3*battleShipsGameButtonSize.height).toInt())
+        binding.battleShipsGameText.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
     }
 
     private fun getScreenHighAndWidth() {
         val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R){
+            val display = this.display
+            display?.getRealMetrics(displayMetrics)
+        }
+        else{
+            @Suppress("DEPRECATION")
+            val display = this.windowManager.defaultDisplay
+            @Suppress("DEPRECATION")
+            display.getMetrics(displayMetrics)
+        }
         screenHeight = displayMetrics.heightPixels
         screenWidth = displayMetrics.widthPixels
         val unitWidth = screenWidth/20
@@ -151,20 +168,11 @@ class OtherGamesActivity : AppCompatActivity() {
 
     }
 
-    private fun fullScreen() {
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
-
-        val decorView: View = window.decorView
-        decorView.setOnSystemUiVisibilityChangeListener { visibility ->
-            if(visibility and View.SYSTEM_UI_FLAG_FULLSCREEN==0){
-                decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
-            }
+    private fun fullScreen(mainActivityLayout:View) {
+        WindowCompat.setDecorFitsSystemWindows(window,false)
+        WindowInsetsControllerCompat(window, mainActivityLayout).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
 
     }
