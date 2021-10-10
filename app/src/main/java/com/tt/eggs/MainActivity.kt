@@ -1555,7 +1555,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     }
 
 }
-// todo game container as a layout
+
 // todo UI for every phone
 //todo user name max 14 zankow
 //todo ontouch

@@ -37,6 +37,7 @@
         android:textColor="@color/black"
         android:maxLines="1"
         android:inputType="text"
+        android:maxLength="18"
         tools:ignore="Autofill,LabelFor" />
 
     <LinearLayout
