@@ -141,8 +141,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
         MobileAds.initialize(this)
 
-//        val intent = Intent(this,Test::class.java)
-//        startActivity(intent)
 
         // makeUI
         makeUI()
@@ -920,23 +918,26 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     }
 
     private fun getScreenHighAndWidth() {
-        val displayMetrics = DisplayMetrics()
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R){
-            val display = this.display
-            display?.getRealMetrics(displayMetrics)
+        screenUnit = Functions.readScreenUnitFromSharedPreferences(this)
+        if(screenUnit==0){
+            val displayMetrics = DisplayMetrics()
+            if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R){
+                val display = this.display
+                display?.getRealMetrics(displayMetrics)
+            }
+            else{
+                @Suppress("DEPRECATION")
+                val display = this.windowManager.defaultDisplay
+                @Suppress("DEPRECATION")
+                display.getMetrics(displayMetrics)
+            }
+            screenHeight = displayMetrics.heightPixels
+            screenWidth = displayMetrics.widthPixels
+            val unitWidth = screenWidth/20
+            val unitHeight = screenHeight/10
+            screenUnit=if(unitWidth>unitHeight)unitHeight else unitWidth
+            Functions.saveScreenUnitToSharedPreferences(this,screenUnit)
         }
-        else{
-            @Suppress("DEPRECATION")
-            val display = this.windowManager.defaultDisplay
-            @Suppress("DEPRECATION")
-            display.getMetrics(displayMetrics)
-        }
-        screenHeight = displayMetrics.heightPixels
-        screenWidth = displayMetrics.widthPixels
-        val unitWidth = screenWidth/20
-        val unitHeight = screenHeight/10
-        screenUnit=if(unitWidth>unitHeight)unitHeight else unitWidth
-
     }
 
     // display all fallen eggs
@@ -1543,7 +1544,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 }
 // todo UI for every phone
-// todo screen unit from shared preferences (only once calculation)
+// todo game container as a layout
 //todo sound
 //todo other games
 //todo user name max 14 zankow

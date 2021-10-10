@@ -305,25 +305,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun getScreenHeightAndWidth() {
-        val displayMetrics = DisplayMetrics()
 
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R){
-            val display = this.display
-            display?.getRealMetrics(displayMetrics)
-        }
-        else{
-            @Suppress("DEPRECATION")
-            val display = this.windowManager.defaultDisplay
-            @Suppress("DEPRECATION")
-            display.getMetrics(displayMetrics)
-        }
-
-        screenHeight = displayMetrics.heightPixels
-        screenWidth = displayMetrics.widthPixels
-        val unitWidth = screenWidth/20
-        val unitHeight = screenHeight/10
-        screenUnit=if(unitWidth>unitHeight)unitHeight else unitWidth
-
+        screenUnit=Functions.readScreenUnitFromSharedPreferences(this)
     }
 
     private fun checkUser() {

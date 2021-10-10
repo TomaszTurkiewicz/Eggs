@@ -14,6 +14,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.tt.eggs.classes.Dimension
+import com.tt.eggs.classes.Functions
 import com.tt.eggs.databinding.ActivityOtherGamesBinding
 import com.tt.eggs.drawable.RoundedFrameDrawable
 import com.tt.eggs.drawable.StartButton
@@ -149,22 +150,7 @@ class OtherGamesActivity : AppCompatActivity() {
     }
 
     private fun getScreenHighAndWidth() {
-        val displayMetrics = DisplayMetrics()
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R){
-            val display = this.display
-            display?.getRealMetrics(displayMetrics)
-        }
-        else{
-            @Suppress("DEPRECATION")
-            val display = this.windowManager.defaultDisplay
-            @Suppress("DEPRECATION")
-            display.getMetrics(displayMetrics)
-        }
-        screenHeight = displayMetrics.heightPixels
-        screenWidth = displayMetrics.widthPixels
-        val unitWidth = screenWidth/20
-        val unitHeight = screenHeight/10
-        screenUnit=if(unitWidth>unitHeight)unitHeight else unitWidth
+        screenUnit= Functions.readScreenUnitFromSharedPreferences(this)
 
     }
 
