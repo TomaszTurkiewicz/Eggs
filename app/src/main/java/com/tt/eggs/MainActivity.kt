@@ -173,6 +173,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private fun checkLoggedInState() {
         loggedInStatus = Functions.readLoggedInStatusFromSharedPreferences(this)
 
+
     }
 
     // check if game hasn't been finished
@@ -1544,7 +1545,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 }
 
-// todo UI for every phone
 
 
 
