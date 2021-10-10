@@ -1,6 +1,7 @@
 package com.tt.eggs
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
@@ -10,6 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -1120,31 +1122,67 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     /** --------------------- buttons listeners -------------------------------**/
 
     // set click listeners for all buttons
+    @SuppressLint("ClickableViewAccessibility")
     private fun buttonsOnClickListeners(){
-        binding.buttonTopLeft.setOnClickListener {
-            if(playOrPause()) {
-                basket = Static.LEFT_TOP
-                displayBasket()
+
+        binding.buttonTopLeft.setOnTouchListener { v, event ->
+            if (playOrPause()){
+                when (event.action){
+                    MotionEvent.ACTION_DOWN -> {
+                        basket = Static.LEFT_TOP
+                        displayBasket()
+                    }
+                    else ->{ }
+                }
             }
+            true
         }
-        binding.buttonBottomLeft.setOnClickListener {
-            if(playOrPause()){
-                basket=Static.LEFT_BOTTOM
-                displayBasket()
+
+        binding.buttonBottomLeft.setOnTouchListener { v, event ->
+            if (playOrPause()){
+                when (event.action){
+                    MotionEvent.ACTION_DOWN -> {
+                        basket = Static.LEFT_BOTTOM
+                        displayBasket()
+                    }
+                    else ->{
+                    }
+                }
             }
+            true
         }
-        binding.buttonBottomRight.setOnClickListener {
-            if(playOrPause()) {
-                basket = Static.RIGHT_BOTTOM
-                displayBasket()
+
+        binding.buttonBottomRight.setOnTouchListener { v, event ->
+            if (playOrPause()){
+                when (event.action){
+                    MotionEvent.ACTION_DOWN -> {
+                        basket = Static.RIGHT_BOTTOM
+                        displayBasket()
+                    }
+                    else ->{
+                    }
+                }
             }
+            true
         }
-        binding.buttonTopRight.setOnClickListener {
-            if(playOrPause()){
-                basket=Static.RIGHT_TOP
-                displayBasket()
+
+        binding.buttonTopRight.setOnTouchListener { v, event ->
+            if (playOrPause()){
+                when (event.action){
+                    MotionEvent.ACTION_DOWN -> {
+                        basket = Static.RIGHT_TOP
+                        displayBasket()
+                    }
+                    else ->{
+                    }
+                }
             }
+            true
         }
+
+
+
+
 
         binding.startA.setOnClickListener {
 
@@ -1556,11 +1594,10 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 }
 
-// todo UI for every phone
-//todo user name max 14 zankow
-//todo ontouch
+
 //todo sound
 //todo other games
+// todo UI for every phone
 
 
 
