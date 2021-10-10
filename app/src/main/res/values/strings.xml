@@ -20,4 +20,14 @@
     <string name="b">B</string>
     <string name="music_from">Music from:</string>
     <string name="https_www_zapsplat_com">https://www.zapsplat.com</string>
+    <string name="ok">OK</string>
+    <string name="change">CHANGE</string>
+    <string name="high_score_a">HIGH SCORE A</string>
+    <string name="high_score_b">HIGH SCORE B</string>
+    <string name="total_points">TOTAL POINTS</string>
+    <string name="back_to_game">BACK TO GAME</string>
+    <string name="log_in">LOG IN</string>
+    <string name="other_games">OTHER GAMES</string>
+    <string name="ranking">RANKING</string>
+    <string name="update">UPDATE</string>
 </resources>

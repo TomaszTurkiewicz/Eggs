@@ -43,8 +43,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private var loggedInStatus = LoggedInStatus()
-    private var screenHeight = 0
-    private var screenWidth = 0
     private var screenUnit = 0
     private val userNameSize = Dimension()
     private val changeNameButtonSize = Dimension()
@@ -55,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
     private val loginButtonSize = Dimension()
     private val otherGamesButtonSize = Dimension()
     private val updateButtonSize = Dimension()
+    private val wholeScreenSize = Dimension()
 
     // for update loop
     private var updateState = Static.ON
@@ -136,36 +135,41 @@ class LoginActivity : AppCompatActivity() {
         val set = ConstraintSet()
         set.clone(binding.loginActivity)
 
-        set.connect(binding.userNameEt.id,ConstraintSet.TOP,binding.loginActivity.id,ConstraintSet.TOP,
+        set.connect(binding.loginActivityContainer.id,ConstraintSet.TOP,binding.loginActivity.id,ConstraintSet.TOP,0)
+        set.connect(binding.loginActivityContainer.id,ConstraintSet.BOTTOM,binding.loginActivity.id,ConstraintSet.BOTTOM,0)
+        set.connect(binding.loginActivityContainer.id,ConstraintSet.RIGHT,binding.loginActivity.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.loginActivityContainer.id,ConstraintSet.LEFT,binding.loginActivity.id,ConstraintSet.LEFT,0)
+
+        set.connect(binding.userNameTv.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP,
             (screenUnit*0.5).toInt()
         )
-        set.connect(binding.userNameTv.id,ConstraintSet.LEFT,binding.loginActivity.id,ConstraintSet.LEFT,screenUnit)
+        set.connect(binding.userNameTv.id,ConstraintSet.LEFT,binding.loginActivityContainer.id,ConstraintSet.LEFT,screenUnit)
 
         set.connect(binding.changeNameLinearLayout.id,ConstraintSet.TOP,binding.userNameTv.id,ConstraintSet.TOP,0)
         set.connect(binding.changeNameLinearLayout.id,ConstraintSet.LEFT,binding.userNameTv.id,ConstraintSet.RIGHT,screenUnit)
 
-        set.connect(binding.userNameEt.id,ConstraintSet.TOP,binding.loginActivity.id,ConstraintSet.TOP,
+        set.connect(binding.userNameEt.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP,
             (screenUnit*0.5).toInt()
         )
-        set.connect(binding.userNameEt.id,ConstraintSet.LEFT,binding.loginActivity.id,ConstraintSet.LEFT,screenUnit)
+        set.connect(binding.userNameEt.id,ConstraintSet.LEFT,binding.loginActivityContainer.id,ConstraintSet.LEFT,screenUnit)
 
         set.connect(binding.changeNameLinearLayoutEt.id,ConstraintSet.TOP,binding.userNameEt.id,ConstraintSet.TOP,0)
         set.connect(binding.changeNameLinearLayoutEt.id,ConstraintSet.LEFT,binding.userNameEt.id,ConstraintSet.RIGHT,screenUnit)
 
-        set.connect(binding.highScoreA.id,ConstraintSet.TOP,binding.loginActivity.id,ConstraintSet.TOP,
+        set.connect(binding.highScoreA.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP,
             (screenUnit*2.5).toInt()
         )
-        set.connect(binding.highScoreA.id,ConstraintSet.LEFT,binding.loginActivity.id,ConstraintSet.LEFT,screenUnit)
+        set.connect(binding.highScoreA.id,ConstraintSet.LEFT,binding.loginActivityContainer.id,ConstraintSet.LEFT,screenUnit)
 
-        set.connect(binding.highScoreB.id,ConstraintSet.TOP,binding.loginActivity.id,ConstraintSet.TOP,
+        set.connect(binding.highScoreB.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP,
             (screenUnit*4.5).toInt()
         )
-        set.connect(binding.highScoreB.id,ConstraintSet.LEFT,binding.loginActivity.id,ConstraintSet.LEFT,screenUnit)
+        set.connect(binding.highScoreB.id,ConstraintSet.LEFT,binding.loginActivityContainer.id,ConstraintSet.LEFT,screenUnit)
 
-        set.connect(binding.totalScore.id,ConstraintSet.TOP,binding.loginActivity.id,ConstraintSet.TOP,
+        set.connect(binding.totalScore.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP,
             (screenUnit*6.5).toInt()
         )
-        set.connect(binding.totalScore.id,ConstraintSet.LEFT,binding.loginActivity.id,ConstraintSet.LEFT,screenUnit)
+        set.connect(binding.totalScore.id,ConstraintSet.LEFT,binding.loginActivityContainer.id,ConstraintSet.LEFT,screenUnit)
 
         set.connect(binding.highScoreAUser.id,ConstraintSet.TOP,binding.highScoreA.id,ConstraintSet.TOP, 0)
         set.connect(binding.highScoreAUser.id,ConstraintSet.LEFT,binding.highScoreA.id,ConstraintSet.RIGHT,0)
@@ -176,20 +180,20 @@ class LoginActivity : AppCompatActivity() {
         set.connect(binding.totalScoreUser.id,ConstraintSet.TOP,binding.totalScore.id,ConstraintSet.TOP, 0)
         set.connect(binding.totalScoreUser.id,ConstraintSet.LEFT,binding.totalScore.id,ConstraintSet.RIGHT,0)
 
-        set.connect(binding.backToGameLinearLayoutEt.id,ConstraintSet.TOP,binding.loginActivity.id,ConstraintSet.TOP, (screenUnit*8.5).toInt())
-        set.connect(binding.backToGameLinearLayoutEt.id,ConstraintSet.LEFT,binding.loginActivity.id,ConstraintSet.LEFT,screenUnit)
+        set.connect(binding.backToGameLinearLayoutEt.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP, (screenUnit*8.5).toInt())
+        set.connect(binding.backToGameLinearLayoutEt.id,ConstraintSet.LEFT,binding.loginActivityContainer.id,ConstraintSet.LEFT,screenUnit)
 
-        set.connect(binding.rankingLinearLayout.id,ConstraintSet.TOP,binding.loginActivity.id,ConstraintSet.TOP, (screenUnit*2.5).toInt())
-        set.connect(binding.rankingLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivity.id,ConstraintSet.RIGHT, screenUnit)
+        set.connect(binding.rankingLinearLayout.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP, (screenUnit*2.5).toInt())
+        set.connect(binding.rankingLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivityContainer.id,ConstraintSet.RIGHT, screenUnit)
 
-        set.connect(binding.otherGamesLinearLayout.id,ConstraintSet.TOP,binding.loginActivity.id,ConstraintSet.TOP, (screenUnit*4.5).toInt())
-        set.connect(binding.otherGamesLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivity.id,ConstraintSet.RIGHT, screenUnit)
+        set.connect(binding.otherGamesLinearLayout.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP, (screenUnit*4.5).toInt())
+        set.connect(binding.otherGamesLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivityContainer.id,ConstraintSet.RIGHT, screenUnit)
 
-        set.connect(binding.updateLinearLayout.id,ConstraintSet.TOP,binding.loginActivity.id,ConstraintSet.TOP, (screenUnit*6.5).toInt())
-        set.connect(binding.updateLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivity.id,ConstraintSet.RIGHT, screenUnit)
+        set.connect(binding.updateLinearLayout.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP, (screenUnit*6.5).toInt())
+        set.connect(binding.updateLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivityContainer.id,ConstraintSet.RIGHT, screenUnit)
 
-        set.connect(binding.loginLinearLayout.id,ConstraintSet.TOP,binding.loginActivity.id,ConstraintSet.TOP, (screenUnit*8.5).toInt())
-        set.connect(binding.loginLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivity.id,ConstraintSet.RIGHT, screenUnit)
+        set.connect(binding.loginLinearLayout.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP, (screenUnit*8.5).toInt())
+        set.connect(binding.loginLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivityContainer.id,ConstraintSet.RIGHT, screenUnit)
 
 
 
@@ -221,6 +225,11 @@ class LoginActivity : AppCompatActivity() {
 
         userNameSize.height= (screenUnit*4/3).toDouble()
         userNameSize.width= (screenUnit*10).toDouble()
+
+        wholeScreenSize.width = 20.0 * screenUnit
+        wholeScreenSize.height = 10.0 * screenUnit
+
+        binding.loginActivityContainer.layoutParams = ConstraintLayout.LayoutParams((wholeScreenSize.width).toInt(),(wholeScreenSize.height).toInt())
 
         binding.userNameTv.layoutParams = ConstraintLayout.LayoutParams((userNameSize.width).toInt(), (userNameSize.height).toInt())
         binding.userNameTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())

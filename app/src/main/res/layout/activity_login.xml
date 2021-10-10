@@ -6,7 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
     android:id="@+id/loginActivity"
-    android:background="@color/gray">
+    android:background="@color/black">
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/loginActivityContainer"
+        android:background="@color/gray"/>
 
     <TextView
         android:id="@+id/userNameTv"
@@ -26,7 +36,8 @@
         android:gravity="center"
         android:textColor="@color/black"
         android:maxLines="1"
-        android:inputType="text"/>
+        android:inputType="text"
+        tools:ignore="Autofill,LabelFor" />
 
     <LinearLayout
         android:id="@+id/changeNameLinearLayoutEt"
@@ -40,14 +51,15 @@
             android:id="@+id/changeNameOk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OK"
+            android:text="@string/ok"
             android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView
             android:id="@+id/changeNameOkButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
 
     </LinearLayout>
 
@@ -63,14 +75,15 @@
             android:id="@+id/changeNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CHANGE"
+            android:text="@string/change"
             android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView
             android:id="@+id/changeNameButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
 
     </LinearLayout>
 
@@ -80,7 +93,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="HIGH SCORE A"
+        android:text="@string/high_score_a"
         android:textColor="@color/black"
         android:gravity="center_vertical"/>
 
@@ -99,7 +112,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="HIGH SCORE B"
+        android:text="@string/high_score_b"
         android:textColor="@color/black"
         android:gravity="center_vertical"/>
 
@@ -118,7 +131,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="TOTAL POINTS"
+        android:text="@string/total_points"
         android:textColor="@color/black"
         android:gravity="center_vertical"/>
 
@@ -147,13 +160,14 @@
         <ImageView
             android:id="@+id/backToGame"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
 
         <TextView
             android:id="@+id/backToGameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="BACK TO GAME"
+            android:text="@string/back_to_game"
             android:textColor="@color/black"
             android:gravity="center"/>
 
@@ -172,14 +186,15 @@
             android:id="@+id/loginTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LOG IN"
+            android:text="@string/log_in"
             android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView
             android:id="@+id/googleSignIn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
 
         <TextView
             android:id="@+id/loginTvBlank"
@@ -200,14 +215,15 @@
             android:id="@+id/otherGamesTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OTHER GAMES"
+            android:text="@string/other_games"
             android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView
             android:id="@+id/otherGamesButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
 
         <TextView
             android:id="@+id/otherGamesTvBlank"
@@ -229,14 +245,15 @@
             android:id="@+id/rankingTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RANKING"
+            android:text="@string/ranking"
             android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView
             android:id="@+id/ranking"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
 
         <TextView
             android:id="@+id/rankingTvBlank"
@@ -257,14 +274,15 @@
             android:id="@+id/updateTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="UPDATE"
+            android:text="@string/update"
             android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView
             android:id="@+id/update"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
 
         <TextView
             android:id="@+id/updateTvBlank"
