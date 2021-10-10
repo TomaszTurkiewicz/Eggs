@@ -6,7 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".Ranking"
     android:id="@+id/rankingActivity"
-    android:background="@color/gray">
+    android:background="@color/black">
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/rankingActivityContainer"
+        android:background="@color/gray"/>
 
     <LinearLayout
         android:id="@+id/header"
@@ -21,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="NAME"
+            android:text="@string/name"
             android:gravity="center"
             android:layout_gravity="center"
             android:textColor="@color/black"/>
@@ -30,34 +40,37 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="HIGH A"
+            android:text="@string/high_a"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingHighScoreB"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="HIGH B"
+            android:text="@string/high_b"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingTotalScore"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="TOTAL"
+            android:text="@string/total"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/position1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -68,9 +81,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:gravity="left"
+            android:gravity="center_vertical|left"
             android:layout_gravity="center"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingHighScoreA1"
             android:layout_width="0dp"
@@ -78,7 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingHighScoreB1"
             android:layout_width="0dp"
@@ -86,7 +101,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingTotalScore1"
             android:layout_width="0dp"
@@ -94,7 +110,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
 
@@ -113,7 +130,8 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:layout_gravity="center"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingHighScoreA2"
             android:layout_width="0dp"
@@ -121,7 +139,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingHighScoreB2"
             android:layout_width="0dp"
@@ -129,7 +148,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingTotalScore2"
             android:layout_width="0dp"
@@ -137,7 +157,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
 
@@ -156,7 +177,8 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:layout_gravity="center"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingHighScoreA3"
             android:layout_width="0dp"
@@ -164,7 +186,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingHighScoreB3"
             android:layout_width="0dp"
@@ -172,7 +195,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingTotalScore3"
             android:layout_width="0dp"
@@ -180,7 +204,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
 
@@ -200,7 +225,8 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:layout_gravity="center"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingHighScoreA4"
             android:layout_width="0dp"
@@ -208,7 +234,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingHighScoreB4"
             android:layout_width="0dp"
@@ -216,7 +243,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingTotalScore4"
             android:layout_width="0dp"
@@ -224,7 +252,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
 
@@ -244,7 +273,8 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:layout_gravity="center"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingHighScoreA5"
             android:layout_width="0dp"
@@ -252,7 +282,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingHighScoreB5"
             android:layout_width="0dp"
@@ -260,7 +291,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingTotalScore5"
             android:layout_width="0dp"
@@ -268,7 +300,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
 
@@ -343,13 +376,14 @@
         <ImageView
             android:id="@+id/backToGameRankingImageView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
 
         <TextView
             android:id="@+id/backToGmeRanking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="BACK TO GAME"
+            android:text="@string/back_to_game"
             android:textColor="@color/black"
             android:gravity="center"/>
 
@@ -363,13 +397,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="@string/image"/>
 
     <ImageView
         android:id="@+id/rankingDown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="@string/image"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,6 @@ package com.tt.eggs
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
@@ -31,8 +30,7 @@ class Ranking : AppCompatActivity() {
     private lateinit var userid: String
     private var index: Int = 0
 
-    private var screenHeight = 0
-    private var screenWidth = 0
+
     private var screenUnit = 0
     private val headerSize = Dimension()
     private val userNameSize = Dimension()
@@ -43,6 +41,7 @@ class Ranking : AppCompatActivity() {
     private val positionLayoutSize = Dimension()
     private val arrowSize = Dimension()
     private val backToGameButtonSize = Dimension()
+    private val wholeScreenSize = Dimension()
 
     private lateinit var binding: ActivityRankingBinding
 
@@ -104,8 +103,9 @@ class Ranking : AppCompatActivity() {
     private fun makeUI() {
         getScreenHeightAndWidth()
         setViewSizes()
-        makeViewConnections()
         setDrawable()
+        makeViewConnections()
+
 
 
     }
@@ -116,34 +116,39 @@ class Ranking : AppCompatActivity() {
         val set = ConstraintSet()
         set.clone(binding.rankingActivity)
 
-        set.connect(binding.header.id,ConstraintSet.LEFT,binding.rankingActivity.id,ConstraintSet.LEFT,screenUnit/2)
-        set.connect(binding.header.id,ConstraintSet.TOP,binding.rankingActivity.id,ConstraintSet.TOP,0)
+        set.connect(binding.rankingActivityContainer.id,ConstraintSet.TOP,binding.rankingActivity.id,ConstraintSet.TOP,0)
+        set.connect(binding.rankingActivityContainer.id,ConstraintSet.BOTTOM,binding.rankingActivity.id,ConstraintSet.BOTTOM,0)
+        set.connect(binding.rankingActivityContainer.id,ConstraintSet.RIGHT,binding.rankingActivity.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.rankingActivityContainer.id,ConstraintSet.LEFT,binding.rankingActivity.id,ConstraintSet.LEFT,0)
+
+        set.connect(binding.header.id,ConstraintSet.LEFT,binding.rankingActivityContainer.id,ConstraintSet.LEFT,screenUnit/2)
+        set.connect(binding.header.id,ConstraintSet.TOP,binding.rankingActivityContainer.id,ConstraintSet.TOP,0)
 
         set.connect(binding.position1.id,ConstraintSet.TOP,binding.header.id,ConstraintSet.BOTTOM,0)
-        set.connect(binding.position1.id,ConstraintSet.LEFT,binding.rankingActivity.id,ConstraintSet.LEFT,screenUnit/2)
+        set.connect(binding.position1.id,ConstraintSet.LEFT,binding.rankingActivityContainer.id,ConstraintSet.LEFT,screenUnit/2)
 
         set.connect(binding.position2.id,ConstraintSet.TOP,binding.position1.id,ConstraintSet.BOTTOM,0)
-        set.connect(binding.position2.id,ConstraintSet.LEFT,binding.rankingActivity.id,ConstraintSet.LEFT,screenUnit/2)
+        set.connect(binding.position2.id,ConstraintSet.LEFT,binding.rankingActivityContainer.id,ConstraintSet.LEFT,screenUnit/2)
 
         set.connect(binding.position3.id,ConstraintSet.TOP,binding.position2.id,ConstraintSet.BOTTOM,0)
-        set.connect(binding.position3.id,ConstraintSet.LEFT,binding.rankingActivity.id,ConstraintSet.LEFT,screenUnit/2)
+        set.connect(binding.position3.id,ConstraintSet.LEFT,binding.rankingActivityContainer.id,ConstraintSet.LEFT,screenUnit/2)
 
         set.connect(binding.position4.id,ConstraintSet.TOP,binding.position3.id,ConstraintSet.BOTTOM,0)
-        set.connect(binding.position4.id,ConstraintSet.LEFT,binding.rankingActivity.id,ConstraintSet.LEFT,screenUnit/2)
+        set.connect(binding.position4.id,ConstraintSet.LEFT,binding.rankingActivityContainer.id,ConstraintSet.LEFT,screenUnit/2)
 
         set.connect(binding.position5.id,ConstraintSet.TOP,binding.position4.id,ConstraintSet.BOTTOM,0)
-        set.connect(binding.position5.id,ConstraintSet.LEFT,binding.rankingActivity.id,ConstraintSet.LEFT,screenUnit/2)
+        set.connect(binding.position5.id,ConstraintSet.LEFT,binding.rankingActivityContainer.id,ConstraintSet.LEFT,screenUnit/2)
 
         set.connect(binding.rankingUp.id,ConstraintSet.TOP,binding.position1.id,ConstraintSet.TOP,0)
         set.connect(binding.rankingUp.id,ConstraintSet.LEFT,binding.position1.id,ConstraintSet.RIGHT,0)
-        set.connect(binding.rankingUp.id,ConstraintSet.RIGHT,binding.rankingActivity.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.rankingUp.id,ConstraintSet.RIGHT,binding.rankingActivityContainer.id,ConstraintSet.RIGHT,0)
 
         set.connect(binding.rankingDown.id,ConstraintSet.BOTTOM,binding.position5.id,ConstraintSet.BOTTOM,0)
         set.connect(binding.rankingDown.id,ConstraintSet.LEFT,binding.position5.id,ConstraintSet.RIGHT,0)
-        set.connect(binding.rankingDown.id,ConstraintSet.RIGHT,binding.rankingActivity.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.rankingDown.id,ConstraintSet.RIGHT,binding.rankingActivityContainer.id,ConstraintSet.RIGHT,0)
 
         set.connect(binding.backToGameLinearLayoutRanking.id,ConstraintSet.LEFT,binding.position5.id,ConstraintSet.LEFT,0)
-        set.connect(binding.backToGameLinearLayoutRanking.id,ConstraintSet.BOTTOM,binding.rankingActivity.id,ConstraintSet.BOTTOM,0)
+        set.connect(binding.backToGameLinearLayoutRanking.id,ConstraintSet.BOTTOM,binding.rankingActivityContainer.id,ConstraintSet.BOTTOM,0)
         set.connect(binding.backToGameLinearLayoutRanking.id,ConstraintSet.TOP,binding.position5.id,ConstraintSet.BOTTOM,0)
 
         set.connect(binding.progressBar1.id,ConstraintSet.TOP,binding.position1.id,ConstraintSet.TOP,0)
@@ -177,56 +182,48 @@ class Ranking : AppCompatActivity() {
 
     private fun setViewSizes() {
 
-        val username =4
-        val highScore = 1.5
-        val total = 2
+        val username =7
+        val highScore = 3
+        val total = 4
 
         headerSize.height = (screenUnit).toDouble()
 
 
-        val unit = screenWidth/10
 
-//        positionSize.width = (unit*2).toDouble()
-//        positionSize.height = headerSize.height
-        userNameSize.width = (unit*username).toDouble()
+        userNameSize.width = (screenUnit*username).toDouble()
         userNameSize.height = headerSize.height
-        highScoreASize.width = (unit*highScore)
+        highScoreASize.width = (screenUnit*highScore).toDouble()
         highScoreASize.height = headerSize.height
-        highScoreBSize.width = (unit*highScore)
+        highScoreBSize.width = (screenUnit*highScore).toDouble()
         highScoreBSize.height = headerSize.height
-        totalPointsSize.width = (unit*total).toDouble()
+        totalPointsSize.width = (screenUnit*total).toDouble()
         totalPointsSize.height = headerSize.height
         headerSize.width=userNameSize.width+
                 highScoreASize.width+
                 highScoreBSize.width+
                 totalPointsSize.width
 
+
+        positionLayoutSize.width=headerSize.width
+
+        wholeScreenSize.width = 20.0*screenUnit
+        wholeScreenSize.height = 10.0*screenUnit
+
+        binding.rankingActivityContainer.layoutParams = ConstraintLayout.LayoutParams((wholeScreenSize.width).toInt(),(wholeScreenSize.height).toInt())
         binding.header.layoutParams=ConstraintLayout.LayoutParams((headerSize.width).toInt(),(headerSize.height).toInt())
-//        ranking_position.layoutParams = LinearLayout.LayoutParams((positionSize.width).toInt(),(positionSize.height).toInt())
         binding.rankingUserName.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height).toInt())
         binding.rankingHighScoreA.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height).toInt())
         binding.rankingHighScoreB.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height).toInt())
         binding.rankingTotalScore.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height).toInt())
 
-//        ranking_position.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
+
         binding.rankingUserName.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         binding.rankingHighScoreA.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         binding.rankingHighScoreB.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         binding.rankingTotalScore.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         binding.rankingTotalScore.setPadding(0,0, (screenUnit*0.5).toInt(),0)
 
-        userNameSize.width = (unit*username).toDouble()
-        userNameSize.height = (screenUnit*1.5)
-        highScoreASize.width = (unit*highScore)
-        highScoreASize.height = (screenUnit*1.5)
-        highScoreBSize.width = (unit*highScore)
-        highScoreBSize.height = (screenUnit*1.5)
-        totalPointsSize.width = (unit*total).toDouble()
-        totalPointsSize.height = (screenUnit*1.5)
-        positionLayoutSize.width=userNameSize.width+
-                highScoreASize.width+
-                highScoreBSize.width+
-                totalPointsSize.width
+
 
         positionLayoutSize.width=positionLayoutSize.width
         positionLayoutSize.height= (screenUnit*1.5)
@@ -243,10 +240,10 @@ class Ranking : AppCompatActivity() {
 
 
         //        ranking_position.layoutParams = LinearLayout.LayoutParams((positionSize.width).toInt(),(positionSize.height).toInt())
-        binding.rankingUserName1.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height).toInt())
-        binding.rankingHighScoreA1.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height).toInt())
-        binding.rankingHighScoreB1.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height).toInt())
-        binding.rankingTotalScore1.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height).toInt())
+        binding.rankingUserName1.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height*1.5).toInt())
+        binding.rankingHighScoreA1.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height*1.5).toInt())
+        binding.rankingHighScoreB1.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height*1.5).toInt())
+        binding.rankingTotalScore1.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height*1.5).toInt())
         binding.rankingTotalScore1.setPadding(0,0, (screenUnit*0.5).toInt(),0)
 
 //        ranking_position.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
@@ -257,11 +254,11 @@ class Ranking : AppCompatActivity() {
         binding.rankingTotalScore1.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
 
         //        ranking_position.layoutParams = LinearLayout.LayoutParams((positionSize.width).toInt(),(positionSize.height).toInt())
-        binding.rankingUserName2.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height).toInt())
+        binding.rankingUserName2.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height*1.5).toInt())
         binding.rankingUserName2.setPadding(screenUnit/2,0,0,0)
-        binding.rankingHighScoreA2.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height).toInt())
-        binding.rankingHighScoreB2.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height).toInt())
-        binding.rankingTotalScore2.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height).toInt())
+        binding.rankingHighScoreA2.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height*1.5).toInt())
+        binding.rankingHighScoreB2.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height*1.5).toInt())
+        binding.rankingTotalScore2.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height*1.5).toInt())
         binding.rankingTotalScore2.setPadding(0,0, (screenUnit*0.5).toInt(),0)
 
 //        ranking_position.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
@@ -271,11 +268,11 @@ class Ranking : AppCompatActivity() {
         binding.rankingTotalScore2.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
 
         //        ranking_position.layoutParams = LinearLayout.LayoutParams((positionSize.width).toInt(),(positionSize.height).toInt())
-        binding.rankingUserName3.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height).toInt())
+        binding.rankingUserName3.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height*1.5).toInt())
         binding.rankingUserName3.setPadding(screenUnit/2,0,0,0)
-        binding.rankingHighScoreA3.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height).toInt())
-        binding.rankingHighScoreB3.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height).toInt())
-        binding.rankingTotalScore3.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height).toInt())
+        binding.rankingHighScoreA3.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height*1.5).toInt())
+        binding.rankingHighScoreB3.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height*1.5).toInt())
+        binding.rankingTotalScore3.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height*1.5).toInt())
         binding.rankingTotalScore3.setPadding(0,0, (screenUnit*0.5).toInt(),0)
 
 //        ranking_position.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
@@ -286,10 +283,10 @@ class Ranking : AppCompatActivity() {
 
 
         //        ranking_position.layoutParams = LinearLayout.LayoutParams((positionSize.width).toInt(),(positionSize.height).toInt())
-        binding.rankingUserName4.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height).toInt())
-        binding.rankingHighScoreA4.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height).toInt())
-        binding.rankingHighScoreB4.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height).toInt())
-        binding.rankingTotalScore4.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height).toInt())
+        binding.rankingUserName4.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height*1.5).toInt())
+        binding.rankingHighScoreA4.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height*1.5).toInt())
+        binding.rankingHighScoreB4.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height*1.5).toInt())
+        binding.rankingTotalScore4.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height*1.5).toInt())
 
 //        ranking_position.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         binding.rankingUserName4.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
@@ -300,10 +297,10 @@ class Ranking : AppCompatActivity() {
         binding.rankingTotalScore4.setPadding(0,0, (screenUnit*0.5).toInt(),0)
 
         //        ranking_position.layoutParams = LinearLayout.LayoutParams((positionSize.width).toInt(),(positionSize.height).toInt())
-        binding.rankingUserName5.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height).toInt())
-        binding.rankingHighScoreA5.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height).toInt())
-        binding.rankingHighScoreB5.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height).toInt())
-        binding.rankingTotalScore5.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height).toInt())
+        binding.rankingUserName5.layoutParams = LinearLayout.LayoutParams((userNameSize.width).toInt(),(userNameSize.height*1.5).toInt())
+        binding.rankingHighScoreA5.layoutParams = LinearLayout.LayoutParams((highScoreASize.width).toInt(),(highScoreASize.height*1.5).toInt())
+        binding.rankingHighScoreB5.layoutParams = LinearLayout.LayoutParams((highScoreBSize.width).toInt(),(highScoreBSize.height*1.5).toInt())
+        binding.rankingTotalScore5.layoutParams = LinearLayout.LayoutParams((totalPointsSize.width).toInt(),(totalPointsSize.height*1.5).toInt())
 
 //        ranking_position.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())
         binding.rankingUserName5.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.5).toFloat())

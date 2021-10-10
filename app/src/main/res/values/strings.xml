@@ -30,4 +30,8 @@
     <string name="other_games">OTHER GAMES</string>
     <string name="ranking">RANKING</string>
     <string name="update">UPDATE</string>
+    <string name="name">NAME</string>
+    <string name="high_a">HIGH A</string>
+    <string name="high_b">HIGH B</string>
+    <string name="total">TOTAL</string>
 </resources>
