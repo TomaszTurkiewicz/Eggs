@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private var screenUnit = 0
 
     private val screenSize = Dimension()
+    private val wholeScreenSize = Dimension()
     private val eggSize = Dimension()
     private val arrowSize = Dimension()
     private val digitSize = Dimension()
@@ -587,10 +588,17 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         val set = ConstraintSet()
         set.clone(binding.mainActivity)
 
-        set.connect(binding.screen.id,ConstraintSet.LEFT,binding.mainActivity.id,ConstraintSet.LEFT,0)
-        set.connect(binding.screen.id,ConstraintSet.RIGHT,binding.mainActivity.id,ConstraintSet.RIGHT,0)
-        set.connect(binding.screen.id,ConstraintSet.TOP,binding.mainActivity.id,ConstraintSet.TOP,0)
-        set.connect(binding.screen.id,ConstraintSet.BOTTOM,binding.mainActivity.id,ConstraintSet.BOTTOM,0)
+
+        set.connect(binding.mainScreenContainer.id,ConstraintSet.LEFT,binding.mainActivity.id,ConstraintSet.LEFT,0)
+        set.connect(binding.mainScreenContainer.id,ConstraintSet.RIGHT,binding.mainActivity.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.mainScreenContainer.id,ConstraintSet.TOP,binding.mainActivity.id,ConstraintSet.TOP,0)
+        set.connect(binding.mainScreenContainer.id,ConstraintSet.BOTTOM,binding.mainActivity.id,ConstraintSet.BOTTOM,0)
+
+
+        set.connect(binding.screen.id,ConstraintSet.LEFT,binding.mainScreenContainer.id,ConstraintSet.LEFT,0)
+        set.connect(binding.screen.id,ConstraintSet.RIGHT,binding.mainScreenContainer.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.screen.id,ConstraintSet.TOP,binding.mainScreenContainer.id,ConstraintSet.TOP,0)
+        set.connect(binding.screen.id,ConstraintSet.BOTTOM,binding.mainScreenContainer.id,ConstraintSet.BOTTOM,0)
 
         set.connect(binding.eggTopLeftFirst.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,screenUnit+screenUnit/2)
         set.connect(binding.eggTopLeftFirst.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*1.6).toInt())
@@ -666,23 +674,23 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         set.connect(binding.digitThousand.id,ConstraintSet.RIGHT,binding.digitHundred.id,ConstraintSet.LEFT, (screenUnit*0.1).toInt())
 
         set.connect(binding.buttonBottomLeft.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.LEFT,0)
-        set.connect(binding.buttonBottomLeft.id,ConstraintSet.LEFT,binding.mainActivity.id,ConstraintSet.LEFT,0)
-        set.connect(binding.buttonBottomLeft.id,ConstraintSet.BOTTOM,binding.mainActivity.id,ConstraintSet.BOTTOM,screenUnit)
+        set.connect(binding.buttonBottomLeft.id,ConstraintSet.LEFT,binding.mainScreenContainer.id,ConstraintSet.LEFT,0)
+        set.connect(binding.buttonBottomLeft.id,ConstraintSet.BOTTOM,binding.mainScreenContainer.id,ConstraintSet.BOTTOM,screenUnit)
 
         set.connect(binding.buttonTopLeft.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.LEFT,0)
-        set.connect(binding.buttonTopLeft.id,ConstraintSet.LEFT,binding.mainActivity.id,ConstraintSet.LEFT,0)
+        set.connect(binding.buttonTopLeft.id,ConstraintSet.LEFT,binding.mainScreenContainer.id,ConstraintSet.LEFT,0)
         set.connect(binding.buttonTopLeft.id,ConstraintSet.BOTTOM,binding.buttonBottomLeft.id,ConstraintSet.TOP,screenUnit)
 
         set.connect(binding.buttonBottomRight.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.RIGHT,0)
-        set.connect(binding.buttonBottomRight.id,ConstraintSet.RIGHT,binding.mainActivity.id,ConstraintSet.RIGHT,0)
-        set.connect(binding.buttonBottomRight.id,ConstraintSet.BOTTOM,binding.mainActivity.id,ConstraintSet.BOTTOM,screenUnit)
+        set.connect(binding.buttonBottomRight.id,ConstraintSet.RIGHT,binding.mainScreenContainer.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.buttonBottomRight.id,ConstraintSet.BOTTOM,binding.mainScreenContainer.id,ConstraintSet.BOTTOM,screenUnit)
 
         set.connect(binding.buttonTopRight.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.RIGHT,0)
-        set.connect(binding.buttonTopRight.id,ConstraintSet.RIGHT,binding.mainActivity.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.buttonTopRight.id,ConstraintSet.RIGHT,binding.mainScreenContainer.id,ConstraintSet.RIGHT,0)
         set.connect(binding.buttonTopRight.id,ConstraintSet.BOTTOM,binding.buttonBottomRight.id,ConstraintSet.TOP,screenUnit)
 
         set.connect(binding.startA.id,ConstraintSet.LEFT,binding.buttonTopRight.id,ConstraintSet.LEFT,0)
-        set.connect(binding.startA.id,ConstraintSet.TOP,binding.mainActivity.id,ConstraintSet.TOP,screenUnit)
+        set.connect(binding.startA.id,ConstraintSet.TOP,binding.mainScreenContainer.id,ConstraintSet.TOP,screenUnit)
 
         set.connect(binding.startB.id,ConstraintSet.LEFT,binding.buttonTopRight.id,ConstraintSet.LEFT,0)
         set.connect(binding.startB.id,ConstraintSet.TOP,binding.startA.id,ConstraintSet.BOTTOM,screenUnit/2)
@@ -702,11 +710,11 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         set.connect(binding.exit.id,ConstraintSet.RIGHT,binding.closeApp.id,ConstraintSet.RIGHT,0)
         set.connect(binding.exit.id,ConstraintSet.BOTTOM,binding.closeApp.id,ConstraintSet.BOTTOM,screenUnit)
 
-        set.connect(binding.account.id,ConstraintSet.TOP,binding.mainActivity.id,ConstraintSet.TOP,0)
+        set.connect(binding.account.id,ConstraintSet.TOP,binding.mainScreenContainer.id,ConstraintSet.TOP,0)
         set.connect(binding.account.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,0)
         set.connect(binding.account.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.TOP,0)
 
-        set.connect(binding.userID.id,ConstraintSet.TOP,binding.mainActivity.id,ConstraintSet.TOP,0)
+        set.connect(binding.userID.id,ConstraintSet.TOP,binding.mainScreenContainer.id,ConstraintSet.TOP,0)
         set.connect(binding.userID.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,0)
         set.connect(binding.userID.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,0)
         set.connect(binding.userID.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.TOP,0)
@@ -757,9 +765,9 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         set.connect(binding.rightWolf.id,ConstraintSet.RIGHT,binding.eggBottomRightFifth.id,ConstraintSet.RIGHT, (screenUnit*0.13).toInt())
 
         set.connect(binding.linearLayoutMusic.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.BOTTOM,0)
-        set.connect(binding.linearLayoutMusic.id,ConstraintSet.BOTTOM,binding.mainActivity.id,ConstraintSet.BOTTOM,0)
-        set.connect(binding.linearLayoutMusic.id,ConstraintSet.LEFT,binding.mainActivity.id,ConstraintSet.LEFT,0)
-        set.connect(binding.linearLayoutMusic.id,ConstraintSet.RIGHT,binding.mainActivity.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.linearLayoutMusic.id,ConstraintSet.BOTTOM,binding.mainScreenContainer.id,ConstraintSet.BOTTOM,0)
+        set.connect(binding.linearLayoutMusic.id,ConstraintSet.LEFT,binding.mainScreenContainer.id,ConstraintSet.LEFT,0)
+        set.connect(binding.linearLayoutMusic.id,ConstraintSet.RIGHT,binding.mainScreenContainer.id,ConstraintSet.RIGHT,0)
 
         set.applyTo(binding.mainActivity)
 
@@ -814,8 +822,12 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         screenSize.height = 7.0
         binding.screen.layoutParams = ConstraintLayout.LayoutParams((screenSize.width*screenUnit).toInt(),(screenSize.height*screenUnit).toInt())
 
+        wholeScreenSize.width = 20.0
+        wholeScreenSize.height = 10.0
+
         eggSize.width=0.5
         eggSize.height=0.5
+        binding.mainScreenContainer.layoutParams = ConstraintLayout.LayoutParams((wholeScreenSize.width*screenUnit).toInt(),(wholeScreenSize.height*screenUnit).toInt())
         binding.eggTopLeftFirst.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
         binding.eggTopLeftSecond.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
         binding.eggTopLeftThird.layoutParams = ConstraintLayout.LayoutParams((eggSize.width*screenUnit).toInt(), (eggSize.height*screenUnit).toInt())
@@ -1543,12 +1555,14 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     }
 
 }
-// todo UI for every phone
 // todo game container as a layout
-//todo sound
-//todo other games
+// todo UI for every phone
 //todo user name max 14 zankow
 //todo ontouch
+//todo sound
+//todo other games
+
+
 
 
 

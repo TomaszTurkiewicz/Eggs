@@ -14,4 +14,10 @@
     <string name="database_error">DATABASE ERROR</string>
 
     <string name="ranking_position">%1$d %2$s</string>
+    <string name="image">IMAGE</string>
+    <string name="exit">EXIT</string>
+    <string name="a">A</string>
+    <string name="b">B</string>
+    <string name="music_from">Music from:</string>
+    <string name="https_www_zapsplat_com">https://www.zapsplat.com</string>
 </resources>
