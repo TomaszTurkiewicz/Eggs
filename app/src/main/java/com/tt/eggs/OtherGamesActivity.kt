@@ -22,13 +22,13 @@ import com.tt.eggs.drawable.StartButton
 
 class OtherGamesActivity : AppCompatActivity() {
 
-    private var screenHeight = 0
-    private var screenWidth = 0
+
     private var screenUnit = 0
 
     private val backToGameButtonSize = Dimension()
     private val sendGameButtonSize = Dimension()
     private val battleShipsGameButtonSize = Dimension()
+    private val wholeScreenSize = Dimension()
 
     private lateinit var binding: ActivityOtherGamesBinding
 
@@ -95,16 +95,21 @@ class OtherGamesActivity : AppCompatActivity() {
         val set = ConstraintSet()
         set.clone(binding.otherGames)
 
-        set.connect(binding.backToGameLinearLayoutOtherGames.id,ConstraintSet.BOTTOM,binding.otherGames.id,ConstraintSet.BOTTOM,screenUnit)
-        set.connect(binding.backToGameLinearLayoutOtherGames.id,ConstraintSet.LEFT,binding.otherGames.id,ConstraintSet.LEFT,screenUnit)
+        set.connect(binding.otherGamesActivityContainer.id,ConstraintSet.TOP,binding.otherGames.id,ConstraintSet.TOP,0)
+        set.connect(binding.otherGamesActivityContainer.id,ConstraintSet.BOTTOM,binding.otherGames.id,ConstraintSet.BOTTOM,0)
+        set.connect(binding.otherGamesActivityContainer.id,ConstraintSet.RIGHT,binding.otherGames.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.otherGamesActivityContainer.id,ConstraintSet.LEFT,binding.otherGames.id,ConstraintSet.LEFT,0)
 
-        set.connect(binding.sendGameLinearlayout.id,ConstraintSet.TOP,binding.otherGames.id,ConstraintSet.TOP,screenUnit)
-        set.connect(binding.sendGameLinearlayout.id,ConstraintSet.LEFT,binding.otherGames.id,ConstraintSet.LEFT,0)
-        set.connect(binding.sendGameLinearlayout.id,ConstraintSet.RIGHT,binding.otherGames.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.backToGameLinearLayoutOtherGames.id,ConstraintSet.BOTTOM,binding.otherGamesActivityContainer.id,ConstraintSet.BOTTOM,screenUnit)
+        set.connect(binding.backToGameLinearLayoutOtherGames.id,ConstraintSet.LEFT,binding.otherGamesActivityContainer.id,ConstraintSet.LEFT,screenUnit)
+
+        set.connect(binding.sendGameLinearlayout.id,ConstraintSet.TOP,binding.otherGamesActivityContainer.id,ConstraintSet.TOP,screenUnit)
+        set.connect(binding.sendGameLinearlayout.id,ConstraintSet.LEFT,binding.otherGamesActivityContainer.id,ConstraintSet.LEFT,0)
+        set.connect(binding.sendGameLinearlayout.id,ConstraintSet.RIGHT,binding.otherGamesActivityContainer.id,ConstraintSet.RIGHT,0)
 
         set.connect(binding.battleShipsGameLinearlayout.id,ConstraintSet.TOP,binding.sendGameLinearlayout.id,ConstraintSet.BOTTOM,screenUnit)
-        set.connect(binding.battleShipsGameLinearlayout.id,ConstraintSet.LEFT,binding.otherGames.id,ConstraintSet.LEFT,0)
-        set.connect(binding.battleShipsGameLinearlayout.id,ConstraintSet.RIGHT,binding.otherGames.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.battleShipsGameLinearlayout.id,ConstraintSet.LEFT,binding.otherGamesActivityContainer.id,ConstraintSet.LEFT,0)
+        set.connect(binding.battleShipsGameLinearlayout.id,ConstraintSet.RIGHT,binding.otherGamesActivityContainer.id,ConstraintSet.RIGHT,0)
 
 
 
@@ -123,6 +128,11 @@ class OtherGamesActivity : AppCompatActivity() {
     }
 
     private fun setViewSizes() {
+
+        wholeScreenSize.width = (20*screenUnit).toDouble()
+        wholeScreenSize.height = (10*screenUnit).toDouble()
+        binding.otherGamesActivityContainer.layoutParams = ConstraintLayout.LayoutParams((wholeScreenSize.width).toInt(),(wholeScreenSize.height).toInt())
+
         backToGameButtonSize.width= (screenUnit*4/3).toDouble()
         backToGameButtonSize.height = backToGameButtonSize.width
         binding.backToGameTvBlank.layoutParams = LinearLayout.LayoutParams((backToGameButtonSize.width/2).toInt(),(backToGameButtonSize.height).toInt())

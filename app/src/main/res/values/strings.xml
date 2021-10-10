@@ -34,4 +34,6 @@
     <string name="high_a">HIGH A</string>
     <string name="high_b">HIGH B</string>
     <string name="total">TOTAL</string>
+    <string name="send_this_game_to_friend">SEND THIS GAME TO FRIEND</string>
+    <string name="battle_ships_game">BATTLE SHIPS GAME</string>
 </resources>
