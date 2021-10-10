@@ -117,13 +117,12 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     private val wolfSize = Dimension()
 
     private var runningEggFirstSound: MediaPlayer?=null
-    private var runningEggSecondSound: MediaPlayer?=null
     private var caughtEggSound: MediaPlayer?=null
     private var faultSound: MediaPlayer?=null
     private var brokenEggSound: MediaPlayer?=null
     private var runningChickenSound: MediaPlayer?=null
     private var winningSound: MediaPlayer?=null
-    private var runningEggSoundBoolean = true
+
 
     private var chickenPlace = 0
 
@@ -232,36 +231,16 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             winLoop().run()
 
             stopAllSounds()
-            winningSound = MediaPlayer.create(this,R.raw.win_sound_first)
+            winningSound = MediaPlayer.create(this,R.raw.fault)
             winningSound?.start()
-            winningSound?.setOnCompletionListener {
-                winningSound?.stop()
-                winningSound?.release()
-                winningSound = MediaPlayer.create(this,R.raw.win_sound_second)
-                winningSound?.start()
-                winningSound?.setOnCompletionListener {
-                    winningSound?.stop()
-                    winningSound?.release()
-                    winningSound=null
-                }
-            }
-
-
 
         }
     }
 
     private fun makeSoundRunningEggs() {
         stopAllSounds()
-        runningEggSoundBoolean = if(runningEggSoundBoolean){
-            runningEggFirstSound = MediaPlayer.create(this, R.raw.egg_sound_first)
+            runningEggFirstSound = MediaPlayer.create(this, R.raw.empty_move)
             runningEggFirstSound?.start()
-            !runningEggSoundBoolean
-        } else{
-            runningEggSecondSound = MediaPlayer.create(this, R.raw.egg_sound_second)
-            runningEggSecondSound?.start()
-            !runningEggSoundBoolean
-        }
 
     }
 
@@ -271,12 +250,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             runningEggFirstSound?.stop()
             runningEggFirstSound?.release()
             runningEggFirstSound=null
-
-
-            runningEggSecondSound?.stop()
-            runningEggSecondSound?.release()
-            runningEggSecondSound=null
-
 
             caughtEggSound?.stop()
             caughtEggSound?.release()
@@ -363,10 +336,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             brokenEggSound = MediaPlayer.create(this,R.raw.broken_egg)
             brokenEggSound?.start()
         }
-        else {
-            runningChickenSound = MediaPlayer.create(this, R.raw.running_chicken)
-            runningChickenSound?.start()
-        }
+
         displayRunningChicken(fallenEgg)
         chickenPlace+=1
 
@@ -766,11 +736,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         set.connect(binding.rightWolf.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
         set.connect(binding.rightWolf.id,ConstraintSet.RIGHT,binding.eggBottomRightFifth.id,ConstraintSet.RIGHT, (screenUnit*0.13).toInt())
 
-        set.connect(binding.linearLayoutMusic.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.BOTTOM,0)
-        set.connect(binding.linearLayoutMusic.id,ConstraintSet.BOTTOM,binding.mainScreenContainer.id,ConstraintSet.BOTTOM,0)
-        set.connect(binding.linearLayoutMusic.id,ConstraintSet.LEFT,binding.mainScreenContainer.id,ConstraintSet.LEFT,0)
-        set.connect(binding.linearLayoutMusic.id,ConstraintSet.RIGHT,binding.mainScreenContainer.id,ConstraintSet.RIGHT,0)
-
         set.applyTo(binding.mainActivity)
 
 
@@ -925,9 +890,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
         binding.leftWolf.layoutParams = ConstraintLayout.LayoutParams(wolfSize.width.toInt(),wolfSize.height.toInt())
         binding.rightWolf.layoutParams = ConstraintLayout.LayoutParams(wolfSize.width.toInt(),wolfSize.height.toInt())
-
-        binding.musicFrom.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
-        binding.musicLink.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
     }
 
@@ -1253,13 +1215,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             }
         }
 
-        binding.musicLink.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.zapsplat.com"))
-            startActivity(intent)
-        }
-
-
-
         if(loggedInStatus.loggedIn) {
             binding.userID.text = Functions.checkUserNameFromSharedPreferences(this, loggedInStatus.userid)
         }
@@ -1287,7 +1242,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         binding.startA.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
         binding.startB.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
 
-        binding.linearLayoutMusic.visibility = View.VISIBLE
         mHandler.removeCallbacksAndMessages(null)
         mHandlerDemo.removeCallbacksAndMessages(null)
         mHandlerPause.removeCallbacksAndMessages(null)
@@ -1311,7 +1265,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // play game A
     private fun startGameA() {
 
-        binding.linearLayoutMusic.visibility = View.GONE
         mHandlerPause.removeCallbacksAndMessages(null)
         gameState=Static.PLAY_A
         game.clearEggArray()
@@ -1329,7 +1282,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     // play game B
     private fun startGameB() {
-        binding.linearLayoutMusic.visibility = View.GONE
         mHandlerPause.removeCallbacksAndMessages(null)
         gameState=Static.PLAY_B
         game.clearEggArray()
@@ -1347,7 +1299,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
     // pause game A
     private fun pauseGameA() {
-        binding.linearLayoutMusic.visibility = View.GONE
         gameState=Static.PAUSE_A
         updateFaultsView()
         updateScoreTextView()
@@ -1369,7 +1320,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 
     private fun pauseGameB() {
-        binding.linearLayoutMusic.visibility = View.GONE
         gameState=Static.PAUSE_B
         updateFaultsView()
         updateScoreTextView()
@@ -1402,7 +1352,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             // egg has been caught
             if(eggCaught.logicProduct==1){
 
-               caughtEggSound = MediaPlayer.create(this,R.raw.caught_egg_sound)
+               caughtEggSound = MediaPlayer.create(this,R.raw.score_move)
                 caughtEggSound?.start()
                 updateScoreTextView()
 
@@ -1432,7 +1382,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
                 lostEggAnimation(eggCaught.positionFallenEgg)
             }else{
                 stopAllSounds()
-                faultSound = MediaPlayer.create(this,R.raw.fault_sound)
+                faultSound = MediaPlayer.create(this,R.raw.fault)
                 faultSound?.start()
                 lostEggAnimationEndGame(eggCaught.positionFallenEgg)
 
@@ -1594,8 +1544,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 }
 
-
-//todo sound
 //todo other games
 // todo UI for every phone
 
