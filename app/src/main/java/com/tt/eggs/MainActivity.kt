@@ -1544,7 +1544,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 }
 
-//todo other games
 // todo UI for every phone
 
 

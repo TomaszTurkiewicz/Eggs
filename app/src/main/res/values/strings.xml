@@ -18,8 +18,6 @@
     <string name="exit">EXIT</string>
     <string name="a">A</string>
     <string name="b">B</string>
-    <string name="music_from">Music from:</string>
-    <string name="https_www_zapsplat_com">https://www.zapsplat.com</string>
     <string name="ok">OK</string>
     <string name="change">CHANGE</string>
     <string name="high_score_a">HIGH SCORE A</string>
@@ -36,4 +34,5 @@
     <string name="total">TOTAL</string>
     <string name="send_this_game_to_friend">SEND THIS GAME TO FRIEND</string>
     <string name="battle_ships_game">BATTLE SHIPS GAME</string>
+    <string name="page_counter">%1$d/%2$d</string>
 </resources>
