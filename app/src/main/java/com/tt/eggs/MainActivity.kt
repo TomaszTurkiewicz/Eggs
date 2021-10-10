@@ -1543,6 +1543,7 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
 
 }
 // todo UI for every phone
+// todo screen unit from shared preferences (only once calculation)
 //todo sound
 //todo other games
 //todo user name max 14 zankow
