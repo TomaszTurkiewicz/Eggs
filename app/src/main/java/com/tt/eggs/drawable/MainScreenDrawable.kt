@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
+import com.tt.eggs.classes.MyPath
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
@@ -18,6 +19,7 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
 
 
     override fun draw(canvas: Canvas) {
+        paint.isAntiAlias = true
         drawMainScreen(canvas)
         drawRounderFrames(canvas)
         val margin = drawLCD(canvas)
@@ -50,11 +52,154 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
         paint.style = Paint.Style.FILL
         paint.color = ContextCompat.getColor(context, R.color.gray)
         canvas.drawRect(rect,paint)
+
+        val cornerLeftUp = Point(0,0)
+        val cornerRightUp = Point((width*screenUnit).toInt(),0)
+        val cornerRightBottom = Point((width*screenUnit).toInt(), (height*screenUnit).toInt())
+        val cornerLeftBottom = Point(0, (height*screenUnit).toInt())
+
+        val margin = 0.25*screenUnit
+        val cornerLeftUpMargin = Point(margin.toInt(), margin.toInt())
+        val cornerRightUpMargin = Point((width*screenUnit-margin).toInt(), margin.toInt())
+        val cornerRightBottomMargin = Point((width*screenUnit-margin).toInt(), (height*screenUnit-margin).toInt())
+        val cornerLeftBottomMargin = Point(margin.toInt(), (height*screenUnit-margin).toInt())
+
+        val marginExternal = 0.1*screenUnit
+        val marginInternal = 0.15*screenUnit
+
+        val cornerLeftUpMarginExternal = Point(marginExternal.toInt(), marginExternal.toInt())
+        val cornerRightUpMarginExternal = Point((width*screenUnit-marginExternal).toInt(), marginExternal.toInt())
+        val cornerRightBottomMarginExternal = Point((width*screenUnit-marginExternal).toInt(), (height*screenUnit-marginExternal).toInt())
+        val cornerLeftBottomMarginExternal = Point(marginExternal.toInt(), (height*screenUnit-marginExternal).toInt())
+
+        val cornerLeftUpMarginInternal = Point(marginInternal.toInt(), marginInternal.toInt())
+        val cornerRightUpMarginInternal = Point((width*screenUnit-marginInternal).toInt(), marginInternal.toInt())
+        val cornerRightBottomMarginInternal = Point((width*screenUnit-marginInternal).toInt(), (height*screenUnit-marginInternal).toInt())
+        val cornerLeftBottomMarginInternal = Point(marginInternal.toInt(), (height*screenUnit-marginInternal).toInt())
+
+
+        paint.color = ContextCompat.getColor(context,R.color.gray_light)
+        val pathUp = MyPath()
+        pathUp.move(cornerLeftUp)
+        pathUp.line(cornerRightUp)
+        pathUp.line(cornerRightUpMargin)
+        pathUp.line(cornerLeftUpMargin)
+        pathUp.close()
+        canvas.drawPath(pathUp,paint)
+
+        paint.color = ContextCompat.getColor(context,R.color.gray_middle)
+        val pathLeft = MyPath()
+        pathLeft.move(cornerLeftUp)
+        pathLeft.line(cornerLeftUpMargin)
+        pathLeft.line(cornerLeftBottomMargin)
+        pathLeft.line(cornerLeftBottom)
+        pathLeft.close()
+        canvas.drawPath(pathLeft,paint)
+
+        val pathRight = MyPath()
+        pathRight.move(cornerRightUp)
+        pathRight.line(cornerRightUpMargin)
+        pathRight.line(cornerRightBottomMargin)
+        pathRight.line(cornerRightBottom)
+        pathRight.close()
+        canvas.drawPath(pathRight,paint)
+
+        paint.color = ContextCompat.getColor(context,R.color.gray_dark)
+        val pathDown = MyPath()
+        pathDown.move(cornerLeftBottom)
+        pathDown.line(cornerRightBottom)
+        pathDown.line(cornerRightBottomMargin)
+        pathDown.line(cornerLeftBottomMargin)
+        pathDown.close()
+        canvas.drawPath(pathDown,paint)
+
+
+        paint.shader = LinearGradient(0f,0f,0f,marginExternal.toFloat(),ContextCompat.getColor(context,R.color.gray),ContextCompat.getColor(context,R.color.gray_light),Shader.TileMode.MIRROR)
+        val pathUpExternal = MyPath()
+        pathUpExternal.move(cornerLeftUp)
+        pathUpExternal.line(cornerRightUp)
+        pathUpExternal.line(cornerRightUpMarginExternal)
+        pathUpExternal.line(cornerLeftUpMarginExternal)
+        pathUpExternal.close()
+        canvas.drawPath(pathUpExternal,paint)
+        paint.shader = null
+
+        paint.shader = LinearGradient(0f,marginInternal.toFloat(),0f,margin.toFloat(),ContextCompat.getColor(context,R.color.gray_light),ContextCompat.getColor(context,R.color.gray),Shader.TileMode.MIRROR)
+        val pathUpInternal = MyPath()
+        pathUpInternal.move(cornerLeftUpMargin)
+        pathUpInternal.line(cornerRightUpMargin)
+        pathUpInternal.line(cornerRightUpMarginInternal)
+        pathUpInternal.line(cornerLeftUpMarginInternal)
+        pathUpInternal.close()
+        canvas.drawPath(pathUpInternal,paint)
+        paint.shader = null
+
+        paint.shader = LinearGradient((width*screenUnit-marginExternal).toFloat(),0f,(width*screenUnit).toFloat(),0f,ContextCompat.getColor(context,R.color.gray_middle),ContextCompat.getColor(context,R.color.gray),Shader.TileMode.MIRROR)
+        val pathRightExternal = MyPath()
+        pathRightExternal.move(cornerRightUp)
+        pathRightExternal.line(cornerRightBottom)
+        pathRightExternal.line(cornerRightBottomMarginExternal)
+        pathRightExternal.line(cornerRightUpMarginExternal)
+        pathRightExternal.close()
+        canvas.drawPath(pathRightExternal,paint)
+        paint.shader = null
+
+        paint.shader = LinearGradient((width*screenUnit-margin).toFloat(),0f,(width*screenUnit-marginInternal).toFloat(),0f,ContextCompat.getColor(context,R.color.gray),ContextCompat.getColor(context,R.color.gray_middle),Shader.TileMode.MIRROR)
+        val pathRightInternal = MyPath()
+        pathRightInternal.move(cornerRightUpMargin)
+        pathRightInternal.line(cornerRightBottomMargin)
+        pathRightInternal.line(cornerRightBottomMarginInternal)
+        pathRightInternal.line(cornerRightUpMarginInternal)
+        pathRightInternal.close()
+        canvas.drawPath(pathRightInternal,paint)
+        paint.shader = null
+
+        paint.shader = LinearGradient(0f,0f,marginExternal.toFloat(),0f,ContextCompat.getColor(context,R.color.gray),ContextCompat.getColor(context,R.color.gray_middle),Shader.TileMode.MIRROR)
+        val pathLeftExternal = MyPath()
+        pathLeftExternal.move(cornerLeftUp)
+        pathLeftExternal.line(cornerLeftBottom)
+        pathLeftExternal.line(cornerLeftBottomMarginExternal)
+        pathLeftExternal.line(cornerLeftUpMarginExternal)
+        pathLeftExternal.close()
+        canvas.drawPath(pathLeftExternal,paint)
+        paint.shader = null
+
+        paint.shader = LinearGradient(marginInternal.toFloat(),0f,margin.toFloat(),0f,ContextCompat.getColor(context,R.color.gray_middle),ContextCompat.getColor(context,R.color.gray),Shader.TileMode.MIRROR)
+        val pathLeftInternal = MyPath()
+        pathLeftInternal.move(cornerLeftUpMargin)
+        pathLeftInternal.line(cornerLeftBottomMargin)
+        pathLeftInternal.line(cornerLeftBottomMarginInternal)
+        pathLeftInternal.line(cornerLeftUpMarginInternal)
+        pathLeftInternal.close()
+        canvas.drawPath(pathLeftInternal,paint)
+        paint.shader = null
+
+        paint.shader = LinearGradient(0f,(height*screenUnit-marginExternal).toFloat(),0f,(height*screenUnit).toFloat(),ContextCompat.getColor(context,R.color.gray_dark),ContextCompat.getColor(context,R.color.gray),Shader.TileMode.MIRROR)
+        val pathDownExternal = MyPath()
+        pathDownExternal.move(cornerLeftBottom)
+        pathDownExternal.line(cornerRightBottom)
+        pathDownExternal.line(cornerRightBottomMarginExternal)
+        pathDownExternal.line(cornerLeftBottomMarginExternal)
+        pathDownExternal.close()
+        canvas.drawPath(pathDownExternal,paint)
+        paint.shader = null
+
+        paint.shader = LinearGradient(0f,(height*screenUnit-margin).toFloat(),0f,(height*screenUnit-marginInternal).toFloat(),ContextCompat.getColor(context,R.color.gray),ContextCompat.getColor(context,R.color.gray_dark),Shader.TileMode.MIRROR)
+        val pathDownInternal = MyPath()
+        pathDownInternal.move(cornerLeftBottomMargin)
+        pathDownInternal.line(cornerRightBottomMargin)
+        pathDownInternal.line(cornerRightBottomMarginInternal)
+        pathDownInternal.line(cornerLeftBottomMarginInternal)
+        pathDownInternal.close()
+        canvas.drawPath(pathDownInternal,paint)
+        paint.shader = null
+
+
     }
 
     private fun drawRounderFrames(canvas: Canvas) {
         val stroke = screenUnit/10
-        val margin = 0.2
+        val margin = 0.35
         val rectR = RectF((screenUnit*margin).toFloat(), (screenUnit*margin).toFloat(),(screenUnit*(width-margin)).toFloat(),(screenUnit*(height-margin)).toFloat())
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = (stroke).toFloat()
@@ -751,7 +896,7 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
         val curvedVW = Functions.curvedPath(v,w,screenUnit*0.05,false)
         val x = Point((w.x+screenUnit*0.25).toInt(), (top+screenUnit*0.15).toInt())
         val curvedWX = Functions.curvedPath(w,x,screenUnit*0.05,true)
-        val y = Point((a.x).toInt(), (top+screenUnit*0.15).toInt())
+        val y = Point(a.x, (top+screenUnit*0.15).toInt())
         val curvedXY = Functions.curvedPath(x,y,screenUnit*0.05,false)
 
         val x1 = Point((y.x+screenUnit*0.25).toInt(), (top+screenUnit*0.15).toInt())

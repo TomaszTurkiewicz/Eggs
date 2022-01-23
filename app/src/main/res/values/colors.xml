@@ -6,13 +6,15 @@
     <color name="colorAccentTransparent">#4F03DAC5</color>
     <color name="transparent">#00000000</color>
     <color name="gray">#D5D5D5</color>
+    <color name="gray_middle">#B3B3B3</color>
     <color name="gray_LCD">#CCD8C0</color>
     <color name="gray_light">#EAEAEA</color>
-    <color name="gray_dark">#5E5E5E</color>
+    <color name="gray_dark">#8E8E8E</color>
     <color name="black">#000000</color>
     <color name="red">#BC0000</color>
     <color name="white">#FFFFFF</color>
     <color name="green">#188503</color>
+    <color name="yellow">#E2F301</color>
 
 
 </resources>
