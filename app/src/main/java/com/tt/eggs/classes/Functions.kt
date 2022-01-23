@@ -251,32 +251,6 @@ class Functions {
             return loggedInStatus
         }
 
-        fun saveUpdateToSharedPreferences(context: Context?, isUpdate:Boolean, url:String = ""){
-            if(context!=null){
-                val sharedPreferences = context.getSharedPreferences("UPDATE",Context.MODE_PRIVATE)
-                val editor = sharedPreferences.edit()
-                if(isUpdate){
-                    editor.putBoolean("update",isUpdate)
-                    editor.putString("url",url)
-                    editor.apply()
-                }else{
-                    editor.putBoolean("update",isUpdate)
-                    editor.putString("url","")
-                    editor.apply()
-                }
-            }
-        }
-
-        fun readUpdateFromSharedPreferences(context: Context?):Update{
-            val update = Update()
-            if(context!=null){
-                val sharedPreferences = context.getSharedPreferences("UPDATE", Context.MODE_PRIVATE)
-                update.isUpdate = sharedPreferences.getBoolean("update",false)
-                update.url = sharedPreferences.getString("url","").toString()
-            }
-            return update
-        }
-
         fun curvedPath(a: Point, b:Point, radius: Double, up:Boolean):CurvedPoint{
             val midX = a.x + ((b.x-a.x)/2)
             val midY = a.y + ((b.y-a.y)/2)

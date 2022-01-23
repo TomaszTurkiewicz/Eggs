@@ -3,12 +3,8 @@ package com.tt.eggs
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
@@ -52,14 +48,8 @@ class LoginActivity : AppCompatActivity() {
     private val rankingButtonSize = Dimension()
     private val loginButtonSize = Dimension()
     private val otherGamesButtonSize = Dimension()
-    private val updateButtonSize = Dimension()
     private val wholeScreenSize = Dimension()
 
-    // for update loop
-    private var updateState = Static.ON
-    private val mHandlerUpdate = Handler(Looper.getMainLooper())
-
-    private var updateObject=Update()
 
     private lateinit var binding: ActivityLoginBinding
 
@@ -104,22 +94,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        updateObject=Functions.readUpdateFromSharedPreferences(this)
-
-        if(updateObject.isUpdate){
-            binding.update.setOnClickListener {
-                redirectToStore(updateObject.url)
-            }
-
-            update().run()
-        }
-
-    }
-
-    private fun redirectToStore(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
 
     }
 
@@ -189,10 +163,7 @@ class LoginActivity : AppCompatActivity() {
         set.connect(binding.otherGamesLinearLayout.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP, (screenUnit*4.5).toInt())
         set.connect(binding.otherGamesLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivityContainer.id,ConstraintSet.RIGHT, screenUnit)
 
-        set.connect(binding.updateLinearLayout.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP, (screenUnit*6.5).toInt())
-        set.connect(binding.updateLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivityContainer.id,ConstraintSet.RIGHT, screenUnit)
-
-        set.connect(binding.loginLinearLayout.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP, (screenUnit*8.5).toInt())
+        set.connect(binding.loginLinearLayout.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP, (screenUnit*6.5).toInt())
         set.connect(binding.loginLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivityContainer.id,ConstraintSet.RIGHT, screenUnit)
 
 
@@ -217,8 +188,6 @@ class LoginActivity : AppCompatActivity() {
         binding.loginLinearLayout.background = RoundedFrameDrawable(this,5.5*loginButtonSize.width,loginButtonSize.height,loginButtonSize.height/20,loginButtonSize.height/2)
         binding.otherGamesLinearLayout.background = RoundedFrameDrawable(this,5.5*otherGamesButtonSize.width,otherGamesButtonSize.height,otherGamesButtonSize.height/20,otherGamesButtonSize.height/2)
         binding.rankingLinearLayout.background = RoundedFrameDrawable(this,5.5*rankingButtonSize.width,rankingButtonSize.height,rankingButtonSize.height/20,rankingButtonSize.height/2)
-        binding.updateLinearLayout.background = RoundedFrameDrawable(this,5.5*updateButtonSize.width,updateButtonSize.height,updateButtonSize.height/20,updateButtonSize.height/2)
-        binding.update.setImageDrawable(StartButtonGray(this,updateButtonSize.width,updateButtonSize.height))
     }
 
     private fun setViewSizes() {
@@ -301,15 +270,6 @@ class LoginActivity : AppCompatActivity() {
         binding.otherGamesTv.layoutParams = LinearLayout.LayoutParams((4*otherGamesButtonSize.width).toInt(),(otherGamesButtonSize.height).toInt())
         binding.otherGamesTvBlank.layoutParams = LinearLayout.LayoutParams((0.5*otherGamesButtonSize.width).toInt(),(otherGamesButtonSize.height).toInt())
         binding.otherGamesTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
-
-        updateButtonSize.width= (screenUnit*4/3).toDouble()
-        updateButtonSize.height = updateButtonSize.width
-
-        binding.update.layoutParams = LinearLayout.LayoutParams((updateButtonSize.width).toInt(),(updateButtonSize.height).toInt())
-        binding.updateTv.layoutParams = LinearLayout.LayoutParams((4*updateButtonSize.width).toInt(),(updateButtonSize.height).toInt())
-        binding.updateTvBlank.layoutParams = LinearLayout.LayoutParams((0.5*updateButtonSize.width).toInt(),(updateButtonSize.height).toInt())
-        binding.updateTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
-
 
     }
 
@@ -595,18 +555,6 @@ class LoginActivity : AppCompatActivity() {
     }
     /** ------------------------ companion objects ----------------------------------**/
 
-
-
-
-    private fun update():Runnable = Runnable {
-        if(updateState==Static.ON){
-            binding.update.setImageDrawable(StartButtonGreen(this,updateButtonSize.width,updateButtonSize.height))
-        }else{
-            binding.update.setImageDrawable(StartButton(this,updateButtonSize.width,updateButtonSize.height))
-        }
-        updateState=!updateState
-        mHandlerUpdate.postDelayed(update(),500)
-    }
 
 }
 

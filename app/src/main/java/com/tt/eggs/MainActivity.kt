@@ -4,7 +4,6 @@ package com.tt.eggs
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.media.MediaPlayer
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -34,7 +33,7 @@ import java.lang.Exception
 import kotlin.random.Random
 
 
-class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
+class MainActivity : AppCompatActivity(){
 
 
     /**--------------------------- var and val-----------------------------**/
@@ -87,10 +86,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
     // for pause loop
     private var pauseState = Static.ON
     private val mHandlerPause = Handler(Looper.getMainLooper())
-
-    // for update loop
-    private var updateState = Static.ON
-    private val mHandlerUpdate = Handler(Looper.getMainLooper())
 
     // for high score loop
     private var highScoreState = Static.ON
@@ -159,14 +154,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         // set button listeners and text view displays
         buttonsOnClickListeners()
 
-
-        Functions.saveUpdateToSharedPreferences(context = this,isUpdate = false)
-
-        UpdateHelper.with(this).onUpdateNeeded(this).check()
-
-
-
-
     }
 
 
@@ -192,7 +179,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
             Static.PLAY_A -> pauseGameA()
             Static.PLAY_B -> pauseGameB()
         }
-        mHandlerUpdate.removeCallbacksAndMessages(null)
     }
 
 
@@ -415,21 +401,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         }
         highScoreState = !highScoreState
         mHandlerHighScore.postDelayed(highScore(highScore),500)
-    }
-
-
-    private fun update():Runnable = Runnable {
-        if(updateState==Static.ON){
-            binding.account.setImageDrawable(StartButtonGreen(this,screenUnit*userIdSize.height,
-                screenUnit*userIdSize.height
-            ))
-        }else{
-            binding.account.setImageDrawable(StartButton(this,screenUnit*userIdSize.height,
-                screenUnit*userIdSize.height
-            ))
-        }
-        updateState=!updateState
-        mHandlerUpdate.postDelayed(update(),500)
     }
 
 
@@ -1536,11 +1507,6 @@ class MainActivity : AppCompatActivity(),UpdateHelper.OnUpdateNeededListener{
         fallenEgg(fallenEgg).run()
 
 
-    }
-
-    override fun onUpdateNeeded(updateUrl: String) {
-        Functions.saveUpdateToSharedPreferences(context = this,isUpdate = true,url = updateUrl)
-        update().run()
     }
 
 }
