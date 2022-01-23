@@ -204,28 +204,71 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = (stroke).toFloat()
         paint.color = ContextCompat.getColor(context, R.color.black)
-        canvas.drawRoundRect(rectR, screenUnit/2.toFloat(), screenUnit/2.toFloat(),paint)
+        canvas.drawRoundRect(rectR, screenUnit/3.toFloat(), screenUnit/3.toFloat(),paint)
 
         // draw rounded rectangle black
         val margin1 = 0.5
         val rectR1 = RectF((screenUnit*margin1).toFloat(), (screenUnit*margin1).toFloat(),(screenUnit*(width-margin1)).toFloat(),(screenUnit*(height-margin1)).toFloat())
         paint.style = Paint.Style.FILL
-        paint.color = ContextCompat.getColor(context, R.color.black)
-        canvas.drawRoundRect(rectR1, screenUnit/2.toFloat(), screenUnit/2.toFloat(),paint)
-
-        // draw rounded rectangle light gray
-        val margin2 = 0.55
-        val rectR2 = RectF((screenUnit*margin2).toFloat(), (screenUnit*margin2).toFloat(),(screenUnit*(width-margin2)).toFloat(),(screenUnit*(height-margin2)).toFloat())
-        paint.style = Paint.Style.FILL
         paint.color = ContextCompat.getColor(context, R.color.gray_light)
-        canvas.drawRoundRect(rectR2, screenUnit/2.toFloat(), screenUnit/2.toFloat(),paint)
+        canvas.drawRoundRect(rectR1, screenUnit/3.toFloat(), screenUnit/3.toFloat(),paint)
 
-        // draw rounded rectangle dark gray
-        val margin3 = 0.6
-        val rectR3 = RectF((screenUnit*margin3).toFloat(), (screenUnit*margin3).toFloat(),(screenUnit*(width-margin3)).toFloat(),(screenUnit*(height-margin3)).toFloat())
+        val rectR2 = RectF((screenUnit*margin1).toFloat(), (screenUnit*margin1).toFloat(),(screenUnit*(width-margin1)).toFloat(),(screenUnit*(height-margin1)).toFloat())
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = (stroke/2).toFloat()
+        paint.color = ContextCompat.getColor(context, R.color.black)
+        canvas.drawRoundRect(rectR2, screenUnit/3.toFloat(), screenUnit/3.toFloat(),paint)
+
+        val marginExternal = 0.63*screenUnit
+        val marginInternal = 0.8*screenUnit
+
+        val cornerRightUpExternal = Point((width*screenUnit-marginExternal).toInt(), marginExternal.toInt())
+        val cornerRightUpInternal = Point((width*screenUnit-marginInternal).toInt(), marginInternal.toInt())
+
+        val cornerLeftUpExternal = Point((marginExternal).toInt(), marginExternal.toInt())
+        val cornerLeftUpInternal = Point((marginInternal).toInt(), marginInternal.toInt())
+
+        val cornerRightBottomExternal = Point((width*screenUnit-marginExternal).toInt(), (height*screenUnit-marginExternal).toInt())
+        val cornerRightBottomInternal = Point((width*screenUnit-marginInternal).toInt(), (height*screenUnit-marginInternal).toInt())
+
+        val cornerLeftBottomExternal = Point((marginExternal).toInt(), (height*screenUnit-marginExternal).toInt())
+        val cornerLeftBottomInternal = Point((marginInternal).toInt(), (height*screenUnit-marginInternal).toInt())
+
         paint.style = Paint.Style.FILL
-        paint.color = ContextCompat.getColor(context, R.color.gray_dark)
-        canvas.drawRoundRect(rectR3, screenUnit/2.toFloat(), screenUnit/2.toFloat(),paint)
+        paint.color = ContextCompat.getColor(context,R.color.black)
+        val up = MyPath()
+        up.move(cornerRightUpExternal)
+        up.line(cornerLeftUpExternal)
+        up.line(cornerLeftUpInternal)
+        up.line(cornerRightUpInternal)
+        up.close()
+        canvas.drawPath(up,paint)
+
+        paint.color = ContextCompat.getColor(context,R.color.gray_dark)
+        val left = MyPath()
+        left.move(cornerLeftUpExternal)
+        left.line(cornerLeftUpInternal)
+        left.line(cornerLeftBottomInternal)
+        left.line(cornerLeftBottomExternal)
+        left.close()
+        canvas.drawPath(left,paint)
+
+        val right = MyPath()
+        right.move(cornerRightUpExternal)
+        right.line(cornerRightUpInternal)
+        right.line(cornerRightBottomInternal)
+        right.line(cornerRightBottomExternal)
+        right.close()
+        canvas.drawPath(right,paint)
+
+        paint.color = ContextCompat.getColor(context,R.color.gray)
+        val down = MyPath()
+        down.move(cornerRightBottomExternal)
+        down.line(cornerLeftBottomExternal)
+        down.line(cornerLeftBottomInternal)
+        down.line(cornerRightBottomInternal)
+        down.close()
+        canvas.drawPath(down,paint)
 
     }
 
