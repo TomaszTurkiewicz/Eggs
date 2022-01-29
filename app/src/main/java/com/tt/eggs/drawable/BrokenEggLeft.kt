@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 
-class BrokenEggLeft (private val context: Context, private val width: Double): Drawable() {
+class BrokenEggLeft (private val context: Context, width: Double): Drawable() {
     private val paint = Paint()
     private val unit = width/4
 

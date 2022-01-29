@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 
-class ArrowTopLeft (private val context: Context, private val width:Double, private val height:Double):Drawable(){
+class ArrowTopLeft (private val context: Context, width:Double, height:Double):Drawable(){
 
     private val paint = Paint()
 

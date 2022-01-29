@@ -1059,7 +1059,7 @@ class MainActivity : AppCompatActivity(){
     @SuppressLint("ClickableViewAccessibility")
     private fun buttonsOnClickListeners(){
 
-        binding.buttonTopLeft.setOnTouchListener { v, event ->
+        binding.buttonTopLeft.setOnTouchListener { _, event ->
             if (playOrPause()){
                 when (event.action){
                     MotionEvent.ACTION_DOWN -> {
@@ -1072,7 +1072,7 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
-        binding.buttonBottomLeft.setOnTouchListener { v, event ->
+        binding.buttonBottomLeft.setOnTouchListener { _, event ->
             if (playOrPause()){
                 when (event.action){
                     MotionEvent.ACTION_DOWN -> {
@@ -1086,7 +1086,7 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
-        binding.buttonBottomRight.setOnTouchListener { v, event ->
+        binding.buttonBottomRight.setOnTouchListener { _, event ->
             if (playOrPause()){
                 when (event.action){
                     MotionEvent.ACTION_DOWN -> {
@@ -1100,7 +1100,7 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
-        binding.buttonTopRight.setOnTouchListener { v, event ->
+        binding.buttonTopRight.setOnTouchListener { _, event ->
             if (playOrPause()){
                 when (event.action){
                     MotionEvent.ACTION_DOWN -> {

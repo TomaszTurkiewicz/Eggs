@@ -50,9 +50,9 @@ class WolfLeftBottom (private val context: Context, private val width: Double): 
         var radiusST = Functions.curvedPath(s,t,unit*2,true)
         var u = Point((width*0.54).toInt(), (width*0.11).toInt())
         var radiusTU = Functions.curvedPath(t,u,unit*2,true)
-        var v = Point((width*0.54).toInt(), (width*0.09).toInt())
-        var radiusUV = Functions.curvedPath(u,v,unit*2,false)
-        var radiusVA = Functions.curvedPath(v,a,unit,false)
+        val v = Point((width*0.54).toInt(), (width*0.09).toInt())
+        val radiusUV = Functions.curvedPath(u,v,unit*2,false)
+        val radiusVA = Functions.curvedPath(v,a,unit,false)
 
 
 
@@ -162,7 +162,7 @@ class WolfLeftBottom (private val context: Context, private val width: Double): 
         radiusFG = Functions.curvedPath(f,g,unit*4,true)
         h = Point((width*0.68).toInt(), (width*0.94).toInt())
         radiusGH = Functions.curvedPath(g,h,unit*4,true)
-        var radiusHE = Functions.curvedPath(h,e,unit*3,true)
+        val radiusHE = Functions.curvedPath(h,e,unit*3,true)
         i = Point((width*0.73).toInt(), (width*0.78).toInt())
         j = Point((width*0.71).toInt(), (width*0.75).toInt())
         radiusIJ = Functions.curvedPath(i,j,unit*3,false)
@@ -178,7 +178,7 @@ class WolfLeftBottom (private val context: Context, private val width: Double): 
         q = Point((width*0.48).toInt(), (width*0.885).toInt())
         radiusPQ = Functions.curvedPath(p,q,unit*3,true)
         r = Point((width*0.49).toInt(), (width*0.86).toInt())
-        var radiusQR = Functions.curvedPath(q,r,unit*6,false)
+        val radiusQR = Functions.curvedPath(q,r,unit*6,false)
         s = Point((width*0.36).toInt(), (width*0.785).toInt())
         t = Point((width*0.35).toInt(), (width*0.74).toInt())
         radiusST = Functions.curvedPath(s,t,unit*4,true)
@@ -343,7 +343,7 @@ class WolfLeftBottom (private val context: Context, private val width: Double): 
         d = Point((width*0.525).toInt(), (width*0.23).toInt())
         radiusCD = Functions.curvedPath(c,d,unit*6,false)
         e = Point((width*0.565).toInt(), (width*0.28).toInt())
-        var radiusEA = Functions.curvedPath(e,a,unit*3,false)
+        val radiusEA = Functions.curvedPath(e,a,unit*3,false)
         f = Point((width*0.53).toInt(), (width*0.28).toInt())
         radiusEF = Functions.curvedPath(e,f,unit*4,false)
         g = Point((width*0.41).toInt(), (width*0.26).toInt())
@@ -391,9 +391,9 @@ class WolfLeftBottom (private val context: Context, private val width: Double): 
         radiusAB = Functions.curvedPath(a,b,unit*2,true)
         c = Point((width*0.47).toInt(), (width*0.35).toInt())
         radiusBC = Functions.curvedPath(b,c,unit*3,false)
-        var radiusCB = Functions.curvedPath(c,b,unit*3,false)
+        val radiusCB = Functions.curvedPath(c,b,unit*3,false)
         d = Point((width*0.59).toInt(), (width*0.3).toInt())
-        var radiusBD = Functions.curvedPath(b,d,unit*2,false)
+        val radiusBD = Functions.curvedPath(b,d,unit*2,false)
         e = Point((width*0.61).toInt(), (width*0.32).toInt())
         radiusDE = Functions.curvedPath(d,e,unit*2,true)
         f = Point((width*0.58).toInt(), (width*0.34).toInt())
@@ -402,7 +402,7 @@ class WolfLeftBottom (private val context: Context, private val width: Double): 
         radiusFG = Functions.curvedPath(f,g,unit*2,false)
         h = Point((width*0.43).toInt(), (width*0.36).toInt())
         radiusGH = Functions.curvedPath(g,h,unit*3,false)
-        var radiusHA = Functions.curvedPath(h,a,unit*4,false)
+        val radiusHA = Functions.curvedPath(h,a,unit*4,false)
 
         val path3 = Path()
         path3.moveTo(a.x.toFloat(), a.y.toFloat())
@@ -424,7 +424,7 @@ class WolfLeftBottom (private val context: Context, private val width: Double): 
         b = Point((width*0.445).toInt(), (width*0.27).toInt())
         radiusAB = Functions.curvedPath(a,b,unit*4,true)
         c = Point((width*0.41).toInt(), (width*0.24).toInt())
-        var radiusCA = Functions.curvedPath(c,a,unit*4,true)
+        val radiusCA = Functions.curvedPath(c,a,unit*4,true)
 
         val pathNose = Path()
         pathNose.moveTo(a.x.toFloat(), a.y.toFloat())
@@ -478,7 +478,7 @@ class WolfLeftBottom (private val context: Context, private val width: Double): 
         radiusDE = Functions.curvedPath(d,e,unit*2,false)
         f = Point((width*0.04).toInt(), (width*0.66).toInt())
         radiusEF = Functions.curvedPath(e,f,unit*4,false)
-        var radiusFA = Functions.curvedPath(f,a,unit*3,false)
+        val radiusFA = Functions.curvedPath(f,a,unit*3,false)
 
 
 
@@ -525,7 +525,7 @@ class WolfLeftBottom (private val context: Context, private val width: Double): 
         radiusLM = Functions.curvedPath(l,m,unit*3,true)
         n = Point((width*0.15).toInt(), (width*0.5).toInt())
         radiusMN = Functions.curvedPath(m,n,unit*3,true)
-        var radiusNA = Functions.curvedPath(n,a,unit,true)
+        val radiusNA = Functions.curvedPath(n,a,unit,true)
 
         val pathArms = Path()
         pathArms.moveTo(a.x.toFloat(), a.y.toFloat())
@@ -577,7 +577,7 @@ class WolfLeftBottom (private val context: Context, private val width: Double): 
         radiusMN = Functions.curvedPath(m,n,unit*2,true)
         o = Point((width*0.32).toInt(), (width*0.58).toInt())
         radiusNO = Functions.curvedPath(n,o,unit*2,true)
-        var radiusOA = Functions.curvedPath(o,a,unit/2,false)
+        val radiusOA = Functions.curvedPath(o,a,unit/2,false)
 
         val pathArm2 = Path()
         pathArm2.moveTo(a.x.toFloat(), a.y.toFloat())
@@ -624,7 +624,7 @@ class WolfLeftBottom (private val context: Context, private val width: Double): 
         radiusIJ = Functions.curvedPath(i,j,unit,false)
         k = Point((width*0.21).toInt(), (width*0.7).toInt())
         radiusJK = Functions.curvedPath(j,k,unit,true)
-        var radiusKA = Functions.curvedPath(k,a,unit,false)
+        val radiusKA = Functions.curvedPath(k,a,unit,false)
 
 
         val pathBasketHandle1 = Path()
