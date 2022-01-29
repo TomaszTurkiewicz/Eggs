@@ -18,29 +18,26 @@ class StartButtonGreen (private val context: Context, private val width:Double, 
     override fun draw(canvas: Canvas) {
         val rect1 = RectF(0f, (heightUnit*2).toFloat(), width.toFloat(), (heightUnit*8).toFloat())
         val radius1 = heightUnit*3
+        paint.isAntiAlias = true
         paint.style = Paint.Style.FILL
         paint.color = ContextCompat.getColor(context, R.color.black)
         canvas.drawRoundRect(rect1, radius1.toFloat(), radius1.toFloat(),paint)
 
+        paint.shader = LinearGradient(0f,(heightUnit*(2+width1)).toFloat(),0f,(heightUnit*8-(widthUnit*width1)).toFloat(),ContextCompat.getColor(context,R.color.white),ContextCompat.getColor(context,R.color.gray_light),Shader.TileMode.MIRROR)
         val rect2 = RectF((0f+width1*widthUnit).toFloat(), (heightUnit*(2+width1)).toFloat(), (width-(width1*widthUnit)).toFloat(), (heightUnit*8-(widthUnit*width1)).toFloat())
         val radius2 = heightUnit*3 - heightUnit*width1
-        paint.style = Paint.Style.FILL
-        paint.color = ContextCompat.getColor(context, R.color.gray_light)
         canvas.drawRoundRect(rect2, radius2.toFloat(), radius2.toFloat(),paint)
 
+        paint.shader = LinearGradient(0f,(heightUnit*(2+width2)).toFloat(),0f,(heightUnit*8-(widthUnit*width2)).toFloat(),ContextCompat.getColor(context,R.color.gray_middle),ContextCompat.getColor(context,R.color.black),Shader.TileMode.MIRROR)
         val rect3 = RectF((0f+width2*widthUnit).toFloat(), (heightUnit*(2+width2)).toFloat(), (width-(width2*widthUnit)).toFloat(), (heightUnit*8-(widthUnit*width2)).toFloat())
         val radius3 = heightUnit*3 - heightUnit*width2
-        paint.style = Paint.Style.FILL
-        paint.color = ContextCompat.getColor(context, R.color.black)
         canvas.drawRoundRect(rect3, radius3.toFloat(), radius3.toFloat(),paint)
 
+        paint.shader = LinearGradient(0f,(heightUnit*(2+width3)).toFloat(),0f,(heightUnit*8-(widthUnit*width3)).toFloat(),ContextCompat.getColor(context,R.color.green_light),ContextCompat.getColor(context,R.color.green_dark),Shader.TileMode.MIRROR)
         val rect4 = RectF((0f+width3*widthUnit).toFloat(), (heightUnit*(2+width3)).toFloat(), (width-(width3*widthUnit)).toFloat(), (heightUnit*8-(widthUnit*width3)).toFloat())
         val radius4 = heightUnit*3 - heightUnit*width3
-        paint.style = Paint.Style.FILL
-        paint.color = ContextCompat.getColor(context, R.color.green)
         canvas.drawRoundRect(rect4, radius4.toFloat(), radius4.toFloat(),paint)
-
-
+        paint.shader = null
     }
 
     override fun setAlpha(alpha: Int) {

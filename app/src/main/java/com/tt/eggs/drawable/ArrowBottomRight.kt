@@ -25,49 +25,39 @@ class ArrowBottomRight (private val context: Context, private val width:Double, 
 
     override fun draw(canvas: Canvas) {
 
-
+        paint.isAntiAlias = true
         paint.style = Paint.Style.FILL
         paint.color = ContextCompat.getColor(context, R.color.black)
-
         canvas.drawCircle(
             o.x.toFloat(), o.y.toFloat(),
             radius1.toFloat(),paint)
 
-        paint.style = Paint.Style.FILL
-        paint.color = ContextCompat.getColor(context, R.color.gray_light)
-
+        paint.shader = LinearGradient(0f,(o.y-radius2).toFloat(),0f,(o.y+radius2).toFloat(),ContextCompat.getColor(context,R.color.white),ContextCompat.getColor(context,R.color.gray_light),Shader.TileMode.MIRROR)
         canvas.drawCircle(
             o.x.toFloat(), o.y.toFloat(),
             radius2.toFloat(),paint)
 
-        paint.style = Paint.Style.FILL
-        paint.color = ContextCompat.getColor(context, R.color.black)
 
+        paint.shader = LinearGradient(0f,(o.y-radius3).toFloat(),0f,(o.y+radius3).toFloat(),ContextCompat.getColor(context,R.color.gray_middle),ContextCompat.getColor(context,R.color.black),Shader.TileMode.MIRROR)
         canvas.drawCircle(
             o.x.toFloat(), o.y.toFloat(),
             radius3.toFloat(),paint)
 
-        paint.style = Paint.Style.FILL
-        paint.color = ContextCompat.getColor(context, R.color.red)
-
+        paint.shader = LinearGradient(0f,(o.y-radius4).toFloat(),0f,(o.y+radius4).toFloat(),ContextCompat.getColor(context,R.color.red_light),ContextCompat.getColor(context,R.color.red_dark),Shader.TileMode.MIRROR)
         canvas.drawCircle(
             o.x.toFloat(), o.y.toFloat(),
             radius4.toFloat(),paint)
+        paint.shader = null
 
-        paint.style = Paint.Style.FILL
+
         paint.color = ContextCompat.getColor(context, R.color.black)
-
-
         val path = Path()
         path.moveTo(a.x.toFloat(), a.y.toFloat())
         path.lineTo(b.x.toFloat(), b.y.toFloat())
         path.lineTo(c.x.toFloat(), c.y.toFloat())
         path.lineTo(a.x.toFloat(), a.y.toFloat())
         path.close()
-
         canvas.drawPath(path,paint)
-
-
     }
 
     override fun setAlpha(alpha: Int) {

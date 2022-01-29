@@ -12,8 +12,12 @@
     <color name="gray_dark">#8E8E8E</color>
     <color name="black">#000000</color>
     <color name="red">#BC0000</color>
+    <color name="red_dark">#9A0000</color>
+    <color name="red_light">#DD7171</color>
     <color name="white">#FFFFFF</color>
     <color name="green">#188503</color>
+    <color name="green_dark">#0F6000</color>
+    <color name="green_light">#55B143</color>
     <color name="yellow">#E2F301</color>
 
 
