@@ -366,8 +366,56 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
         val topHeightMargin = topHeight+screenUnit*0.7
         val bottomHeightMargin = bottomHeight+screenUnit*0.7
 
+        val shadowX = screenUnit*0.07
+        val shadowY = screenUnit*0.1
+
+        paint.isAntiAlias = true
         paint.style=Paint.Style.STROKE
         paint.strokeWidth= (stroke).toFloat()
+
+        paint.color = ContextCompat.getColor(context, R.color.gray_dark)
+
+        // top left
+        canvas.drawLine((leftMargin+shadowX).toFloat(),
+            (topHeight+shadowY).toFloat(), (horizontalLength+leftMargin+shadowX).toFloat(),(topHeight+shadowY).toFloat(),paint)
+
+        canvas.drawLine((horizontalLength+leftMargin+shadowX).toFloat(),
+            (topHeight+shadowY).toFloat(), (horizontalLength+leftMargin+horizontalJump+shadowX).toFloat(),(topHeight+verticalJump+shadowY).toFloat(),paint)
+
+        canvas.drawLine((lMarginHorizontal+shadowX).toFloat(),(topHeightMargin+shadowY).toFloat(),(lMarginHorizontal+shadowX).toFloat(), (topHeightMargin+h+shadowY).toFloat(),paint)
+
+
+        // bottom left
+        canvas.drawLine((leftMargin+shadowX).toFloat(),
+            (bottomHeight+shadowY).toFloat(), (horizontalLength+leftMargin+shadowX).toFloat(),(bottomHeight+shadowY).toFloat(),paint)
+
+        canvas.drawLine((horizontalLength+leftMargin+shadowX).toFloat(),
+            (bottomHeight+shadowY).toFloat(), (horizontalLength+leftMargin+horizontalJump+shadowX).toFloat(),(bottomHeight+verticalJump+shadowY).toFloat(),paint)
+
+        canvas.drawLine((lMarginHorizontal+shadowX).toFloat(),(bottomHeightMargin+shadowY).toFloat(),(lMarginHorizontal+shadowX).toFloat(), (bottomHeightMargin+h+shadowY).toFloat(),paint)
+
+
+        // top right
+        canvas.drawLine((rightMargin-shadowX).toFloat(),
+            (topHeight+shadowY).toFloat(), (rightMargin-horizontalLength+shadowX).toFloat(),(topHeight+shadowY).toFloat(),paint)
+
+        canvas.drawLine((rightMargin-horizontalLength+shadowX).toFloat(),
+            (topHeight+shadowY).toFloat(), (rightMargin-horizontalLength-horizontalJump+shadowX).toFloat(),(topHeight+verticalJump+shadowY).toFloat(),paint)
+
+        canvas.drawLine((rMarginHorizontal+shadowX).toFloat(),(topHeightMargin+shadowY).toFloat(),(rMarginHorizontal+shadowX).toFloat(), (topHeightMargin+h+shadowY).toFloat(),paint)
+
+
+
+        // bottom right
+        canvas.drawLine((rightMargin-shadowX).toFloat(),
+            (bottomHeight+shadowY).toFloat(), (rightMargin-horizontalLength+shadowX).toFloat(),(bottomHeight+shadowY).toFloat(),paint)
+
+        canvas.drawLine((rightMargin-horizontalLength+shadowX).toFloat(),
+            (bottomHeight+shadowY).toFloat(), (rightMargin-horizontalLength-horizontalJump+shadowX).toFloat(),(bottomHeight+verticalJump+shadowY).toFloat(),paint)
+
+        canvas.drawLine((rMarginHorizontal+shadowX).toFloat(),(bottomHeightMargin+shadowY).toFloat(),(rMarginHorizontal+shadowX).toFloat(), (bottomHeightMargin+h+shadowY).toFloat(),paint)
+
+
         paint.color = ContextCompat.getColor(context, R.color.red)
 
         // top left
