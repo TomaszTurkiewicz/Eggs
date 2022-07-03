@@ -166,7 +166,8 @@ class LoginActivity : AppCompatActivity() {
         set.connect(binding.loginLinearLayout.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP, (screenUnit*6.5).toInt())
         set.connect(binding.loginLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivityContainer.id,ConstraintSet.RIGHT, screenUnit)
 
-
+        set.connect(binding.deleteUserLinearLayout.id,ConstraintSet.TOP,binding.loginActivityContainer.id,ConstraintSet.TOP, (screenUnit*8.5).toInt())
+        set.connect(binding.deleteUserLinearLayout.id,ConstraintSet.RIGHT,binding.loginActivityContainer.id,ConstraintSet.RIGHT, screenUnit)
 
         set.applyTo(binding.loginActivity)
 
@@ -188,6 +189,9 @@ class LoginActivity : AppCompatActivity() {
         binding.loginLinearLayout.background = RoundedFrameDrawable(this,5.5*loginButtonSize.width,loginButtonSize.height,loginButtonSize.height/20,loginButtonSize.height/2)
         binding.otherGamesLinearLayout.background = RoundedFrameDrawable(this,5.5*otherGamesButtonSize.width,otherGamesButtonSize.height,otherGamesButtonSize.height/20,otherGamesButtonSize.height/2)
         binding.rankingLinearLayout.background = RoundedFrameDrawable(this,5.5*rankingButtonSize.width,rankingButtonSize.height,rankingButtonSize.height/20,rankingButtonSize.height/2)
+
+        binding.deleteUserImage.setImageDrawable(StartButton(this,loginButtonSize.width,loginButtonSize.height))
+        binding.deleteUserLinearLayout.background = RoundedFrameDrawable(this,5.5*loginButtonSize.width,loginButtonSize.height,loginButtonSize.height/20,loginButtonSize.height/2)
     }
 
     private fun setViewSizes() {
@@ -271,6 +275,11 @@ class LoginActivity : AppCompatActivity() {
         binding.otherGamesTvBlank.layoutParams = LinearLayout.LayoutParams((0.5*otherGamesButtonSize.width).toInt(),(otherGamesButtonSize.height).toInt())
         binding.otherGamesTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
+        binding.deleteUserImage.layoutParams = LinearLayout.LayoutParams((loginButtonSize.width).toInt(),(loginButtonSize.height).toInt())
+        binding.deleteUserTv.layoutParams = LinearLayout.LayoutParams((4*loginButtonSize.width).toInt(),(loginButtonSize.height).toInt())
+        binding.deleteUserTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
+        binding.deleteUserTvBlank.layoutParams = LinearLayout.LayoutParams((0.5*loginButtonSize.width).toInt(),(loginButtonSize.height).toInt())
+
     }
 
     private fun getScreenHeightAndWidth() {
@@ -311,6 +320,8 @@ class LoginActivity : AppCompatActivity() {
         auth=Firebase.auth
         binding.loginTv.text=if(auth.currentUser!=null) "LOG OUT" else "LOG IN"
 
+        binding.deleteUserLinearLayout.visibility = if(auth.currentUser!=null) View.VISIBLE else View.GONE
+
         if(loggedInStatus.loggedIn){
             display(loggedInStatus.userid)
         }
@@ -349,7 +360,7 @@ class LoginActivity : AppCompatActivity() {
 
         if(tUser.gameB.counterB>0){
 //            binding.highScoreBUser.text=""+tUser.gameB.highScoreB + "("+tUser.gameB.counterB+")"
-            binding.highScoreAUser.text=getString(R.string.high_score,tUser.gameB.highScoreB,tUser.gameB.counterB)
+            binding.highScoreBUser.text=getString(R.string.high_score,tUser.gameB.highScoreB,tUser.gameB.counterB)
         }
         else{
             binding.highScoreBUser.text=tUser.gameB.highScoreB.toString()
@@ -405,6 +416,12 @@ class LoginActivity : AppCompatActivity() {
 
         binding.ranking.setOnClickListener {
             val intent = Intent(this,Ranking::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        binding.deleteUserImage.setOnClickListener {
+            val intent = Intent(this,DeleteUserActivity::class.java)
             startActivity(intent)
             finish()
         }

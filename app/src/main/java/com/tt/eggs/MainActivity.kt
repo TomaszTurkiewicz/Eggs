@@ -29,6 +29,9 @@ import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.*
 import com.tt.eggs.databinding.ActivityMainBinding
 import com.tt.eggs.drawable.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.Exception
 import kotlin.random.Random
 
@@ -226,8 +229,10 @@ class MainActivity : AppCompatActivity(){
 
     private fun makeSoundRunningEggs() {
         stopAllSounds()
-            runningEggFirstSound = MediaPlayer.create(this, R.raw.empty_move)
+        GlobalScope.launch(Dispatchers.Default){
+            runningEggFirstSound = MediaPlayer.create(this@MainActivity, R.raw.empty_move)
             runningEggFirstSound?.start()
+        }
 
     }
 
@@ -1119,18 +1124,8 @@ class MainActivity : AppCompatActivity(){
 
 
         binding.startA.setOnClickListener {
+            loadAdvert()
 
-            val adRequest = AdRequest.Builder().build()
-            val adId = getString(R.string.admob_big)
-            InterstitialAd.load(this,adId,adRequest, object  : InterstitialAdLoadCallback(){
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    mInterstitialAd = null
-                }
-
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    mInterstitialAd = interstitialAd
-                }
-            })
 
 
             when (gameState) {
@@ -1149,17 +1144,7 @@ class MainActivity : AppCompatActivity(){
         }
         binding.startB.setOnClickListener {
 
-            val adRequest = AdRequest.Builder().build()
-            val adId = getString(R.string.admob_big)
-            InterstitialAd.load(this,adId,adRequest, object  : InterstitialAdLoadCallback(){
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    mInterstitialAd = null
-                }
-
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    mInterstitialAd = interstitialAd
-                }
-            })
+        loadAdvert()
 
             when (gameState) {
                 Static.DEMO -> {
@@ -1196,6 +1181,21 @@ class MainActivity : AppCompatActivity(){
         }
 
 
+
+    }
+
+    private fun loadAdvert() {
+        val adRequest = AdRequest.Builder().build()
+        val adId = getString(R.string.admob_big)
+        InterstitialAd.load(this,adId,adRequest, object  : InterstitialAdLoadCallback(){
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                loadAdvert()
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                mInterstitialAd = interstitialAd
+            }
+        })
 
     }
 
@@ -1324,8 +1324,11 @@ class MainActivity : AppCompatActivity(){
             // egg has been caught
             if(eggCaught.logicProduct==1){
 
-               caughtEggSound = MediaPlayer.create(this,R.raw.score_move)
-                caughtEggSound?.start()
+                GlobalScope.launch(Dispatchers.Default){
+                    caughtEggSound = MediaPlayer.create(this@MainActivity,R.raw.score_move)
+                    caughtEggSound?.start()
+                }
+
                 updateScoreTextView()
 
                 // clear faults when get 200 or 500 points

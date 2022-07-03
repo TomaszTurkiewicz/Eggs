@@ -2,9 +2,9 @@
     <string name="app_name">Eggs</string>
     <string name="demo">DEMO</string>
 
-<!--            <string name="admob_big">ca-app-pub-6785166837488087/6105265506</string>-->
+    <!--            <string name="admob_big">ca-app-pub-6785166837488087/6105265506</string>-->
 
-<!--          for test  -->
+    <!--          for test  -->
     <string name="admob_big">ca-app-pub-3940256099942544/1033173712</string>
 
 
@@ -36,4 +36,7 @@
     <string name="battle_ships_game">BATTLE SHIPS GAME</string>
     <string name="page_counter">%1$d/%2$d</string>
     <string name="other_games_link">https://play.google.com/store/apps/developer?id=Tomasz+Turkiewicz</string>
+    <string name="delete_account">DELETE ACCOUNT</string>
+    <string name="warning">!!! WARNING !!!</string>
+    <string name="warning_message">Your account will be deleted. Are You sure?</string>
 </resources>
