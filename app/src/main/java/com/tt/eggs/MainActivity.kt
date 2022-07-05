@@ -24,6 +24,9 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.*
@@ -125,6 +128,7 @@ class MainActivity : AppCompatActivity(){
     private var chickenPlace = 0
 
     private lateinit var binding: ActivityMainBinding
+
 
     /**---------------------- activity life cycle methods---------------------------**/
 
@@ -757,8 +761,24 @@ class MainActivity : AppCompatActivity(){
         binding.userID.background = TextViewDrawable(this,userIdSize.width*screenUnit,userIdSize.height*screenUnit)
 
 
-
-
+        val dbRef = Firebase.database.getReference("GooglePlayApps")
+        dbRef.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val numberOfApps = snapshot.getValue(GooglePlayApps::class.java)
+                val apps = Functions.readNumberOfAppsFromSharedPreferences(this@MainActivity)
+                numberOfApps?.let {
+                    apps.setAppsInGooglePlayInt(numberOfApps)
+                    val newApp = apps.isNewApp()
+                    Functions.saveNumberOfAppsToSharedPreferences(this@MainActivity,apps)
+                    if(newApp){
+                        binding.account.setImageDrawable(StartButtonGreen(this@MainActivity,screenUnit*userIdSize.height,screenUnit*userIdSize.height))
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                //do nothing
+            }
+        })
     }
 
     private fun setViewSizes() {
@@ -1513,6 +1533,13 @@ class MainActivity : AppCompatActivity(){
     }
 
 }
+
+/*todo
+number of games from database and show to user if number increased
+better 3d experience
+shorten arrays for eggs and running chicken
+fallen eggs make each row going separately
+ */
 
 
 

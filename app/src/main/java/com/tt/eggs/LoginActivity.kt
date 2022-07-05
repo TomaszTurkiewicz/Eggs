@@ -192,6 +192,12 @@ class LoginActivity : AppCompatActivity() {
 
         binding.deleteUserImage.setImageDrawable(StartButton(this,loginButtonSize.width,loginButtonSize.height))
         binding.deleteUserLinearLayout.background = RoundedFrameDrawable(this,5.5*loginButtonSize.width,loginButtonSize.height,loginButtonSize.height/20,loginButtonSize.height/2)
+
+        val apps = Functions.readNumberOfAppsFromSharedPreferences(this)
+        if(apps.isNewApp()){
+            binding.otherGamesButton.setImageDrawable(StartButtonGreen(this,otherGamesButtonSize.width,otherGamesButtonSize.height))
+        }
+
     }
 
     private fun setViewSizes() {

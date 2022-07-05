@@ -14,11 +14,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.tt.eggs.classes.Dimension
 import com.tt.eggs.classes.Functions
+import com.tt.eggs.classes.GooglePlayApps
+import com.tt.eggs.classes.NewApps
 import com.tt.eggs.databinding.ActivityOtherGamesBinding
 import com.tt.eggs.drawable.RoundedFrameDrawable
 import com.tt.eggs.drawable.StartButton
-
-
+import com.tt.eggs.drawable.StartButtonGreen
 
 
 class OtherGamesActivity : AppCompatActivity() {
@@ -27,11 +28,13 @@ class OtherGamesActivity : AppCompatActivity() {
     private val buttonSize = Dimension()
     private val wholeScreenSize = Dimension()
     private lateinit var binding: ActivityOtherGamesBinding
+    private lateinit var apps : NewApps
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOtherGamesBinding.inflate(layoutInflater)
         val view = binding.root
+        apps = Functions.readNumberOfAppsFromSharedPreferences(this)
         setContentView(view)
         fullScreen(view)
         makeUI()
@@ -60,6 +63,10 @@ class OtherGamesActivity : AppCompatActivity() {
         }
 
         binding.otherGamesButton.setOnClickListener {
+            apps.saveNewNumberOfApps()
+            Functions.saveNumberOfAppsToSharedPreferences(this,apps)
+            binding.otherGamesButton.setImageDrawable(StartButton(this,buttonSize.width,buttonSize.height))
+
             val link = getString(R.string.other_games_link)
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -105,6 +112,11 @@ class OtherGamesActivity : AppCompatActivity() {
         binding.sendGameLinearlayout.background = RoundedFrameDrawable(this,10*buttonSize.width,buttonSize.height, buttonSize.height/20,buttonSize.height/2)
         binding.otherGamesButton.setImageDrawable(StartButton(this,buttonSize.width,buttonSize.height))
         binding.otherGamesLinearlayout.background = RoundedFrameDrawable(this,10*buttonSize.width,buttonSize.height, buttonSize.height/20,buttonSize.height/2)
+
+
+        if(apps.isNewApp()){
+            binding.otherGamesButton.setImageDrawable(StartButtonGreen(this,buttonSize.width,buttonSize.height))
+        }
     }
 
     private fun setViewSizes() {
