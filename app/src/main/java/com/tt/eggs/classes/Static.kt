@@ -47,5 +47,7 @@ class Static {
         const val WIN_A = 7
         const val WIN_B = 8
 
+        const val GAME_SIZE = 6
+
     }
 }

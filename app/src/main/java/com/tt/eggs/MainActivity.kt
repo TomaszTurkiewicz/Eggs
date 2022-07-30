@@ -64,9 +64,6 @@ class MainActivity : AppCompatActivity(){
     // basket position
     private var basket = Static.RIGHT_TOP
 
-    // egg sum and product
-    private var eggCaught = CaughtEgg()
-
     // for win loop
     private var winLoopCounter = 0
     private val mHandlerWin = Handler(Looper.getMainLooper())
@@ -121,13 +118,20 @@ class MainActivity : AppCompatActivity(){
     private var caughtEggSound: MediaPlayer?=null
     private var faultSound: MediaPlayer?=null
     private var brokenEggSound: MediaPlayer?=null
-    private var runningChickenSound: MediaPlayer?=null
     private var winningSound: MediaPlayer?=null
+
+    private var runningEggSound1:MediaPlayer?=null
+    private var runningEggSound2:MediaPlayer?=null
+    private var runningEggSound3:MediaPlayer?=null
+    private var runningEggSound4:MediaPlayer?=null
+    private var runningEggSound5:MediaPlayer?=null
 
 
     private var chickenPlace = 0
 
     private lateinit var binding: ActivityMainBinding
+
+    private var moveProduct = MoveProduct()
 
 
     /**---------------------- activity life cycle methods---------------------------**/
@@ -142,8 +146,15 @@ class MainActivity : AppCompatActivity(){
         setContentView(view)
         fullScreen(view)
 
+//fore tesst
+
 
         MobileAds.initialize(this)
+        runningEggSound1 = MediaPlayer.create(this@MainActivity,R.raw.empty_move)
+        runningEggSound2 = MediaPlayer.create(this@MainActivity,R.raw.empty_move)
+        runningEggSound3 = MediaPlayer.create(this@MainActivity,R.raw.empty_move)
+        runningEggSound4 = MediaPlayer.create(this@MainActivity,R.raw.empty_move)
+        runningEggSound5 = MediaPlayer.create(this@MainActivity,R.raw.empty_move)
 
 
         // makeUI
@@ -188,23 +199,63 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        runningEggSound1?.stop()
+        runningEggSound1?.release()
+        runningEggSound1 = null
+
+        runningEggSound2?.stop()
+        runningEggSound2?.release()
+        runningEggSound2 = null
+
+        runningEggSound3?.stop()
+        runningEggSound3?.release()
+        runningEggSound3 = null
+
+        runningEggSound4?.stop()
+        runningEggSound4?.release()
+        runningEggSound4 = null
+
+        runningEggSound5?.stop()
+        runningEggSound5?.release()
+        runningEggSound5 = null
+    }
+
 
     /**------------------------ runnable -------------------------------------------**/
 
 
     // game loop
     private fun gameLoop(): Runnable = Runnable {
+        clearAnimationFallenEgg()
         // less then 1000 points
         if(game.underMaxScore()) {
+
             // make move down
-            eggCaught = game.moveDown()
+//            eggCaught = game.moveDown()
+            moveProduct = game.moveDownStep()
+
             // display move
             displayState()
+
             //sound of running eggs
-            makeSoundRunningEggs()
+//            makeSoundRunningEggs()
+            if(moveProduct.sound) {
+                makeSoundRunningEggStep(moveProduct.step)
+            }
+
 
             //check fault, egg in basket
-            checkNextMove(eggCaught)
+//            checkNextMove(eggCaught)
+            if(moveProduct.step==Static.GAME_SIZE-1){
+                stopAllSounds()
+                checkNextMoveStep(moveProduct)
+            }else{
+                mHandler.postDelayed(gameLoop(),delayStep())
+            }
+
+
         }
         else{
 
@@ -231,13 +282,26 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
-    private fun makeSoundRunningEggs() {
-        stopAllSounds()
+    private fun makeSoundRunningEggStep(step:Int){
         GlobalScope.launch(Dispatchers.Default){
-            runningEggFirstSound = MediaPlayer.create(this@MainActivity, R.raw.empty_move)
-            runningEggFirstSound?.start()
+            when(step){
+                1->{
+                runningEggSound1?.start()
+                }
+                2->{
+                    runningEggSound2?.start()
+                }
+                3->{
+                    runningEggSound3?.start()
+                }
+                4->{
+                    runningEggSound4?.start()
+                }
+                5->{
+                    runningEggSound5?.start()
+                }
+            }
         }
-
     }
 
     private fun stopAllSounds() {
@@ -259,9 +323,6 @@ class MainActivity : AppCompatActivity(){
             brokenEggSound?.release()
             brokenEggSound=null
 
-            runningChickenSound?.stop()
-            runningChickenSound?.release()
-            runningChickenSound=null
         }
         catch (e:Exception){
             e.printStackTrace()
@@ -341,6 +402,7 @@ class MainActivity : AppCompatActivity(){
         }
         else{
             mHandlerLostEgg.removeCallbacksAndMessages(null)
+            game.setGeneratingEggStraightAway()
             mHandler.postDelayed(gameLoop(),delay())
         }
     }
@@ -368,12 +430,13 @@ class MainActivity : AppCompatActivity(){
 
     // demo runnable
     private fun demo():Runnable = Runnable {
-        game.moveDownDemo()
+//        game.moveDownDemo()
+        game.moveDownDemoStep()
         displayState()
         displayDemoBasket()
-        displayRabbit(loopCounter%10>4)
+        displayRabbit(loopCounter%30>12)
         loopCounter+=1
-        mHandlerDemo.postDelayed(demo(),600)
+        mHandlerDemo.postDelayed(demo(),200)
     }
 
     private fun pauseA():Runnable = Runnable {
@@ -511,6 +574,9 @@ class MainActivity : AppCompatActivity(){
                 // activate proper pause mode
                 Static.GAME_A -> pauseGameA()
                 Static.GAME_B -> pauseGameB()
+                else -> {
+                    // do nothing
+                }
             }
         }
         else demoMode()
@@ -915,32 +981,32 @@ class MainActivity : AppCompatActivity(){
 
     // display all fallen eggs
     private fun displayState(){
-        binding.eggTopLeftFirst.setImageDrawable(if(game.displayCell(1,Static.LEFT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
-        binding.eggTopLeftSecond.setImageDrawable(if(game.displayCell(2,Static.LEFT_TOP)) EggPlus45(this,screenUnit*eggSize.width) else null)
-        binding.eggTopLeftThird.setImageDrawable(if(game.displayCell(3,Static.LEFT_TOP)) EggPlus90(this,screenUnit*eggSize.width) else null)
-        binding.eggTopLeftFourth.setImageDrawable(if(game.displayCell(4,Static.LEFT_TOP)) EggPlus135(this,screenUnit*eggSize.width) else null)
-        binding.eggTopLeftFifth.setImageDrawable(if(game.displayCell(5,Static.LEFT_TOP)) EggPlus225(this,screenUnit*eggSize.width) else null)
+        binding.eggTopLeftFirst.setImageDrawable(if(game.displayCell(0,Static.LEFT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+        binding.eggTopLeftSecond.setImageDrawable(if(game.displayCell(1,Static.LEFT_TOP)) EggPlus45(this,screenUnit*eggSize.width) else null)
+        binding.eggTopLeftThird.setImageDrawable(if(game.displayCell(2,Static.LEFT_TOP)) EggPlus90(this,screenUnit*eggSize.width) else null)
+        binding.eggTopLeftFourth.setImageDrawable(if(game.displayCell(3,Static.LEFT_TOP)) EggPlus135(this,screenUnit*eggSize.width) else null)
+        binding.eggTopLeftFifth.setImageDrawable(if(game.displayCell(4,Static.LEFT_TOP)) EggPlus225(this,screenUnit*eggSize.width) else null)
 
 
-        binding.eggBottomLeftFirst.setImageDrawable(if(game.displayCell(1,Static.LEFT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
-        binding.eggBottomLeftSecond.setImageDrawable(if(game.displayCell(2,Static.LEFT_BOTTOM)) EggPlus45(this,screenUnit*eggSize.width) else null)
-        binding.eggBottomLeftThird.setImageDrawable(if(game.displayCell(3,Static.LEFT_BOTTOM)) EggPlus90(this,screenUnit*eggSize.width) else null)
-        binding.eggBottomLeftFourth.setImageDrawable(if(game.displayCell(4,Static.LEFT_BOTTOM)) EggPlus135(this,screenUnit*eggSize.width) else null)
-        binding.eggBottomLeftFifth.setImageDrawable(if(game.displayCell(5,Static.LEFT_BOTTOM)) EggPlus225(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomLeftFirst.setImageDrawable(if(game.displayCell(0,Static.LEFT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomLeftSecond.setImageDrawable(if(game.displayCell(1,Static.LEFT_BOTTOM)) EggPlus45(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomLeftThird.setImageDrawable(if(game.displayCell(2,Static.LEFT_BOTTOM)) EggPlus90(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomLeftFourth.setImageDrawable(if(game.displayCell(3,Static.LEFT_BOTTOM)) EggPlus135(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomLeftFifth.setImageDrawable(if(game.displayCell(4,Static.LEFT_BOTTOM)) EggPlus225(this,screenUnit*eggSize.width) else null)
 
 
-        binding.eggBottomRightFirst.setImageDrawable(if(game.displayCell(1,Static.RIGHT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
-        binding.eggBottomRightSecond.setImageDrawable(if(game.displayCell(2,Static.RIGHT_BOTTOM)) EggMinus45(this,screenUnit*eggSize.width) else null)
-        binding.eggBottomRightThird.setImageDrawable(if(game.displayCell(3,Static.RIGHT_BOTTOM)) EggMinus90(this,screenUnit*eggSize.width) else null)
-        binding.eggBottomRightFourth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_BOTTOM)) EggPlus225(this,screenUnit*eggSize.width) else null)
-        binding.eggBottomRightFifth.setImageDrawable(if(game.displayCell(5,Static.RIGHT_BOTTOM)) EggPlus135(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomRightFirst.setImageDrawable(if(game.displayCell(0,Static.RIGHT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomRightSecond.setImageDrawable(if(game.displayCell(1,Static.RIGHT_BOTTOM)) EggMinus45(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomRightThird.setImageDrawable(if(game.displayCell(2,Static.RIGHT_BOTTOM)) EggMinus90(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomRightFourth.setImageDrawable(if(game.displayCell(3,Static.RIGHT_BOTTOM)) EggPlus225(this,screenUnit*eggSize.width) else null)
+        binding.eggBottomRightFifth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_BOTTOM)) EggPlus135(this,screenUnit*eggSize.width) else null)
 
 
-        binding.eggTopRightFirst.setImageDrawable(if(game.displayCell(1,Static.RIGHT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
-        binding.eggTopRightSecond.setImageDrawable(if(game.displayCell(2,Static.RIGHT_TOP)) EggMinus45(this,screenUnit*eggSize.width) else null)
-        binding.eggTopRightThird.setImageDrawable(if(game.displayCell(3,Static.RIGHT_TOP)) EggMinus90(this,screenUnit*eggSize.width) else null)
-        binding.eggTopRightFourth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_TOP)) EggPlus225(this,screenUnit*eggSize.width) else null)
-        binding.eggTopRightFifth.setImageDrawable(if(game.displayCell(5,Static.RIGHT_TOP)) EggPlus135(this,screenUnit*eggSize.width) else null)
+        binding.eggTopRightFirst.setImageDrawable(if(game.displayCell(0,Static.RIGHT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width) else null)
+        binding.eggTopRightSecond.setImageDrawable(if(game.displayCell(1,Static.RIGHT_TOP)) EggMinus45(this,screenUnit*eggSize.width) else null)
+        binding.eggTopRightThird.setImageDrawable(if(game.displayCell(2,Static.RIGHT_TOP)) EggMinus90(this,screenUnit*eggSize.width) else null)
+        binding.eggTopRightFourth.setImageDrawable(if(game.displayCell(3,Static.RIGHT_TOP)) EggPlus225(this,screenUnit*eggSize.width) else null)
+        binding.eggTopRightFifth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_TOP)) EggPlus135(this,screenUnit*eggSize.width) else null)
 
 
     }
@@ -1243,6 +1309,7 @@ class MainActivity : AppCompatActivity(){
         mHandlerLostEgg.removeCallbacksAndMessages(null)
         mHandlerHighScore.removeCallbacksAndMessages(null)
         gameState=Static.DEMO
+        clearAnimationFallenEgg()
         game.clearEverything()
         displayState()
         displayBasket()
@@ -1336,13 +1403,13 @@ class MainActivity : AppCompatActivity(){
     }
 
     // if egg at last position check if it is in the basket
-    private fun checkNextMove(eggCaught: CaughtEgg) {
+    private fun checkNextMoveStep(moveProduct: MoveProduct) {
 
         // egg in basket or no egg
-        if(eggCaught.logicSum==1){
+        if(moveProduct.logicSum==1){
 
             // egg has been caught
-            if(eggCaught.logicProduct==1){
+            if(moveProduct.logicProduct==1){
 
                 GlobalScope.launch(Dispatchers.Default){
                     caughtEggSound = MediaPlayer.create(this@MainActivity,R.raw.score_move)
@@ -1358,7 +1425,7 @@ class MainActivity : AppCompatActivity(){
                 }
             }
 
-            mHandler.postDelayed(gameLoop(),delay())
+            mHandler.postDelayed(gameLoop(),delayStep())
         }
 
         // egg outside the basket
@@ -1374,12 +1441,12 @@ class MainActivity : AppCompatActivity(){
                 stopAllSounds()
                 chickenPlace = 0
 
-                lostEggAnimation(eggCaught.positionFallenEgg)
+                lostEggAnimation(moveProduct.positionFallenEgg)
             }else{
                 stopAllSounds()
                 faultSound = MediaPlayer.create(this,R.raw.fault)
                 faultSound?.start()
-                lostEggAnimationEndGame(eggCaught.positionFallenEgg)
+                lostEggAnimationEndGame(moveProduct.positionFallenEgg)
 
             }
         }
@@ -1460,6 +1527,21 @@ class MainActivity : AppCompatActivity(){
         else -> if(game.getGameMode()==Static.GAME_A) 500 else 450
     }
 
+    // set delay in game loop
+    private fun delayStep():Long = when(game.getScore()){
+        in 0..100 -> 240
+//        in 0..100 -> 105
+        in 101..200 -> 214
+        in 201..300 -> if(game.getGameMode()==Static.GAME_A) 205 else 191
+        in 301..400 -> if(game.getGameMode()==Static.GAME_A) 191 else 178
+        in 401..500 -> if(game.getGameMode()==Static.GAME_A) 178 else 165
+        in 501..600 -> if(game.getGameMode()==Static.GAME_A) 165 else 154
+        in 601..700 -> if(game.getGameMode()==Static.GAME_A) 154 else 141
+        in 701..800 -> if(game.getGameMode()==Static.GAME_A) 141 else 130
+        in 801..900 -> if(game.getGameMode()==Static.GAME_A) 130 else 118
+        else -> if(game.getGameMode()==Static.GAME_A) 118 else 105
+    }
+
     private fun zeroFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
         binding.rightFault.setImageDrawable(null)
@@ -1535,10 +1617,8 @@ class MainActivity : AppCompatActivity(){
 }
 
 /*todo
-number of games from database and show to user if number increased
 better 3d experience
 shorten arrays for eggs and running chicken
-fallen eggs make each row going separately
  */
 
 

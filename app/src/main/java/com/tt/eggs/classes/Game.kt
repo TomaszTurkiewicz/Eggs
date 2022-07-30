@@ -5,7 +5,7 @@ import kotlin.random.Random
 class Game {
 
     // array representing eggs
-        var gameState = Array(7) {BooleanArray(4)}
+        var gameState = Array(Static.GAME_SIZE) {BooleanArray(4)}
 
     // array representing basket
         var position = BooleanArray(4)
@@ -28,9 +28,13 @@ class Game {
     // number of eggs in row
     private var noOfEggs:Int
 
+    private var step:Int
+
+    private var stepDemo:Int
+
     // initialization
     init {
-        for(x in 0..6){
+        for(x in 0 until Static.GAME_SIZE){
             for(y in 0..3){
                 gameState[x][y]=Static.NO_EGG
             }
@@ -53,6 +57,11 @@ class Game {
         distance=0
 
         noOfEggs=0
+
+//        step=Static.GAME_SIZE-1
+        step=0
+
+        stepDemo=1
     }
 
 
@@ -69,6 +78,12 @@ class Game {
     // set game mode
     fun setGameMode(mode:Boolean){
         gameMode=mode
+    }
+
+    fun setGeneratingEggStraightAway(){
+        this.step=Static.GAME_SIZE-1
+        this.distance=0
+        this.noOfEggs=0
     }
 
     // add point when egg caught
@@ -91,7 +106,7 @@ class Game {
 
     // set egg array during win animation (every second egg is set)
     fun setWinEggArray() {
-        for(x in 0..6){
+        for(x in 0 until Static.GAME_SIZE){
             for(y in 0..3){
                 gameState[x][y]=if((x+y)%2==0) Static.NO_EGG else Static.EGG
             }
@@ -140,7 +155,7 @@ class Game {
 
     // clear egg array
     fun clearEggArray(){
-        for(x in 0..6){
+        for(x in 0 until Static.GAME_SIZE){
             for(y in 0..3){
                 gameState[x][y]=Static.NO_EGG
             }
@@ -189,16 +204,18 @@ class Game {
 
 
     // generate next egg or eggs
-    private fun generateEgg(){
-        when(score){
+    private fun generateEgg():Boolean{
+
+        val egg = when(score){
             in 0..4 -> generateOneEgg()
             in 5..13 -> generateTwoEggs()
             else -> generateRandomNumberOfEggs()
         }
+        return egg
     }
 
     // totally random
-    private fun generateRandomNumberOfEggs() {
+    private fun generateRandomNumberOfEggs():Boolean {
         // set counters again
         if(noOfEggs==0&&distance==0){
             val random = Random.nextInt(0,99)
@@ -209,37 +226,37 @@ class Game {
             val ranDistance = random%2
             distance=ranDistance
         }
-        generateEggUsingCounters()
+        return generateEggUsingCounters()
 
     }
 
     // two eggs
-    private fun generateTwoEggs() {
+    private fun generateTwoEggs():Boolean {
         // set counters again
         if(noOfEggs==0&&distance==0){
             noOfEggs=2
-            distance=4
+            distance=3
         }
 
-        generateEggUsingCounters()
+        return generateEggUsingCounters()
 
     }
 
     // one egg
-    private fun generateOneEgg() {
+    private fun generateOneEgg():Boolean {
         // set counters again
         if(noOfEggs==0&&distance==0){
             noOfEggs=1
-            distance=5
+            distance=3
         }
 
-        generateEggUsingCounters()
+        return generateEggUsingCounters()
 
     }
 
     // generate egg function
-    private fun generateEggUsingCounters(){
-
+    private fun generateEggUsingCounters():Boolean{
+        var egg = false
         // generate egg
         if(noOfEggs>0) {
             val random = Random.nextInt(0, 99)
@@ -261,6 +278,7 @@ class Game {
             gameState[0][Static.RIGHT_TOP] = Static.NO_EGG
             gameState[0][Static.RIGHT_BOTTOM] = Static.NO_EGG
             gameState[0][ran] = Static.EGG
+            egg=true
             noOfEggs -=1
         }
 
@@ -272,7 +290,7 @@ class Game {
             gameState[0][Static.RIGHT_BOTTOM] = Static.NO_EGG
             distance -=1
         }
-
+        return egg
     }
 
     // generates eggs during demo
@@ -294,55 +312,87 @@ class Game {
 
     /*---------------------GAME LOGIC---------------------*/
 
-    // egg array move down
-    fun moveDown():CaughtEgg{
 
-        // move down
-        for(i in 5 downTo 0){
-            for(j in 0..3){
-                gameState[i+1][j]=gameState[i][j]
-            }
-        }
 
-        // check egg on last position
-        val eggCheck = CaughtEgg()
-        for(i in 0..3){
-            if(gameState[6][i]||position[i]){
-                eggCheck.logicSum+=1
+    fun moveDownStep():MoveProduct{
+        val moveProduct = MoveProduct()
+        when(step){
+            0->{
+                decreaseStep()
             }
-        }
-        for(i in 0..3){
-            if(gameState[6][i]&&position[i]){
-                eggCheck.logicProduct+=1
-            }
-        }
+//            0 ->{
+//                //generate egg, make sound,decrease step
+//                moveProduct.sound=generateEgg()
+//                moveProduct.step=step
+//                decreaseStep()
+//            }
+            Static.GAME_SIZE-1 ->{
+                for(j in 0..3){
+                    gameState[step][j]=gameState[step-1][j]
+                    gameState[step-1][j] = Static.NO_EGG
+                }
+                moveProduct.step=step
 
-        // check if egg outside basket
-        if(eggCheck.logicSum==2){
-            for(i in 0..3){
-                if(gameState[6][i]){
-                    eggCheck.positionFallenEgg=i
+//                moveProduct.sound = gameState[step][0]||gameState[step][1]||gameState[step][2]||gameState[step][3]
+                moveProduct.sound=generateEgg()
+                decreaseStep()
+                // check egg on last position
+                for(i in 0..3){
+                    if(gameState[Static.GAME_SIZE-1][i]||position[i]){
+                        moveProduct.logicSum+=1
+                    }
+                }
+                for(i in 0..3){
+                    if(gameState[Static.GAME_SIZE-1][i]&&position[i]){
+                        moveProduct.logicProduct+=1
+                    }
+                }
+
+                // check if egg outside basket
+                if(moveProduct.logicSum==2){
+                    for(i in 0..3){
+                        if(gameState[Static.GAME_SIZE-1][i]){
+                            moveProduct.positionFallenEgg=i
+                        }
+                    }
+                    step=0
+                }
+
+                // no egg or egg in basket
+                if(moveProduct.logicSum==1) {
+                    // egg in basket add points
+                    if(moveProduct.logicProduct==1){
+                        addPoint()
+                    }
                 }
             }
-        }
+            else ->{
+                for(j in 0..3){
+                    gameState[step][j]=gameState[step-1][j]
+                    gameState[step-1][j] = Static.NO_EGG
+                }
+                moveProduct.step=step
 
-        // no egg or egg in basket
-        if(eggCheck.logicSum==1) {
-
-            // egg in basket add points
-            if(eggCheck.logicProduct==1){
-                addPoint()
+                moveProduct.sound = gameState[step][0]||gameState[step][1]||gameState[step][2]||gameState[step][3]
+                decreaseStep()
             }
-            // generate new egg at random position
-            generateEgg()
         }
-        // return egg to check conditions in main activity
-        return eggCheck
+        return moveProduct
     }
+
+    private fun decreaseStep(){
+        if(step<=1){
+            step=Static.GAME_SIZE-1
+        }else{
+            step-=1
+        }
+    }
+
+
 
     // reverse egg array
     fun eggArrayWinAnimation() {
-        for(x in 0..6){
+        for(x in 0 until Static.GAME_SIZE){
             for(y in 0..3){
                 gameState[x][y]= !gameState[x][y]
             }
@@ -352,18 +402,52 @@ class Game {
     // move down plus move basket during demo
     fun moveDownDemo() {
         // move down
-        for(i in 5 downTo 0){
+        for(i in Static.GAME_SIZE-2 downTo 0){
             for(j in 0..3){
                 gameState[i+1][j]=gameState[i][j]
             }
         }
         // move basket
         for(i in 0..3){
-            if(gameState[5][i])
+            if(gameState[Static.GAME_SIZE-1][i])
                 setBasket(i)
         }
         // generate egg
         generateEggDemo()
+    }
+
+    fun moveDownDemoStep(){
+        when(stepDemo){
+            Static.GAME_SIZE-1 ->{
+
+                generateEggDemo()
+                // move basket
+                for(i in 0..3){
+                    if(gameState[stepDemo-1][i])
+                        setBasket(i)
+                }
+                for(i in 0..3){
+                    gameState[stepDemo-1][i]=Static.NO_EGG
+                }
+
+                decreaseStepDemo()
+            }
+            else ->{
+                for(i in 0..3){
+                    gameState[stepDemo][i]=gameState[stepDemo-1][i]
+                    gameState[stepDemo-1][i]=Static.NO_EGG
+                }
+                decreaseStepDemo()
+            }
+        }
+    }
+
+    private fun decreaseStepDemo(){
+        if(stepDemo<=1){
+            stepDemo=Static.GAME_SIZE-1
+        }else{
+            stepDemo-=1
+        }
     }
 
 }
