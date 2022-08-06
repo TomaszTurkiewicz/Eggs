@@ -9,14 +9,18 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
-class NormalEggDrawable(private val context: Context, private val size: Double):Drawable() {
+class NormalEggDrawable(private val context: Context, private val size: Double, val black:Boolean):Drawable() {
         private var paint= Paint()
 
 
 
     override fun draw(canvas: Canvas) {
         paint.style = Paint.Style.STROKE
-        paint.color = ContextCompat.getColor(context, R.color.black)
+        if(black) {
+            paint.color = ContextCompat.getColor(context, R.color.black)
+        }else{
+            paint.color = ContextCompat.getColor(context, R.color.shadow)
+        }
         paint.strokeWidth = (size/8).toFloat()
 
         val a = Point((size*0.2).toInt(), (size*0.66).toInt())
@@ -42,8 +46,6 @@ class NormalEggDrawable(private val context: Context, private val size: Double):
         )
 
         canvas.drawArc(mRect,0F,180F,false,paint)
-
-
 
     }
 

@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 
-class BrokenEggRight (private val context: Context, private val width: Double): Drawable() {
+class BrokenEggRight (private val context: Context, private val width: Double,val black:Boolean): Drawable() {
     private val paint = Paint()
     private val unit = width/4
 
@@ -15,8 +15,11 @@ class BrokenEggRight (private val context: Context, private val width: Double): 
     override fun draw(canvas: Canvas) {
 
         paint.style = Paint.Style.FILL_AND_STROKE
-        paint.color = ContextCompat.getColor(context, R.color.black)
-
+        if(black) {
+            paint.color = ContextCompat.getColor(context, R.color.black)
+        }else{
+            paint.color = ContextCompat.getColor(context, R.color.shadow)
+        }
 
         val a = Point((width-(unit*0.55)).toInt(), (unit*0.4).toInt())
         val radius = unit*0.22

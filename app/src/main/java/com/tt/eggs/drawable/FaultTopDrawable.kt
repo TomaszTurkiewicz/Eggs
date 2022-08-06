@@ -7,13 +7,17 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 
-class FaultTopDrawable (private val context: Context, private val size: Double): Drawable(){
+class FaultTopDrawable (private val context: Context, private val size: Double, val black:Boolean): Drawable(){
     private val paint = Paint()
     private val stroke = size/100
 
 
     override fun draw(canvas: Canvas) {
-         paint.color = ContextCompat.getColor(context, R.color.black)
+        if(black) {
+            paint.color = ContextCompat.getColor(context, R.color.black)
+        }else{
+            paint.color = ContextCompat.getColor(context, R.color.shadow)
+        }
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.strokeWidth = stroke.toFloat()
 

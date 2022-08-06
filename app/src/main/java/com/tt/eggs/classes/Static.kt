@@ -49,5 +49,10 @@ class Static {
 
         const val GAME_SIZE = 6
 
+        // wolf direction
+        const val WOLF_SHADOW = 0
+        const val WOLF_UP = 1
+        const val WOLF_DOWN = 2
+
     }
 }

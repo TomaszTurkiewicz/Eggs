@@ -7,14 +7,18 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 
-class RunningChickenRightThree (private val context: Context, private val width: Double): Drawable() {
+class RunningChickenRightThree (private val context: Context, private val width: Double,val black:Boolean): Drawable() {
     private val paint = Paint()
     private val unit = width/200
 
 
     override fun draw(canvas: Canvas) {
         paint.style = Paint.Style.FILL_AND_STROKE
-        paint.color = ContextCompat.getColor(context, R.color.black)
+        if(black) {
+            paint.color = ContextCompat.getColor(context, R.color.black)
+        }else{
+            paint.color = ContextCompat.getColor(context, R.color.shadow)
+        }
         paint.strokeWidth = unit.toFloat()
 
         val a = Point((width-(width*0.19)).toInt(), (width*0.21).toInt())

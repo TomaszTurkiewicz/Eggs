@@ -10,14 +10,19 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-class EggMinus45 (private val context: Context, private val size: Double): Drawable() {
+class EggMinus45 (private val context: Context, private val size: Double, val black:Boolean): Drawable() {
     private var paint= Paint()
 
 
 
     override fun draw(canvas: Canvas) {
         paint.style = Paint.Style.STROKE
-        paint.color = ContextCompat.getColor(context, R.color.black)
+        if(black){
+            paint.color = ContextCompat.getColor(context, R.color.black)
+        }else{
+            paint.color = ContextCompat.getColor(context, R.color.shadow)
+        }
+
         paint.strokeWidth = (size/8).toFloat()
         val sqrt = sqrt(0.3)
         val dif = sqrt/2-0.055

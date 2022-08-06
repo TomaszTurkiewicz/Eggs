@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 
-class RabbitDrawable(private val context: Context, private val size: Double): Drawable() {
+class RabbitDrawable(private val context: Context, private val size: Double, val black:Boolean): Drawable() {
     private val paint= Paint()
     private val stroke = size/100
 
@@ -15,7 +15,11 @@ class RabbitDrawable(private val context: Context, private val size: Double): Dr
 
     override fun draw(canvas: Canvas) {
         paint.style = Paint.Style.FILL_AND_STROKE
-        paint.color = ContextCompat.getColor(context, R.color.black)
+        if(black) {
+            paint.color = ContextCompat.getColor(context, R.color.black)
+        }else{
+            paint.color = ContextCompat.getColor(context, R.color.shadow)
+        }
         paint.strokeWidth = (stroke*3).toFloat()
 
 
@@ -214,17 +218,6 @@ class RabbitDrawable(private val context: Context, private val size: Double): Dr
         pathArm.cubicTo(j2.x.toFloat(), j2.y.toFloat(),curvedJ2G.x,curvedJ2G.y, g.x.toFloat(), g.y.toFloat())
 
         canvas.drawPath(pathArm,paint)
-
-
-
-
-
-
-
-
-
-
-
 
     }
 
