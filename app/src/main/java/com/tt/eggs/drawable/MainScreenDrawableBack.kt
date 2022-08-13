@@ -12,7 +12,7 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
-class MainScreenDrawable(private val context: Context, private val screenUnit:Int, private val width:Double, private val height:Double):Drawable() {
+class MainScreenDrawableBack(private val context: Context, private val screenUnit:Int, private val width:Double, private val height:Double):Drawable() {
     private var paint = Paint()
 
     private val shadowX = screenUnit*0.07
@@ -39,20 +39,20 @@ class MainScreenDrawable(private val context: Context, private val screenUnit:In
         drawGrassMiddleShadow(canvas)
 
 
-        drawScreenShadow(canvas,margin)
+//        drawScreenShadow(canvas,margin)
 
 
 
-        drawRabbitWindow(canvas, margin)
-        drawChickensLeftTop(canvas, margin)
-        drawChickenLeftBottom(canvas,margin)
-        drawChickenRightTop(canvas, margin)
-        drawChickenRightBottom(canvas,margin)
-        drawRoosts(canvas, margin)
-        drawGrassLeft(canvas, margin)
-        drawGrassRight(canvas, margin)
-        drawGrassMiddle(canvas)
-        coverEdges(canvas)
+//        drawRabbitWindow(canvas, margin)
+//        drawChickensLeftTop(canvas, margin)
+//        drawChickenLeftBottom(canvas,margin)
+//        drawChickenRightTop(canvas, margin)
+//        drawChickenRightBottom(canvas,margin)
+//        drawRoosts(canvas, margin)
+//        drawGrassLeft(canvas, margin)
+//        drawGrassRight(canvas, margin)
+//        drawGrassMiddle(canvas)
+//        coverEdges(canvas)
 
     }
 

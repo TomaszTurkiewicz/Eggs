@@ -146,7 +146,6 @@ class MainActivity : AppCompatActivity(){
         setContentView(view)
         fullScreen(view)
 
-//fore tesst
 
 
         MobileAds.initialize(this)
@@ -614,13 +613,13 @@ class MainActivity : AppCompatActivity(){
         set.connect(binding.mainScreenContainer.id,ConstraintSet.BOTTOM,binding.mainActivity.id,ConstraintSet.BOTTOM,0)
 
 
-        set.connect(binding.screen.id,ConstraintSet.LEFT,binding.mainScreenContainer.id,ConstraintSet.LEFT,0)
-        set.connect(binding.screen.id,ConstraintSet.RIGHT,binding.mainScreenContainer.id,ConstraintSet.RIGHT,0)
-        set.connect(binding.screen.id,ConstraintSet.TOP,binding.mainScreenContainer.id,ConstraintSet.TOP,0)
-        set.connect(binding.screen.id,ConstraintSet.BOTTOM,binding.mainScreenContainer.id,ConstraintSet.BOTTOM,0)
+        set.connect(binding.screenBack.id,ConstraintSet.LEFT,binding.mainScreenContainer.id,ConstraintSet.LEFT,0)
+        set.connect(binding.screenBack.id,ConstraintSet.RIGHT,binding.mainScreenContainer.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.screenBack.id,ConstraintSet.TOP,binding.mainScreenContainer.id,ConstraintSet.TOP,0)
+        set.connect(binding.screenBack.id,ConstraintSet.BOTTOM,binding.mainScreenContainer.id,ConstraintSet.BOTTOM,0)
 
-        set.connect(binding.eggTopLeftFirst.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,screenUnit+screenUnit/2)
-        set.connect(binding.eggTopLeftFirst.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*1.6).toInt())
+        set.connect(binding.eggTopLeftFirst.id,ConstraintSet.LEFT,binding.screenBack.id,ConstraintSet.LEFT,screenUnit+screenUnit/2)
+        set.connect(binding.eggTopLeftFirst.id,ConstraintSet.TOP,binding.screenBack.id,ConstraintSet.TOP, (screenUnit*1.6).toInt())
 
         set.connect(binding.eggTopLeftSecond.id,ConstraintSet.LEFT,binding.eggTopLeftFirst.id,ConstraintSet.RIGHT,0)
         set.connect(binding.eggTopLeftSecond.id,ConstraintSet.TOP,binding.eggTopLeftFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
@@ -628,14 +627,14 @@ class MainActivity : AppCompatActivity(){
         set.connect(binding.eggTopLeftThird.id,ConstraintSet.LEFT,binding.eggTopLeftSecond.id,ConstraintSet.RIGHT,0)
         set.connect(binding.eggTopLeftThird.id,ConstraintSet.TOP,binding.eggTopLeftSecond.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(binding.eggTopLeftFourth.id,ConstraintSet.LEFT,binding.eggTopLeftThird.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.eggTopLeftFourth.id,ConstraintSet.LEFT,binding.eggTopLeftThird.id,ConstraintSet.RIGHT, 0)
         set.connect(binding.eggTopLeftFourth.id,ConstraintSet.TOP,binding.eggTopLeftThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(binding.eggTopLeftFifth.id,ConstraintSet.LEFT,binding.eggTopLeftFourth.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.eggTopLeftFifth.id,ConstraintSet.LEFT,binding.eggTopLeftThird.id,ConstraintSet.RIGHT,(eggSize.width*screenUnit*0.9).toInt())
         set.connect(binding.eggTopLeftFifth.id,ConstraintSet.TOP,binding.eggTopLeftFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(binding.eggBottomLeftFirst.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,screenUnit+screenUnit/2)
-        set.connect(binding.eggBottomLeftFirst.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*3.1).toInt())
+        set.connect(binding.eggBottomLeftFirst.id,ConstraintSet.LEFT,binding.screenBack.id,ConstraintSet.LEFT,screenUnit+screenUnit/2)
+        set.connect(binding.eggBottomLeftFirst.id,ConstraintSet.TOP,binding.screenBack.id,ConstraintSet.TOP, (screenUnit*3.1).toInt())
 
         set.connect(binding.eggBottomLeftSecond.id,ConstraintSet.LEFT,binding.eggBottomLeftFirst.id,ConstraintSet.RIGHT,0)
         set.connect(binding.eggBottomLeftSecond.id,ConstraintSet.TOP,binding.eggBottomLeftFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
@@ -649,8 +648,8 @@ class MainActivity : AppCompatActivity(){
         set.connect(binding.eggBottomLeftFifth.id,ConstraintSet.LEFT,binding.eggBottomLeftFourth.id,ConstraintSet.RIGHT,0)
         set.connect(binding.eggBottomLeftFifth.id,ConstraintSet.TOP,binding.eggBottomLeftFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(binding.eggTopRightFirst.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,screenUnit+screenUnit/2)
-        set.connect(binding.eggTopRightFirst.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*1.6).toInt())
+        set.connect(binding.eggTopRightFirst.id,ConstraintSet.RIGHT,binding.screenBack.id,ConstraintSet.RIGHT,screenUnit+screenUnit/2)
+        set.connect(binding.eggTopRightFirst.id,ConstraintSet.TOP,binding.screenBack.id,ConstraintSet.TOP, (screenUnit*1.6).toInt())
 
         set.connect(binding.eggTopRightSecond.id,ConstraintSet.RIGHT,binding.eggTopRightFirst.id,ConstraintSet.LEFT,0)
         set.connect(binding.eggTopRightSecond.id,ConstraintSet.TOP,binding.eggTopRightFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
@@ -661,11 +660,11 @@ class MainActivity : AppCompatActivity(){
         set.connect(binding.eggTopRightFourth.id,ConstraintSet.RIGHT,binding.eggTopRightThird.id,ConstraintSet.LEFT,0)
         set.connect(binding.eggTopRightFourth.id,ConstraintSet.TOP,binding.eggTopRightThird.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(binding.eggTopRightFifth.id,ConstraintSet.RIGHT,binding.eggTopRightFourth.id,ConstraintSet.LEFT,0)
+        set.connect(binding.eggTopRightFifth.id,ConstraintSet.RIGHT,binding.eggTopRightThird.id,ConstraintSet.LEFT, (eggSize.width*screenUnit*0.9).toInt())
         set.connect(binding.eggTopRightFifth.id,ConstraintSet.TOP,binding.eggTopRightFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(binding.eggBottomRightFirst.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,screenUnit+screenUnit/2)
-        set.connect(binding.eggBottomRightFirst.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*3.1).toInt())
+        set.connect(binding.eggBottomRightFirst.id,ConstraintSet.RIGHT,binding.screenBack.id,ConstraintSet.RIGHT,screenUnit+screenUnit/2)
+        set.connect(binding.eggBottomRightFirst.id,ConstraintSet.TOP,binding.screenBack.id,ConstraintSet.TOP, (screenUnit*3.1).toInt())
 
         set.connect(binding.eggBottomRightSecond.id,ConstraintSet.RIGHT,binding.eggBottomRightFirst.id,ConstraintSet.LEFT,0)
         set.connect(binding.eggBottomRightSecond.id,ConstraintSet.TOP,binding.eggBottomRightFirst.id,ConstraintSet.TOP, eggJumpDown.toInt())
@@ -679,32 +678,35 @@ class MainActivity : AppCompatActivity(){
         set.connect(binding.eggBottomRightFifth.id,ConstraintSet.RIGHT,binding.eggBottomRightFourth.id,ConstraintSet.LEFT,0)
         set.connect(binding.eggBottomRightFifth.id,ConstraintSet.TOP,binding.eggBottomRightFourth.id,ConstraintSet.TOP,eggJumpDown.toInt())
 
-        set.connect(binding.digitTen.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*0.9).toInt())
-        set.connect(binding.digitTen.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,0)
-        set.connect(binding.digitTen.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.digitEmpty.id,ConstraintSet.TOP,binding.screenBack.id,ConstraintSet.TOP, (screenUnit*0.9).toInt())
+        set.connect(binding.digitEmpty.id,ConstraintSet.LEFT,binding.screenBack.id,ConstraintSet.LEFT,0)
+        set.connect(binding.digitEmpty.id,ConstraintSet.RIGHT,binding.screenBack.id,ConstraintSet.RIGHT,0)
 
-        set.connect(binding.digitOne.id,ConstraintSet.TOP,binding.digitTen.id,ConstraintSet.TOP,0)
+        set.connect(binding.digitTen.id,ConstraintSet.TOP,binding.digitEmpty.id,ConstraintSet.TOP, 0)
+        set.connect(binding.digitTen.id,ConstraintSet.LEFT,binding.digitEmpty.id,ConstraintSet.RIGHT, (screenUnit*0.05).toInt())
+
+        set.connect(binding.digitOne.id,ConstraintSet.TOP,binding.digitEmpty.id,ConstraintSet.TOP,0)
         set.connect(binding.digitOne.id,ConstraintSet.LEFT,binding.digitTen.id,ConstraintSet.RIGHT, (screenUnit*0.1).toInt())
 
-        set.connect(binding.digitHundred.id,ConstraintSet.TOP,binding.digitTen.id,ConstraintSet.TOP,0)
-        set.connect(binding.digitHundred.id,ConstraintSet.RIGHT,binding.digitTen.id,ConstraintSet.LEFT, (screenUnit*0.1).toInt())
+        set.connect(binding.digitHundred.id,ConstraintSet.TOP,binding.digitEmpty.id,ConstraintSet.TOP,0)
+        set.connect(binding.digitHundred.id,ConstraintSet.RIGHT,binding.digitEmpty.id,ConstraintSet.LEFT, (screenUnit*0.05).toInt())
 
-        set.connect(binding.digitThousand.id,ConstraintSet.TOP,binding.digitTen.id,ConstraintSet.TOP,0)
+        set.connect(binding.digitThousand.id,ConstraintSet.TOP,binding.digitEmpty.id,ConstraintSet.TOP,0)
         set.connect(binding.digitThousand.id,ConstraintSet.RIGHT,binding.digitHundred.id,ConstraintSet.LEFT, (screenUnit*0.1).toInt())
 
-        set.connect(binding.buttonBottomLeft.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.LEFT,0)
+        set.connect(binding.buttonBottomLeft.id,ConstraintSet.RIGHT,binding.screenBack.id,ConstraintSet.LEFT,0)
         set.connect(binding.buttonBottomLeft.id,ConstraintSet.LEFT,binding.mainScreenContainer.id,ConstraintSet.LEFT,0)
         set.connect(binding.buttonBottomLeft.id,ConstraintSet.BOTTOM,binding.mainScreenContainer.id,ConstraintSet.BOTTOM,screenUnit)
 
-        set.connect(binding.buttonTopLeft.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.LEFT,0)
+        set.connect(binding.buttonTopLeft.id,ConstraintSet.RIGHT,binding.screenBack.id,ConstraintSet.LEFT,0)
         set.connect(binding.buttonTopLeft.id,ConstraintSet.LEFT,binding.mainScreenContainer.id,ConstraintSet.LEFT,0)
         set.connect(binding.buttonTopLeft.id,ConstraintSet.BOTTOM,binding.buttonBottomLeft.id,ConstraintSet.TOP,screenUnit)
 
-        set.connect(binding.buttonBottomRight.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.buttonBottomRight.id,ConstraintSet.LEFT,binding.screenBack.id,ConstraintSet.RIGHT,0)
         set.connect(binding.buttonBottomRight.id,ConstraintSet.RIGHT,binding.mainScreenContainer.id,ConstraintSet.RIGHT,0)
         set.connect(binding.buttonBottomRight.id,ConstraintSet.BOTTOM,binding.mainScreenContainer.id,ConstraintSet.BOTTOM,screenUnit)
 
-        set.connect(binding.buttonTopRight.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.buttonTopRight.id,ConstraintSet.LEFT,binding.screenBack.id,ConstraintSet.RIGHT,0)
         set.connect(binding.buttonTopRight.id,ConstraintSet.RIGHT,binding.mainScreenContainer.id,ConstraintSet.RIGHT,0)
         set.connect(binding.buttonTopRight.id,ConstraintSet.BOTTOM,binding.buttonBottomRight.id,ConstraintSet.TOP,screenUnit)
 
@@ -730,22 +732,22 @@ class MainActivity : AppCompatActivity(){
         set.connect(binding.exit.id,ConstraintSet.BOTTOM,binding.closeApp.id,ConstraintSet.BOTTOM,screenUnit)
 
         set.connect(binding.account.id,ConstraintSet.TOP,binding.mainScreenContainer.id,ConstraintSet.TOP,0)
-        set.connect(binding.account.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,0)
-        set.connect(binding.account.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.TOP,0)
+        set.connect(binding.account.id,ConstraintSet.RIGHT,binding.screenBack.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.account.id,ConstraintSet.BOTTOM,binding.screenBack.id,ConstraintSet.TOP,0)
 
         set.connect(binding.userID.id,ConstraintSet.TOP,binding.mainScreenContainer.id,ConstraintSet.TOP,0)
-        set.connect(binding.userID.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,0)
-        set.connect(binding.userID.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,0)
-        set.connect(binding.userID.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.TOP,0)
+        set.connect(binding.userID.id,ConstraintSet.LEFT,binding.screenBack.id,ConstraintSet.LEFT,0)
+        set.connect(binding.userID.id,ConstraintSet.RIGHT,binding.screenBack.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.userID.id,ConstraintSet.BOTTOM,binding.screenBack.id,ConstraintSet.TOP,0)
 
-        set.connect(binding.rabbit.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (screenUnit*0.8).toInt())
-        set.connect(binding.rabbit.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,
+        set.connect(binding.rabbit.id,ConstraintSet.TOP,binding.screenBack.id,ConstraintSet.TOP, (screenUnit*0.8).toInt())
+        set.connect(binding.rabbit.id,ConstraintSet.LEFT,binding.screenBack.id,ConstraintSet.LEFT,
             (2.9*screenUnit).toInt()
         )
 
-        set.connect(binding.middleFault.id,ConstraintSet.TOP,binding.screen.id,ConstraintSet.TOP, (1.6*screenUnit).toInt())
-        set.connect(binding.middleFault.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,0)
-        set.connect(binding.middleFault.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.middleFault.id,ConstraintSet.TOP,binding.screenBack.id,ConstraintSet.TOP, (1.6*screenUnit).toInt())
+        set.connect(binding.middleFault.id,ConstraintSet.LEFT,binding.screenBack.id,ConstraintSet.LEFT,0)
+        set.connect(binding.middleFault.id,ConstraintSet.RIGHT,binding.screenBack.id,ConstraintSet.RIGHT,0)
 
         set.connect(binding.leftFault.id,ConstraintSet.TOP,binding.middleFault.id,ConstraintSet.TOP,0)
         set.connect(binding.leftFault.id,ConstraintSet.RIGHT,binding.middleFault.id,ConstraintSet.LEFT, 0)
@@ -753,35 +755,40 @@ class MainActivity : AppCompatActivity(){
         set.connect(binding.rightFault.id,ConstraintSet.TOP,binding.middleFault.id,ConstraintSet.TOP,0)
         set.connect(binding.rightFault.id,ConstraintSet.LEFT,binding.middleFault.id,ConstraintSet.RIGHT, 0)
 
-        set.connect(binding.faultLeftSecond.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
+        set.connect(binding.faultLeftSecond.id,ConstraintSet.BOTTOM,binding.screenBack.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
         set.connect(binding.faultLeftSecond.id,ConstraintSet.LEFT,binding.faultLeftThird.id,ConstraintSet.RIGHT,(screenUnit*0.1).toInt())
 
-        set.connect(binding.faultLeftThird.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
+        set.connect(binding.faultLeftThird.id,ConstraintSet.BOTTOM,binding.screenBack.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
         set.connect(binding.faultLeftThird.id,ConstraintSet.LEFT,binding.faultLeftFourth.id,ConstraintSet.RIGHT,(screenUnit*0.1).toInt())
 
-        set.connect(binding.faultLeftFourth.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*1.5).toInt())
-        set.connect(binding.faultLeftFourth.id,ConstraintSet.LEFT,binding.screen.id,ConstraintSet.LEFT,(screenUnit*0.9).toInt())
+        set.connect(binding.faultLeftFourth.id,ConstraintSet.BOTTOM,binding.screenBack.id,ConstraintSet.BOTTOM, (screenUnit*1.5).toInt())
+        set.connect(binding.faultLeftFourth.id,ConstraintSet.LEFT,binding.screenBack.id,ConstraintSet.LEFT,(screenUnit*0.9).toInt())
 
-        set.connect(binding.faultLeftFirst.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*0.83).toInt())
+        set.connect(binding.faultLeftFirst.id,ConstraintSet.BOTTOM,binding.screenBack.id,ConstraintSet.BOTTOM, (screenUnit*0.83).toInt())
         set.connect(binding.faultLeftFirst.id,ConstraintSet.LEFT,binding.faultLeftSecond.id,ConstraintSet.RIGHT,(screenUnit*0.2).toInt())
 
-        set.connect(binding.faultRightSecond.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
+        set.connect(binding.faultRightSecond.id,ConstraintSet.BOTTOM,binding.screenBack.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
         set.connect(binding.faultRightSecond.id,ConstraintSet.RIGHT,binding.faultRightThird.id,ConstraintSet.LEFT,(screenUnit*0.1).toInt())
 
-        set.connect(binding.faultRightThird.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
+        set.connect(binding.faultRightThird.id,ConstraintSet.BOTTOM,binding.screenBack.id,ConstraintSet.BOTTOM,(screenUnit*1.5).toInt())
         set.connect(binding.faultRightThird.id,ConstraintSet.RIGHT,binding.faultRightFourth.id,ConstraintSet.LEFT,(screenUnit*0.1).toInt())
 
-        set.connect(binding.faultRightFourth.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*1.5).toInt())
-        set.connect(binding.faultRightFourth.id,ConstraintSet.RIGHT,binding.screen.id,ConstraintSet.RIGHT,(screenUnit*0.9).toInt())
+        set.connect(binding.faultRightFourth.id,ConstraintSet.BOTTOM,binding.screenBack.id,ConstraintSet.BOTTOM, (screenUnit*1.5).toInt())
+        set.connect(binding.faultRightFourth.id,ConstraintSet.RIGHT,binding.screenBack.id,ConstraintSet.RIGHT,(screenUnit*0.9).toInt())
 
-        set.connect(binding.faultRightFirst.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*0.83).toInt())
-        set.connect(binding.faultRightFirst.id,ConstraintSet.RIGHT,binding.faultRightSecond.id,ConstraintSet.LEFT,(screenUnit*0.2).toInt())
+        set.connect(binding.faultRightFirst.id,ConstraintSet.BOTTOM,binding.screenBack.id,ConstraintSet.BOTTOM, (screenUnit*0.83).toInt())
+        set.connect(binding.faultRightFirst.id,ConstraintSet.RIGHT,binding.faultRightSecond.id,ConstraintSet.LEFT,(screenUnit*0.1).toInt())
 
-        set.connect(binding.leftWolf.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
+        set.connect(binding.leftWolf.id,ConstraintSet.BOTTOM,binding.screenBack.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
         set.connect(binding.leftWolf.id,ConstraintSet.LEFT,binding.eggBottomLeftFifth.id,ConstraintSet.LEFT, (screenUnit*0.13).toInt())
 
-        set.connect(binding.rightWolf.id,ConstraintSet.BOTTOM,binding.screen.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
+        set.connect(binding.rightWolf.id,ConstraintSet.BOTTOM,binding.screenBack.id,ConstraintSet.BOTTOM, (screenUnit*1.2).toInt())
         set.connect(binding.rightWolf.id,ConstraintSet.RIGHT,binding.eggBottomRightFifth.id,ConstraintSet.RIGHT, (screenUnit*0.13).toInt())
+
+        set.connect(binding.screenFront.id,ConstraintSet.LEFT,binding.mainScreenContainer.id,ConstraintSet.LEFT,0)
+        set.connect(binding.screenFront.id,ConstraintSet.RIGHT,binding.mainScreenContainer.id,ConstraintSet.RIGHT,0)
+        set.connect(binding.screenFront.id,ConstraintSet.TOP,binding.mainScreenContainer.id,ConstraintSet.TOP,0)
+        set.connect(binding.screenFront.id,ConstraintSet.BOTTOM,binding.mainScreenContainer.id,ConstraintSet.BOTTOM,0)
 
         set.applyTo(binding.mainActivity)
 
@@ -789,8 +796,9 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun setDrawable() {
-        val mainScreen = MainScreenDrawable(this,screenUnit,screenSize.width,screenSize.height)
-        binding.screen.setImageDrawable(mainScreen)
+
+        binding.screenBack.setImageDrawable(MainScreenDrawableBack(this,screenUnit,screenSize.width,screenSize.height))
+        binding.screenFront.setImageDrawable(MainScreenDrawableFront(this,screenUnit,screenSize.width,screenSize.height))
 
         binding.buttonBottomLeft.setImageDrawable(ArrowBottomLeft(this,screenUnit*arrowSize.width,
             screenUnit*arrowSize.height
@@ -850,7 +858,8 @@ class MainActivity : AppCompatActivity(){
     private fun setViewSizes() {
         screenSize.width = 14.0
         screenSize.height = 7.0
-        binding.screen.layoutParams = ConstraintLayout.LayoutParams((screenSize.width*screenUnit).toInt(),(screenSize.height*screenUnit).toInt())
+        binding.screenBack.layoutParams = ConstraintLayout.LayoutParams((screenSize.width*screenUnit).toInt(),(screenSize.height*screenUnit).toInt())
+        binding.screenFront.layoutParams = ConstraintLayout.LayoutParams((screenSize.width*screenUnit).toInt(),(screenSize.height*screenUnit).toInt())
 
         wholeScreenSize.width = 20.0
         wholeScreenSize.height = 10.0
@@ -883,6 +892,7 @@ class MainActivity : AppCompatActivity(){
         digitSize.width = 0.3
         digitSize.height = digitSize.width*2
 
+        binding.digitEmpty.layoutParams = ConstraintLayout.LayoutParams(1,(digitSize.height*screenUnit).toInt())
         binding.digitOne.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
         binding.digitTen.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
         binding.digitHundred.layoutParams = ConstraintLayout.LayoutParams((digitSize.width*screenUnit).toInt(),(digitSize.height*screenUnit).toInt())
@@ -1624,10 +1634,6 @@ class MainActivity : AppCompatActivity(){
 
 }
 
-/*todo
-better 3d experience
-shorten arrays for eggs and running chicken
- */
 
 
 
