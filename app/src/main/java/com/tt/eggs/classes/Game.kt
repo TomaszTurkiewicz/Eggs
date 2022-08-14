@@ -5,7 +5,7 @@ import kotlin.random.Random
 class Game {
 
     // array representing eggs
-        var gameState = Array(Static.GAME_SIZE) {BooleanArray(4)}
+    private var gameState = Array(Static.GAME_SIZE) {BooleanArray(4)}
 
     // array representing basket
         var position = BooleanArray(4)
@@ -397,23 +397,6 @@ class Game {
                 gameState[x][y]= !gameState[x][y]
             }
         }
-    }
-
-    // move down plus move basket during demo
-    fun moveDownDemo() {
-        // move down
-        for(i in Static.GAME_SIZE-2 downTo 0){
-            for(j in 0..3){
-                gameState[i+1][j]=gameState[i][j]
-            }
-        }
-        // move basket
-        for(i in 0..3){
-            if(gameState[Static.GAME_SIZE-1][i])
-                setBasket(i)
-        }
-        // generate egg
-        generateEggDemo()
     }
 
     fun moveDownDemoStep(){

@@ -8,8 +8,10 @@
     <color name="gray">#D5D5D5</color>
     <color name="gray_middle">#B3B3B3</color>
     <color name="gray_LCD">#CCD8C0</color>
+    <color name="gray_LCD_dark">#BEC9B3</color>
     <color name="gray_light">#EAEAEA</color>
     <color name="gray_dark">#8E8E8E</color>
+    <color name="shadow_dark">#B2383838</color>
     <color name="black">#000000</color>
     <color name="red">#BC0000</color>
     <color name="red_dark">#9A0000</color>
@@ -21,7 +23,7 @@
     <color name="yellow">#E2F301</color>
 
 
-    <color name="shadow">#BFC8B5</color>
+    <color name="shadow">#ABC1CFB2</color>
 
 
 

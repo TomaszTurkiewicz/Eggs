@@ -2,11 +2,11 @@ package com.tt.eggs
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.WindowCompat
@@ -14,7 +14,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.tt.eggs.classes.Dimension
 import com.tt.eggs.classes.Functions
-import com.tt.eggs.classes.GooglePlayApps
 import com.tt.eggs.classes.NewApps
 import com.tt.eggs.databinding.ActivityOtherGamesBinding
 import com.tt.eggs.drawable.RoundedFrameDrawable

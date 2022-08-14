@@ -14,29 +14,64 @@ import kotlin.math.sin
 class MainScreenDrawableFront(private val context: Context, private val screenUnit:Int, private val width:Double, private val height:Double):
     Drawable() {
     private var paint = Paint()
-    val margin = 0.8
+    private val margin = 0.8
 
     override fun draw(canvas: Canvas) {
 
-        drawScreenShadow(canvas,margin)
+        drawScreenShadow(canvas)
 
 
+        drawRabbitWindowSmooth(canvas)
 
-        drawRabbitWindow(canvas, margin)
-        drawChickensLeftTop(canvas, margin)
-        drawChickenLeftBottom(canvas,margin)
-        drawChickenRightTop(canvas, margin)
-        drawChickenRightBottom(canvas,margin)
-        drawRoosts(canvas, margin)
-        drawGrassLeft(canvas, margin)
-        drawGrassRight(canvas, margin)
+        drawChickensLeftTop(canvas)
+        drawChickenLeftBottom(canvas)
+        drawChickenRightTop(canvas)
+        drawChickenRightBottom(canvas)
+        drawRoosts(canvas)
+        drawGrassLeft(canvas)
+        drawGrassRight(canvas)
         drawGrassMiddle(canvas)
         coverEdges(canvas)
     }
 
-    private fun drawRoosts(canvas: Canvas, margin:Double) {
+    private fun drawRabbitWindowSmooth(canvas: Canvas) {
+        val stroke = screenUnit/40
+        val leftMargin = margin*screenUnit
+        val topHeight = screenUnit*0.9
 
-        val stroke = screenUnit/7
+        paint.style=Paint.Style.FILL_AND_STROKE
+        paint.strokeWidth= (stroke).toFloat()
+        paint.color = ContextCompat.getColor(context, R.color.red)
+
+
+        val windowPath = MyPath()
+        val heightOffset = stroke*4
+        val a = Point(leftMargin.toInt(), (topHeight-heightOffset).toInt())
+        val b = Point((a.x+screenUnit*1.05).toInt(),a.y)
+        val c = Point(b.x+screenUnit/2,b.y+screenUnit/2)
+        val d = Point(c.x+screenUnit/2,c.y)
+        val e = Point(d.x, (d.y+screenUnit*0.75).toInt())
+        val f = Point((e.x-screenUnit*1.1).toInt(), (e.y-screenUnit*1.1).toInt())
+        val g = Point(a.x,f.y)
+
+
+        windowPath.move(a)
+        windowPath.line(b)
+        windowPath.line(c)
+        windowPath.line(d)
+        windowPath.line(e)
+        windowPath.line(f)
+        windowPath.line(g)
+        windowPath.close()
+
+        canvas.drawPath(windowPath,paint)
+
+
+    }
+
+    private fun drawRoosts(canvas: Canvas) {
+
+        var stroke = screenUnit/7
         val topHeight = screenUnit*2
         val bottomHeight = screenUnit*3.5
         val leftMargin = margin*screenUnit
@@ -53,57 +88,163 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
 
         paint.isAntiAlias = true
-        paint.style=Paint.Style.STROKE
+        paint.style=Paint.Style.FILL_AND_STROKE
         paint.strokeWidth= (stroke).toFloat()
 
 
-
-
-
         paint.color = ContextCompat.getColor(context, R.color.red)
+        stroke = screenUnit/40
+        paint.strokeWidth= (stroke).toFloat()
+        val heightOffset = stroke*4
 
-        // top left
-        canvas.drawLine((leftMargin).toFloat(),
-            (topHeight).toFloat(), (horizontalLength+leftMargin).toFloat(),(topHeight).toFloat(),paint)
 
-        canvas.drawLine((horizontalLength+leftMargin).toFloat(),
-            (topHeight).toFloat(), (horizontalLength+leftMargin+horizontalJump).toFloat(),(topHeight+verticalJump).toFloat(),paint)
+        var a = Point(leftMargin.toInt(),topHeight-heightOffset)
+        var b = Point((a.x+horizontalLength).toInt(),a.y)
+        var c = Point(b.x+horizontalJump,b.y+verticalJump)
+        var d = Point((c.x-screenUnit*0.06).toInt(), (c.y+screenUnit*0.12).toInt())
+        var e = Point((d.x-horizontalJump+screenUnit*0.1).toInt(),
+            (d.y-verticalJump+screenUnit*0.05).toInt()
+        )
+        var f = Point(a.x,e.y)
 
-        canvas.drawLine(lMarginHorizontal.toFloat(),topHeightMargin.toFloat(),lMarginHorizontal.toFloat(), (topHeightMargin+h).toFloat(),paint)
+        val topLeftRoost = MyPath()
+        topLeftRoost.move(a)
+        topLeftRoost.line(b)
+        topLeftRoost.line(c)
+        topLeftRoost.line(d)
+        topLeftRoost.line(e)
+        topLeftRoost.line(f)
+        topLeftRoost.close()
+
+        canvas.drawPath(topLeftRoost,paint)
+
+
+        val topLeftLegRoost = MyPath()
+        var g = Point((lMarginHorizontal-heightOffset).toInt(), topHeightMargin.toInt())
+        var i = Point(g.x, (g.y+h).toInt())
+        var j = Point(i.x+2*heightOffset,i.y)
+        var k = Point(j.x,g.y)
+
+        topLeftLegRoost.move(g)
+        topLeftLegRoost.line(i)
+        topLeftLegRoost.line(j)
+        topLeftLegRoost.line(k)
+        topLeftLegRoost.close()
+
+        canvas.drawPath(topLeftLegRoost,paint)
 
 
         // bottom left
-        canvas.drawLine((leftMargin).toFloat(),
-            (bottomHeight).toFloat(), (horizontalLength+leftMargin).toFloat(),(bottomHeight).toFloat(),paint)
 
-        canvas.drawLine((horizontalLength+leftMargin).toFloat(),
-            (bottomHeight).toFloat(), (horizontalLength+leftMargin+horizontalJump).toFloat(),(bottomHeight+verticalJump).toFloat(),paint)
+        a = Point(leftMargin.toInt(), (bottomHeight-heightOffset).toInt())
+        b = Point((a.x+horizontalLength).toInt(),a.y)
+        c = Point(b.x+horizontalJump,b.y+verticalJump)
+        d = Point((c.x-screenUnit*0.06).toInt(), (c.y+screenUnit*0.12).toInt())
+        e = Point((d.x-horizontalJump+screenUnit*0.1).toInt(),
+            (d.y-verticalJump+screenUnit*0.05).toInt()
+        )
+        f = Point(a.x,e.y)
 
-        canvas.drawLine(lMarginHorizontal.toFloat(),bottomHeightMargin.toFloat(),lMarginHorizontal.toFloat(), (bottomHeightMargin+h).toFloat(),paint)
+        val bottomLeftRoost = MyPath()
+        bottomLeftRoost.move(a)
+        bottomLeftRoost.line(b)
+        bottomLeftRoost.line(c)
+        bottomLeftRoost.line(d)
+        bottomLeftRoost.line(e)
+        bottomLeftRoost.line(f)
+        bottomLeftRoost.close()
+
+        canvas.drawPath(bottomLeftRoost,paint)
+
+
+        val bottomLeftLegRoost = MyPath()
+        g = Point((lMarginHorizontal-heightOffset).toInt(), bottomHeightMargin.toInt())
+        i = Point(g.x, (g.y+h).toInt())
+        j = Point(i.x+2*heightOffset,i.y)
+        k = Point(j.x,g.y)
+
+        bottomLeftLegRoost.move(g)
+        bottomLeftLegRoost.line(i)
+        bottomLeftLegRoost.line(j)
+        bottomLeftLegRoost.line(k)
+        bottomLeftLegRoost.close()
+
+        canvas.drawPath(bottomLeftLegRoost,paint)
 
 
         // top right
-        canvas.drawLine((rightMargin).toFloat(),
-            (topHeight).toFloat(), (rightMargin-horizontalLength).toFloat(),(topHeight).toFloat(),paint)
+        a = Point(rightMargin.toInt(), (topHeight-heightOffset))
+        b = Point((a.x-horizontalLength).toInt(),a.y)
+        c = Point(b.x-horizontalJump,b.y+verticalJump)
+        d = Point((c.x+screenUnit*0.06).toInt(), (c.y+screenUnit*0.12).toInt())
+        e = Point((d.x+horizontalJump-screenUnit*0.1).toInt(),
+            (d.y-verticalJump+screenUnit*0.05).toInt()
+        )
+        f = Point(a.x,e.y)
 
-        canvas.drawLine((rightMargin-horizontalLength).toFloat(),
-            (topHeight).toFloat(), (rightMargin-horizontalLength-horizontalJump).toFloat(),(topHeight+verticalJump).toFloat(),paint)
+        val topRightRoost = MyPath()
+        topRightRoost.move(a)
+        topRightRoost.line(b)
+        topRightRoost.line(c)
+        topRightRoost.line(d)
+        topRightRoost.line(e)
+        topRightRoost.line(f)
+        topRightRoost.close()
 
-        canvas.drawLine((rMarginHorizontal).toFloat(),topHeightMargin.toFloat(),(rMarginHorizontal).toFloat(), (topHeightMargin+h).toFloat(),paint)
+        canvas.drawPath(topRightRoost,paint)
+
+
+        val topRightLegRoost = MyPath()
+        g = Point((rMarginHorizontal+heightOffset).toInt(), topHeightMargin.toInt())
+        i = Point(g.x, (g.y+h).toInt())
+        j = Point(i.x-2*heightOffset,i.y)
+        k = Point(j.x,g.y)
+
+        topRightLegRoost.move(g)
+        topRightLegRoost.line(i)
+        topRightLegRoost.line(j)
+        topRightLegRoost.line(k)
+        topRightLegRoost.close()
+
+        canvas.drawPath(topRightLegRoost,paint)
 
 
 
         // bottom right
-        canvas.drawLine((rightMargin).toFloat(),
-            (bottomHeight).toFloat(), (rightMargin-horizontalLength).toFloat(),(bottomHeight).toFloat(),paint)
+        a = Point(rightMargin.toInt(), (bottomHeight-heightOffset).toInt())
+        b = Point((a.x-horizontalLength).toInt(),a.y)
+        c = Point(b.x-horizontalJump,b.y+verticalJump)
+        d = Point((c.x+screenUnit*0.06).toInt(), (c.y+screenUnit*0.12).toInt())
+        e = Point((d.x+horizontalJump-screenUnit*0.1).toInt(),
+            (d.y-verticalJump+screenUnit*0.05).toInt()
+        )
+        f = Point(a.x,e.y)
 
-        canvas.drawLine((rightMargin-horizontalLength).toFloat(),
-            (bottomHeight).toFloat(), (rightMargin-horizontalLength-horizontalJump).toFloat(),(bottomHeight+verticalJump).toFloat(),paint)
+        val bottomRightRoost = MyPath()
+        bottomRightRoost.move(a)
+        bottomRightRoost.line(b)
+        bottomRightRoost.line(c)
+        bottomRightRoost.line(d)
+        bottomRightRoost.line(e)
+        bottomRightRoost.line(f)
+        bottomRightRoost.close()
 
-        canvas.drawLine((rMarginHorizontal).toFloat(),bottomHeightMargin.toFloat(),(rMarginHorizontal).toFloat(), (bottomHeightMargin+h).toFloat(),paint)
+        canvas.drawPath(bottomRightRoost,paint)
 
 
+        val bottomRightLegRoost = MyPath()
+        g = Point((rMarginHorizontal+heightOffset).toInt(), bottomHeightMargin.toInt())
+        i = Point(g.x, (g.y+h).toInt())
+        j = Point(i.x-2*heightOffset,i.y)
+        k = Point(j.x,g.y)
 
+        bottomRightLegRoost.move(g)
+        bottomRightLegRoost.line(i)
+        bottomRightLegRoost.line(j)
+        bottomRightLegRoost.line(k)
+        bottomRightLegRoost.close()
+
+        canvas.drawPath(bottomRightLegRoost,paint)
     }
 
     private fun coverEdges(canvas: Canvas) {
@@ -123,33 +264,8 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
     }
 
-    private fun drawRabbitWindow(canvas: Canvas, margin: Double) {
-        val stroke = screenUnit/7
-        val leftMargin = margin*screenUnit
-        val topHeight = screenUnit*0.9
 
-        paint.style=Paint.Style.FILL_AND_STROKE
-        paint.strokeWidth= (stroke).toFloat()
-        paint.color = ContextCompat.getColor(context, R.color.red)
-
-
-        canvas.drawLine((leftMargin).toFloat(),
-            (topHeight).toFloat(), (leftMargin+screenUnit).toFloat(),(topHeight).toFloat(),paint)
-
-        canvas.drawLine((leftMargin+screenUnit).toFloat(),
-            (topHeight).toFloat(), (leftMargin+2*screenUnit).toFloat(),(topHeight+screenUnit).toFloat(),paint)
-
-        val path = Path()
-        path.moveTo((leftMargin+2*screenUnit).toFloat(), (topHeight+screenUnit).toFloat())
-        path.lineTo((leftMargin+2*screenUnit).toFloat(), (topHeight+screenUnit/2).toFloat())
-        path.lineTo((leftMargin+screenUnit*3/2).toFloat(), (topHeight+screenUnit/2).toFloat())
-        path.lineTo((leftMargin+2*screenUnit).toFloat(), (topHeight+screenUnit).toFloat())
-        path.close()
-        canvas.drawPath(path,paint)
-
-    }
-
-    private fun drawChickensLeftTop(canvas: Canvas, margin: Double) {
+    private fun drawChickensLeftTop(canvas: Canvas) {
 
         val paint1 = Paint()
         paint.style = Paint.Style.STROKE
@@ -224,7 +340,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
     }
 
-    private fun drawChickenLeftBottom(canvas: Canvas, margin: Double) {
+    private fun drawChickenLeftBottom(canvas: Canvas) {
 
         val paint1 = Paint()
         paint.style = Paint.Style.STROKE
@@ -292,7 +408,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
         canvas.drawLine(e.x.toFloat(), e.y.toFloat(), g.x.toFloat(), g.y.toFloat(),paint2)
     }
 
-    private fun drawChickenRightTop(canvas: Canvas, margin: Double) {
+    private fun drawChickenRightTop(canvas: Canvas) {
 
 
         val paint1 = Paint()
@@ -363,7 +479,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
         canvas.drawLine(e.x.toFloat(), e.y.toFloat(), g.x.toFloat(), g.y.toFloat(),paint2)
     }
 
-    private fun drawChickenRightBottom(canvas: Canvas, margin: Double) {
+    private fun drawChickenRightBottom(canvas: Canvas) {
 
         val paint1 = Paint()
         paint.style = Paint.Style.STROKE
@@ -434,7 +550,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
     }
 
-    private fun drawGrassLeft(canvas: Canvas, margin: Double) {
+    private fun drawGrassLeft(canvas: Canvas) {
         paint.strokeWidth= (screenUnit/20).toFloat()
         paint.color= ContextCompat.getColor(context, R.color.green)
         paint.style = Paint.Style.FILL_AND_STROKE
@@ -541,7 +657,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
     }
 
-    private fun drawGrassRight(canvas: Canvas, margin: Double) {
+    private fun drawGrassRight(canvas: Canvas) {
         paint.strokeWidth= (screenUnit/20).toFloat()
         paint.color= ContextCompat.getColor(context, R.color.green)
         paint.style = Paint.Style.FILL_AND_STROKE
@@ -812,7 +928,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
     }
 
-    private fun drawScreenShadow(canvas: Canvas, margin:Double) {
+    private fun drawScreenShadow(canvas: Canvas) {
         val margin5 = margin+0.1
 
         val leftUpExternal = Point((screenUnit * margin).toInt(), (screenUnit * margin).toInt())
@@ -828,6 +944,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
         paint.style = Paint.Style.FILL
 
+        paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
         paint.shader = LinearGradient(0f,(leftUpExternal.y).toFloat(),0f,(leftUpInternal.y).toFloat(),
             ContextCompat.getColor(context, R.color.black),
             ContextCompat.getColor(context, R.color.transparent),
@@ -841,6 +958,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
         upShade.close()
         canvas.drawPath(upShade,paint)
         paint.shader = null
+
 
         paint.shader = LinearGradient(leftUpExternal.x.toFloat(),0f,leftUpInternal.x.toFloat(),0f,
             ContextCompat.getColor(context, R.color.black),
@@ -884,6 +1002,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
         downShade.close()
         canvas.drawPath(downShade,paint)
         paint.shader = null
+        paint.maskFilter = null
     }
 
     override fun setAlpha(alpha: Int) {

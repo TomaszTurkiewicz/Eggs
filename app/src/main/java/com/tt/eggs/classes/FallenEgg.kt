@@ -1,7 +1,7 @@
 package com.tt.eggs.classes
 
 class FallenEgg {
-    var fallenEgg = Array(5) {BooleanArray(2)}
+    private var fallenEgg = Array(5) {BooleanArray(2)}
     init {
         for(x in 0..4){
             for(y in 0..1){
