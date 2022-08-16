@@ -17,6 +17,7 @@ class EggMinus45 (private val context: Context, private val size: Double, val bl
 
     override fun draw(canvas: Canvas) {
         paint.style = Paint.Style.STROKE
+        paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
         if(black){
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{

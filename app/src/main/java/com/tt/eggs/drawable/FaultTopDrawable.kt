@@ -13,6 +13,7 @@ class FaultTopDrawable (private val context: Context, private val size: Double, 
 
 
     override fun draw(canvas: Canvas) {
+        paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
         if(black) {
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{

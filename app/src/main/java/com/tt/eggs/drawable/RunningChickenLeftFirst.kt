@@ -14,6 +14,7 @@ class RunningChickenLeftFirst (private val context: Context, private val width: 
 
     override fun draw(canvas: Canvas) {
         paint.style = Paint.Style.FILL_AND_STROKE
+        paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
         paint.strokeWidth = unit.toFloat()
 
         if(black) {

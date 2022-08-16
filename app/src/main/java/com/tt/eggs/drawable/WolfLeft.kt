@@ -18,6 +18,8 @@ class WolfLeft (private val context: Context, private val width: Double, private
 
         paint.color = ContextCompat.getColor(context, R.color.shadow)
 
+        paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
+
         if(wolf==Static.WOLF_SHADOW){
             paint.color = ContextCompat.getColor(context, R.color.shadow)
         }else{

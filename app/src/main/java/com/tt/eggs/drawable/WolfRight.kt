@@ -15,6 +15,8 @@ class WolfRight (private val context: Context, private val width: Double, privat
     override fun draw(canvas: Canvas) {
         paint.color = ContextCompat.getColor(context, R.color.shadow)
 
+        paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
+
         if(wolf== Static.WOLF_SHADOW){
             paint.color = ContextCompat.getColor(context, R.color.shadow)
         }else{

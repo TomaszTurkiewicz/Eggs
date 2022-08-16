@@ -13,6 +13,7 @@ class Digit(private val context: Context, private val width: Int, private val nu
 
     override fun draw(canvas: Canvas) {
         paint.style = Paint.Style.FILL_AND_STROKE
+        paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
         paint.strokeWidth = (width*0.01).toFloat()
 
         if(number==0||number==2||number==3||number==5||number==6||number==7||number==8||number==9){

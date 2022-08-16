@@ -15,6 +15,7 @@ class BrokenEggRight (private val context: Context, private val width: Double,va
     override fun draw(canvas: Canvas) {
 
         paint.style = Paint.Style.FILL_AND_STROKE
+        paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
         if(black) {
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
