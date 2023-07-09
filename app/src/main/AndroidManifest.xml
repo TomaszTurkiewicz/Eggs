@@ -19,10 +19,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
         <activity
+            android:name=".StartActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".DeleteUserActivity"
             android:exported="false"
             android:screenOrientation="landscape"
-            tools:ignore="LockedOrientationActivity"/>
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".OtherGamesActivity"
             android:screenOrientation="landscape"

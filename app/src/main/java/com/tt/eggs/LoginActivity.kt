@@ -387,7 +387,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setButtonsActions() {
         // back to main screen
         binding.backToGame.setOnClickListener {
-            val intent = Intent(this,MainActivity::class.java)
+            val intent = Intent(this,StartActivity::class.java)
             startActivity(intent)
             finish()
         }

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loginFragment"
+    tools:context=".fragments.LoginFragment"
+    android:background="@color/black">
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/loginActivityContainer"
+        android:background="@color/gray"/>
+
+    <TextView
+        android:id="@+id/userNameTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textColor="@color/black"
+        android:gravity="center"/>
+
+    <EditText
+        android:id="@+id/userNameEt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:maxLines="1"
+        android:inputType="text"
+        android:maxLength="18"
+        tools:ignore="Autofill,LabelFor" />
+
+    <LinearLayout
+        android:id="@+id/changeNameLinearLayoutEt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/changeNameOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"
+            android:textColor="@color/black"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/changeNameOkButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/changeNameLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/changeNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"
+            android:textColor="@color/black"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/changeNameButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/highScoreA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/high_score_a"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/highScoreAUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/highScoreA"
+        app:layout_constraintTop_toTopOf="@id/highScoreA"
+        android:textColor="@color/black"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/highScoreB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/high_score_b"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/highScoreBUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/highScoreB"
+        app:layout_constraintTop_toTopOf="@id/highScoreB"
+        android:textColor="@color/black"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/totalScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/total_points"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/totalScoreUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/totalScore"
+        app:layout_constraintTop_toTopOf="@id/totalScore"
+        android:textColor="@color/black"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:id="@+id/backToGameLinearLayoutEt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/backToGameTextViewBlank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/backToGame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
+
+        <TextView
+            android:id="@+id/backToGameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/back_to_game"
+            android:textColor="@color/black"
+            android:gravity="center"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/loginLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/loginTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/log_in"
+            android:textColor="@color/black"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/googleSignIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
+
+        <TextView
+            android:id="@+id/loginTvBlank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/otherGamesLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/otherGamesTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/other_games"
+            android:textColor="@color/black"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/otherGamesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
+
+        <TextView
+            android:id="@+id/otherGamesTvBlank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/rankingLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/rankingTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ranking"
+            android:textColor="@color/black"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/ranking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
+
+        <TextView
+            android:id="@+id/rankingTvBlank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/deleteUserLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/deleteUserTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_account"
+            android:textColor="@color/red_dark"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/deleteUserImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"/>
+
+        <TextView
+            android:id="@+id/deleteUserTvBlank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

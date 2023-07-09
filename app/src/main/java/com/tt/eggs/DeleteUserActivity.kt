@@ -144,7 +144,7 @@ class DeleteUserActivity : AppCompatActivity() {
     }
 
     private fun goToMainActivity(){
-        val intent = Intent(this,MainActivity::class.java)
+        val intent = Intent(this,StartActivity::class.java)
         startActivity(intent)
         finish()
     }
