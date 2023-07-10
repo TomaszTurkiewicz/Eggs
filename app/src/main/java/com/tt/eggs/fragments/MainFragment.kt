@@ -2377,3 +2377,7 @@ class MainFragment : Fragment() {
         }
     }
 }
+
+/*
+todo dark mode
+ */
