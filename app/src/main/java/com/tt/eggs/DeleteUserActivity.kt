@@ -223,16 +223,16 @@ class DeleteUserActivity : AppCompatActivity() {
     }
 
     private fun setDrawable() {
-        binding.frame.background = TextViewDrawableWithBorder(this,positionLayoutSize.width,positionLayoutSize.height)
+        binding.frame.background = TextViewDrawableWithBorder(this)
 
-        binding.backToGameImageView.setImageDrawable(StartButton(this,backToGameButtonSize.width,backToGameButtonSize.height))
-        binding.backToGameLinearLayout.background = RoundedFrameDrawable(this,5.5*backToGameButtonSize.width,backToGameButtonSize.height,
+        binding.backToGameImageView.setImageDrawable(StartButton(this))
+        binding.backToGameLinearLayout.background = RoundedFrameDrawable(this,
             backToGameButtonSize.height/20,
             backToGameButtonSize.height/2
         )
 
-        binding.deleteUserImage.setImageDrawable(StartButton(this,backToGameButtonSize.width,backToGameButtonSize.height))
-        binding.deleteUserLinearLayout.background = RoundedFrameDrawable(this,5.5*backToGameButtonSize.width,backToGameButtonSize.height,backToGameButtonSize.height/20,backToGameButtonSize.height/2)
+        binding.deleteUserImage.setImageDrawable(StartButton(this))
+        binding.deleteUserLinearLayout.background = RoundedFrameDrawable(this,backToGameButtonSize.height/20,backToGameButtonSize.height/2)
     }
 
     private fun setViewSizes() {

@@ -6,13 +6,16 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 
-class RoundedFrameDrawable (private val context: Context, private val width:Double, private val height:Double, private val stroke:Double, private val radius:Double): Drawable() {
+class RoundedFrameDrawable (private val context: Context, private val stroke:Double, private val radius:Double): Drawable() {
     private val paint = Paint()
 
 
 
 
     override fun draw(canvas: Canvas) {
+
+        val width = bounds.width()
+        val height = bounds.height()
 
         val stroke = stroke
         val radius = radius

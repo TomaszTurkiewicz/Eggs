@@ -174,28 +174,28 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setDrawable() {
-        binding.userNameTv.background = TextViewDrawable(this,userNameSize.width,userNameSize.height)
-        binding.userNameEt.background = TextViewDrawable(this,userNameSize.width,userNameSize.height)
-        binding.changeNameButton.setImageDrawable(StartButton(this,changeNameButtonSize.width,changeNameButtonSize.height))
-        binding.changeNameOkButton.setImageDrawable(StartButton(this,changeNameButtonSize.width,changeNameButtonSize.height))
-        binding.highScoreAUser.background = TextViewDrawable(this,scoreUserSize.width,scoreUserSize.height)
-        binding.highScoreBUser.background = TextViewDrawable(this,scoreUserSize.width,scoreUserSize.height)
-        binding.totalScoreUser.background = TextViewDrawable(this,scoreUserSize.width,scoreUserSize.height)
-        binding.backToGame.setImageDrawable(StartButton(this,backToGameButtonSize.width,backToGameButtonSize.height))
-        binding.ranking.setImageDrawable(StartButton(this,rankingButtonSize.width,rankingButtonSize.height))
-        binding.googleSignIn.setImageDrawable(StartButton(this,loginButtonSize.width,loginButtonSize.height))
-        binding.otherGamesButton.setImageDrawable(StartButton(this,otherGamesButtonSize.width,otherGamesButtonSize.height))
-        binding.backToGameLinearLayoutEt.background = RoundedFrameDrawable(this,5.5*backToGameButtonSize.width,backToGameButtonSize.height,backToGameButtonSize.height/20,backToGameButtonSize.height/2)
-        binding.loginLinearLayout.background = RoundedFrameDrawable(this,5.5*loginButtonSize.width,loginButtonSize.height,loginButtonSize.height/20,loginButtonSize.height/2)
-        binding.otherGamesLinearLayout.background = RoundedFrameDrawable(this,5.5*otherGamesButtonSize.width,otherGamesButtonSize.height,otherGamesButtonSize.height/20,otherGamesButtonSize.height/2)
-        binding.rankingLinearLayout.background = RoundedFrameDrawable(this,5.5*rankingButtonSize.width,rankingButtonSize.height,rankingButtonSize.height/20,rankingButtonSize.height/2)
+        binding.userNameTv.background = TextViewDrawable(this)
+        binding.userNameEt.background = TextViewDrawable(this)
+        binding.changeNameButton.setImageDrawable(StartButton(this))
+        binding.changeNameOkButton.setImageDrawable(StartButton(this))
+        binding.highScoreAUser.background = TextViewDrawable(this)
+        binding.highScoreBUser.background = TextViewDrawable(this)
+        binding.totalScoreUser.background = TextViewDrawable(this)
+        binding.backToGame.setImageDrawable(StartButton(this))
+        binding.ranking.setImageDrawable(StartButton(this))
+        binding.googleSignIn.setImageDrawable(StartButton(this))
+        binding.otherGamesButton.setImageDrawable(StartButton(this))
+        binding.backToGameLinearLayoutEt.background = RoundedFrameDrawable(this,backToGameButtonSize.height/20,backToGameButtonSize.height/2)
+        binding.loginLinearLayout.background = RoundedFrameDrawable(this,loginButtonSize.height/20,loginButtonSize.height/2)
+        binding.otherGamesLinearLayout.background = RoundedFrameDrawable(this,otherGamesButtonSize.height/20,otherGamesButtonSize.height/2)
+        binding.rankingLinearLayout.background = RoundedFrameDrawable(this,rankingButtonSize.height/20,rankingButtonSize.height/2)
 
-        binding.deleteUserImage.setImageDrawable(StartButton(this,loginButtonSize.width,loginButtonSize.height))
-        binding.deleteUserLinearLayout.background = RoundedFrameDrawable(this,5.5*loginButtonSize.width,loginButtonSize.height,loginButtonSize.height/20,loginButtonSize.height/2)
+        binding.deleteUserImage.setImageDrawable(StartButton(this))
+        binding.deleteUserLinearLayout.background = RoundedFrameDrawable(this,loginButtonSize.height/20,loginButtonSize.height/2)
 
         val apps = Functions.readNumberOfAppsFromSharedPreferences(this)
         if(apps.isNewApp()){
-            binding.otherGamesButton.setImageDrawable(StartButtonGreen(this,otherGamesButtonSize.width,otherGamesButtonSize.height))
+            binding.otherGamesButton.setImageDrawable(StartButtonGreen(this))
         }
 
     }

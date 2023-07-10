@@ -12,7 +12,11 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
-class MainScreenDrawableBack(private val context: Context, private val screenUnit:Int, private val width:Double, private val height:Double):Drawable() {
+class MainScreenDrawableBack(private val context: Context,
+                             private val screenUnit:Int,
+                             private val width:Double,
+                             private val height:Double
+                             ):Drawable() {
     private var paint = Paint()
 
     private val shadowX = screenUnit*0.07

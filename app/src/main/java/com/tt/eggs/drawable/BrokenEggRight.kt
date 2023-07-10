@@ -7,12 +7,13 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 
-class BrokenEggRight (private val context: Context, private val width: Double,val black:Boolean): Drawable() {
+class BrokenEggRight (private val context: Context,val black:Boolean): Drawable() {
     private val paint = Paint()
-    private val unit = width/4
-
 
     override fun draw(canvas: Canvas) {
+
+        val unit = bounds.width()/4
+        val width = bounds.width()
 
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
@@ -32,11 +33,11 @@ class BrokenEggRight (private val context: Context, private val width: Double,va
         val c = Point((width-(unit*0.8)).toInt(), (unit*0.65).toInt())
         val curvedRadiusBC = Functions.curvedPath(b,c,unit*0.1,true)
         val d = Point((width-(unit*0.9)).toInt(), (unit*0.5).toInt())
-        val e = Point((width-(unit*1)).toInt(), (unit*0.5).toInt())
+        val e = Point((width-(unit*1)), (unit*0.5).toInt())
         val curvedRadiusDE = Functions.curvedPath(d,e,unit*0.1,false)
         val f = Point((width-(unit*0.95)).toInt(), (unit*0.85).toInt())
         val curvedRadiusEF = Functions.curvedPath(e,f,unit*0.15,false)
-        val g = Point((width-(unit*1)).toInt(), (unit*0.9).toInt())
+        val g = Point((width-(unit*1)), (unit*0.9).toInt())
         val curvedRadiusFG = Functions.curvedPath(f,g,unit*0.1,true)
         val h = Point((width-(unit*1.15)).toInt(), (unit*0.9).toInt())
         val curvedRadiusGH = Functions.curvedPath(g,h,unit*0.2,false)
@@ -62,7 +63,7 @@ class BrokenEggRight (private val context: Context, private val width: Double,va
         val curvedRadiusRS = Functions.curvedPath(r,s,unit*0.05,false)
         val t = Point((width-(unit*0.3)).toInt(), (unit*1.1).toInt())
         val curvedRadiusST = Functions.curvedPath(s,t,unit*0.1,true)
-        val u = Point((width-(unit*0)).toInt(), (unit*0.85).toInt())
+        val u = Point((width), (unit*0.85).toInt())
         val curvedRadiusTU = Functions.curvedPath(t,u,unit*0.1,false)
         val v = Point((width-(unit*0.43)).toInt(), (unit*0.76).toInt())
         val curvedRadiusUV = Functions.curvedPath(u,v,unit*0.14,false)
@@ -118,7 +119,7 @@ class BrokenEggRight (private val context: Context, private val width: Double,va
 
         val a1 = Point((width-(unit*1.5)).toInt(), (unit*1.9).toInt())
         val b1 = Point((width-(unit*1.85)).toInt(), (unit*2.1).toInt())
-        val c1 = Point((width-(unit*2)).toInt(), (unit*1.8).toInt())
+        val c1 = Point((width-(unit*2)), (unit*1.8).toInt())
         val d1 = Point((width-(unit*2.15)).toInt(), (unit*2.1).toInt())
         val e1 = Point((width-(unit*2.3)).toInt(), (unit*1.9).toInt())
         val f1 = Point((width-(unit*2.2)).toInt(), (unit*2.3).toInt())
@@ -126,7 +127,7 @@ class BrokenEggRight (private val context: Context, private val width: Double,va
         val h1 = Point((width-(unit*2.3)).toInt(), (unit*2.6).toInt())
         val i1 = Point((width-(unit*2.4)).toInt(), (unit*2.8).toInt())
         val j1 = Point((width-(unit*2.1)).toInt(), (unit*2.7).toInt())
-        val k1 = Point((width-(unit*2)).toInt(), (unit*2.95).toInt())
+        val k1 = Point((width-(unit*2)), (unit*2.95).toInt())
         val l1 = Point((width-(unit*1.85)).toInt(), (unit*2.75).toInt())
         val m1 = Point((width-(unit*1.6)).toInt(), (unit*2.95).toInt())
         val n1 = Point((width-(unit*1.7)).toInt(), (unit*2.5).toInt())
@@ -159,9 +160,9 @@ class BrokenEggRight (private val context: Context, private val width: Double,va
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = (unit*0.07).toFloat()
 
-        val a2 = Point((width-(unit*3)).toInt(), (unit*2).toInt())
-        val b2 = Point((width-(unit*3)).toInt(), (unit*2.5).toInt())
-        val radiusAB2 = Functions.curvedPath(a2,b2,unit,false)
+        val a2 = Point((width-(unit*3)), (unit*2))
+        val b2 = Point((width-(unit*3)), (unit*2.5).toInt())
+        val radiusAB2 = Functions.curvedPath(a2,b2, unit.toDouble(),false)
         val radiusBA2 = Functions.curvedPath(b2,a2,unit*0.2,true)
 
         val path2 = Path()
@@ -173,10 +174,10 @@ class BrokenEggRight (private val context: Context, private val width: Double,va
         canvas.drawPath(path2,paint)
 
 
-        val c2 = Point((width-(unit)).toInt(), (unit*2.6).toInt())
+        val c2 = Point((width-(unit)), (unit*2.6).toInt())
         val d2 = Point((width-(unit*0.8)).toInt(), (unit*2.2).toInt())
         val radiusCD2 = Functions.curvedPath(c2,d2,unit*0.8,false)
-        val e2 = Point((width-(unit)).toInt(), (unit*2.3).toInt())
+        val e2 = Point((width-(unit)), (unit*2.3).toInt())
         val f2 = Point((width-(unit*0.9)).toInt(), (unit*2.5).toInt())
         val g2 = Point((width-(unit*1.1)).toInt(), (unit*2.5).toInt())
 

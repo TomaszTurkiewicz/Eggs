@@ -105,7 +105,7 @@ class LoginFragment : Fragment() {
      rankingReady = activity.getSorted()
      if(rankingReady){
          view?.let {
-             binding.ranking.setImageDrawable(StartButton(requireContext(),rankingButtonSize.width,rankingButtonSize.height))
+             binding.ranking.setImageDrawable(StartButton(requireContext()))
          }
          mHandler.removeCallbacksAndMessages(null)
      }else{
@@ -510,28 +510,28 @@ class LoginFragment : Fragment() {
     }
 
     private fun setDrawable() {
-        binding.userNameTv.background = TextViewDrawable(requireContext(),userNameSize.width,userNameSize.height)
-        binding.userNameEt.background = TextViewDrawable(requireContext(),userNameSize.width,userNameSize.height)
-        binding.changeNameButton.setImageDrawable(StartButton(requireContext(),changeNameButtonSize.width,changeNameButtonSize.height))
-        binding.changeNameOkButton.setImageDrawable(StartButton(requireContext(),changeNameButtonSize.width,changeNameButtonSize.height))
-        binding.highScoreAUser.background = TextViewDrawable(requireContext(),scoreUserSize.width,scoreUserSize.height)
-        binding.highScoreBUser.background = TextViewDrawable(requireContext(),scoreUserSize.width,scoreUserSize.height)
-        binding.totalScoreUser.background = TextViewDrawable(requireContext(),scoreUserSize.width,scoreUserSize.height)
-        binding.backToGame.setImageDrawable(StartButton(requireContext(),backToGameButtonSize.width,backToGameButtonSize.height))
-        binding.ranking.setImageDrawable(StartButtonGray(requireContext(),rankingButtonSize.width,rankingButtonSize.height))
-        binding.googleSignIn.setImageDrawable(StartButton(requireContext(),loginButtonSize.width,loginButtonSize.height))
-        binding.otherGamesButton.setImageDrawable(StartButton(requireContext(),otherGamesButtonSize.width,otherGamesButtonSize.height))
-        binding.backToGameLinearLayoutEt.background = RoundedFrameDrawable(requireContext(),5.5*backToGameButtonSize.width,backToGameButtonSize.height,backToGameButtonSize.height/20,backToGameButtonSize.height/2)
-        binding.loginLinearLayout.background = RoundedFrameDrawable(requireContext(),5.5*loginButtonSize.width,loginButtonSize.height,loginButtonSize.height/20,loginButtonSize.height/2)
-        binding.otherGamesLinearLayout.background = RoundedFrameDrawable(requireContext(),5.5*otherGamesButtonSize.width,otherGamesButtonSize.height,otherGamesButtonSize.height/20,otherGamesButtonSize.height/2)
-        binding.rankingLinearLayout.background = RoundedFrameDrawable(requireContext(),5.5*rankingButtonSize.width,rankingButtonSize.height,rankingButtonSize.height/20,rankingButtonSize.height/2)
+        binding.userNameTv.background = TextViewDrawable(requireContext())
+        binding.userNameEt.background = TextViewDrawable(requireContext())
+        binding.changeNameButton.setImageDrawable(StartButton(requireContext()))
+        binding.changeNameOkButton.setImageDrawable(StartButton(requireContext()))
+        binding.highScoreAUser.background = TextViewDrawable(requireContext())
+        binding.highScoreBUser.background = TextViewDrawable(requireContext())
+        binding.totalScoreUser.background = TextViewDrawable(requireContext())
+        binding.backToGame.setImageDrawable(StartButton(requireContext()))
+        binding.ranking.setImageDrawable(StartButtonGray(requireContext()))
+        binding.googleSignIn.setImageDrawable(StartButton(requireContext()))
+        binding.otherGamesButton.setImageDrawable(StartButton(requireContext()))
+        binding.backToGameLinearLayoutEt.background = RoundedFrameDrawable(requireContext(),backToGameButtonSize.height/20,backToGameButtonSize.height/2)
+        binding.loginLinearLayout.background = RoundedFrameDrawable(requireContext(),loginButtonSize.height/20,loginButtonSize.height/2)
+        binding.otherGamesLinearLayout.background = RoundedFrameDrawable(requireContext(),otherGamesButtonSize.height/20,otherGamesButtonSize.height/2)
+        binding.rankingLinearLayout.background = RoundedFrameDrawable(requireContext(),rankingButtonSize.height/20,rankingButtonSize.height/2)
 
-        binding.deleteUserImage.setImageDrawable(StartButton(requireContext(),loginButtonSize.width,loginButtonSize.height))
-        binding.deleteUserLinearLayout.background = RoundedFrameDrawable(requireContext(),5.5*loginButtonSize.width,loginButtonSize.height,loginButtonSize.height/20,loginButtonSize.height/2)
+        binding.deleteUserImage.setImageDrawable(StartButton(requireContext()))
+        binding.deleteUserLinearLayout.background = RoundedFrameDrawable(requireContext(),loginButtonSize.height/20,loginButtonSize.height/2)
 
         val apps = Functions.readNumberOfAppsFromSharedPreferences(requireContext())
         if(apps.isNewApp()){
-            binding.otherGamesButton.setImageDrawable(StartButtonGreen(requireContext(),otherGamesButtonSize.width,otherGamesButtonSize.height))
+            binding.otherGamesButton.setImageDrawable(StartButtonGreen(requireContext()))
         }
 
     }

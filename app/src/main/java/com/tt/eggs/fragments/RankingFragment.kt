@@ -359,15 +359,15 @@ class RankingFragment : Fragment() {
     }
 
     private fun setDrawable() {
-        binding.position1.background = TextViewDrawableWithBorder(requireContext(),positionLayoutSize.width,positionLayoutSize.height)
-        binding.position2.background = TextViewDrawableWithBorder(requireContext(),positionLayoutSize.width,positionLayoutSize.height)
-        binding.position3.background = TextViewDrawableWithBorder(requireContext(),positionLayoutSize.width,positionLayoutSize.height)
-        binding.position4.background = TextViewDrawableWithBorder(requireContext(),positionLayoutSize.width,positionLayoutSize.height)
-        binding.position5.background = TextViewDrawableWithBorder(requireContext(),positionLayoutSize.width,positionLayoutSize.height)
-        binding.rankingUp.setImageDrawable(ArrowUp(requireContext(),arrowSize.width,arrowSize.height))
-        binding.rankingDown.setImageDrawable(ArrowDown(requireContext(),arrowSize.width,arrowSize.height))
-        binding.backToGameRankingImageView.setImageDrawable(StartButton(requireContext(),backToGameButtonSize.width,backToGameButtonSize.height))
-        binding.backToGameLinearLayoutRanking.background = RoundedFrameDrawable(requireContext(),5.5*backToGameButtonSize.width,backToGameButtonSize.height,
+        binding.position1.background = TextViewDrawableWithBorder(requireContext())
+        binding.position2.background = TextViewDrawableWithBorder(requireContext())
+        binding.position3.background = TextViewDrawableWithBorder(requireContext())
+        binding.position4.background = TextViewDrawableWithBorder(requireContext())
+        binding.position5.background = TextViewDrawableWithBorder(requireContext())
+        binding.rankingUp.setImageDrawable(ArrowUp(requireContext()))
+        binding.rankingDown.setImageDrawable(ArrowDown(requireContext()))
+        binding.backToGameRankingImageView.setImageDrawable(StartButton(requireContext()))
+        binding.backToGameLinearLayoutRanking.background = RoundedFrameDrawable(requireContext(),
             backToGameButtonSize.height/20,
             backToGameButtonSize.height/2
         )

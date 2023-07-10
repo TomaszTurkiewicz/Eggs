@@ -6,24 +6,24 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 
-class ArrowUp (private val context: Context, width:Double, height:Double): Drawable() {
+class ArrowUp (private val context: Context): Drawable() {
     private val paint = Paint()
 
-    private val widthUnit = width/16
-    private val heightUnit = height/32
-
-    private val radius1 = widthUnit*8.0
-    private val radius2 = widthUnit*7.6
-    private val radius3 = widthUnit*6.0
-    private val radius4 = widthUnit*5.2
-
-    private val a = Point((widthUnit*8).toInt(), 0)
-    private val b = Point((widthUnit*12).toInt(), (heightUnit*15).toInt())
-    private val c = Point((widthUnit*4).toInt(), (heightUnit*15).toInt())
-
-    private val o = Point((widthUnit*8).toInt(),(heightUnit*24).toInt())
-
     override fun draw(canvas: Canvas) {
+
+        val widthUnit = bounds.width()/16
+        val heightUnit = bounds.height()/32
+
+        val radius1 = widthUnit*8.0
+        val radius2 = widthUnit*7.6
+        val radius3 = widthUnit*6.0
+        val radius4 = widthUnit*5.2
+
+        val a = Point((widthUnit*8), 0)
+        val b = Point((widthUnit*12), (heightUnit*15))
+        val c = Point((widthUnit*4), (heightUnit*15))
+
+        val o = Point((widthUnit*8), (heightUnit*24))
         paint.isAntiAlias = true
         paint.style = Paint.Style.FILL
         paint.color = ContextCompat.getColor(context, R.color.black)

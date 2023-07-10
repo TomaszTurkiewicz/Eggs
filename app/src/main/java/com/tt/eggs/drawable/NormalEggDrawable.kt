@@ -9,12 +9,13 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
-class NormalEggDrawable(private val context: Context, private val size: Double, val black:Boolean):Drawable() {
+class NormalEggDrawable(private val context: Context, val black:Boolean):Drawable() {
         private var paint= Paint()
 
 
 
     override fun draw(canvas: Canvas) {
+        val size = bounds.width()
         paint.style = Paint.Style.STROKE
         paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
         if(black) {

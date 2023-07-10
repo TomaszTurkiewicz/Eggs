@@ -6,63 +6,67 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 
-class Digit(private val context: Context, private val width: Int, private val number:Int?): Drawable(){
+class Digit(private val context: Context, private val number:Int?): Drawable(){
 
     private val paint = Paint()
-    val unit = width*0.03
+
 
     override fun draw(canvas: Canvas) {
+
+        val width = bounds.width()
+        val unit = width*0.03
+
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
         paint.strokeWidth = (width*0.01).toFloat()
 
         if(number==0||number==2||number==3||number==5||number==6||number==7||number==8||number==9){
-            drawUpperSegment(canvas,true)
+            drawUpperSegment(canvas,true,unit,width)
         }else{
-            drawUpperSegment(canvas, false)
+            drawUpperSegment(canvas, false,unit,width)
         }
 
         if(number==0||number==2||number==3||number==5||number==6||number==8||number==9) {
-            drawLowerSegment(canvas,true)
+            drawLowerSegment(canvas,true,unit,width)
         }else{
-            drawLowerSegment(canvas, false)
+            drawLowerSegment(canvas, false,unit,width)
         }
 
         if(number==0||number==1||number==2||number==3||number==4||number==7||number==8||number==9) {
-            drawUpperRightSegment(canvas,true)
+            drawUpperRightSegment(canvas,true,unit,width)
         }else{
-            drawUpperRightSegment(canvas, false)
+            drawUpperRightSegment(canvas, false,unit,width)
         }
 
         if(number==0||number==1||number==3||number==4||number==5||number==6||number==7||number==8||number==9) {
-            drawLowerRightSegment(canvas,true)
+            drawLowerRightSegment(canvas,true,unit,width)
         }else{
-            drawLowerRightSegment(canvas, false)
+            drawLowerRightSegment(canvas, false,unit,width)
         }
 
         if(number==0||number==2||number==6||number==8) {
-            drawLowerLeftSegment(canvas,true)
+            drawLowerLeftSegment(canvas,true,unit,width)
         }else{
-            drawLowerLeftSegment(canvas, false)
+            drawLowerLeftSegment(canvas, false,unit,width)
         }
 
         if(number==0||number==4||number==5||number==6||number==8||number==9) {
-            drawUpperLeftSegment(canvas,true)
+            drawUpperLeftSegment(canvas,true,unit,width)
         }else{
-            drawUpperLeftSegment(canvas, false)
+            drawUpperLeftSegment(canvas, false,unit,width)
         }
 
         if(number==2||number==3||number==4||number==5||number==6||number==8||number==9) {
-            drawMiddleSegment(canvas,true)
+            drawMiddleSegment(canvas,true,unit,width)
         }else{
-            drawMiddleSegment(canvas, false)
+            drawMiddleSegment(canvas, false,unit,width)
         }
 
 
 
     }
 
-    private fun drawMiddleSegment(canvas: Canvas,black:Boolean) {
+    private fun drawMiddleSegment(canvas: Canvas,black:Boolean,unit:Double,width:Int) {
         val path = Path()
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
@@ -81,7 +85,7 @@ class Digit(private val context: Context, private val width: Int, private val nu
         canvas.drawPath(path,paint)
     }
 
-    private fun drawUpperLeftSegment(canvas: Canvas,black:Boolean) {
+    private fun drawUpperLeftSegment(canvas: Canvas,black:Boolean,unit:Double,width:Int) {
         val path = Path()
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
@@ -98,7 +102,7 @@ class Digit(private val context: Context, private val width: Int, private val nu
 
     }
 
-    private fun drawLowerLeftSegment(canvas: Canvas,black:Boolean) {
+    private fun drawLowerLeftSegment(canvas: Canvas,black:Boolean,unit:Double,width:Int) {
         val path = Path()
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
@@ -116,7 +120,7 @@ class Digit(private val context: Context, private val width: Int, private val nu
 
     }
 
-    private fun drawLowerSegment(canvas: Canvas,black:Boolean) {
+    private fun drawLowerSegment(canvas: Canvas,black:Boolean,unit:Double,width:Int) {
         val path = Path()
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
@@ -133,7 +137,7 @@ class Digit(private val context: Context, private val width: Int, private val nu
 
     }
 
-    private fun drawLowerRightSegment(canvas: Canvas,black:Boolean) {
+    private fun drawLowerRightSegment(canvas: Canvas,black:Boolean,unit:Double,width:Int) {
         val path = Path()
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
@@ -150,7 +154,7 @@ class Digit(private val context: Context, private val width: Int, private val nu
 
     }
 
-    private fun drawUpperRightSegment(canvas: Canvas,black:Boolean) {
+    private fun drawUpperRightSegment(canvas: Canvas,black:Boolean,unit:Double,width:Int) {
         val path = Path()
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
@@ -166,7 +170,7 @@ class Digit(private val context: Context, private val width: Int, private val nu
         canvas.drawPath(path,paint)
     }
 
-    private fun drawUpperSegment(canvas: Canvas,black:Boolean) {
+    private fun drawUpperSegment(canvas: Canvas,black:Boolean,unit:Double,width:Int) {
         val path = Path()
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)

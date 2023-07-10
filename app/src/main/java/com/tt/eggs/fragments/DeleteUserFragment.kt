@@ -218,16 +218,16 @@ class DeleteUserFragment : Fragment() {
     }
 
     private fun setDrawable() {
-        binding.frame.background = TextViewDrawableWithBorder(requireContext(),positionLayoutSize.width,positionLayoutSize.height)
+        binding.frame.background = TextViewDrawableWithBorder(requireContext())
 
-        binding.backToGameImageView.setImageDrawable(StartButton(requireContext(),backToGameButtonSize.width,backToGameButtonSize.height))
-        binding.backToGameLinearLayout.background = RoundedFrameDrawable(requireContext(),5.5*backToGameButtonSize.width,backToGameButtonSize.height,
+        binding.backToGameImageView.setImageDrawable(StartButton(requireContext()))
+        binding.backToGameLinearLayout.background = RoundedFrameDrawable(requireContext(),
             backToGameButtonSize.height/20,
             backToGameButtonSize.height/2
         )
 
-        binding.deleteUserImage.setImageDrawable(StartButton(requireContext(),backToGameButtonSize.width,backToGameButtonSize.height))
-        binding.deleteUserLinearLayout.background = RoundedFrameDrawable(requireContext(),5.5*backToGameButtonSize.width,backToGameButtonSize.height,backToGameButtonSize.height/20,backToGameButtonSize.height/2)
+        binding.deleteUserImage.setImageDrawable(StartButton(requireContext()))
+        binding.deleteUserLinearLayout.background = RoundedFrameDrawable(requireContext(),backToGameButtonSize.height/20,backToGameButtonSize.height/2)
     }
 
     private fun getScreenHeightAndWidth() {

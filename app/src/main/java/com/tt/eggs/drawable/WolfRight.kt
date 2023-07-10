@@ -8,11 +8,15 @@ import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 import com.tt.eggs.classes.Static
 
-class WolfRight (private val context: Context, private val width: Double, private val wolf:Int): Drawable() {
+class WolfRight (private val context: Context, private val wolf:Int): Drawable() {
     private val paint = Paint()
-    private val unit = width/100
+
 
     override fun draw(canvas: Canvas) {
+
+        val width = bounds.width()
+        val unit = width.toDouble()/100
+
         paint.color = ContextCompat.getColor(context, R.color.shadow)
 
         paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
@@ -22,49 +26,50 @@ class WolfRight (private val context: Context, private val width: Double, privat
         }else{
             paint.color = ContextCompat.getColor(context, R.color.black)
         }
-        drawBody(canvas)
+        drawBody(canvas,width, unit)
 
         if(wolf==Static.WOLF_DOWN){
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
             paint.color = ContextCompat.getColor(context, R.color.shadow)
         }
-        drawDown(canvas)
+        drawDown(canvas,width, unit)
 
         if(wolf==Static.WOLF_UP){
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
             paint.color = ContextCompat.getColor(context, R.color.shadow)
         }
-        drawUp(canvas)
+        drawUp(canvas,width, unit)
 
     }
 
-    private fun drawUp(canvas: Canvas){
-        drawHandsUp(canvas)
-        drawBasketUp(canvas)
+    private fun drawUp(canvas: Canvas,width:Int, unit:Double){
+        drawHandsUp(canvas,width, unit)
+        drawBasketUp(canvas,width, unit)
     }
 
-    private fun drawDown(canvas: Canvas){
-        drawBasketDown(canvas)
-        drawArmsDown(canvas)
-        drawBasketDownHandle(canvas)
+    private fun drawDown(canvas: Canvas,width:Int, unit:Double){
+        drawBasketDown(canvas,width, unit)
+        drawArmsDown(canvas,width, unit)
+        drawBasketDownHandle(canvas,width, unit)
     }
 
-    private fun drawBody(canvas: Canvas){
-        drawHair(canvas)
-        drawShirt(canvas)
-        drawLegs(canvas)
-        drawPants(canvas)
-        drawEar(canvas)
-        drawHair2(canvas)
-        drawFace(canvas)
-        drawMouth(canvas)
-        drawNose(canvas)
-        drawEyes(canvas)
+    private fun drawBody(canvas: Canvas,width:Int, unit:Double){
+        drawHair(canvas,width, unit)
+        drawShirt(canvas,width, unit)
+        drawLegs(canvas,width, unit)
+        drawPants(canvas,width, unit)
+        drawEar(canvas,width, unit)
+        drawHair2(canvas,width, unit)
+        drawFace(canvas,width, unit)
+        drawMouth(canvas,width, unit)
+        drawNose(canvas,width, unit)
+        drawEyes(canvas,width, unit)
     }
 
-    private fun drawHair(canvas: Canvas){
+
+    private fun drawHair(canvas: Canvas,width:Int, unit:Double){
         paint.style = Paint.Style.FILL_AND_STROKE
 
         paint.strokeWidth = (unit/2).toFloat()
@@ -137,7 +142,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawShirt(canvas: Canvas){
+    private fun drawShirt(canvas: Canvas,width:Int, unit:Double){
         paint.style = Paint.Style.FILL_AND_STROKE
 
         val path1 = Path()
@@ -202,7 +207,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawLegs(canvas: Canvas){
+    private fun drawLegs(canvas: Canvas,width:Int, unit:Double){
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = (unit*1.5).toFloat()
         val pathLegs = Path()
@@ -269,7 +274,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawPants(canvas: Canvas){
+    private fun drawPants(canvas: Canvas,width:Int, unit:Double){
         val pathPants = Path()
 
         val a = Point((width-(width*0.45)).toInt(), (width*0.76).toInt())
@@ -318,7 +323,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawEar(canvas: Canvas){
+    private fun drawEar(canvas: Canvas,width:Int, unit:Double){
         paint.strokeWidth = (unit*1.5).toFloat()
         val a = Point((width-(width*0.68)).toInt(), (width*0.17).toInt())
         val b = Point((width-(width*0.77)).toInt(), (width*0.05).toInt())
@@ -369,7 +374,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawHair2(canvas: Canvas){
+    private fun drawHair2(canvas: Canvas,width:Int, unit:Double){
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.strokeWidth = (unit*0.5).toFloat()
         val a = Point((width-(width*0.55)).toInt(), (width*0.14).toInt())
@@ -397,7 +402,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawFace(canvas: Canvas){
+    private fun drawFace(canvas: Canvas,width:Int, unit:Double){
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = (unit*1.5).toFloat()
 
@@ -450,7 +455,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawMouth(canvas: Canvas){
+    private fun drawMouth(canvas: Canvas,width:Int, unit:Double){
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.strokeWidth = (unit/2).toFloat()
 
@@ -489,7 +494,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawNose(canvas: Canvas){
+    private fun drawNose(canvas: Canvas,width:Int, unit:Double){
         val a = Point((width-(width*0.43)).toInt(), (width*0.18).toInt())
         val b = Point((width-(width*0.445)).toInt(), (width*0.27).toInt())
         val radiusAB = Functions.curvedPath(a,b,unit*4,false)
@@ -506,7 +511,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
         canvas.drawPath(pathNose,paint)
     }
 
-    private fun drawEyes(canvas: Canvas){
+    private fun drawEyes(canvas: Canvas,width:Int, unit:Double){
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.strokeWidth = (unit/2).toFloat()
 
@@ -536,7 +541,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawBasketDown(canvas: Canvas){
+    private fun drawBasketDown(canvas: Canvas,width:Int, unit:Double){
         paint.style = Paint.Style.FILL_AND_STROKE
 
         paint.strokeWidth = (unit/2).toFloat()
@@ -567,7 +572,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawArmsDown(canvas: Canvas){
+    private fun drawArmsDown(canvas: Canvas,width:Int, unit:Double){
         paint.style = Paint.Style.STROKE
 
         paint.strokeWidth = (unit*1.5).toFloat()
@@ -675,7 +680,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawBasketDownHandle(canvas:Canvas){
+    private fun drawBasketDownHandle(canvas:Canvas,width:Int, unit:Double){
         paint.style = Paint.Style.FILL_AND_STROKE
 
         paint.strokeWidth = (unit/2).toFloat()
@@ -722,7 +727,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawHandsUp(canvas: Canvas){
+    private fun drawHandsUp(canvas: Canvas,width:Int, unit:Double){
         paint.style = Paint.Style.STROKE
 
         paint.strokeWidth = (unit*1.5).toFloat()
@@ -855,7 +860,7 @@ class WolfRight (private val context: Context, private val width: Double, privat
 
     }
 
-    private fun drawBasketUp(canvas: Canvas){
+    private fun drawBasketUp(canvas: Canvas,width:Int, unit:Double){
 
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.strokeWidth = (unit/2).toFloat()

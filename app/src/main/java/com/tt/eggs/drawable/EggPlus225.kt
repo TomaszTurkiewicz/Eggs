@@ -10,12 +10,13 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-class EggPlus225 (private val context: Context, private val size: Double, val black:Boolean): Drawable(){
+class EggPlus225 (private val context: Context, val black:Boolean): Drawable(){
     private var paint= Paint()
 
 
 
     override fun draw(canvas: Canvas) {
+        val size = bounds.width()
         paint.style = Paint.Style.STROKE
         paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
         if(black) {

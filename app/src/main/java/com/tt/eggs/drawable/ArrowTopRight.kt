@@ -6,24 +6,22 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 
-class ArrowTopRight (private val context: Context, width:Double, height:Double): Drawable(){
+class ArrowTopRight (private val context: Context): Drawable(){
 
     private val paint = Paint()
-
-    private val widthUnit = width/24
-    private val heightUnit = height/16
-    private val radius1 = widthUnit*8.0
-    private val radius2 = widthUnit*7.6
-    private val radius3 = widthUnit*6.0
-    private val radius4 = widthUnit*5.2
-    private val o = Point((widthUnit*8).toInt(), (heightUnit*8).toInt())
-
-    private val a = Point((widthUnit*17).toInt(), (heightUnit*6).toInt())
-    private val b = Point((widthUnit*15).toInt(), (heightUnit*2).toInt())
-    private val c = Point((widthUnit*24).toInt(), (heightUnit*0).toInt())
-
-
     override fun draw(canvas: Canvas) {
+
+        val widthUnit = bounds.width()/24
+        val heightUnit = bounds.height()/16
+        val radius1 = widthUnit*8.0
+        val radius2 = widthUnit*7.6
+        val radius3 = widthUnit*6.0
+        val radius4 = widthUnit*5.2
+        val o = Point((widthUnit*8), (heightUnit*8))
+
+        val a = Point((widthUnit*17), (heightUnit*6))
+        val b = Point((widthUnit*15), (heightUnit*2))
+        val c = Point((widthUnit*24), (heightUnit*0))
 
         paint.isAntiAlias = true
         paint.style = Paint.Style.FILL

@@ -64,7 +64,7 @@ class OtherGamesActivity : AppCompatActivity() {
         binding.otherGamesButton.setOnClickListener {
             apps.saveNewNumberOfApps()
             Functions.saveNumberOfAppsToSharedPreferences(this,apps)
-            binding.otherGamesButton.setImageDrawable(StartButton(this,buttonSize.width,buttonSize.height))
+            binding.otherGamesButton.setImageDrawable(StartButton(this))
 
             val link = getString(R.string.other_games_link)
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
@@ -105,16 +105,16 @@ class OtherGamesActivity : AppCompatActivity() {
     }
 
     private fun setDrawable() {
-        binding.backToGameOtherGamesButton.setImageDrawable(StartButton(this,buttonSize.width,buttonSize.height))
-        binding.backToGameLinearLayoutOtherGames.background = RoundedFrameDrawable(this,5.5*buttonSize.width,buttonSize.height,buttonSize.height/20,buttonSize.height/2)
-        binding.sendGameButton.setImageDrawable(StartButton(this,buttonSize.width,buttonSize.height))
-        binding.sendGameLinearlayout.background = RoundedFrameDrawable(this,10*buttonSize.width,buttonSize.height, buttonSize.height/20,buttonSize.height/2)
-        binding.otherGamesButton.setImageDrawable(StartButton(this,buttonSize.width,buttonSize.height))
-        binding.otherGamesLinearlayout.background = RoundedFrameDrawable(this,10*buttonSize.width,buttonSize.height, buttonSize.height/20,buttonSize.height/2)
+        binding.backToGameOtherGamesButton.setImageDrawable(StartButton(this))
+        binding.backToGameLinearLayoutOtherGames.background = RoundedFrameDrawable(this,buttonSize.height/20,buttonSize.height/2)
+        binding.sendGameButton.setImageDrawable(StartButton(this))
+        binding.sendGameLinearlayout.background = RoundedFrameDrawable(this, buttonSize.height/20,buttonSize.height/2)
+        binding.otherGamesButton.setImageDrawable(StartButton(this))
+        binding.otherGamesLinearlayout.background = RoundedFrameDrawable(this, buttonSize.height/20,buttonSize.height/2)
 
 
         if(apps.isNewApp()){
-            binding.otherGamesButton.setImageDrawable(StartButtonGreen(this,buttonSize.width,buttonSize.height))
+            binding.otherGamesButton.setImageDrawable(StartButtonGreen(this))
         }
     }
 

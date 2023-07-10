@@ -7,24 +7,29 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.MyPath
 
-class TextViewDrawable  (private val context: Context, private val width:Double, private val height:Double): Drawable() {
+class TextViewDrawable  (private val context: Context): Drawable() {
 
     private val paint = Paint()
-    private val radius1 = height*0.3
 
-    private val margin2 = height*0.04
-    private val radius2 = height*0.25
-
-    private val margin3top = height*0.1
-    private val margin3left = height*0.13
-
-
-    private val marginVertical = height*0.15
-    private val marginHorizontal = height*0.2
-    private val additionalMargin = height*0.06
 
 
     override fun draw(canvas: Canvas) {
+
+        val width = bounds.width()
+        val height = bounds.height()
+
+        val radius1 = height*0.3
+
+        val margin2 = height*0.04
+        val radius2 = height*0.25
+
+        val margin3top = height*0.1
+        val margin3left = height*0.13
+
+
+        val marginVertical = height*0.15
+        val marginHorizontal = height*0.2
+        val additionalMargin = height*0.06
 
         paint.isAntiAlias = true
         val rectR1 = RectF(0f, 0f,width.toFloat(),height.toFloat())

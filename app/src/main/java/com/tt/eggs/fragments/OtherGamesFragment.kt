@@ -75,7 +75,7 @@ class OtherGamesFragment : Fragment() {
         binding.otherGamesButton.setOnClickListener {
             apps.saveNewNumberOfApps()
             Functions.saveNumberOfAppsToSharedPreferences(requireContext(),apps)
-            binding.otherGamesButton.setImageDrawable(StartButton(requireContext(),buttonSize.width,buttonSize.height))
+            binding.otherGamesButton.setImageDrawable(StartButton(requireContext()))
 
             val link = getString(R.string.other_games_link)
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
@@ -140,16 +140,16 @@ class OtherGamesFragment : Fragment() {
     }
 
     private fun setDrawable() {
-        binding.backToGameOtherGamesButton.setImageDrawable(StartButton(requireContext(),buttonSize.width,buttonSize.height))
-        binding.backToGameLinearLayoutOtherGames.background = RoundedFrameDrawable(requireContext(),5.5*buttonSize.width,buttonSize.height,buttonSize.height/20,buttonSize.height/2)
-        binding.sendGameButton.setImageDrawable(StartButton(requireContext(),buttonSize.width,buttonSize.height))
-        binding.sendGameLinearlayout.background = RoundedFrameDrawable(requireContext(),10*buttonSize.width,buttonSize.height, buttonSize.height/20,buttonSize.height/2)
-        binding.otherGamesButton.setImageDrawable(StartButton(requireContext(),buttonSize.width,buttonSize.height))
-        binding.otherGamesLinearlayout.background = RoundedFrameDrawable(requireContext(),10*buttonSize.width,buttonSize.height, buttonSize.height/20,buttonSize.height/2)
+        binding.backToGameOtherGamesButton.setImageDrawable(StartButton(requireContext()))
+        binding.backToGameLinearLayoutOtherGames.background = RoundedFrameDrawable(requireContext(),buttonSize.height/20,buttonSize.height/2)
+        binding.sendGameButton.setImageDrawable(StartButton(requireContext()))
+        binding.sendGameLinearlayout.background = RoundedFrameDrawable(requireContext(),buttonSize.height/20,buttonSize.height/2)
+        binding.otherGamesButton.setImageDrawable(StartButton(requireContext()))
+        binding.otherGamesLinearlayout.background = RoundedFrameDrawable(requireContext(),buttonSize.height/20,buttonSize.height/2)
 
 
         if(apps.isNewApp()){
-            binding.otherGamesButton.setImageDrawable(StartButtonGreen(requireContext(),buttonSize.width,buttonSize.height))
+            binding.otherGamesButton.setImageDrawable(StartButtonGreen(requireContext()))
         }
     }
 

@@ -361,11 +361,11 @@ class StartActivity : AppCompatActivity() {
     // flashing fault
     private fun flashFault(imageView: ImageView):Runnable = Runnable {
         if(faultFlash==Static.ON){
-            imageView.setImageDrawable(FaultTopDrawable(this,faultSize.height,true))
+            imageView.setImageDrawable(FaultTopDrawable(this,true))
             faultFlash=Static.OFF
             mHandlerFlash.postDelayed(flashFault(imageView),500)
         }else{
-            imageView.setImageDrawable(FaultTopDrawable(this,faultSize.height,false))
+            imageView.setImageDrawable(FaultTopDrawable(this,false))
             faultFlash=Static.ON
             mHandlerFlash.postDelayed(flashFault(imageView),500)
         }
@@ -427,9 +427,9 @@ class StartActivity : AppCompatActivity() {
 
     private fun pauseA():Runnable = Runnable {
         if(pauseState==Static.ON){
-            binding.startA.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+            binding.startA.setImageDrawable(StartButtonGreen(this))
         }else {
-            binding.startA.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+            binding.startA.setImageDrawable(StartButton(this))
         }
         pauseState=!pauseState
         mHandlerPause.postDelayed(pauseA(),500)
@@ -437,9 +437,9 @@ class StartActivity : AppCompatActivity() {
 
     private fun pauseB():Runnable = Runnable {
         if(pauseState==Static.ON){
-            binding.startB.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+            binding.startB.setImageDrawable(StartButtonGreen(this))
         }else {
-            binding.startB.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+            binding.startB.setImageDrawable(StartButton(this))
         }
         pauseState=!pauseState
         mHandlerPause.postDelayed(pauseB(),500)
@@ -1020,46 +1020,30 @@ class StartActivity : AppCompatActivity() {
         binding.screenFront.setImageDrawable(MainScreenDrawableFront(this,screenUnit,screenSize.width,screenSize.height))
 
         binding.buttonBottomLeft.setImageDrawable(
-            ArrowBottomLeft(this,screenUnit*arrowSize.width,
-            screenUnit*arrowSize.height
-        )
+            ArrowBottomLeft(this)
         )
 
         binding.buttonTopLeft.setImageDrawable(
-            ArrowTopLeft(this,screenUnit*arrowSize.width,
-            screenUnit*arrowSize.height
-        )
+            ArrowTopLeft(this)
         )
 
         binding.buttonTopRight.setImageDrawable(
-            ArrowTopRight(this,screenUnit*arrowSize.width,
-            screenUnit*arrowSize.height
-        )
+            ArrowTopRight(this)
         )
 
         binding.buttonBottomRight.setImageDrawable(
-            ArrowBottomRight(this,screenUnit*arrowSize.width,
-            screenUnit*arrowSize.height
-        )
+            ArrowBottomRight(this)
         )
 
-        binding.startA.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
-            screenUnit*startButtonSize.height
-        ))
+        binding.startA.setImageDrawable(StartButton(this))
 
-        binding.startB.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
-            screenUnit*startButtonSize.height
-        ))
+        binding.startB.setImageDrawable(StartButton(this))
 
-        binding.closeApp.setImageDrawable(StartButton(this,screenUnit*startButtonSize.width,
-            screenUnit*startButtonSize.height
-        ))
+        binding.closeApp.setImageDrawable(StartButton(this))
 
-        binding.account.setImageDrawable(StartButton(this,screenUnit*userIdSize.height,
-            screenUnit*userIdSize.height
-        ))
+        binding.account.setImageDrawable(StartButton(this))
 
-        binding.userID.background = TextViewDrawable(this,userIdSize.width*screenUnit,userIdSize.height*screenUnit)
+        binding.userID.background = TextViewDrawable(this)
 
 
         val dbRef = Firebase.database.getReference("GooglePlayApps")
@@ -1072,7 +1056,7 @@ class StartActivity : AppCompatActivity() {
                     val newApp = apps.isNewApp()
                     Functions.saveNumberOfAppsToSharedPreferences(this@StartActivity,apps)
                     if(newApp){
-                        binding.account.setImageDrawable(StartButtonGreen(this@StartActivity,screenUnit*userIdSize.height,screenUnit*userIdSize.height))
+                        binding.account.setImageDrawable(StartButtonGreen(this@StartActivity))
                     }
                 }
             }
@@ -1219,39 +1203,39 @@ class StartActivity : AppCompatActivity() {
 
     // display all fallen eggs
     private fun displayState(){
-        binding.eggTopLeftFirst.setImageDrawable(if(game.displayCell(0,Static.LEFT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width,true) else NormalEggDrawable(this,screenUnit*eggSize.width,false))
-        binding.eggTopLeftSecond.setImageDrawable(if(game.displayCell(1,Static.LEFT_TOP)) EggPlus45(this,screenUnit*eggSize.width,true) else EggPlus45(this,screenUnit*eggSize.width,false))
-        binding.eggTopLeftThird.setImageDrawable(if(game.displayCell(2,Static.LEFT_TOP)) EggPlus90(this,screenUnit*eggSize.width,true) else EggPlus90(this,screenUnit*eggSize.width,false))
-        binding.eggTopLeftFourth.setImageDrawable(if(game.displayCell(3,Static.LEFT_TOP)) EggPlus135(this,screenUnit*eggSize.width,true) else EggPlus135(this,screenUnit*eggSize.width,false))
-        binding.eggTopLeftFifth.setImageDrawable(if(game.displayCell(4,Static.LEFT_TOP)) EggPlus225(this,screenUnit*eggSize.width,true) else EggPlus225(this,screenUnit*eggSize.width,false))
+        binding.eggTopLeftFirst.setImageDrawable(if(game.displayCell(0,Static.LEFT_TOP)) NormalEggDrawable(this,true) else NormalEggDrawable(this,false))
+        binding.eggTopLeftSecond.setImageDrawable(if(game.displayCell(1,Static.LEFT_TOP)) EggPlus45(this,true) else EggPlus45(this,false))
+        binding.eggTopLeftThird.setImageDrawable(if(game.displayCell(2,Static.LEFT_TOP)) EggPlus90(this,true) else EggPlus90(this,false))
+        binding.eggTopLeftFourth.setImageDrawable(if(game.displayCell(3,Static.LEFT_TOP)) EggPlus135(this,true) else EggPlus135(this,false))
+        binding.eggTopLeftFifth.setImageDrawable(if(game.displayCell(4,Static.LEFT_TOP)) EggPlus225(this,true) else EggPlus225(this,false))
 
 
-        binding.eggBottomLeftFirst.setImageDrawable(if(game.displayCell(0,Static.LEFT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width,true) else NormalEggDrawable(this,screenUnit*eggSize.width,false))
-        binding.eggBottomLeftSecond.setImageDrawable(if(game.displayCell(1,Static.LEFT_BOTTOM)) EggPlus45(this,screenUnit*eggSize.width,true) else EggPlus45(this,screenUnit*eggSize.width,false))
-        binding.eggBottomLeftThird.setImageDrawable(if(game.displayCell(2,Static.LEFT_BOTTOM)) EggPlus90(this,screenUnit*eggSize.width,true) else EggPlus90(this,screenUnit*eggSize.width,false))
-        binding.eggBottomLeftFourth.setImageDrawable(if(game.displayCell(3,Static.LEFT_BOTTOM)) EggPlus135(this,screenUnit*eggSize.width,true) else EggPlus135(this,screenUnit*eggSize.width,false))
-        binding.eggBottomLeftFifth.setImageDrawable(if(game.displayCell(4,Static.LEFT_BOTTOM)) EggPlus225(this,screenUnit*eggSize.width,true) else EggPlus225(this,screenUnit*eggSize.width,false))
+        binding.eggBottomLeftFirst.setImageDrawable(if(game.displayCell(0,Static.LEFT_BOTTOM)) NormalEggDrawable(this,true) else NormalEggDrawable(this,false))
+        binding.eggBottomLeftSecond.setImageDrawable(if(game.displayCell(1,Static.LEFT_BOTTOM)) EggPlus45(this,true) else EggPlus45(this,false))
+        binding.eggBottomLeftThird.setImageDrawable(if(game.displayCell(2,Static.LEFT_BOTTOM)) EggPlus90(this,true) else EggPlus90(this,false))
+        binding.eggBottomLeftFourth.setImageDrawable(if(game.displayCell(3,Static.LEFT_BOTTOM)) EggPlus135(this,true) else EggPlus135(this,false))
+        binding.eggBottomLeftFifth.setImageDrawable(if(game.displayCell(4,Static.LEFT_BOTTOM)) EggPlus225(this,true) else EggPlus225(this,false))
 
 
-        binding.eggBottomRightFirst.setImageDrawable(if(game.displayCell(0,Static.RIGHT_BOTTOM)) NormalEggDrawable(this,screenUnit*eggSize.width,true) else NormalEggDrawable(this,screenUnit*eggSize.width,false))
-        binding.eggBottomRightSecond.setImageDrawable(if(game.displayCell(1,Static.RIGHT_BOTTOM)) EggMinus45(this,screenUnit*eggSize.width,true) else EggMinus45(this,screenUnit*eggSize.width,false))
-        binding.eggBottomRightThird.setImageDrawable(if(game.displayCell(2,Static.RIGHT_BOTTOM)) EggMinus90(this,screenUnit*eggSize.width,true) else EggMinus90(this,screenUnit*eggSize.width,false))
-        binding.eggBottomRightFourth.setImageDrawable(if(game.displayCell(3,Static.RIGHT_BOTTOM)) EggPlus225(this,screenUnit*eggSize.width,true) else EggPlus225(this,screenUnit*eggSize.width,false))
-        binding.eggBottomRightFifth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_BOTTOM)) EggPlus135(this,screenUnit*eggSize.width,true) else EggPlus135(this,screenUnit*eggSize.width,false))
+        binding.eggBottomRightFirst.setImageDrawable(if(game.displayCell(0,Static.RIGHT_BOTTOM)) NormalEggDrawable(this,true) else NormalEggDrawable(this,false))
+        binding.eggBottomRightSecond.setImageDrawable(if(game.displayCell(1,Static.RIGHT_BOTTOM)) EggMinus45(this,true) else EggMinus45(this,false))
+        binding.eggBottomRightThird.setImageDrawable(if(game.displayCell(2,Static.RIGHT_BOTTOM)) EggMinus90(this,true) else EggMinus90(this,false))
+        binding.eggBottomRightFourth.setImageDrawable(if(game.displayCell(3,Static.RIGHT_BOTTOM)) EggPlus225(this,true) else EggPlus225(this,false))
+        binding.eggBottomRightFifth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_BOTTOM)) EggPlus135(this,true) else EggPlus135(this,false))
 
 
-        binding.eggTopRightFirst.setImageDrawable(if(game.displayCell(0,Static.RIGHT_TOP)) NormalEggDrawable(this,screenUnit*eggSize.width,true) else NormalEggDrawable(this,screenUnit*eggSize.width,false))
-        binding.eggTopRightSecond.setImageDrawable(if(game.displayCell(1,Static.RIGHT_TOP)) EggMinus45(this,screenUnit*eggSize.width,true) else EggMinus45(this,screenUnit*eggSize.width,false))
-        binding.eggTopRightThird.setImageDrawable(if(game.displayCell(2,Static.RIGHT_TOP)) EggMinus90(this,screenUnit*eggSize.width,true) else EggMinus90(this,screenUnit*eggSize.width,false))
-        binding.eggTopRightFourth.setImageDrawable(if(game.displayCell(3,Static.RIGHT_TOP)) EggPlus225(this,screenUnit*eggSize.width,true) else EggPlus225(this,screenUnit*eggSize.width,false))
-        binding.eggTopRightFifth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_TOP)) EggPlus135(this,screenUnit*eggSize.width,true) else EggPlus135(this,screenUnit*eggSize.width,false))
+        binding.eggTopRightFirst.setImageDrawable(if(game.displayCell(0,Static.RIGHT_TOP)) NormalEggDrawable(this,true) else NormalEggDrawable(this,false))
+        binding.eggTopRightSecond.setImageDrawable(if(game.displayCell(1,Static.RIGHT_TOP)) EggMinus45(this,true) else EggMinus45(this,false))
+        binding.eggTopRightThird.setImageDrawable(if(game.displayCell(2,Static.RIGHT_TOP)) EggMinus90(this,true) else EggMinus90(this,false))
+        binding.eggTopRightFourth.setImageDrawable(if(game.displayCell(3,Static.RIGHT_TOP)) EggPlus225(this,true) else EggPlus225(this,false))
+        binding.eggTopRightFifth.setImageDrawable(if(game.displayCell(4,Static.RIGHT_TOP)) EggPlus135(this,true) else EggPlus135(this,false))
 
 
     }
 
     // display rabbit
     private fun displayRabbit(rabbitBoolean: Boolean){
-        binding.rabbit.setImageDrawable(if(rabbitBoolean) RabbitDrawable(this,rabbitSize.width,true) else RabbitDrawable(this,rabbitSize.width,false))
+        binding.rabbit.setImageDrawable(if(rabbitBoolean) RabbitDrawable(this,true) else RabbitDrawable(this,false))
 
 //       if(rabbitBoolean){
 //           binding.rabbit.setImageDrawable(RabbitDrawable(this,rabbitSize.width))
@@ -1263,16 +1247,16 @@ class StartActivity : AppCompatActivity() {
 
     // display running chicken during animation
     private fun displayRunningChicken(fallenEgg: FallenEgg) {
-        binding.faultLeftFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,0))BrokenEggLeft(this,bottomFaultSizeFirst.width,true)else BrokenEggLeft(this,bottomFaultSizeFirst.width,false))
-        binding.faultLeftSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,0))RunningChickenLeftFirst(this,bottomFaultSizeSmallDifferent.width,true)else RunningChickenLeftFirst(this,bottomFaultSizeSmallDifferent.width,false))
-        binding.faultLeftThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,0))RunningChickenLeftTwo(this,bottomFaultSizeSmall.width,true)else RunningChickenLeftTwo(this,bottomFaultSizeSmall.width,false))
-        binding.faultLeftFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,0))RunningChickenLeftThree(this,bottomFaultSizeSmall.width,true)else RunningChickenLeftThree(this,bottomFaultSizeSmall.width,false))
+        binding.faultLeftFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,0))BrokenEggLeft(this,true)else BrokenEggLeft(this,false))
+        binding.faultLeftSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,0))RunningChickenLeftFirst(this,true)else RunningChickenLeftFirst(this,false))
+        binding.faultLeftThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,0))RunningChickenLeftTwo(this,true)else RunningChickenLeftTwo(this,false))
+        binding.faultLeftFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,0))RunningChickenLeftThree(this,true)else RunningChickenLeftThree(this,false))
 
 
-        binding.faultRightFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,1))BrokenEggRight(this,bottomFaultSizeFirst.width,true)else BrokenEggRight(this,bottomFaultSizeFirst.width,false))
-        binding.faultRightSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,1))RunningChickenRightFirst(this,bottomFaultSizeSmallDifferent.width,true)else RunningChickenRightFirst(this,bottomFaultSizeSmallDifferent.width,false))
-        binding.faultRightThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,1))RunningChickenRightTwo(this,bottomFaultSizeSmall.width,true)else RunningChickenRightTwo(this,bottomFaultSizeSmall.width,false))
-        binding.faultRightFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,1))RunningChickenRightThree(this,bottomFaultSizeSmall.width,true)else RunningChickenRightThree(this,bottomFaultSizeSmall.width,false))
+        binding.faultRightFirst.setImageDrawable(if(fallenEgg.getFallenEgg(1,1))BrokenEggRight(this,true)else BrokenEggRight(this,false))
+        binding.faultRightSecond.setImageDrawable(if(fallenEgg.getFallenEgg(2,1))RunningChickenRightFirst(this,true)else RunningChickenRightFirst(this,false))
+        binding.faultRightThird.setImageDrawable(if(fallenEgg.getFallenEgg(3,1))RunningChickenRightTwo(this,true)else RunningChickenRightTwo(this,false))
+        binding.faultRightFourth.setImageDrawable(if(fallenEgg.getFallenEgg(4,1))RunningChickenRightThree(this,true)else RunningChickenRightThree(this,false))
 
 
     }
@@ -1280,21 +1264,21 @@ class StartActivity : AppCompatActivity() {
     // display demo basket
     private fun displayDemoBasket() {
         if(game.position[Static.LEFT_TOP]){
-            binding.leftWolf.setImageDrawable(WolfLeft(this,wolfSize.width,Static.WOLF_UP))
-            binding.rightWolf.setImageDrawable(WolfRight(this,wolfSize.width,Static.WOLF_SHADOW))
+            binding.leftWolf.setImageDrawable(WolfLeft(this,Static.WOLF_UP))
+            binding.rightWolf.setImageDrawable(WolfRight(this,Static.WOLF_SHADOW))
         }
 
         if(game.position[Static.LEFT_BOTTOM]){
-            binding.leftWolf.setImageDrawable(WolfLeft(this,wolfSize.width,Static.WOLF_DOWN))
-            binding.rightWolf.setImageDrawable(WolfRight(this,wolfSize.width,Static.WOLF_SHADOW))
+            binding.leftWolf.setImageDrawable(WolfLeft(this,Static.WOLF_DOWN))
+            binding.rightWolf.setImageDrawable(WolfRight(this,Static.WOLF_SHADOW))
         }
         if(game.position[Static.RIGHT_BOTTOM]){
-            binding.leftWolf.setImageDrawable(WolfLeft(this,wolfSize.width,Static.WOLF_SHADOW))
-            binding.rightWolf.setImageDrawable(WolfRight(this,wolfSize.width,Static.WOLF_DOWN))
+            binding.leftWolf.setImageDrawable(WolfLeft(this,Static.WOLF_SHADOW))
+            binding.rightWolf.setImageDrawable(WolfRight(this,Static.WOLF_DOWN))
         }
         if(game.position[Static.RIGHT_TOP]){
-            binding.leftWolf.setImageDrawable(WolfLeft(this,wolfSize.width,Static.WOLF_SHADOW))
-            binding.rightWolf.setImageDrawable(WolfRight(this,wolfSize.width,Static.WOLF_UP))
+            binding.leftWolf.setImageDrawable(WolfLeft(this,Static.WOLF_SHADOW))
+            binding.rightWolf.setImageDrawable(WolfRight(this,Static.WOLF_UP))
         }
 
     }
@@ -1321,25 +1305,17 @@ class StartActivity : AppCompatActivity() {
     }
 
     private fun displayScoreImageViews(oneDigit:Int?,tenDigit:Int?,hundredDigit:Int?, thousandDigit:Int?) {
-        if(thousandDigit!=null) binding.digitThousand.setImageDrawable(Digit(this,
-            (digitSize.width*screenUnit).toInt(),thousandDigit))
-        else binding.digitThousand.setImageDrawable(Digit(this,
-            (digitSize.width*screenUnit).toInt(),null))
+        if(thousandDigit!=null) binding.digitThousand.setImageDrawable(Digit(this,thousandDigit))
+        else binding.digitThousand.setImageDrawable(Digit(this,null))
 
-        if(hundredDigit!=null) binding.digitHundred.setImageDrawable(Digit(this,
-            (digitSize.width*screenUnit).toInt(),hundredDigit))
-        else binding.digitHundred.setImageDrawable(Digit(this,
-            (digitSize.width*screenUnit).toInt(),null))
+        if(hundredDigit!=null) binding.digitHundred.setImageDrawable(Digit(this,hundredDigit))
+        else binding.digitHundred.setImageDrawable(Digit(this,null))
 
-        if(tenDigit!=null) binding.digitTen.setImageDrawable(Digit(this,
-            (digitSize.width*screenUnit).toInt(),tenDigit))
-        else binding.digitTen.setImageDrawable(Digit(this,
-            (digitSize.width*screenUnit).toInt(),null))
+        if(tenDigit!=null) binding.digitTen.setImageDrawable(Digit(this,tenDigit))
+        else binding.digitTen.setImageDrawable(Digit(this,null))
 
-        if(oneDigit!=null) binding.digitOne.setImageDrawable(Digit(this,
-            (digitSize.width*screenUnit).toInt(),oneDigit))
-        else binding.digitOne.setImageDrawable(Digit(this,
-            (digitSize.width*screenUnit).toInt(),null))
+        if(oneDigit!=null) binding.digitOne.setImageDrawable(Digit(this,oneDigit))
+        else binding.digitOne.setImageDrawable(Digit(this,null))
 
 
     }
@@ -1362,20 +1338,20 @@ class StartActivity : AppCompatActivity() {
     private fun displayBasket(){
         game.setBasket(basket)
         if(game.position[Static.LEFT_TOP]){
-            binding.leftWolf.setImageDrawable(WolfLeft(this,wolfSize.width,Static.WOLF_UP))
-            binding.rightWolf.setImageDrawable(WolfRight(this,wolfSize.width,Static.WOLF_SHADOW))
+            binding.leftWolf.setImageDrawable(WolfLeft(this,Static.WOLF_UP))
+            binding.rightWolf.setImageDrawable(WolfRight(this,Static.WOLF_SHADOW))
         }
         if(game.position[Static.LEFT_BOTTOM]){
-            binding.leftWolf.setImageDrawable(WolfLeft(this,wolfSize.width,Static.WOLF_DOWN))
-            binding.rightWolf.setImageDrawable(WolfRight(this,wolfSize.width,Static.WOLF_SHADOW))
+            binding.leftWolf.setImageDrawable(WolfLeft(this,Static.WOLF_DOWN))
+            binding.rightWolf.setImageDrawable(WolfRight(this,Static.WOLF_SHADOW))
         }
         if(game.position[Static.RIGHT_BOTTOM]){
-            binding.leftWolf.setImageDrawable(WolfLeft(this,wolfSize.width,Static.WOLF_SHADOW))
-            binding.rightWolf.setImageDrawable(WolfRight(this,wolfSize.width,Static.WOLF_DOWN))
+            binding.leftWolf.setImageDrawable(WolfLeft(this,Static.WOLF_SHADOW))
+            binding.rightWolf.setImageDrawable(WolfRight(this,Static.WOLF_DOWN))
         }
         if(game.position[Static.RIGHT_TOP]){
-            binding.leftWolf.setImageDrawable(WolfLeft(this,wolfSize.width,Static.WOLF_SHADOW))
-            binding.rightWolf.setImageDrawable(WolfRight(this,wolfSize.width,Static.WOLF_UP))
+            binding.leftWolf.setImageDrawable(WolfLeft(this,Static.WOLF_SHADOW))
+            binding.rightWolf.setImageDrawable(WolfRight(this,Static.WOLF_UP))
         }
     }
 
@@ -1538,8 +1514,8 @@ class StartActivity : AppCompatActivity() {
         binding.digitThousand.visibility = View.VISIBLE
         displayScoreImageViews(0,0,0,0)
 
-        binding.startA.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
-        binding.startB.setImageDrawable(StartButton(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+        binding.startA.setImageDrawable(StartButton(this))
+        binding.startB.setImageDrawable(StartButton(this))
 
         mHandler.removeCallbacksAndMessages(null)
         mHandlerDemo.removeCallbacksAndMessages(null)
@@ -1575,7 +1551,7 @@ class StartActivity : AppCompatActivity() {
         displayState()
         gameLoop().run()
         rabbitShow().run()
-        binding.startA.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+        binding.startA.setImageDrawable(StartButtonGreen(this))
 
     }
 
@@ -1592,7 +1568,7 @@ class StartActivity : AppCompatActivity() {
         displayState()
         gameLoop().run()
         rabbitShow().run()
-        binding.startB.setImageDrawable(StartButtonGreen(this,startButtonSize.width*screenUnit,startButtonSize.height*screenUnit))
+        binding.startB.setImageDrawable(StartButtonGreen(this))
 
     }
 
@@ -1781,52 +1757,52 @@ class StartActivity : AppCompatActivity() {
 
     private fun zeroFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
-        binding.rightFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,false))
-        binding.middleFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,false))
-        binding.leftFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,false))
+        binding.rightFault.setImageDrawable(FaultTopDrawable(this,false))
+        binding.middleFault.setImageDrawable(FaultTopDrawable(this,false))
+        binding.leftFault.setImageDrawable(FaultTopDrawable(this,false))
     }
 
     private fun oneFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
         flashFault(binding.rightFault).run()
-        binding.leftFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,false))
-        binding.middleFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,false))
+        binding.leftFault.setImageDrawable(FaultTopDrawable(this,false))
+        binding.middleFault.setImageDrawable(FaultTopDrawable(this,false))
 
     }
 
     private fun twoFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
-        binding.leftFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,false))
-        binding.middleFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,false))
-        binding.rightFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,true))
+        binding.leftFault.setImageDrawable(FaultTopDrawable(this,false))
+        binding.middleFault.setImageDrawable(FaultTopDrawable(this,false))
+        binding.rightFault.setImageDrawable(FaultTopDrawable(this,true))
     }
 
     private fun threeFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
         flashFault(binding.middleFault).run()
-        binding.leftFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,false))
-        binding.rightFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,true))
+        binding.leftFault.setImageDrawable(FaultTopDrawable(this,false))
+        binding.rightFault.setImageDrawable(FaultTopDrawable(this,true))
     }
 
     private fun fourFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
-        binding.leftFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,false))
-        binding.middleFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,true))
-        binding.rightFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,true))
+        binding.leftFault.setImageDrawable(FaultTopDrawable(this,false))
+        binding.middleFault.setImageDrawable(FaultTopDrawable(this,true))
+        binding.rightFault.setImageDrawable(FaultTopDrawable(this,true))
     }
 
     private fun fiveFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
         flashFault(binding.leftFault).run()
-        binding.middleFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,true))
-        binding.rightFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,true))
+        binding.middleFault.setImageDrawable(FaultTopDrawable(this,true))
+        binding.rightFault.setImageDrawable(FaultTopDrawable(this,true))
     }
 
     private fun sixFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
-        binding.leftFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,true))
-        binding.middleFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,true))
-        binding.rightFault.setImageDrawable(FaultTopDrawable(this,faultSize.height,true))
+        binding.leftFault.setImageDrawable(FaultTopDrawable(this,true))
+        binding.middleFault.setImageDrawable(FaultTopDrawable(this,true))
+        binding.rightFault.setImageDrawable(FaultTopDrawable(this,true))
     }
 
     // lost egg animation end game

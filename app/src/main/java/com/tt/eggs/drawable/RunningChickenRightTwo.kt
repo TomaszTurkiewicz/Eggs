@@ -7,11 +7,14 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 
-class RunningChickenRightTwo(private val context: Context, private val width: Double,val black:Boolean): Drawable() {
+class RunningChickenRightTwo(private val context: Context, val black:Boolean): Drawable() {
     private val paint = Paint()
-    private val unit = width/100
+
 
     override fun draw(canvas: Canvas) {
+
+        val width = bounds.width()
+        val unit = width.toDouble()/100
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
         if(black) {

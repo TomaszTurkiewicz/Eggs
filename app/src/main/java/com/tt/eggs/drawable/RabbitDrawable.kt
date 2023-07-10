@@ -7,13 +7,16 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 
-class RabbitDrawable(private val context: Context, private val size: Double, val black:Boolean): Drawable() {
+class RabbitDrawable(private val context: Context,  val black:Boolean): Drawable() {
     private val paint= Paint()
-    private val stroke = size/100
+
 
 
 
     override fun draw(canvas: Canvas) {
+
+        val size = bounds.width()
+        val stroke = size/100
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
         if(black) {

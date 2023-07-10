@@ -1,14 +1,11 @@
 package com.tt.eggs.fragments
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.DisplayMetrics
 import android.util.TypedValue
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -16,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
@@ -26,7 +24,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.tt.eggs.LoginActivity
 import com.tt.eggs.R
 import com.tt.eggs.classes.*
 import com.tt.eggs.databinding.FragmentMainBinding
@@ -34,7 +31,6 @@ import com.tt.eggs.drawable.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import kotlin.random.Random
 
 
@@ -359,18 +355,12 @@ class MainFragment : Fragment() {
             if (pauseState == Static.ON) {
                 binding.startB.setImageDrawable(
                     StartButtonGreen(
-                        requireContext(),
-                        startButtonSize.width * screenUnit,
-                        startButtonSize.height * screenUnit
-                    )
+                        requireContext())
                 )
             } else {
                 binding.startB.setImageDrawable(
                     StartButton(
-                        requireContext(),
-                        startButtonSize.width * screenUnit,
-                        startButtonSize.height * screenUnit
-                    )
+                        requireContext())
                 )
             }
             pauseState = !pauseState
@@ -395,10 +385,7 @@ class MainFragment : Fragment() {
         view?.let {
             binding.startB.setImageDrawable(
                 StartButtonGreen(
-                    requireContext(),
-                    startButtonSize.width * screenUnit,
-                    startButtonSize.height * screenUnit
-                )
+                    requireContext())
             )
         }
     }
@@ -428,18 +415,12 @@ class MainFragment : Fragment() {
             if (pauseState == Static.ON) {
                 binding.startA.setImageDrawable(
                     StartButtonGreen(
-                        requireContext(),
-                        startButtonSize.width * screenUnit,
-                        startButtonSize.height * screenUnit
-                    )
+                        requireContext())
                 )
             } else {
                 binding.startA.setImageDrawable(
                     StartButton(
-                        requireContext(),
-                        startButtonSize.width * screenUnit,
-                        startButtonSize.height * screenUnit
-                    )
+                        requireContext())
                 )
             }
         }
@@ -465,10 +446,7 @@ class MainFragment : Fragment() {
         view?.let {
             binding.startA.setImageDrawable(
                 StartButtonGreen(
-                    requireContext(),
-                    startButtonSize.width * screenUnit,
-                    startButtonSize.height * screenUnit
-                )
+                    requireContext())
             )
         }
     }
@@ -508,9 +486,8 @@ class MainFragment : Fragment() {
             binding.rabbit.setImageDrawable(
                 if (rabbitBoolean) RabbitDrawable(
                     requireContext(),
-                    rabbitSize.width,
                     true
-                ) else RabbitDrawable(requireContext(), rabbitSize.width, false)
+                ) else RabbitDrawable(requireContext(), false)
             )
         }
     }
@@ -521,9 +498,8 @@ class MainFragment : Fragment() {
             binding.faultLeftFirst.setImageDrawable(
                 if (fallenEgg.getFallenEgg(1, 0)) BrokenEggLeft(
                     requireContext(),
-                    bottomFaultSizeFirst.width,
                     true
-                ) else BrokenEggLeft(requireContext(), bottomFaultSizeFirst.width, false)
+                ) else BrokenEggLeft(requireContext(), false)
             )
             binding.faultLeftSecond.setImageDrawable(
                 if (fallenEgg.getFallenEgg(
@@ -532,11 +508,9 @@ class MainFragment : Fragment() {
                     )
                 ) RunningChickenLeftFirst(
                     requireContext(),
-                    bottomFaultSizeSmallDifferent.width,
                     true
                 ) else RunningChickenLeftFirst(
                     requireContext(),
-                    bottomFaultSizeSmallDifferent.width,
                     false
                 )
             )
@@ -547,9 +521,8 @@ class MainFragment : Fragment() {
                     )
                 ) RunningChickenLeftTwo(
                     requireContext(),
-                    bottomFaultSizeSmall.width,
                     true
-                ) else RunningChickenLeftTwo(requireContext(), bottomFaultSizeSmall.width, false)
+                ) else RunningChickenLeftTwo(requireContext(), false)
             )
             binding.faultLeftFourth.setImageDrawable(
                 if (fallenEgg.getFallenEgg(
@@ -558,9 +531,8 @@ class MainFragment : Fragment() {
                     )
                 ) RunningChickenLeftThree(
                     requireContext(),
-                    bottomFaultSizeSmall.width,
                     true
-                ) else RunningChickenLeftThree(requireContext(), bottomFaultSizeSmall.width, false)
+                ) else RunningChickenLeftThree(requireContext(), false)
             )
 
 
@@ -571,9 +543,8 @@ class MainFragment : Fragment() {
                     )
                 ) BrokenEggRight(
                     requireContext(),
-                    bottomFaultSizeFirst.width,
                     true
-                ) else BrokenEggRight(requireContext(), bottomFaultSizeFirst.width, false)
+                ) else BrokenEggRight(requireContext(), false)
             )
             binding.faultRightSecond.setImageDrawable(
                 if (fallenEgg.getFallenEgg(
@@ -582,11 +553,9 @@ class MainFragment : Fragment() {
                     )
                 ) RunningChickenRightFirst(
                     requireContext(),
-                    bottomFaultSizeSmallDifferent.width,
                     true
                 ) else RunningChickenRightFirst(
                     requireContext(),
-                    bottomFaultSizeSmallDifferent.width,
                     false
                 )
             )
@@ -597,9 +566,8 @@ class MainFragment : Fragment() {
                     )
                 ) RunningChickenRightTwo(
                     requireContext(),
-                    bottomFaultSizeSmall.width,
                     true
-                ) else RunningChickenRightTwo(requireContext(), bottomFaultSizeSmall.width, false)
+                ) else RunningChickenRightTwo(requireContext(), false)
             )
             binding.faultRightFourth.setImageDrawable(
                 if (fallenEgg.getFallenEgg(
@@ -608,9 +576,8 @@ class MainFragment : Fragment() {
                     )
                 ) RunningChickenRightThree(
                     requireContext(),
-                    bottomFaultSizeSmall.width,
                     true
-                ) else RunningChickenRightThree(requireContext(), bottomFaultSizeSmall.width, false)
+                ) else RunningChickenRightThree(requireContext(),false)
             )
 
         }
@@ -703,17 +670,11 @@ class MainFragment : Fragment() {
         view?.let {
             binding.startA.setImageDrawable(
                 StartButton(
-                    requireContext(),
-                    startButtonSize.width * screenUnit,
-                    startButtonSize.height * screenUnit
-                )
+                    requireContext())
             )
             binding.startB.setImageDrawable(
                 StartButton(
-                    requireContext(),
-                    startButtonSize.width * screenUnit,
-                    startButtonSize.height * screenUnit
-                )
+                    requireContext())
             )
         }
         mHandler.removeCallbacksAndMessages(null)
@@ -754,14 +715,12 @@ class MainFragment : Fragment() {
                 binding.leftWolf.setImageDrawable(
                     WolfLeft(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_UP
                     )
                 )
                 binding.rightWolf.setImageDrawable(
                     WolfRight(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_SHADOW
                     )
                 )
@@ -771,14 +730,12 @@ class MainFragment : Fragment() {
                 binding.leftWolf.setImageDrawable(
                     WolfLeft(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_DOWN
                     )
                 )
                 binding.rightWolf.setImageDrawable(
                     WolfRight(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_SHADOW
                     )
                 )
@@ -787,14 +744,12 @@ class MainFragment : Fragment() {
                 binding.leftWolf.setImageDrawable(
                     WolfLeft(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_SHADOW
                     )
                 )
                 binding.rightWolf.setImageDrawable(
                     WolfRight(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_DOWN
                     )
                 )
@@ -803,14 +758,12 @@ class MainFragment : Fragment() {
                 binding.leftWolf.setImageDrawable(
                     WolfLeft(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_SHADOW
                     )
                 )
                 binding.rightWolf.setImageDrawable(
                     WolfRight(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_UP
                     )
                 )
@@ -1163,53 +1116,45 @@ class MainFragment : Fragment() {
         view?.let {
             if (thousandDigit != null) binding.digitThousand.setImageDrawable(
                 Digit(
-                    requireContext(),
-                    (digitSize.width * screenUnit).toInt(), thousandDigit
+                    requireContext(),thousandDigit
                 )
             )
             else binding.digitThousand.setImageDrawable(
                 Digit(
-                    requireContext(),
-                    (digitSize.width * screenUnit).toInt(), null
+                    requireContext(), null
                 )
             )
 
             if (hundredDigit != null) binding.digitHundred.setImageDrawable(
                 Digit(
-                    requireContext(),
-                    (digitSize.width * screenUnit).toInt(), hundredDigit
+                    requireContext(),hundredDigit
                 )
             )
             else binding.digitHundred.setImageDrawable(
                 Digit(
-                    requireContext(),
-                    (digitSize.width * screenUnit).toInt(), null
+                    requireContext(),null
                 )
             )
 
             if (tenDigit != null) binding.digitTen.setImageDrawable(
                 Digit(
-                    requireContext(),
-                    (digitSize.width * screenUnit).toInt(), tenDigit
+                    requireContext(), tenDigit
                 )
             )
             else binding.digitTen.setImageDrawable(
                 Digit(
-                    requireContext(),
-                    (digitSize.width * screenUnit).toInt(), null
+                    requireContext(),null
                 )
             )
 
             if (oneDigit != null) binding.digitOne.setImageDrawable(
                 Digit(
-                    requireContext(),
-                    (digitSize.width * screenUnit).toInt(), oneDigit
+                    requireContext(),oneDigit
                 )
             )
             else binding.digitOne.setImageDrawable(
                 Digit(
-                    requireContext(),
-                    (digitSize.width * screenUnit).toInt(), null
+                    requireContext(),null
                 )
             )
         }
@@ -1233,9 +1178,9 @@ class MainFragment : Fragment() {
     private fun zeroFault(){
         mHandlerFlash.removeCallbacksAndMessages(null)
         view?.let {
-        binding.rightFault.setImageDrawable(FaultTopDrawable(requireContext(),faultSize.height,false))
-        binding.middleFault.setImageDrawable(FaultTopDrawable(requireContext(),faultSize.height,false))
-        binding.leftFault.setImageDrawable(FaultTopDrawable(requireContext(),faultSize.height,false))
+        binding.rightFault.setImageDrawable(FaultTopDrawable(requireContext(),false))
+        binding.middleFault.setImageDrawable(FaultTopDrawable(requireContext(),false))
+        binding.leftFault.setImageDrawable(FaultTopDrawable(requireContext(),false))
         }
     }
 
@@ -1246,14 +1191,12 @@ class MainFragment : Fragment() {
             binding.leftFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     false
                 )
             )
             binding.middleFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     false
                 )
             )
@@ -1266,21 +1209,18 @@ class MainFragment : Fragment() {
             binding.leftFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     false
                 )
             )
             binding.middleFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     false
                 )
             )
             binding.rightFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     true
                 )
             )
@@ -1294,14 +1234,12 @@ class MainFragment : Fragment() {
             binding.leftFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     false
                 )
             )
             binding.rightFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     true
                 )
             )
@@ -1314,21 +1252,18 @@ class MainFragment : Fragment() {
             binding.leftFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     false
                 )
             )
             binding.middleFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     true
                 )
             )
             binding.rightFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     true
                 )
             )
@@ -1342,14 +1277,12 @@ class MainFragment : Fragment() {
             binding.middleFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     true
                 )
             )
             binding.rightFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     true
                 )
             )
@@ -1362,21 +1295,18 @@ class MainFragment : Fragment() {
             binding.leftFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     true
                 )
             )
             binding.middleFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     true
                 )
             )
             binding.rightFault.setImageDrawable(
                 FaultTopDrawable(
                     requireContext(),
-                    faultSize.height,
                     true
                 )
             )
@@ -1390,7 +1320,6 @@ class MainFragment : Fragment() {
                 imageView.setImageDrawable(
                     FaultTopDrawable(
                         requireContext(),
-                        faultSize.height,
                         true
                     )
                 )
@@ -1402,7 +1331,6 @@ class MainFragment : Fragment() {
                 imageView.setImageDrawable(
                     FaultTopDrawable(
                         requireContext(),
-                        faultSize.height,
                         false
                     )
                 )
@@ -1448,14 +1376,12 @@ class MainFragment : Fragment() {
                 binding.leftWolf.setImageDrawable(
                     WolfLeft(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_UP
                     )
                 )
                 binding.rightWolf.setImageDrawable(
                     WolfRight(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_SHADOW
                     )
                 )
@@ -1464,14 +1390,12 @@ class MainFragment : Fragment() {
                 binding.leftWolf.setImageDrawable(
                     WolfLeft(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_DOWN
                     )
                 )
                 binding.rightWolf.setImageDrawable(
                     WolfRight(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_SHADOW
                     )
                 )
@@ -1480,14 +1404,12 @@ class MainFragment : Fragment() {
                 binding.leftWolf.setImageDrawable(
                     WolfLeft(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_SHADOW
                     )
                 )
                 binding.rightWolf.setImageDrawable(
                     WolfRight(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_DOWN
                     )
                 )
@@ -1496,14 +1418,12 @@ class MainFragment : Fragment() {
                 binding.leftWolf.setImageDrawable(
                     WolfLeft(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_SHADOW
                     )
                 )
                 binding.rightWolf.setImageDrawable(
                     WolfRight(
                         requireContext(),
-                        wolfSize.width,
                         Static.WOLF_UP
                     )
                 )
@@ -1525,18 +1445,16 @@ class MainFragment : Fragment() {
                     )
                 ) NormalEggDrawable(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     true
-                ) else NormalEggDrawable(requireContext(), screenUnit * eggSize.width, false)
+                ) else NormalEggDrawable(requireContext(), false)
             )
             binding.eggTopLeftSecond.setImageDrawable(
                 if (game.displayCell(
                         1,
                         Static.LEFT_TOP
                     )
-                ) EggPlus45(requireContext(), screenUnit * eggSize.width, true) else EggPlus45(
+                ) EggPlus45(requireContext(), true) else EggPlus45(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1545,9 +1463,8 @@ class MainFragment : Fragment() {
                         2,
                         Static.LEFT_TOP
                     )
-                ) EggPlus90(requireContext(), screenUnit * eggSize.width, true) else EggPlus90(
+                ) EggPlus90(requireContext(), true) else EggPlus90(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1556,9 +1473,8 @@ class MainFragment : Fragment() {
                         3,
                         Static.LEFT_TOP
                     )
-                ) EggPlus135(requireContext(), screenUnit * eggSize.width, true) else EggPlus135(
+                ) EggPlus135(requireContext(), true) else EggPlus135(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1567,9 +1483,8 @@ class MainFragment : Fragment() {
                         4,
                         Static.LEFT_TOP
                     )
-                ) EggPlus225(requireContext(), screenUnit * eggSize.width, true) else EggPlus225(
+                ) EggPlus225(requireContext(),  true) else EggPlus225(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1582,18 +1497,16 @@ class MainFragment : Fragment() {
                     )
                 ) NormalEggDrawable(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     true
-                ) else NormalEggDrawable(requireContext(), screenUnit * eggSize.width, false)
+                ) else NormalEggDrawable(requireContext(), false)
             )
             binding.eggBottomLeftSecond.setImageDrawable(
                 if (game.displayCell(
                         1,
                         Static.LEFT_BOTTOM
                     )
-                ) EggPlus45(requireContext(), screenUnit * eggSize.width, true) else EggPlus45(
+                ) EggPlus45(requireContext(), true) else EggPlus45(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1602,9 +1515,8 @@ class MainFragment : Fragment() {
                         2,
                         Static.LEFT_BOTTOM
                     )
-                ) EggPlus90(requireContext(), screenUnit * eggSize.width, true) else EggPlus90(
+                ) EggPlus90(requireContext(),  true) else EggPlus90(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1613,9 +1525,8 @@ class MainFragment : Fragment() {
                         3,
                         Static.LEFT_BOTTOM
                     )
-                ) EggPlus135(requireContext(), screenUnit * eggSize.width, true) else EggPlus135(
+                ) EggPlus135(requireContext(), true) else EggPlus135(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1624,9 +1535,8 @@ class MainFragment : Fragment() {
                         4,
                         Static.LEFT_BOTTOM
                     )
-                ) EggPlus225(requireContext(), screenUnit * eggSize.width, true) else EggPlus225(
+                ) EggPlus225(requireContext(),  true) else EggPlus225(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1639,18 +1549,16 @@ class MainFragment : Fragment() {
                     )
                 ) NormalEggDrawable(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     true
-                ) else NormalEggDrawable(requireContext(), screenUnit * eggSize.width, false)
+                ) else NormalEggDrawable(requireContext(), false)
             )
             binding.eggBottomRightSecond.setImageDrawable(
                 if (game.displayCell(
                         1,
                         Static.RIGHT_BOTTOM
                     )
-                ) EggMinus45(requireContext(), screenUnit * eggSize.width, true) else EggMinus45(
+                ) EggMinus45(requireContext(),  true) else EggMinus45(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1659,9 +1567,8 @@ class MainFragment : Fragment() {
                         2,
                         Static.RIGHT_BOTTOM
                     )
-                ) EggMinus90(requireContext(), screenUnit * eggSize.width, true) else EggMinus90(
+                ) EggMinus90(requireContext(),  true) else EggMinus90(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1670,9 +1577,8 @@ class MainFragment : Fragment() {
                         3,
                         Static.RIGHT_BOTTOM
                     )
-                ) EggPlus225(requireContext(), screenUnit * eggSize.width, true) else EggPlus225(
+                ) EggPlus225(requireContext(), true) else EggPlus225(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1681,9 +1587,8 @@ class MainFragment : Fragment() {
                         4,
                         Static.RIGHT_BOTTOM
                     )
-                ) EggPlus135(requireContext(), screenUnit * eggSize.width, true) else EggPlus135(
+                ) EggPlus135(requireContext(), true) else EggPlus135(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1696,18 +1601,16 @@ class MainFragment : Fragment() {
                     )
                 ) NormalEggDrawable(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     true
-                ) else NormalEggDrawable(requireContext(), screenUnit * eggSize.width, false)
+                ) else NormalEggDrawable(requireContext(), false)
             )
             binding.eggTopRightSecond.setImageDrawable(
                 if (game.displayCell(
                         1,
                         Static.RIGHT_TOP
                     )
-                ) EggMinus45(requireContext(), screenUnit * eggSize.width, true) else EggMinus45(
+                ) EggMinus45(requireContext(), true) else EggMinus45(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1716,9 +1619,8 @@ class MainFragment : Fragment() {
                         2,
                         Static.RIGHT_TOP
                     )
-                ) EggMinus90(requireContext(), screenUnit * eggSize.width, true) else EggMinus90(
+                ) EggMinus90(requireContext(), true) else EggMinus90(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1727,9 +1629,8 @@ class MainFragment : Fragment() {
                         3,
                         Static.RIGHT_TOP
                     )
-                ) EggPlus225(requireContext(), screenUnit * eggSize.width, true) else EggPlus225(
+                ) EggPlus225(requireContext(), true) else EggPlus225(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -1738,9 +1639,8 @@ class MainFragment : Fragment() {
                         4,
                         Static.RIGHT_TOP
                     )
-                ) EggPlus135(requireContext(), screenUnit * eggSize.width, true) else EggPlus135(
+                ) EggPlus135(requireContext(),  true) else EggPlus135(
                     requireContext(),
-                    screenUnit * eggSize.width,
                     false
                 )
             )
@@ -2306,54 +2206,38 @@ class MainFragment : Fragment() {
         binding.screenFront.setImageDrawable(MainScreenDrawableFront(requireContext(),screenUnit,screenSize.width,screenSize.height))
 
         binding.buttonBottomLeft.setImageDrawable(
-            ArrowBottomLeft(requireContext(),screenUnit*arrowSize.width,
-                screenUnit*arrowSize.height
-            )
+            ArrowBottomLeft(requireContext())
         )
 
         binding.buttonTopLeft.setImageDrawable(
-            ArrowTopLeft(requireContext(),screenUnit*arrowSize.width,
-                screenUnit*arrowSize.height
-            )
+            ArrowTopLeft(requireContext())
         )
 
         binding.buttonTopRight.setImageDrawable(
-            ArrowTopRight(requireContext(),screenUnit*arrowSize.width,
-                screenUnit*arrowSize.height
-            )
+            ArrowTopRight(requireContext())
         )
 
         binding.buttonBottomRight.setImageDrawable(
-            ArrowBottomRight(requireContext(),screenUnit*arrowSize.width,
-                screenUnit*arrowSize.height
-            )
+            ArrowBottomRight(requireContext())
         )
 
         binding.startA.setImageDrawable(
-            StartButton(requireContext(),screenUnit*startButtonSize.width,
-            screenUnit*startButtonSize.height
-        )
+            StartButton(requireContext())
         )
 
         binding.startB.setImageDrawable(
-            StartButton(requireContext(),screenUnit*startButtonSize.width,
-            screenUnit*startButtonSize.height
-        )
+            StartButton(requireContext())
         )
 
         binding.closeApp.setImageDrawable(
-            StartButton(requireContext(),screenUnit*startButtonSize.width,
-            screenUnit*startButtonSize.height
-        )
+            StartButton(requireContext())
         )
 
         binding.account.setImageDrawable(
-            StartButton(requireContext(),screenUnit*userIdSize.height,
-            screenUnit*userIdSize.height
-        )
+            StartButton(requireContext())
         )
 
-        binding.userID.background = TextViewDrawable(requireContext(),userIdSize.width*screenUnit,userIdSize.height*screenUnit)
+        binding.userID.background = TextViewDrawable(requireContext())
 
 
         val dbRef = Firebase.database.getReference("GooglePlayApps")
@@ -2366,7 +2250,7 @@ class MainFragment : Fragment() {
                     val newApp = apps.isNewApp()
                     Functions.saveNumberOfAppsToSharedPreferences(requireContext(),apps)
                     if(newApp){
-                        binding.account.setImageDrawable(StartButtonGreen(requireContext(),screenUnit*userIdSize.height,screenUnit*userIdSize.height))
+                        binding.account.setImageDrawable(StartButtonGreen(requireContext()))
                     }
                 }
             }

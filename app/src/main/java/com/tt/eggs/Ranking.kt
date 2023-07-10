@@ -327,15 +327,15 @@ class Ranking : AppCompatActivity() {
     }
 
     private fun setDrawable() {
-        binding.position1.background = TextViewDrawableWithBorder(this,positionLayoutSize.width,positionLayoutSize.height)
-        binding.position2.background = TextViewDrawableWithBorder(this,positionLayoutSize.width,positionLayoutSize.height)
-        binding.position3.background = TextViewDrawableWithBorder(this,positionLayoutSize.width,positionLayoutSize.height)
-        binding.position4.background = TextViewDrawableWithBorder(this,positionLayoutSize.width,positionLayoutSize.height)
-        binding.position5.background = TextViewDrawableWithBorder(this,positionLayoutSize.width,positionLayoutSize.height)
-        binding.rankingUp.setImageDrawable(ArrowUp(this,arrowSize.width,arrowSize.height))
-        binding.rankingDown.setImageDrawable(ArrowDown(this,arrowSize.width,arrowSize.height))
-        binding.backToGameRankingImageView.setImageDrawable(StartButton(this,backToGameButtonSize.width,backToGameButtonSize.height))
-        binding.backToGameLinearLayoutRanking.background = RoundedFrameDrawable(this,5.5*backToGameButtonSize.width,backToGameButtonSize.height,
+        binding.position1.background = TextViewDrawableWithBorder(this)
+        binding.position2.background = TextViewDrawableWithBorder(this)
+        binding.position3.background = TextViewDrawableWithBorder(this)
+        binding.position4.background = TextViewDrawableWithBorder(this)
+        binding.position5.background = TextViewDrawableWithBorder(this)
+        binding.rankingUp.setImageDrawable(ArrowUp(this))
+        binding.rankingDown.setImageDrawable(ArrowDown(this))
+        binding.backToGameRankingImageView.setImageDrawable(StartButton(this))
+        binding.backToGameLinearLayoutRanking.background = RoundedFrameDrawable(this,
             backToGameButtonSize.height/20,
             backToGameButtonSize.height/2
         )

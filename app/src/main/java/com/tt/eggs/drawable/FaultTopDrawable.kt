@@ -7,12 +7,17 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 
-class FaultTopDrawable (private val context: Context, private val size: Double, val black:Boolean): Drawable(){
+class FaultTopDrawable (private val context: Context,
+                        val black:Boolean): Drawable(){
     private val paint = Paint()
-    private val stroke = size/100
+
 
 
     override fun draw(canvas: Canvas) {
+
+        val size = bounds.height()
+        val stroke = size/100
+
         paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
         if(black) {
             paint.color = ContextCompat.getColor(context, R.color.black)

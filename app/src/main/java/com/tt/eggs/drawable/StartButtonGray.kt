@@ -6,16 +6,18 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 
-class StartButtonGray (private val context: Context, private val width:Double, height:Double): Drawable() {
+class StartButtonGray (private val context: Context): Drawable() {
     private val paint = Paint()
 
-    private val widthUnit = width/10
-    private val heightUnit = height/10
-    private val width1 = 0.2
-    private val width2 = 1.0
-    private val width3 = 1.4
-
     override fun draw(canvas: Canvas) {
+
+        val width = bounds.width()
+        val widthUnit = bounds.width().toDouble()/10
+        val heightUnit = bounds.height().toDouble()/10
+        val width1 = 0.2
+        val width2 = 1.0
+        val width3 = 1.4
+
         val rect1 = RectF(0f, (heightUnit*2).toFloat(), width.toFloat(), (heightUnit*8).toFloat())
         val radius1 = heightUnit*3
         paint.isAntiAlias = true
