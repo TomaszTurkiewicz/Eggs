@@ -3,6 +3,8 @@ package com.tt.eggs.fragments
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
@@ -10,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -31,10 +34,7 @@ import com.google.firebase.ktx.Firebase
 import com.tt.eggs.*
 import com.tt.eggs.classes.*
 import com.tt.eggs.databinding.FragmentLoginBinding
-import com.tt.eggs.drawable.RoundedFrameDrawable
-import com.tt.eggs.drawable.StartButton
-import com.tt.eggs.drawable.StartButtonGreen
-import com.tt.eggs.drawable.TextViewDrawable
+import com.tt.eggs.drawable.*
 
 
 class LoginFragment : Fragment() {
@@ -55,6 +55,9 @@ class LoginFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+
+    private val mHandler = Handler(Looper.getMainLooper())
+    private var rankingReady = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,6 +96,26 @@ class LoginFragment : Fragment() {
 
         // buttons on click listeners
         setButtonsActions()
+
+        rankingChecking().run()
+    }
+
+ private fun rankingChecking(): Runnable = Runnable {
+     val activity = activity as MainActivity
+     rankingReady = activity.getSorted()
+     if(rankingReady){
+         view?.let {
+             binding.ranking.setImageDrawable(StartButton(requireContext(),rankingButtonSize.width,rankingButtonSize.height))
+         }
+         mHandler.removeCallbacksAndMessages(null)
+     }else{
+         mHandler.postDelayed(rankingChecking(),1000)
+     }
+ }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mHandler.removeCallbacksAndMessages(null)
     }
 
     private fun doSomething(data: Intent?) {
@@ -216,8 +239,12 @@ class LoginFragment : Fragment() {
         }
 
         binding.ranking.setOnClickListener {
-            val action = LoginFragmentDirections.actionLoginFragmentToRankingFragment()
-            findNavController().navigate(action)
+            if(rankingReady) {
+                val action = LoginFragmentDirections.actionLoginFragmentToRankingFragment()
+                findNavController().navigate(action)
+            }else{
+                Toast.makeText(requireContext(),"RANKING NOT READY YET",Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.deleteUserImage.setOnClickListener {
@@ -491,7 +518,7 @@ class LoginFragment : Fragment() {
         binding.highScoreBUser.background = TextViewDrawable(requireContext(),scoreUserSize.width,scoreUserSize.height)
         binding.totalScoreUser.background = TextViewDrawable(requireContext(),scoreUserSize.width,scoreUserSize.height)
         binding.backToGame.setImageDrawable(StartButton(requireContext(),backToGameButtonSize.width,backToGameButtonSize.height))
-        binding.ranking.setImageDrawable(StartButton(requireContext(),rankingButtonSize.width,rankingButtonSize.height))
+        binding.ranking.setImageDrawable(StartButtonGray(requireContext(),rankingButtonSize.width,rankingButtonSize.height))
         binding.googleSignIn.setImageDrawable(StartButton(requireContext(),loginButtonSize.width,loginButtonSize.height))
         binding.otherGamesButton.setImageDrawable(StartButton(requireContext(),otherGamesButtonSize.width,otherGamesButtonSize.height))
         binding.backToGameLinearLayoutEt.background = RoundedFrameDrawable(requireContext(),5.5*backToGameButtonSize.width,backToGameButtonSize.height,backToGameButtonSize.height/20,backToGameButtonSize.height/2)
@@ -604,3 +631,5 @@ class LoginFragment : Fragment() {
 
 
 }
+
+//todo check how auth and logged in status are working together
