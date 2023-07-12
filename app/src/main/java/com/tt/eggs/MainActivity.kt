@@ -16,13 +16,16 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.User
 import com.tt.eggs.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var userList: MutableList<User>
-    private var listSorted = false
+    private var listDownloaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +64,12 @@ class MainActivity : AppCompatActivity(){
                         val tUser = user.getValue(User::class.java)
                         userList.add(tUser!!)
                     }
-                    sortAndDisplay()
+
+                    listDownloaded = true
+                    changeColor()
+
+
+
                 }
             }
 
@@ -69,83 +77,13 @@ class MainActivity : AppCompatActivity(){
 
     }
 
-    private fun sortAndDisplay() {
-
-        if(userList.size>1){
-            sort()
-        }
-
+    private fun changeColor(){
+        binding.imageViewRanking.setBackgroundColor(ContextCompat.getColor(this,R.color.green))
     }
 
-    private fun sort(){
-        var boolean=false
-        for(i in userList.size-1 downTo 1){
-
-            // score is different
-            if(userList[i].score()>userList[i-1].score()){
-                val tUser = userList[i]
-                userList[i]=userList[i-1]
-                userList[i-1]=tUser
-                boolean=true
-            }
-
-            // score is the same
-            else if(userList[i].score()==userList[i-1].score()){
-
-                // high score B
-                if(userList[i].gameB.highScoreB>userList[i-1].gameB.highScoreB){
-                    val tUser = userList[i]
-                    userList[i]=userList[i-1]
-                    userList[i-1]=tUser
-                    boolean=true
-                }
-
-                // high scoreB is the same
-                else if (userList[i].gameB.highScoreB==userList[i-1].gameB.highScoreB){
-
-                    // counterB different
-                    if(userList[i].gameB.counterB>userList[i-1].gameB.counterB){
-                        val tUser = userList[i]
-                        userList[i]=userList[i-1]
-                        userList[i-1]=tUser
-                        boolean=true
-                    }
-
-                    else if(userList[i].gameB.counterB==userList[i-1].gameB.counterB){
-
-                        // check high scoreA
-                        if(userList[i].gameA.highScoreA>userList[i-1].gameA.highScoreA){
-                            val tUser = userList[i]
-                            userList[i]=userList[i-1]
-                            userList[i-1]=tUser
-                            boolean=true
-                        }
-
-                        // the same high scoreA
-                        else if(userList[i].gameA.highScoreA==userList[i-1].gameA.highScoreA){
-
-
-                            if(userList[i].gameA.counterA>userList[i-1].gameA.counterA){
-                                val tUser = userList[i]
-                                userList[i]=userList[i-1]
-                                userList[i-1]=tUser
-                                boolean=true
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if(boolean){
-            sort()
-        }else{
-            listSorted = true
-            binding.imageViewRanking.setBackgroundColor(ContextCompat.getColor(this,R.color.green))
-        }
-    }
 
     fun getSorted():Boolean{
-        return this.listSorted
+        return this.listDownloaded
     }
 
     fun getList(): MutableList<User> {
@@ -153,7 +91,6 @@ class MainActivity : AppCompatActivity(){
     }
 }
 
-//TODO DO NOT SORT HERE!!!
 
 
 

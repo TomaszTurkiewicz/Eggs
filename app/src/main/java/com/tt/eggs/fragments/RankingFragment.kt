@@ -1,6 +1,8 @@
 package com.tt.eggs.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,10 +16,7 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.navigation.fragment.findNavController
 import com.tt.eggs.MainActivity
 import com.tt.eggs.R
-import com.tt.eggs.classes.Dimension
-import com.tt.eggs.classes.Functions
-import com.tt.eggs.classes.ScreenMetricsCompat
-import com.tt.eggs.classes.User
+import com.tt.eggs.classes.*
 import com.tt.eggs.databinding.FragmentRankingBinding
 import com.tt.eggs.drawable.*
 
@@ -27,6 +26,8 @@ class RankingFragment : Fragment() {
     private lateinit var userList: MutableList<User>
     private lateinit var userid: String
     private var index: Int = 0
+    private var delayCounter = true
+    private val mHandler = Handler(Looper.getMainLooper())
 
 
     private var screenUnit = 0
@@ -45,11 +46,14 @@ class RankingFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var rankingReady = false
+    private var loggedInStatus = LoggedInStatus()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        loggedInStatus = Functions.readLoggedInStatusFromSharedPreferences(requireContext())
+        userid = if(loggedInStatus.loggedIn) loggedInStatus.userid else ""
         val activity = activity as MainActivity
         userList = activity.getList()
 
@@ -66,7 +70,7 @@ class RankingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         makeUI()
-        prepareRanking()
+        delay().run()
 
         binding.backToGameRankingImageView.setOnClickListener {
             findNavController().navigateUp()
@@ -92,8 +96,147 @@ class RankingFragment : Fragment() {
     }
 
 
+    private fun delay():Runnable = Runnable {
+        if(delayCounter){
+            delayCounter = false
+            mHandler.postDelayed(delay(),500)
+        }else{
+            mHandler.removeCallbacksAndMessages(null)
+            prepareRanking()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mHandler.removeCallbacksAndMessages(null)
+    }
+
+
     private fun prepareRanking(){
-        //todo finish first!!!
+        if(loggedInStatus.loggedIn){
+            var exist = false
+            val user = User(loggedInStatus.userid,
+                Functions.checkUserNameFromSharedPreferences(requireContext(),loggedInStatus.userid),
+                Functions.readGameAFromSharedPreferences(requireContext(),loggedInStatus.userid),
+                Functions.readGameBFromSharedPreferences(requireContext(),loggedInStatus.userid))
+            for(i in 0 until userList.size-1){
+                if(userList[i].id.equals(userid)){
+                    userList[i].gameA = user.gameA
+                    userList[i].gameB = user.gameB
+                    userList[i].userName = user.userName
+                    exist = true
+                }
+            }
+
+            if(!exist){
+                userList.add(user)
+            }
+        }
+
+
+        if(userList.size>1){
+            sort()
+        }
+
+
+        var userPosition:Int =-1
+        if(userid != ""){
+            for(i in 0 until userList.size-1){
+                if(userList[i].id.equals(userid)){
+                    userPosition=i
+                }
+            }
+        }
+
+
+        binding.progressBar1.visibility = View.GONE
+        binding.progressBar2.visibility = View.GONE
+        binding.progressBar3.visibility = View.GONE
+        binding.progressBar4.visibility = View.GONE
+        binding.progressBar5.visibility = View.GONE
+        displayFiveUsers(userid,userPosition)
+        rankingReady=true
+    }
+
+    private fun sort(){
+        var boolean=false
+        for(i in userList.size-1 downTo 1){
+
+            // score is different
+            if(userList[i].score()>userList[i-1].score()){
+                val tUser = userList[i]
+                userList[i]=userList[i-1]
+                userList[i-1]=tUser
+                boolean=true
+            }
+
+            // score is the same
+            else if(userList[i].score()==userList[i-1].score()){
+
+                // high score B
+                if(userList[i].gameB.highScoreB>userList[i-1].gameB.highScoreB){
+                    val tUser = userList[i]
+                    userList[i]=userList[i-1]
+                    userList[i-1]=tUser
+                    boolean=true
+                }
+
+                // high scoreB is the same
+                else if (userList[i].gameB.highScoreB==userList[i-1].gameB.highScoreB){
+
+                    // counterB different
+                    if(userList[i].gameB.counterB>userList[i-1].gameB.counterB){
+                        val tUser = userList[i]
+                        userList[i]=userList[i-1]
+                        userList[i-1]=tUser
+                        boolean=true
+                    }
+
+                    else if(userList[i].gameB.counterB==userList[i-1].gameB.counterB){
+
+                        // check high scoreA
+                        if(userList[i].gameA.highScoreA>userList[i-1].gameA.highScoreA){
+                            val tUser = userList[i]
+                            userList[i]=userList[i-1]
+                            userList[i-1]=tUser
+                            boolean=true
+                        }
+
+                        // the same high scoreA
+                        else if(userList[i].gameA.highScoreA==userList[i-1].gameA.highScoreA){
+
+
+                            if(userList[i].gameA.counterA>userList[i-1].gameA.counterA){
+                                val tUser = userList[i]
+                                userList[i]=userList[i-1]
+                                userList[i-1]=tUser
+                                boolean=true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(boolean){
+            sort()
+        }
+    }
+
+    private fun displayFiveUsers( userId:String, userPosition: Int) {
+
+        // list shorter than 6
+        if(userList.size<=5){
+            displayFiveUsersWithIndex(userId)
+        }
+
+        // list longer than 5
+
+        else{
+            index = if(userPosition-3>0) userPosition-3 else 0
+            displayFiveUsersWithIndex(userId)
+
+        }
+
     }
 
     private fun displayFiveUsersWithIndex(userId: String) {
@@ -533,5 +676,3 @@ class RankingFragment : Fragment() {
 
 
 }
-
-//TODO

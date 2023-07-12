@@ -19,11 +19,13 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.tt.eggs.MainActivity
 import com.tt.eggs.R
 import com.tt.eggs.classes.*
 import com.tt.eggs.databinding.FragmentMainBinding
@@ -787,9 +789,7 @@ class MainFragment : Fragment() {
     private fun savePointsWinB() {
         if(loggedInStatus.loggedIn){
             Functions.savePointsWinBToSharedPreferences(requireContext(),loggedInStatus.userid,game.getScore())
-
-            //TODO!!!
-//            saveUserToFirebaseDatabase()
+            saveUserToFirebaseDatabase()
 
 
         }
@@ -799,12 +799,30 @@ class MainFragment : Fragment() {
     private fun savePointsWinA() {
         if(loggedInStatus.loggedIn){
             Functions.savePointsWinAToSharedPreferences(requireContext(),loggedInStatus.userid,game.getScore())
-
-            //TODO!!!
-            //saveUserToFirebaseDatabase()
+            saveUserToFirebaseDatabase()
 
         }
 
+    }
+
+    private fun saveUserToFirebaseDatabase() {
+        val activity = activity as MainActivity
+        if(activity.getSorted()){
+        val currentUser = Firebase.auth.currentUser
+        if (currentUser != null) {
+            if (currentUser.uid == loggedInStatus.userid) {
+                val userDB =
+                    User(
+                        id = loggedInStatus.userid,
+                        userName = Functions.checkUserNameFromSharedPreferences(requireContext(), loggedInStatus.userid),
+                        gameA = Functions.readGameAFromSharedPreferences(requireContext(), loggedInStatus.userid),
+                        gameB = Functions.readGameBFromSharedPreferences(requireContext(), loggedInStatus.userid)
+                    )
+                val dbRef = Firebase.database.getReference("user").child(loggedInStatus.userid)
+                dbRef.setValue(userDB)
+            }
+        }
+        }
     }
 
     // game A has finished because of 1000 points
@@ -913,8 +931,7 @@ class MainFragment : Fragment() {
     private fun savePointsLoseB():Boolean {
         return if(loggedInStatus.loggedIn){
             val newHighScore = Functions.savePointsLoseBToSharedPreferences(requireContext(),loggedInStatus.userid,game.getScore())
-            //TODO!!
-//            saveUserToFirebaseDatabase()
+            saveUserToFirebaseDatabase()
             newHighScore
         }else{
             false
@@ -972,8 +989,7 @@ class MainFragment : Fragment() {
     private fun savePointsLoseA():Boolean {
         return if(loggedInStatus.loggedIn){
             val newHighScore = Functions.savePointsLoseAToSharedPreferences(requireContext(),loggedInStatus.userid,game.getScore())
-            //TODO!!!
-//            saveUserToFirebaseDatabase()
+            saveUserToFirebaseDatabase()
             newHighScore
         }else{
             false
