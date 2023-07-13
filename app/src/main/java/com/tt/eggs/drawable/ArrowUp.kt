@@ -5,6 +5,7 @@ import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
+import com.tt.eggs.classes.Theme
 
 class ArrowUp (private val context: Context): Drawable() {
     private val paint = Paint()
@@ -48,7 +49,7 @@ class ArrowUp (private val context: Context): Drawable() {
         paint.shader = null
 
 
-        paint.color = ContextCompat.getColor(context, R.color.black)
+        paint.color = ContextCompat.getColor(context, Theme(context).getTextColor())
         val path = Path()
         path.moveTo(a.x.toFloat(), a.y.toFloat())
         path.lineTo(b.x.toFloat(), b.y.toFloat())

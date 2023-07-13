@@ -52,7 +52,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ok"
-            android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView
@@ -76,7 +75,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/change"
-            android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView
@@ -94,7 +92,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:text="@string/high_score_a"
-        android:textColor="@color/black"
         android:gravity="center_vertical"/>
 
     <TextView
@@ -113,7 +110,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:text="@string/high_score_b"
-        android:textColor="@color/black"
         android:gravity="center_vertical"/>
 
     <TextView
@@ -132,7 +128,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:text="@string/total_points"
-        android:textColor="@color/black"
         android:gravity="center_vertical"/>
 
     <TextView
@@ -168,7 +163,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back_to_game"
-            android:textColor="@color/black"
             android:gravity="center"/>
 
 
@@ -187,7 +181,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/log_in"
-            android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView

@@ -2218,6 +2218,10 @@ class MainFragment : Fragment() {
 
     private fun setDrawable() {
 
+        binding.exit.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.letterA.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.letterB.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+
         view?.let {
             binding.mainScreenContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getBackgroundColor()))
         }

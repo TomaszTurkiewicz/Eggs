@@ -46,7 +46,6 @@
         android:id="@+id/exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@id/startA"
         app:layout_constraintLeft_toLeftOf="@id/startA"
         android:text="@string/exit"/>
@@ -95,7 +94,6 @@
         android:id="@+id/letterA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@id/startA"
         app:layout_constraintLeft_toLeftOf="@id/startA"
         android:text="@string/a"/>
@@ -114,7 +112,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/startB"
         app:layout_constraintLeft_toLeftOf="@id/startB"
-        android:textColor="@color/black"
         android:text="@string/b"/>
 
     <ImageView

@@ -1,6 +1,7 @@
 package com.tt.eggs.fragments
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -219,6 +220,14 @@ class DeleteUserFragment : Fragment() {
     }
 
     private fun setDrawable() {
+
+        binding.warningMessage.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.headerUserName.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.headerHighScoreA.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.headerHighScoreB.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.headerTotalScore.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.backToGame.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+
         binding.deleteUserActivityContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getBackgroundColor()))
         binding.frame.background = TextViewDrawableWithBorder(requireContext())
 

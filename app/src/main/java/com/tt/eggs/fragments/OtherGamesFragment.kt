@@ -136,6 +136,11 @@ class OtherGamesFragment : Fragment() {
     }
 
     private fun setDrawable() {
+
+        binding.sendGameText.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.otherGamesText.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.backToGameTextViewOtherGames.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+
         binding.otherGamesActivityContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),
             Theme(requireContext()).getBackgroundColor()))
         binding.backToGameOtherGamesButton.setImageDrawable(StartButton(requireContext()))

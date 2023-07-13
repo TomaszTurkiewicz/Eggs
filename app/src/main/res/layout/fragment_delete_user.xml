@@ -35,7 +35,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:text="@string/warning_message"
-        android:textColor="@color/black"
         android:includeFontPadding="false"/>
 
     <LinearLayout
@@ -53,8 +52,7 @@
             android:layout_height="wrap_content"
             android:text="@string/name"
             android:gravity="center"
-            android:layout_gravity="center"
-            android:textColor="@color/black"/>
+            android:layout_gravity="center"/>
         <TextView
             android:id="@+id/headerHighScoreA"
             android:layout_width="0dp"
@@ -63,7 +61,6 @@
             android:text="@string/high_a"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"
             tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/headerHighScoreB"
@@ -73,7 +70,6 @@
             android:text="@string/high_b"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"
             tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/headerTotalScore"
@@ -83,7 +79,6 @@
             android:text="@string/total"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"
             tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
@@ -159,7 +154,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back_to_game"
-            android:textColor="@color/black"
             android:gravity="center"/>
 
 

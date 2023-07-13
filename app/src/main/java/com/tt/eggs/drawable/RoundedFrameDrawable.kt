@@ -5,6 +5,7 @@ import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
+import com.tt.eggs.classes.Theme
 
 class RoundedFrameDrawable (private val context: Context, private val stroke:Double, private val radius:Double): Drawable() {
     private val paint = Paint()
@@ -22,7 +23,7 @@ class RoundedFrameDrawable (private val context: Context, private val stroke:Dou
         val rectR = RectF(stroke.toFloat(), stroke.toFloat(),(width-stroke).toFloat(),(height-stroke).toFloat())
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = (stroke).toFloat()
-        paint.color = ContextCompat.getColor(context, R.color.black)
+        paint.color = ContextCompat.getColor(context, Theme(context).getTextColor())
         canvas.drawRoundRect(rectR, radius.toFloat(), radius.toFloat(),paint)
 
     }

@@ -504,6 +504,13 @@ class RankingFragment : Fragment() {
     }
 
     private fun setDrawable() {
+
+        binding.rankingUserName.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.rankingHighScoreA.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.rankingHighScoreB.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.rankingTotalScore.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.backToGmeRanking.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+
         binding.rankingActivityContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getBackgroundColor()))
         binding.position1.background = TextViewDrawableWithBorder(requireContext())
         binding.position2.background = TextViewDrawableWithBorder(requireContext())

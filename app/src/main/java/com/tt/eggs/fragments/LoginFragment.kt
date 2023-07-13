@@ -459,6 +459,15 @@ class LoginFragment : Fragment() {
     }
 
     private fun setDrawable() {
+
+        binding.changeNameOk.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.changeNameTextView.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.highScoreA.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.highScoreB.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.totalScore.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.backToGameTextView.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.loginTv.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+
         binding.loginActivityContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getBackgroundColor()))
         binding.userNameTv.background = TextViewDrawable(requireContext())
         binding.userNameEt.background = TextViewDrawable(requireContext())

@@ -31,20 +31,32 @@ class Theme(val context: Context) {
 //    private val theme = LightMode()
 
     fun getBackgroundColor() = theme.getBackgroundColor()
+    fun getTextColor() = theme.getTextColor()
+
 
     private open class LightMode {
         open val background = R.color.gray
+        open val text = R.color.black
 
         open fun getBackgroundColor(): Int {
             return this.background
+        }
+
+        open fun getTextColor():Int {
+            return this.text
         }
     }
 
     private class DarkMode : LightMode() {
         override val background = R.color.black
+        override val text = R.color.gray_middle
 
         override fun getBackgroundColor(): Int {
             return this.background
+        }
+
+        override fun getTextColor(): Int {
+            return this.text
         }
     }
 }

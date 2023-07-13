@@ -256,6 +256,13 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setDrawable() {
+
+        binding.backToGameTextView.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.accountTv.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.otherGamesTv.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.rankingTv.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+        binding.darkModeTextView.setTextColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getTextColor()))
+
         binding.settingsActivityContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getBackgroundColor()))
         binding.userNameTv.background = TextViewDrawable(requireContext())
         binding.darkModeTv.background = TextViewDrawable(requireContext())

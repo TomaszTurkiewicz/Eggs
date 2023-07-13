@@ -32,8 +32,7 @@
             android:layout_height="wrap_content"
             android:text="@string/name"
             android:gravity="center"
-            android:layout_gravity="center"
-            android:textColor="@color/black"/>
+            android:layout_gravity="center"/>
         <TextView
             android:id="@+id/rankingHighScoreA"
             android:layout_width="0dp"
@@ -42,7 +41,6 @@
             android:text="@string/high_a"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"
             tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingHighScoreB"
@@ -52,7 +50,6 @@
             android:text="@string/high_b"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"
             tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/rankingTotalScore"
@@ -62,7 +59,6 @@
             android:text="@string/total"
             android:layout_gravity="center"
             android:gravity="center_vertical|right"
-            android:textColor="@color/black"
             tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
@@ -383,7 +379,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back_to_game"
-            android:textColor="@color/black"
             android:gravity="center"/>
 
 

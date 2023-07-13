@@ -33,7 +33,7 @@
     <string name="high_a">HIGH A</string>
     <string name="high_b">HIGH B</string>
     <string name="total">TOTAL</string>
-    <string name="send_this_game_to_friend">SEND THIS GAME TO FRIEND</string>
+    <string name="send_this_game_to_friend">SEND THIS GAME TO A FRIEND</string>
     <string name="battle_ships_game">BATTLE SHIPS GAME</string>
     <string name="page_counter">%1$d/%2$d</string>
     <string name="other_games_link">https://play.google.com/store/apps/developer?id=Tomasz+Turkiewicz</string>

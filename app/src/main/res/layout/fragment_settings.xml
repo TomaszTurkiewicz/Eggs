@@ -51,7 +51,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back_to_game"
-            android:textColor="@color/black"
             android:gravity="center"/>
 
 
@@ -70,7 +69,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/account"
-            android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView
@@ -99,7 +97,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/other_games"
-            android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView
@@ -128,7 +125,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ranking"
-            android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView
@@ -168,7 +164,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dark_mode"
-            android:textColor="@color/black"
             android:gravity="center"/>
 
         <ImageView
