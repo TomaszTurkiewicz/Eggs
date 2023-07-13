@@ -11,12 +11,10 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.tt.eggs.R
-import com.tt.eggs.classes.Dimension
-import com.tt.eggs.classes.Functions
-import com.tt.eggs.classes.NewApps
-import com.tt.eggs.classes.ScreenMetricsCompat
+import com.tt.eggs.classes.*
 import com.tt.eggs.databinding.FragmentOtherGamesBinding
 import com.tt.eggs.drawable.RoundedFrameDrawable
 import com.tt.eggs.drawable.StartButton
@@ -138,6 +136,8 @@ class OtherGamesFragment : Fragment() {
     }
 
     private fun setDrawable() {
+        binding.otherGamesActivityContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),
+            Theme(requireContext()).getBackgroundColor()))
         binding.backToGameOtherGamesButton.setImageDrawable(StartButton(requireContext()))
         binding.backToGameLinearLayoutOtherGames.background = RoundedFrameDrawable(requireContext(),buttonSize.height/20,buttonSize.height/2)
         binding.sendGameButton.setImageDrawable(StartButton(requireContext()))

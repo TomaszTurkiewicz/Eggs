@@ -1,5 +1,6 @@
 package com.tt.eggs.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.navigation.fragment.findNavController
 import com.tt.eggs.MainActivity
@@ -502,6 +504,7 @@ class RankingFragment : Fragment() {
     }
 
     private fun setDrawable() {
+        binding.rankingActivityContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getBackgroundColor()))
         binding.position1.background = TextViewDrawableWithBorder(requireContext())
         binding.position2.background = TextViewDrawableWithBorder(requireContext())
         binding.position3.background = TextViewDrawableWithBorder(requireContext())

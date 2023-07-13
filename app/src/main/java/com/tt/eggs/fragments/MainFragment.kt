@@ -2219,7 +2219,7 @@ class MainFragment : Fragment() {
     private fun setDrawable() {
 
         view?.let {
-            binding.mainScreenContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),Theme().getBackgroundColor()))
+            binding.mainScreenContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getBackgroundColor()))
         }
 
         view?.let {

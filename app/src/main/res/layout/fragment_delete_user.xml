@@ -15,8 +15,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/deleteUserActivityContainer"
-        android:background="@color/gray"/>
+        android:id="@+id/deleteUserActivityContainer"/>
 
     <TextView
         android:id="@+id/warning_title"

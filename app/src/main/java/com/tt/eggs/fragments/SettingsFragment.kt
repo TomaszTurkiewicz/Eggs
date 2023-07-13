@@ -1,5 +1,6 @@
 package com.tt.eggs.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.tt.eggs.MainActivity
@@ -121,6 +123,7 @@ class SettingsFragment : Fragment() {
             darkMode = (darkMode+1)%3
             Functions.saveDarkMOdeToSharedPreferences(requireContext(),darkMode)
             displayDarkModeTextView()
+            setDrawable()
         }
 
     }
@@ -253,10 +256,17 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setDrawable() {
+        binding.settingsActivityContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getBackgroundColor()))
         binding.userNameTv.background = TextViewDrawable(requireContext())
         binding.darkModeTv.background = TextViewDrawable(requireContext())
         binding.backToGame.setImageDrawable(StartButton(requireContext()))
-        binding.ranking.setImageDrawable(StartButtonGray(requireContext()))
+        if(rankingReady){
+            binding.ranking.setImageDrawable(StartButton(requireContext()))
+        }else{
+            binding.ranking.setImageDrawable(StartButtonGray(requireContext()))
+        }
+
+
         binding.darkModeButton.setImageDrawable(StartButton(requireContext()))
         binding.otherGamesButton.setImageDrawable(StartButton(requireContext()))
         binding.accountButton.setImageDrawable(StartButton(requireContext()))

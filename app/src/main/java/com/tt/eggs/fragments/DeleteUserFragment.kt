@@ -15,6 +15,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -218,6 +219,7 @@ class DeleteUserFragment : Fragment() {
     }
 
     private fun setDrawable() {
+        binding.deleteUserActivityContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),Theme(requireContext()).getBackgroundColor()))
         binding.frame.background = TextViewDrawableWithBorder(requireContext())
 
         binding.backToGameImageView.setImageDrawable(StartButton(requireContext()))
