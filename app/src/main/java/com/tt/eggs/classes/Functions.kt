@@ -289,22 +289,22 @@ class Functions {
                 return curvedPoint
         }
 
-        fun saveScreenUnitToSharedPreferences(context: Context?,unit:Int){
+        fun saveDarkMOdeToSharedPreferences(context: Context?,darkMode:Int){
             context?.let {
-                val sharedPreferences = context.getSharedPreferences("UNIT",Context.MODE_PRIVATE)
+                val sharedPreferences = context.getSharedPreferences("DARK_MODE",Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
-                editor.putInt("unit",unit)
+                editor.putInt("dark_mode",darkMode)
                 editor.apply()
             }
         }
 
-        fun readScreenUnitFromSharedPreferences(context: Context?):Int{
-            var unit = 0
+        fun readDarkModeFromSharedPreferences(context: Context?):Int{
+            var darkMode = 0
             context?.let {
-                val sharedPreferences = context.getSharedPreferences("UNIT",Context.MODE_PRIVATE)
-                unit = sharedPreferences.getInt("unit",0)
+                val sharedPreferences = context.getSharedPreferences("DARK_MODE",Context.MODE_PRIVATE)
+                darkMode = sharedPreferences.getInt("dark_mode",Static.DARK_MODE_AUTO)
             }
-            return unit
+            return darkMode
         }
 
     }

@@ -3,20 +3,17 @@ package com.tt.eggs.fragments
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -31,10 +28,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.tt.eggs.*
+import com.tt.eggs.R
 import com.tt.eggs.classes.*
 import com.tt.eggs.databinding.FragmentLoginBinding
-import com.tt.eggs.drawable.*
+import com.tt.eggs.drawable.RoundedFrameDrawable
+import com.tt.eggs.drawable.StartButton
+import com.tt.eggs.drawable.TextViewDrawable
 
 
 class LoginFragment : Fragment() {
@@ -47,18 +46,12 @@ class LoginFragment : Fragment() {
     private val scoreSize = Dimension()
     private val scoreUserSize = Dimension()
     private val backToGameButtonSize = Dimension()
-    private val rankingButtonSize = Dimension()
     private val loginButtonSize = Dimension()
-    private val otherGamesButtonSize = Dimension()
     private val wholeScreenSize = Dimension()
     private var loggedInStatus = LoggedInStatus()
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
-
-    private val mHandler = Handler(Looper.getMainLooper())
-    private var rankingReady = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,25 +90,6 @@ class LoginFragment : Fragment() {
         // buttons on click listeners
         setButtonsActions()
 
-        rankingChecking().run()
-    }
-
- private fun rankingChecking(): Runnable = Runnable {
-     val activity = activity as MainActivity
-     rankingReady = activity.getSorted()
-     if(rankingReady){
-         view?.let {
-             binding.ranking.setImageDrawable(StartButton(requireContext()))
-         }
-         mHandler.removeCallbacksAndMessages(null)
-     }else{
-         mHandler.postDelayed(rankingChecking(),1000)
-     }
- }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mHandler.removeCallbacksAndMessages(null)
     }
 
     private fun doSomething(data: Intent?) {
@@ -214,11 +188,6 @@ class LoginFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        binding.otherGamesButton.setOnClickListener {
-            val action = LoginFragmentDirections.actionLoginFragmentToOtherGamesFragment()
-            findNavController().navigate(action)
-        }
-
         binding.googleSignIn.setOnClickListener {
             if (auth.currentUser!=null){
                 signOut()
@@ -236,15 +205,6 @@ class LoginFragment : Fragment() {
 
 
 
-        }
-
-        binding.ranking.setOnClickListener {
-            if(rankingReady) {
-                val action = LoginFragmentDirections.actionLoginFragmentToRankingFragment()
-                findNavController().navigate(action)
-            }else{
-                Toast.makeText(requireContext(),"RANKING NOT READY YET",Toast.LENGTH_SHORT).show()
-            }
         }
 
         binding.deleteUserImage.setOnClickListener {
@@ -477,30 +437,17 @@ class LoginFragment : Fragment() {
             ConstraintSet.LEFT,binding.loginActivityContainer.id,
             ConstraintSet.LEFT,screenUnit)
 
-        set.connect(binding.rankingLinearLayout.id,
-            ConstraintSet.TOP,binding.loginActivityContainer.id,
-            ConstraintSet.TOP, (screenUnit*2.5).toInt())
-        set.connect(binding.rankingLinearLayout.id,
-            ConstraintSet.RIGHT,binding.loginActivityContainer.id,
-            ConstraintSet.RIGHT, screenUnit)
-
-        set.connect(binding.otherGamesLinearLayout.id,
-            ConstraintSet.TOP,binding.loginActivityContainer.id,
-            ConstraintSet.TOP, (screenUnit*4.5).toInt())
-        set.connect(binding.otherGamesLinearLayout.id,
-            ConstraintSet.RIGHT,binding.loginActivityContainer.id,
-            ConstraintSet.RIGHT, screenUnit)
 
         set.connect(binding.loginLinearLayout.id,
             ConstraintSet.TOP,binding.loginActivityContainer.id,
-            ConstraintSet.TOP, (screenUnit*6.5).toInt())
+            ConstraintSet.TOP, (screenUnit*2.5).toInt())
         set.connect(binding.loginLinearLayout.id,
             ConstraintSet.RIGHT,binding.loginActivityContainer.id,
             ConstraintSet.RIGHT, screenUnit)
 
         set.connect(binding.deleteUserLinearLayout.id,
             ConstraintSet.TOP,binding.loginActivityContainer.id,
-            ConstraintSet.TOP, (screenUnit*8.5).toInt())
+            ConstraintSet.TOP, (screenUnit*6.5).toInt())
         set.connect(binding.deleteUserLinearLayout.id,
             ConstraintSet.RIGHT,binding.loginActivityContainer.id,
             ConstraintSet.RIGHT, screenUnit)
@@ -518,21 +465,12 @@ class LoginFragment : Fragment() {
         binding.highScoreBUser.background = TextViewDrawable(requireContext())
         binding.totalScoreUser.background = TextViewDrawable(requireContext())
         binding.backToGame.setImageDrawable(StartButton(requireContext()))
-        binding.ranking.setImageDrawable(StartButtonGray(requireContext()))
         binding.googleSignIn.setImageDrawable(StartButton(requireContext()))
-        binding.otherGamesButton.setImageDrawable(StartButton(requireContext()))
         binding.backToGameLinearLayoutEt.background = RoundedFrameDrawable(requireContext(),backToGameButtonSize.height/20,backToGameButtonSize.height/2)
         binding.loginLinearLayout.background = RoundedFrameDrawable(requireContext(),loginButtonSize.height/20,loginButtonSize.height/2)
-        binding.otherGamesLinearLayout.background = RoundedFrameDrawable(requireContext(),otherGamesButtonSize.height/20,otherGamesButtonSize.height/2)
-        binding.rankingLinearLayout.background = RoundedFrameDrawable(requireContext(),rankingButtonSize.height/20,rankingButtonSize.height/2)
 
         binding.deleteUserImage.setImageDrawable(StartButton(requireContext()))
         binding.deleteUserLinearLayout.background = RoundedFrameDrawable(requireContext(),loginButtonSize.height/20,loginButtonSize.height/2)
-
-        val apps = Functions.readNumberOfAppsFromSharedPreferences(requireContext())
-        if(apps.isNewApp()){
-            binding.otherGamesButton.setImageDrawable(StartButtonGreen(requireContext()))
-        }
 
     }
 
@@ -597,14 +535,6 @@ class LoginFragment : Fragment() {
         binding.backToGameTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
         binding.backToGameTextViewBlank.layoutParams = LinearLayout.LayoutParams((backToGameButtonSize.width/2).toInt(),(backToGameButtonSize.height).toInt())
 
-        rankingButtonSize.width= (screenUnit*4/3).toDouble()
-        rankingButtonSize.height = rankingButtonSize.width
-
-        binding.ranking.layoutParams = LinearLayout.LayoutParams((rankingButtonSize.width).toInt(),(rankingButtonSize.height).toInt())
-        binding.rankingTv.layoutParams = LinearLayout.LayoutParams((4*rankingButtonSize.width).toInt(),(rankingButtonSize.height).toInt())
-        binding.rankingTvBlank.layoutParams = LinearLayout.LayoutParams((0.5*rankingButtonSize.width).toInt(),(rankingButtonSize.height).toInt())
-        binding.rankingTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
-
         loginButtonSize.width= (screenUnit*4/3).toDouble()
         loginButtonSize.height = loginButtonSize.width
 
@@ -612,14 +542,6 @@ class LoginFragment : Fragment() {
         binding.loginTv.layoutParams = LinearLayout.LayoutParams((4*loginButtonSize.width).toInt(),(loginButtonSize.height).toInt())
         binding.loginTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
         binding.loginTvBlank.layoutParams = LinearLayout.LayoutParams((0.5*loginButtonSize.width).toInt(),(loginButtonSize.height).toInt())
-
-        otherGamesButtonSize.width= (screenUnit*4/3).toDouble()
-        otherGamesButtonSize.height = otherGamesButtonSize.width
-
-        binding.otherGamesButton.layoutParams = LinearLayout.LayoutParams((otherGamesButtonSize.width).toInt(),(otherGamesButtonSize.height).toInt())
-        binding.otherGamesTv.layoutParams = LinearLayout.LayoutParams((4*otherGamesButtonSize.width).toInt(),(otherGamesButtonSize.height).toInt())
-        binding.otherGamesTvBlank.layoutParams = LinearLayout.LayoutParams((0.5*otherGamesButtonSize.width).toInt(),(otherGamesButtonSize.height).toInt())
-        binding.otherGamesTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
 
         binding.deleteUserImage.layoutParams = LinearLayout.LayoutParams((loginButtonSize.width).toInt(),(loginButtonSize.height).toInt())
         binding.deleteUserTv.layoutParams = LinearLayout.LayoutParams((4*loginButtonSize.width).toInt(),(loginButtonSize.height).toInt())
@@ -632,4 +554,4 @@ class LoginFragment : Fragment() {
 
 }
 
-//todo check how auth and logged in status are working together
+// todo change user checking in firebase

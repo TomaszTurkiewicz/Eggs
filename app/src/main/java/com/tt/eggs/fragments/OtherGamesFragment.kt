@@ -13,12 +13,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.navigation.fragment.findNavController
 import com.tt.eggs.R
-import com.tt.eggs.StartActivity
 import com.tt.eggs.classes.Dimension
 import com.tt.eggs.classes.Functions
 import com.tt.eggs.classes.NewApps
 import com.tt.eggs.classes.ScreenMetricsCompat
-import com.tt.eggs.databinding.ActivityOtherGamesBinding
 import com.tt.eggs.databinding.FragmentOtherGamesBinding
 import com.tt.eggs.drawable.RoundedFrameDrawable
 import com.tt.eggs.drawable.StartButton

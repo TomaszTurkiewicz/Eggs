@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdRequest
@@ -305,7 +306,7 @@ class MainFragment : Fragment() {
 
         binding.account.setOnClickListener {
             if(gameState==Static.DEMO||gameState==Static.PAUSE_A||gameState==Static.PAUSE_B){
-                val action = MainFragmentDirections.actionMainFragmentToLoginFragment()
+                val action = MainFragmentDirections.actionMainFragmentToSettingsFragment2()
                 findNavController().navigate(action)
 
             }
@@ -2218,6 +2219,10 @@ class MainFragment : Fragment() {
     private fun setDrawable() {
 
         view?.let {
+            binding.mainScreenContainer.setBackgroundColor(ContextCompat.getColor(requireContext(),Theme().getBackgroundColor()))
+        }
+
+        view?.let {
         binding.screenBack.setImageDrawable(MainScreenDrawableBack(requireContext(),screenUnit,screenSize.width,screenSize.height))
         binding.screenFront.setImageDrawable(MainScreenDrawableFront(requireContext(),screenUnit,screenSize.width,screenSize.height))
 
@@ -2266,7 +2271,9 @@ class MainFragment : Fragment() {
                     val newApp = apps.isNewApp()
                     Functions.saveNumberOfAppsToSharedPreferences(requireContext(),apps)
                     if(newApp){
-                        binding.account.setImageDrawable(StartButtonGreen(requireContext()))
+                        view?.let {
+                            binding.account.setImageDrawable(StartButtonGreen(requireContext()))
+                        }
                     }
                 }
             }

@@ -204,65 +204,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/otherGamesLinearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/otherGamesTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/other_games"
-            android:textColor="@color/black"
-            android:gravity="center"/>
-
-        <ImageView
-            android:id="@+id/otherGamesButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/image"/>
-
-        <TextView
-            android:id="@+id/otherGamesTvBlank"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/rankingLinearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/rankingTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ranking"
-            android:textColor="@color/black"
-            android:gravity="center"/>
-
-        <ImageView
-            android:id="@+id/ranking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/image"/>
-
-        <TextView
-            android:id="@+id/rankingTvBlank"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/deleteUserLinearLayout"

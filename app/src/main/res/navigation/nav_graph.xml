@@ -11,20 +11,15 @@
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
-            android:id="@+id/action_mainFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_mainFragment_to_settingsFragment2"
+            app:destination="@id/settingsFragment2" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.tt.eggs.fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_otherGamesFragment"
-            app:destination="@id/otherGamesFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_rankingFragment"
-            app:destination="@id/rankingFragment" />
+
         <action
             android:id="@+id/action_loginFragment_to_deleteUserFragment"
             app:destination="@id/deleteUserFragment" />
@@ -44,4 +39,19 @@
         android:name="com.tt.eggs.fragments.DeleteUserFragment"
         android:label="fragment_delete_user"
         tools:layout="@layout/fragment_delete_user" />
+    <fragment
+        android:id="@+id/settingsFragment2"
+        android:name="com.tt.eggs.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment2_to_rankingFragment"
+            app:destination="@id/rankingFragment" />
+        <action
+            android:id="@+id/action_settingsFragment2_to_otherGamesFragment"
+            app:destination="@id/otherGamesFragment" />
+        <action
+            android:id="@+id/action_settingsFragment2_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

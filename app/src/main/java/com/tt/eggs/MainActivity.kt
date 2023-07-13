@@ -4,7 +4,6 @@ package com.tt.eggs
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -16,9 +15,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.tt.eggs.classes.User
 import com.tt.eggs.databinding.ActivityMainBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(){
@@ -64,23 +60,11 @@ class MainActivity : AppCompatActivity(){
                         val tUser = user.getValue(User::class.java)
                         userList.add(tUser!!)
                     }
-
                     listDownloaded = true
-                    changeColor()
-
-
-
                 }
             }
-
         })
-
     }
-
-    private fun changeColor(){
-        binding.imageViewRanking.setBackgroundColor(ContextCompat.getColor(this,R.color.green))
-    }
-
 
     fun getSorted():Boolean{
         return this.listDownloaded

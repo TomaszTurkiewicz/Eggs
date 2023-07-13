@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 import com.tt.eggs.classes.MyPath
+import com.tt.eggs.classes.Theme
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
@@ -941,6 +942,7 @@ class MainScreenDrawableBack(private val context: Context,
         val rect = Rect(0,0, (screenUnit*width).toInt(), (screenUnit*height).toInt())
         paint.style = Paint.Style.FILL
         paint.color = ContextCompat.getColor(context, R.color.gray)
+
         canvas.drawRect(rect,paint)
 
         val cornerLeftUp = Point(0,0)

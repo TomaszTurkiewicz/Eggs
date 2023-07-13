@@ -54,5 +54,10 @@ class Static {
         const val WOLF_UP = 1
         const val WOLF_DOWN = 2
 
+        // dark modes
+        const val DARK_MODE_AUTO = 0
+        const val DARK_MODE_ON = 1
+        const val DARK_MODE_OFF = 2
+
     }
 }
