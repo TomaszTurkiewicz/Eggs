@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
+import com.tt.eggs.classes.Theme
 
 class FaultTopDrawable (private val context: Context,
                         val black:Boolean): Drawable(){
@@ -22,7 +23,7 @@ class FaultTopDrawable (private val context: Context,
         if(black) {
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context, R.color.shadow)
+            paint.color = ContextCompat.getColor(context, Theme(context).getShadowColor())
         }
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.strokeWidth = stroke.toFloat()

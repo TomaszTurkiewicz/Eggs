@@ -5,6 +5,7 @@ import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
+import com.tt.eggs.classes.Theme
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
@@ -21,7 +22,7 @@ class NormalEggDrawable(private val context: Context, val black:Boolean):Drawabl
         if(black) {
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context, R.color.shadow)
+            paint.color = ContextCompat.getColor(context, Theme(context).getShadowColor())
         }
         paint.strokeWidth = (size/8).toFloat()
 

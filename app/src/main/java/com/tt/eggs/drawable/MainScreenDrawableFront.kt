@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 import com.tt.eggs.classes.MyPath
+import com.tt.eggs.classes.Theme
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
@@ -41,7 +42,8 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
         paint.style=Paint.Style.FILL_AND_STROKE
         paint.strokeWidth= (stroke).toFloat()
-        paint.color = ContextCompat.getColor(context, R.color.red)
+//        paint.color = ContextCompat.getColor(context, R.color.red)
+        paint.color = ContextCompat.getColor(context, Theme(context).getRedColor())
 
 
         val windowPath = MyPath()
@@ -92,7 +94,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
         paint.strokeWidth= (stroke).toFloat()
 
 
-        paint.color = ContextCompat.getColor(context, R.color.red)
+        paint.color = ContextCompat.getColor(context, Theme(context).getRedColor())
         stroke = screenUnit/40
         paint.strokeWidth= (stroke).toFloat()
         val heightOffset = stroke*4
@@ -258,7 +260,14 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
         val rectR = RectF((screenUnit*margin1).toFloat(), screenUnit.toFloat(),(screenUnit*margin2).toFloat(),(screenUnit*(height-1)).toFloat())
         val rectR2 = RectF((screenUnit*(width-margin1)).toFloat(), screenUnit.toFloat(),(screenUnit*(width-margin2)).toFloat(),(screenUnit*(height-1)).toFloat())
         paint.style = Paint.Style.FILL
-        paint.shader = LinearGradient(0f,(cornerRightUpAdditional.y).toFloat(),0f,(cornerRightBottomAdditional.y).toFloat(),ContextCompat.getColor(context,R.color.gray_dark),ContextCompat.getColor(context,R.color.gray_middle),Shader.TileMode.MIRROR)
+//        paint.shader = LinearGradient(0f,(cornerRightUpAdditional.y).toFloat(),0f,(cornerRightBottomAdditional.y).toFloat(),ContextCompat.getColor(context,R.color.gray_dark),ContextCompat.getColor(context,R.color.gray_middle),Shader.TileMode.MIRROR)
+        paint.shader = LinearGradient(0f,
+            (cornerRightUpAdditional.y).toFloat(),
+            0f,
+            (cornerRightBottomAdditional.y).toFloat(),
+            ContextCompat.getColor(context,Theme(context).getAccentDarkColor()),
+            ContextCompat.getColor(context,Theme(context).getAccentMiddleColor()),
+            Shader.TileMode.MIRROR)
         canvas.drawRect(rectR,paint)
         canvas.drawRect(rectR2,paint)
 
@@ -270,7 +279,8 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
         val paint1 = Paint()
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = (screenUnit/9).toFloat()
-        paint.color = ContextCompat.getColor(context, R.color.white)
+//        paint.color = ContextCompat.getColor(context, R.color.white)
+        paint.color = ContextCompat.getColor(context, Theme(context).getWhiteColor())
         val topHeight = screenUnit*2
         val leftMargin = margin*screenUnit
 
@@ -308,16 +318,19 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
         paint1.style = Paint.Style.FILL
         paint1.strokeWidth = (screenUnit/9).toFloat()
-        paint1.color = ContextCompat.getColor(context, R.color.white)
+//        paint.color = ContextCompat.getColor(context, R.color.white)
+        paint1.color = ContextCompat.getColor(context, Theme(context).getWhiteColor())
 
         paint2.style = Paint.Style.STROKE
         paint2.strokeWidth = (screenUnit/20).toFloat()
-        paint2.color = ContextCompat.getColor(context, R.color.white)
+//        paint2.color = ContextCompat.getColor(context, R.color.white)
+        paint2.color = ContextCompat.getColor(context, Theme(context).getWhiteColor())
 
         val paint3 = Paint()
         paint3.style = Paint.Style.FILL
         paint3.strokeWidth = (screenUnit/9).toFloat()
-        paint3.color = ContextCompat.getColor(context, R.color.red)
+//        paint3.color = ContextCompat.getColor(context, R.color.red)
+        paint3.color = ContextCompat.getColor(context, Theme(context).getRedColor())
 
         val h = Point(a.x,a.y-screenUnit+screenUnit/8)
         val i = Point(h.x+screenUnit/8,h.y)
@@ -345,7 +358,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
         val paint1 = Paint()
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = (screenUnit/9).toFloat()
-        paint.color = ContextCompat.getColor(context, R.color.white)
+        paint.color = ContextCompat.getColor(context, Theme(context).getWhiteColor())
         val topHeight = screenUnit*3.5
         val leftMargin = margin*screenUnit
 
@@ -383,16 +396,16 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
         paint1.style = Paint.Style.FILL
         paint1.strokeWidth = (screenUnit/9).toFloat()
-        paint1.color = ContextCompat.getColor(context, R.color.white)
+        paint1.color = ContextCompat.getColor(context, Theme(context).getWhiteColor())
 
         paint2.style = Paint.Style.STROKE
         paint2.strokeWidth = (screenUnit/20).toFloat()
-        paint2.color = ContextCompat.getColor(context, R.color.white)
+        paint2.color = ContextCompat.getColor(context, Theme(context).getWhiteColor())
 
         val paint3 = Paint()
         paint3.style = Paint.Style.FILL
         paint3.strokeWidth = (screenUnit/9).toFloat()
-        paint3.color = ContextCompat.getColor(context, R.color.red)
+        paint3.color = ContextCompat.getColor(context, Theme(context).getRedColor())
         val h = Point(a.x,a.y-screenUnit+screenUnit/8)
         val i = Point(h.x+screenUnit/8,h.y)
         val j = Point(e.x+screenUnit/6,e.y+screenUnit/7)
@@ -414,7 +427,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
         val paint1 = Paint()
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = (screenUnit/9).toFloat()
-        paint.color = ContextCompat.getColor(context, R.color.white)
+        paint.color = ContextCompat.getColor(context, Theme(context).getWhiteColor())
         val topHeight = screenUnit*2
         val rightMargin = screenUnit*(width-margin)
 
@@ -452,16 +465,16 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
         paint1.style = Paint.Style.FILL
         paint1.strokeWidth = (screenUnit/9).toFloat()
-        paint1.color = ContextCompat.getColor(context, R.color.white)
+        paint1.color = ContextCompat.getColor(context, Theme(context).getWhiteColor())
 
         paint2.style = Paint.Style.STROKE
         paint2.strokeWidth = (screenUnit/20).toFloat()
-        paint2.color = ContextCompat.getColor(context, R.color.white)
+        paint2.color = ContextCompat.getColor(context, Theme(context).getWhiteColor())
 
         val paint3 = Paint()
         paint3.style = Paint.Style.FILL
         paint3.strokeWidth = (screenUnit/9).toFloat()
-        paint3.color = ContextCompat.getColor(context, R.color.red)
+        paint3.color = ContextCompat.getColor(context, Theme(context).getRedColor())
 
         val h = Point(a.x,a.y-screenUnit+screenUnit/8)
         val i = Point(h.x-screenUnit/8,h.y)
@@ -484,7 +497,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
         val paint1 = Paint()
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = (screenUnit/9).toFloat()
-        paint.color = ContextCompat.getColor(context, R.color.white)
+        paint.color = ContextCompat.getColor(context, Theme(context).getWhiteColor())
         val topHeight = screenUnit*3.5
         val rightMargin = screenUnit*(width-margin)
 
@@ -522,16 +535,16 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
         paint1.style = Paint.Style.FILL
         paint1.strokeWidth = (screenUnit/9).toFloat()
-        paint1.color = ContextCompat.getColor(context, R.color.white)
+        paint1.color = ContextCompat.getColor(context, Theme(context).getWhiteColor())
 
         paint2.style = Paint.Style.STROKE
         paint2.strokeWidth = (screenUnit/20).toFloat()
-        paint2.color = ContextCompat.getColor(context, R.color.white)
+        paint2.color = ContextCompat.getColor(context, Theme(context).getWhiteColor())
 
         val paint3 = Paint()
         paint3.style = Paint.Style.FILL
         paint3.strokeWidth = (screenUnit/9).toFloat()
-        paint3.color = ContextCompat.getColor(context, R.color.red)
+        paint3.color = ContextCompat.getColor(context, Theme(context).getRedColor())
 
         val h = Point(a.x,a.y-screenUnit+screenUnit/8)
         val i = Point(h.x-screenUnit/8,h.y)
@@ -552,7 +565,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
     private fun drawGrassLeft(canvas: Canvas) {
         paint.strokeWidth= (screenUnit/20).toFloat()
-        paint.color= ContextCompat.getColor(context, R.color.green)
+        paint.color= ContextCompat.getColor(context, Theme(context).getGreenColor())
         paint.style = Paint.Style.FILL_AND_STROKE
 
         val top = screenUnit*5.55
@@ -659,7 +672,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
     private fun drawGrassRight(canvas: Canvas) {
         paint.strokeWidth= (screenUnit/20).toFloat()
-        paint.color= ContextCompat.getColor(context, R.color.green)
+        paint.color= ContextCompat.getColor(context, Theme(context).getGreenColor())
         paint.style = Paint.Style.FILL_AND_STROKE
 
         val top = screenUnit*5.55
@@ -766,7 +779,7 @@ class MainScreenDrawableFront(private val context: Context, private val screenUn
 
     private fun drawGrassMiddle(canvas: Canvas){
         paint.strokeWidth= (screenUnit/20).toFloat()
-        paint.color= ContextCompat.getColor(context, R.color.green)
+        paint.color= ContextCompat.getColor(context, Theme(context).getGreenColor())
         paint.style = Paint.Style.FILL_AND_STROKE
 
         val top = screenUnit*5.7

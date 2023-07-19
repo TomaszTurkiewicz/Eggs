@@ -5,6 +5,7 @@ import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
+import com.tt.eggs.classes.Theme
 
 class Digit(private val context: Context, private val number:Int?): Drawable(){
 
@@ -71,7 +72,7 @@ class Digit(private val context: Context, private val number:Int?): Drawable(){
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context,R.color.shadow)
+            paint.color = ContextCompat.getColor(context,Theme(context).getShadowColor())
         }
 
         path.moveTo((1.5*unit).toFloat(), width.toFloat())
@@ -90,7 +91,7 @@ class Digit(private val context: Context, private val number:Int?): Drawable(){
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context,R.color.shadow)
+            paint.color = ContextCompat.getColor(context,Theme(context).getShadowColor())
         }
         path.moveTo(0F, unit.toFloat())
         path.lineTo(0F, (width-0.5*unit).toFloat())
@@ -107,7 +108,7 @@ class Digit(private val context: Context, private val number:Int?): Drawable(){
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context,R.color.shadow)
+            paint.color = ContextCompat.getColor(context,Theme(context).getShadowColor())
         }
         path.moveTo(0F, (width+0.5*unit).toFloat())
         path.lineTo(0F, (2*width-unit).toFloat())
@@ -125,7 +126,7 @@ class Digit(private val context: Context, private val number:Int?): Drawable(){
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context,R.color.shadow)
+            paint.color = ContextCompat.getColor(context,Theme(context).getShadowColor())
         }
         path.moveTo(unit.toFloat(), (2*width).toFloat())
         path.lineTo((width-unit).toFloat(), (2*width).toFloat())
@@ -142,7 +143,7 @@ class Digit(private val context: Context, private val number:Int?): Drawable(){
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context,R.color.shadow)
+            paint.color = ContextCompat.getColor(context,Theme(context).getShadowColor())
         }
         path.moveTo(width.toFloat(), (width+0.5*unit).toFloat())
         path.lineTo(width.toFloat(), (2*width-unit).toFloat())
@@ -159,7 +160,7 @@ class Digit(private val context: Context, private val number:Int?): Drawable(){
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context,R.color.shadow)
+            paint.color = ContextCompat.getColor(context,Theme(context).getShadowColor())
         }
         path.moveTo(width.toFloat(), unit.toFloat())
         path.lineTo(width.toFloat(), (width-0.5*unit).toFloat())
@@ -175,7 +176,7 @@ class Digit(private val context: Context, private val number:Int?): Drawable(){
         if(black){
             paint.color = ContextCompat.getColor(context,R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context,R.color.shadow)
+            paint.color = ContextCompat.getColor(context,Theme(context).getShadowColor())
         }
         path.moveTo(unit.toFloat(), 0F)
         path.lineTo((width-unit).toFloat(), 0F)

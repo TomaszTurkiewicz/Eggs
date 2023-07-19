@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 import com.tt.eggs.classes.Static
+import com.tt.eggs.classes.Theme
 
 class WolfLeft (private val context: Context, private val wolf:Int): Drawable() {
     private val paint = Paint()
@@ -16,12 +17,12 @@ class WolfLeft (private val context: Context, private val wolf:Int): Drawable() 
         val width = bounds.width()
         val unit = width.toDouble()/100
 
-        paint.color = ContextCompat.getColor(context, R.color.shadow)
+        paint.color = ContextCompat.getColor(context, Theme(context).getShadowColor())
 
         paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
 
         if(wolf==Static.WOLF_SHADOW){
-            paint.color = ContextCompat.getColor(context, R.color.shadow)
+            paint.color = ContextCompat.getColor(context, Theme(context).getShadowColor())
         }else{
             paint.color = ContextCompat.getColor(context, R.color.black)
         }
@@ -31,14 +32,14 @@ class WolfLeft (private val context: Context, private val wolf:Int): Drawable() 
         if(wolf==Static.WOLF_DOWN){
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context, R.color.shadow)
+            paint.color = ContextCompat.getColor(context, Theme(context).getShadowColor())
         }
         drawDown(canvas,width, unit)
 
         if(wolf==Static.WOLF_UP){
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context, R.color.shadow)
+            paint.color = ContextCompat.getColor(context, Theme(context).getShadowColor())
         }
         drawUp(canvas,width, unit)
 

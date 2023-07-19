@@ -2287,8 +2287,9 @@ class MainFragment : Fragment() {
         })
         }
     }
-}
 
-/*
-todo dark mode
- */
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mHandlerPause.removeCallbacksAndMessages(null)
+    }
+}

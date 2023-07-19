@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
+import com.tt.eggs.classes.Theme
 
 class RabbitDrawable(private val context: Context,  val black:Boolean): Drawable() {
     private val paint= Paint()
@@ -22,7 +23,7 @@ class RabbitDrawable(private val context: Context,  val black:Boolean): Drawable
         if(black) {
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context, R.color.shadow)
+            paint.color = ContextCompat.getColor(context, Theme(context).getShadowColor())
         }
         paint.strokeWidth = (stroke*3).toFloat()
 

@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
+import com.tt.eggs.classes.Theme
 
 class RunningChickenRightTwo(private val context: Context, val black:Boolean): Drawable() {
     private val paint = Paint()
@@ -20,7 +21,7 @@ class RunningChickenRightTwo(private val context: Context, val black:Boolean): D
         if(black) {
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context, R.color.shadow)
+            paint.color = ContextCompat.getColor(context, Theme(context).getShadowColor())
         }
         paint.strokeWidth = (width/100).toFloat()
 

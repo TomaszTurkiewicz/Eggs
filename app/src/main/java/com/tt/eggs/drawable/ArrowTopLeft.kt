@@ -33,17 +33,35 @@ class ArrowTopLeft (private val context: Context):Drawable(){
             o.x.toFloat(), o.y.toFloat(),
             radius1.toFloat(),paint)
 
-        paint.shader = LinearGradient(0f,(o.y-radius2).toFloat(),0f,(o.y+radius2).toFloat(),ContextCompat.getColor(context,R.color.white),ContextCompat.getColor(context,R.color.gray_light),Shader.TileMode.MIRROR)
+        paint.shader = LinearGradient(0f,
+            (o.y-radius2).toFloat(),
+            0f,
+            (o.y+radius2).toFloat(),
+            ContextCompat.getColor(context,Theme(context).getWhiteColor()),
+            ContextCompat.getColor(context,Theme(context).getAccentLightColor()),
+            Shader.TileMode.MIRROR)
         canvas.drawCircle(
             o.x.toFloat(), o.y.toFloat(),
             radius2.toFloat(),paint)
 
-        paint.shader = LinearGradient(0f,(o.y-radius3).toFloat(),0f,(o.y+radius3).toFloat(),ContextCompat.getColor(context,R.color.gray_middle),ContextCompat.getColor(context,R.color.black),Shader.TileMode.MIRROR)
+        paint.shader = LinearGradient(0f,
+            (o.y-radius3).toFloat(),
+            0f,
+            (o.y+radius3).toFloat(),
+            ContextCompat.getColor(context,Theme(context).getAccentMiddleColor()),
+            ContextCompat.getColor(context,R.color.black),
+            Shader.TileMode.MIRROR)
         canvas.drawCircle(
             o.x.toFloat(), o.y.toFloat(),
             radius3.toFloat(),paint)
 
-        paint.shader = LinearGradient(0f,(o.y-radius4).toFloat(),0f,(o.y+radius4).toFloat(),ContextCompat.getColor(context,R.color.red_light),ContextCompat.getColor(context,R.color.red_dark),Shader.TileMode.MIRROR)
+        paint.shader = LinearGradient(0f,
+            (o.y-radius4).toFloat(),
+            0f,
+            (o.y+radius4).toFloat(),
+            ContextCompat.getColor(context,Theme(context).getRedLightColor()),
+            ContextCompat.getColor(context,Theme(context).getRedDarkColor()),
+            Shader.TileMode.MIRROR)
         canvas.drawCircle(
             o.x.toFloat(), o.y.toFloat(),
             radius4.toFloat(),paint)

@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
+import com.tt.eggs.classes.Theme
 
 class RunningChickenLeftFirst (private val context: Context, val black:Boolean): Drawable() {
     private val paint = Paint()
@@ -23,7 +24,7 @@ class RunningChickenLeftFirst (private val context: Context, val black:Boolean):
         if(black) {
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
-            paint.color = ContextCompat.getColor(context, R.color.shadow)
+            paint.color = ContextCompat.getColor(context, Theme(context).getShadowColor())
         }
         val a = Point((width*0.18).toInt(), (width*0.13).toInt())
         val b = Point((width*0.25).toInt(), (width*0.13).toInt())

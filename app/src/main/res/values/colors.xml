@@ -3,27 +3,38 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="colorAccentTransparent">#4F03DAC5</color>
     <color name="transparent">#00000000</color>
     <color name="gray">#D5D5D5</color>
     <color name="gray_middle">#B3B3B3</color>
     <color name="gray_LCD">#CCD8C0</color>
+    <color name="shadow">#ABC1CFB2</color>
+    <color name="shadow_dark_mode">#AB9CA88E</color>
+    <color name="gray_LCD_dark_mode">#9FAE90</color>
     <color name="gray_LCD_dark">#BEC9B3</color>
     <color name="gray_light">#EAEAEA</color>
     <color name="gray_dark">#8E8E8E</color>
     <color name="shadow_dark">#B2383838</color>
     <color name="black">#000000</color>
+    <color name="black_light">#424242</color>
+    <color name="black_middle">#333333</color>
+    <color name="black_dark">#202020</color>
     <color name="red">#BC0000</color>
+    <color name="red_dark_mode">#910000</color>
     <color name="red_dark">#9A0000</color>
+    <color name="red_dark_dark_mode">#780000</color>
     <color name="red_light">#DD7171</color>
+    <color name="red_light_dark_mode">#A14444</color>
     <color name="white">#FFFFFF</color>
+    <color name="white_dark_mode">#393939</color>
     <color name="green">#188503</color>
+    <color name="green_dark_mode">#0F5A00</color>
     <color name="green_dark">#0F6000</color>
+    <color name="green_dark_dark_mode">#0D5101</color>
     <color name="green_light">#55B143</color>
-    <color name="yellow">#E2F301</color>
+    <color name="green_light_dark_mode">#378A27</color>
 
 
-    <color name="shadow">#ABC1CFB2</color>
+
 
 
 

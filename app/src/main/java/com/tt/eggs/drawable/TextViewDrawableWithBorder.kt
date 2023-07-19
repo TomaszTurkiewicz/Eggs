@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.tt.eggs.R
 import com.tt.eggs.classes.MyPath
+import com.tt.eggs.classes.Theme
 
 class TextViewDrawableWithBorder (private val context: Context): Drawable() {
     private val paint = Paint()
@@ -36,18 +37,34 @@ class TextViewDrawableWithBorder (private val context: Context): Drawable() {
         paint.color = ContextCompat.getColor(context, R.color.black)
         canvas.drawRoundRect(rectR1, radius1.toFloat(), radius1.toFloat(),paint)
 
-        paint.shader = LinearGradient(0f,marginSecond.toFloat(),0f,(height-marginSecond).toFloat(),ContextCompat.getColor(context,R.color.white),ContextCompat.getColor(context,R.color.gray_light),Shader.TileMode.MIRROR)
+        paint.shader = LinearGradient(0f,
+            marginSecond.toFloat(),
+            0f,
+            (height-marginSecond).toFloat(),
+//            ContextCompat.getColor(context,R.color.white),
+            ContextCompat.getColor(context, Theme(context).getWhiteColor()),
+//            ContextCompat.getColor(context,R.color.gray_light),
+            ContextCompat.getColor(context,Theme(context).getAccentLightColor()),
+            Shader.TileMode.MIRROR)
         val rectR2 = RectF(marginSecond.toFloat(), marginSecond.toFloat(),(width-marginSecond).toFloat(),(height-marginSecond).toFloat())
         canvas.drawRoundRect(rectR2, radius2.toFloat(), radius2.toFloat(),paint)
 
-        paint.shader = LinearGradient(0f,marginThirdTop.toFloat(),0f,(height-marginThirdTop).toFloat(),ContextCompat.getColor(context,R.color.gray_dark),ContextCompat.getColor(context,R.color.gray_middle),Shader.TileMode.MIRROR)
+        paint.shader = LinearGradient(0f,
+            marginThirdTop.toFloat(),
+            0f,
+            (height-marginThirdTop).toFloat(),
+//            ContextCompat.getColor(context,R.color.gray_dark),
+            ContextCompat.getColor(context,Theme(context).getAccentDarkColor()),
+//            ContextCompat.getColor(context,R.color.gray_middle),
+            ContextCompat.getColor(context,Theme(context).getAccentMiddleColor()),
+            Shader.TileMode.MIRROR)
         val rectR3 = RectF(marginThirdLeft.toFloat(), marginThirdTop.toFloat(),(width-marginThirdLeft).toFloat(),(height-marginThirdTop).toFloat())
         canvas.drawRect(rectR3,paint)
         paint.shader = null
 
         val rectR4 = RectF(marginHorizontal.toFloat(), marginVertical.toFloat(),(width-marginHorizontal).toFloat(),(height-marginVertical).toFloat())
         paint.style = Paint.Style.FILL
-        paint.color = ContextCompat.getColor(context, R.color.gray_LCD)
+        paint.color = ContextCompat.getColor(context, Theme(context).getLCDColor())
         canvas.drawRect(rectR4,paint)
 
         val topLeftExternal = Point(marginHorizontal.toInt(),marginVertical.toInt())
@@ -62,7 +79,13 @@ class TextViewDrawableWithBorder (private val context: Context): Drawable() {
         val bottomRightExternal = Point((width-marginHorizontal).toInt(),(height-marginVertical).toInt())
         val bottomRightInternal = Point((width-(marginHorizontal+additionalMargin)).toInt(),(height-(marginVertical+additionalMargin)).toInt())
 
-        paint.shader = LinearGradient(0f,topLeftExternal.y.toFloat(),0f,topLeftInternal.y.toFloat(),ContextCompat.getColor(context,R.color.black),ContextCompat.getColor(context,R.color.gray_LCD),Shader.TileMode.MIRROR)
+        paint.shader = LinearGradient(0f,
+            topLeftExternal.y.toFloat(),
+            0f,
+            topLeftInternal.y.toFloat(),
+            ContextCompat.getColor(context,R.color.black),
+            ContextCompat.getColor(context,Theme(context).getLCDColor()),
+            Shader.TileMode.MIRROR)
         val pathTop = MyPath()
         pathTop.move(topLeftExternal)
         pathTop.line(topLeftInternal)
@@ -71,7 +94,13 @@ class TextViewDrawableWithBorder (private val context: Context): Drawable() {
         pathTop.close()
         canvas.drawPath(pathTop,paint)
 
-        paint.shader = LinearGradient(0f,bottomLeftExternal.y.toFloat(),0f,bottomLeftInternal.y.toFloat(),ContextCompat.getColor(context,R.color.black),ContextCompat.getColor(context,R.color.gray_LCD),Shader.TileMode.MIRROR)
+        paint.shader = LinearGradient(0f,
+            bottomLeftExternal.y.toFloat(),
+            0f,
+            bottomLeftInternal.y.toFloat(),
+            ContextCompat.getColor(context,R.color.black),
+            ContextCompat.getColor(context,Theme(context).getLCDColor()),
+            Shader.TileMode.MIRROR)
         val pathBottom = MyPath()
         pathBottom.move(bottomLeftExternal)
         pathBottom.line(bottomLeftInternal)
@@ -80,7 +109,13 @@ class TextViewDrawableWithBorder (private val context: Context): Drawable() {
         pathBottom.close()
         canvas.drawPath(pathBottom,paint)
 
-        paint.shader = LinearGradient(topLeftExternal.x.toFloat(),0f,topLeftInternal.x.toFloat(),0f,ContextCompat.getColor(context,R.color.black),ContextCompat.getColor(context,R.color.gray_LCD),Shader.TileMode.MIRROR)
+        paint.shader = LinearGradient(topLeftExternal.x.toFloat(),
+            0f,
+            topLeftInternal.x.toFloat(),
+            0f,
+            ContextCompat.getColor(context,R.color.black),
+            ContextCompat.getColor(context,Theme(context).getLCDColor()),
+            Shader.TileMode.MIRROR)
         val pathLeft = MyPath()
         pathLeft.move(bottomLeftExternal)
         pathLeft.line(bottomLeftInternal)
@@ -89,7 +124,13 @@ class TextViewDrawableWithBorder (private val context: Context): Drawable() {
         pathLeft.close()
         canvas.drawPath(pathLeft,paint)
 
-        paint.shader = LinearGradient(topRightExternal.x.toFloat(),0f,topRightInternal.x.toFloat(),0f,ContextCompat.getColor(context,R.color.black),ContextCompat.getColor(context,R.color.gray_LCD),Shader.TileMode.MIRROR)
+        paint.shader = LinearGradient(topRightExternal.x.toFloat(),
+            0f,
+            topRightInternal.x.toFloat(),
+            0f,
+            ContextCompat.getColor(context,R.color.black),
+            ContextCompat.getColor(context,Theme(context).getLCDColor()),
+            Shader.TileMode.MIRROR)
         val pathRight = MyPath()
         pathRight.move(bottomRightExternal)
         pathRight.line(bottomRightInternal)
