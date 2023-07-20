@@ -21,6 +21,10 @@ import com.tt.eggs.R
 import com.tt.eggs.classes.*
 import com.tt.eggs.databinding.FragmentRankingBinding
 import com.tt.eggs.drawable.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
 class RankingFragment : Fragment() {
@@ -30,6 +34,7 @@ class RankingFragment : Fragment() {
     private var index: Int = 0
     private var delayCounter = true
     private val mHandler = Handler(Looper.getMainLooper())
+    private val displayRankingHandler = Handler(Looper.getMainLooper())
 
 
     private var screenUnit = 0
@@ -50,6 +55,9 @@ class RankingFragment : Fragment() {
     private var rankingReady = false
     private var loggedInStatus = LoggedInStatus()
 
+    private val job = Job()
+    private val sortScope = CoroutineScope(Dispatchers.Default + job)
+    private var userPosition:Int =-1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +81,7 @@ class RankingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         makeUI()
         delay().run()
+        displayRankingReady().run()
 
         binding.backToGameRankingImageView.setOnClickListener {
             findNavController().navigateUp()
@@ -104,17 +113,32 @@ class RankingFragment : Fragment() {
             mHandler.postDelayed(delay(),500)
         }else{
             mHandler.removeCallbacksAndMessages(null)
-            prepareRanking()
+            prepareRankingWithCoroutine()
+        }
+    }
+
+    private fun displayRankingReady():Runnable = Runnable {
+        if(rankingReady){
+            displayRankingHandler.removeCallbacksAndMessages(null)
+            binding.progressBar1.visibility = View.GONE
+            binding.progressBar2.visibility = View.GONE
+            binding.progressBar3.visibility = View.GONE
+            binding.progressBar4.visibility = View.GONE
+            binding.progressBar5.visibility = View.GONE
+            displayFiveUsers(userid,userPosition)
+        }else{
+            displayRankingHandler.postDelayed(displayRankingReady(),500)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        displayRankingHandler.removeCallbacksAndMessages(null)
         mHandler.removeCallbacksAndMessages(null)
+        job.cancel()
     }
 
-
-    private fun prepareRanking(){
+    private fun prepareRankingWithCoroutine(){
         if(loggedInStatus.loggedIn){
             var exist = false
             val user = User(loggedInStatus.userid,
@@ -136,29 +160,68 @@ class RankingFragment : Fragment() {
         }
 
 
-        if(userList.size>1){
-            sort()
-        }
+        sortScope.launch {
+            if(userList.size>1){
+                sort()
+            }
 
-
-        var userPosition:Int =-1
-        if(userid != ""){
-            for(i in 0 until userList.size-1){
-                if(userList[i].id.equals(userid)){
-                    userPosition=i
+            if(userid != ""){
+                for(i in 0 until userList.size-1){
+                    if(userList[i].id.equals(userid)){
+                        userPosition=i
+                    }
                 }
             }
+            rankingReady=true
         }
-
-
-        binding.progressBar1.visibility = View.GONE
-        binding.progressBar2.visibility = View.GONE
-        binding.progressBar3.visibility = View.GONE
-        binding.progressBar4.visibility = View.GONE
-        binding.progressBar5.visibility = View.GONE
-        displayFiveUsers(userid,userPosition)
-        rankingReady=true
     }
+
+
+//    private fun prepareRanking(){
+//        if(loggedInStatus.loggedIn){
+//            var exist = false
+//            val user = User(loggedInStatus.userid,
+//                Functions.checkUserNameFromSharedPreferences(requireContext(),loggedInStatus.userid),
+//                Functions.readGameAFromSharedPreferences(requireContext(),loggedInStatus.userid),
+//                Functions.readGameBFromSharedPreferences(requireContext(),loggedInStatus.userid))
+//            for(i in 0 until userList.size-1){
+//                if(userList[i].id.equals(userid)){
+//                    userList[i].gameA = user.gameA
+//                    userList[i].gameB = user.gameB
+//                    userList[i].userName = user.userName
+//                    exist = true
+//                }
+//            }
+//
+//            if(!exist){
+//                userList.add(user)
+//            }
+//        }
+//
+//
+//        if(userList.size>1){
+//                sort()
+//        }
+//
+//
+//
+//        if(userid != ""){
+//            for(i in 0 until userList.size-1){
+//                if(userList[i].id.equals(userid)){
+//                    userPosition=i
+//                }
+//            }
+//        }
+//
+//
+//        binding.progressBar1.visibility = View.GONE
+//        binding.progressBar2.visibility = View.GONE
+//        binding.progressBar3.visibility = View.GONE
+//        binding.progressBar4.visibility = View.GONE
+//        binding.progressBar5.visibility = View.GONE
+//        displayFiveUsers(userid,userPosition)
+//        rankingReady=true
+//    }
 
     private fun sort(){
         var boolean=false

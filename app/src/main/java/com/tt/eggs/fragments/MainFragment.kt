@@ -105,6 +105,8 @@ class MainFragment : Fragment() {
     private var runningEggSound4: MediaPlayer?=null
     private var runningEggSound5: MediaPlayer?=null
 
+    private lateinit var apps:NewApps
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,7 +164,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        apps = Functions.readNumberOfAppsFromSharedPreferences(requireContext())
         // makeUI
         makeUI()
 
@@ -2269,7 +2271,6 @@ class MainFragment : Fragment() {
         dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val numberOfApps = snapshot.getValue(GooglePlayApps::class.java)
-                val apps = Functions.readNumberOfAppsFromSharedPreferences(requireContext())
                 numberOfApps?.let {
                     apps.setAppsInGooglePlayInt(numberOfApps)
                     val newApp = apps.isNewApp()
