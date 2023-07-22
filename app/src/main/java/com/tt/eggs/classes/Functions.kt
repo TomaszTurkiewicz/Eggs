@@ -251,26 +251,6 @@ class Functions {
             return loggedInStatus
         }
 
-        fun saveNumberOfAppsToSharedPreferences(context: Context?,apps:NewApps){
-            context?.let {
-                val sharedPreferences = context.getSharedPreferences("APPS", Context.MODE_PRIVATE)
-                val editor = sharedPreferences.edit()
-                editor.putInt("google",apps.appsInGooglePlay)
-                editor.putInt("memory",apps.appsSavedINMemory)
-                editor.apply()
-            }
-        }
-
-        fun readNumberOfAppsFromSharedPreferences(context: Context?):NewApps{
-            val apps = NewApps()
-            context?.let {
-                val sharedPreferences = context.getSharedPreferences("APPS", Context.MODE_PRIVATE)
-                apps.appsInGooglePlay = sharedPreferences.getInt("google",0)
-                apps.appsSavedINMemory = sharedPreferences.getInt("memory",0)
-            }
-            return apps
-        }
-
         fun curvedPath(a: Point, b:Point, radius: Double, up:Boolean):CurvedPoint{
             val midX = a.x + ((b.x-a.x)/2)
             val midY = a.y + ((b.y-a.y)/2)
@@ -307,6 +287,41 @@ class Functions {
             return darkMode
         }
 
+        fun readNumberOfAppsFromMemory(context:Context?):Int{
+            var numberOfApps = 0
+            context?.let {
+                val sp = context.getSharedPreferences("APPS_IN_MEMORY",Context.MODE_PRIVATE)
+                numberOfApps = sp.getInt("apps_in_memory",0)
+            }
+            return numberOfApps
+        }
+
+        fun saveNumberOfAppsFromMemory(context:Context?, numberOfApps:Int){
+            context?.let {
+                val sp = context.getSharedPreferences("APPS_IN_MEMORY",Context.MODE_PRIVATE)
+                val edit = sp.edit()
+                edit.putInt("apps_in_memory",numberOfApps)
+                edit.apply()
+            }
+        }
+
+        fun saveNewAppAvailable(context:Context?,boolean: Boolean){
+            context?.let {
+                val sp = context.getSharedPreferences("NEW_APP",Context.MODE_PRIVATE)
+                val edit = sp.edit()
+                edit.putBoolean("new_app",boolean)
+                edit.apply()
+            }
+        }
+
+        fun readNewAppAvailable(context:Context?):Boolean{
+            var boolean = false
+            context?.let {
+                val sp = context.getSharedPreferences("NEW_APP",Context.MODE_PRIVATE)
+                boolean = sp.getBoolean("new_app",false)
+            }
+            return boolean
+        }
     }
 
 }

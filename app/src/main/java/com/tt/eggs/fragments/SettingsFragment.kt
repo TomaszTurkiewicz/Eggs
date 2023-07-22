@@ -275,19 +275,17 @@ class SettingsFragment : Fragment() {
 
 
         binding.darkModeButton.setImageDrawable(StartButton(requireContext()))
-        binding.otherGamesButton.setImageDrawable(StartButton(requireContext()))
+        val newApp = Functions.readNewAppAvailable(requireContext())
+        binding.otherGamesButton.setImageDrawable(if(newApp) StartButtonGreen(requireContext())else StartButton(requireContext()))
         binding.accountButton.setImageDrawable(StartButton(requireContext()))
         binding.backToGameLinearLayoutEt.background = RoundedFrameDrawable(requireContext(),backToGameButtonSize.height/20,backToGameButtonSize.height/2)
         binding.otherGamesLinearLayout.background = RoundedFrameDrawable(requireContext(),otherGamesButtonSize.height/20,otherGamesButtonSize.height/2)
         binding.rankingLinearLayout.background = RoundedFrameDrawable(requireContext(),rankingButtonSize.height/20,rankingButtonSize.height/2)
         binding.darkModeLinearLayout.background = RoundedFrameDrawable(requireContext(),darkModeButtonSize.height/20,darkModeButtonSize.height/2)
         binding.accountLinearLayout.background = RoundedFrameDrawable(requireContext(),rankingButtonSize.height/20,rankingButtonSize.height/2)
-        val apps = Functions.readNumberOfAppsFromSharedPreferences(requireContext())
-        if(apps.isNewApp()){
-            binding.otherGamesButton.setImageDrawable(StartButtonGreen(requireContext()))
-        }
 
     }
+
 
     private fun getScreenHeightAndWidth() {
         screenUnit = ScreenMetricsCompat.getScreenSize(requireContext())

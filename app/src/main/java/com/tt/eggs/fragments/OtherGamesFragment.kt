@@ -3,6 +3,8 @@ package com.tt.eggs.fragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.tt.eggs.MainActivity
 import com.tt.eggs.R
 import com.tt.eggs.classes.*
 import com.tt.eggs.databinding.FragmentOtherGamesBinding
@@ -27,12 +30,13 @@ class OtherGamesFragment : Fragment() {
     private val wholeScreenSize = Dimension()
     private var _binding: FragmentOtherGamesBinding? = null
     private val binding get() = _binding!!
-    private lateinit var apps : NewApps
+//    private lateinit var apps : NewApps
+//    private val newAppsHandler = Handler(Looper.getMainLooper())
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        apps = Functions.readNumberOfAppsFromSharedPreferences(requireContext())
+//        apps.appsSavedINMemory = Functions.readNumberOfAppsFromSharedPreferences(requireContext())
 
     }
 
@@ -48,7 +52,10 @@ class OtherGamesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         makeUI()
         setOnClickListeners()
+//        checkNewApps().run()
     }
+
+
 
     private fun setOnClickListeners() {
 
@@ -69,10 +76,8 @@ class OtherGamesFragment : Fragment() {
         }
 
         binding.otherGamesButton.setOnClickListener {
-            apps.saveNewNumberOfApps()
-            Functions.saveNumberOfAppsToSharedPreferences(requireContext(),apps)
+            Functions.saveNewAppAvailable(requireContext(),false)
             binding.otherGamesButton.setImageDrawable(StartButton(requireContext()))
-
             val link = getString(R.string.other_games_link)
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -147,14 +152,31 @@ class OtherGamesFragment : Fragment() {
         binding.backToGameLinearLayoutOtherGames.background = RoundedFrameDrawable(requireContext(),buttonSize.height/20,buttonSize.height/2)
         binding.sendGameButton.setImageDrawable(StartButton(requireContext()))
         binding.sendGameLinearlayout.background = RoundedFrameDrawable(requireContext(),buttonSize.height/20,buttonSize.height/2)
-        binding.otherGamesButton.setImageDrawable(StartButton(requireContext()))
+        val newApp = Functions.readNewAppAvailable(requireContext())
+        binding.otherGamesButton.setImageDrawable(if(newApp) StartButtonGreen(requireContext()) else StartButton(requireContext()))
         binding.otherGamesLinearlayout.background = RoundedFrameDrawable(requireContext(),buttonSize.height/20,buttonSize.height/2)
 
 
-        if(apps.isNewApp()){
-            binding.otherGamesButton.setImageDrawable(StartButtonGreen(requireContext()))
-        }
+
     }
+
+//    private fun checkNewApps():Runnable = Runnable {
+//        val activity = activity as MainActivity
+//        if(activity.appsChecked()){
+//            newAppsHandler.removeCallbacksAndMessages(null)
+//            val apps = activity.getApps()
+//            apps.appsSavedINMemory = Functions.readNumberOfAppsFromSharedPreferences(requireContext())
+//            val newApp = apps.isNewApp()
+//            Functions.saveNumberOfAppsToSharedPreferences(requireContext(),apps.appsSavedINMemory)
+//            if(newApp){
+//                view?.let {
+//                    binding.otherGamesButton.setImageDrawable(StartButtonGreen(requireContext()))
+//                }
+//            }
+//        }else{
+//            newAppsHandler.postDelayed(checkNewApps(),1000)
+//        }
+//    }
 
     private fun getScreenHighAndWidth() {
         screenUnit = ScreenMetricsCompat.getScreenSize(requireContext())

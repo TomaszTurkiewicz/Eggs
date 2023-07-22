@@ -73,7 +73,7 @@ class MainFragment : Fragment() {
     private var highScoreState = Static.ON
     private var loopCounter=0
 
-    private var mInterstitialAd: InterstitialAd? = null
+//    private var mInterstitialAd: InterstitialAd? = null
     // for game loop
     private val mHandler = Handler(Looper.getMainLooper())
     private val mHandlerDemo = Handler(Looper.getMainLooper())
@@ -84,6 +84,7 @@ class MainFragment : Fragment() {
     private val mHandlerHighScore = Handler(Looper.getMainLooper())
     // for rabbit loop
     private val mHandlerRabbit = Handler(Looper.getMainLooper())
+//    private val newAppsHandler = Handler(Looper.getMainLooper())
     private var faultFlash = Static.ON
     // counter for rabbit show
     private var rabbitOn = 0
@@ -105,7 +106,7 @@ class MainFragment : Fragment() {
     private var runningEggSound4: MediaPlayer?=null
     private var runningEggSound5: MediaPlayer?=null
 
-    private lateinit var apps:NewApps
+//    private lateinit var apps:NewApps
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,6 +153,8 @@ class MainFragment : Fragment() {
         runningEggSound5?.stop()
         runningEggSound5?.release()
         runningEggSound5 = null
+
+//        newAppsHandler.removeCallbacksAndMessages(null)
     }
 
     override fun onCreateView(
@@ -164,7 +167,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        apps = Functions.readNumberOfAppsFromSharedPreferences(requireContext())
+//        apps = Functions.readNumberOfAppsFromSharedPreferences(requireContext())
         // makeUI
         makeUI()
 
@@ -179,7 +182,27 @@ class MainFragment : Fragment() {
 
         // set button listeners and text view displays
         buttonsOnClickListeners()
+
+//        checkNewApps().run()
     }
+//
+//    private fun checkNewApps():Runnable = Runnable {
+//        val activity = activity as MainActivity
+//        if(activity.appsChecked()){
+//            newAppsHandler.removeCallbacksAndMessages(null)
+//            val apps = activity.getApps()
+//            apps.appsSavedINMemory = Functions.readNumberOfAppsFromSharedPreferences(requireContext())
+//                    val newApp = apps.isNewApp()
+//                    Functions.saveNumberOfAppsToSharedPreferences(requireContext(),apps.appsSavedINMemory)
+//                    if(newApp){
+//                        view?.let {
+//                            binding.account.setImageDrawable(StartButtonGreen(requireContext()))
+//                        }
+//                    }
+//        }else{
+//            newAppsHandler.postDelayed(checkNewApps(),1000)
+//        }
+//    }
 
     // check if there is stored game
     private fun checkGameState() {
@@ -266,7 +289,9 @@ class MainFragment : Fragment() {
         }
 
         binding.startA.setOnClickListener {
-            loadAdvert()
+            val activity = activity as MainActivity
+            activity.loadAdvert()
+//            loadAdvert()
 
             when (gameState) {
                 Static.DEMO -> {
@@ -284,8 +309,9 @@ class MainFragment : Fragment() {
         }
 
         binding.startB.setOnClickListener {
-
-            loadAdvert()
+            val activity = activity as MainActivity
+            activity.loadAdvert()
+//            loadAdvert()
 
             when (gameState) {
                 Static.DEMO -> {
@@ -656,9 +682,11 @@ class MainFragment : Fragment() {
             mHandlerWin.removeCallbacks(winLoop())
 
             demoMode()
-            if(mInterstitialAd != null){
-                mInterstitialAd?.show(requireActivity())
-            }
+            val activity = activity as MainActivity
+            activity.showAdvert()
+//            if(mInterstitialAd != null){
+//                mInterstitialAd?.show(requireActivity())
+//            }
         }
 
     }
@@ -912,9 +940,9 @@ class MainFragment : Fragment() {
             mHandlerRabbit.removeCallbacksAndMessages(null)
             mHandlerFlash.removeCallbacksAndMessages(null)
             demoMode()
-            if(mInterstitialAd != null){
-                mInterstitialAd?.show(requireActivity())
-            }
+            val activity = activity as MainActivity
+            activity.showAdvert()
+
         }
     }
 
@@ -1359,20 +1387,20 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun loadAdvert() {
-        val adRequest = AdRequest.Builder().build()
-        val adId = getString(R.string.admob_big)
-        InterstitialAd.load(requireContext(),adId,adRequest, object  : InterstitialAdLoadCallback(){
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-                loadAdvert()
-            }
-
-            override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                mInterstitialAd = interstitialAd
-            }
-        })
-
-    }
+//    private fun loadAdvert() {
+//        val adRequest = AdRequest.Builder().build()
+//        val adId = getString(R.string.admob_big)
+//        InterstitialAd.load(requireContext(),adId,adRequest, object  : InterstitialAdLoadCallback(){
+//            override fun onAdFailedToLoad(adError: LoadAdError) {
+//                loadAdvert()
+//            }
+//
+//            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+//                mInterstitialAd = interstitialAd
+//            }
+//        })
+//
+//    }
 
     // return boolean if game is played or paused
     private fun playOrPause(): Boolean {
@@ -2260,32 +2288,15 @@ class MainFragment : Fragment() {
             StartButton(requireContext())
         )
 
-        binding.account.setImageDrawable(
+            val newApp = Functions.readNewAppAvailable(requireContext())
+        binding.account.setImageDrawable(if(newApp)
+            StartButtonGreen(requireContext())
+        else
             StartButton(requireContext())
         )
 
         binding.userID.background = TextViewDrawable(requireContext())
 
-
-        val dbRef = Firebase.database.getReference("GooglePlayApps")
-        dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val numberOfApps = snapshot.getValue(GooglePlayApps::class.java)
-                numberOfApps?.let {
-                    apps.setAppsInGooglePlayInt(numberOfApps)
-                    val newApp = apps.isNewApp()
-                    Functions.saveNumberOfAppsToSharedPreferences(requireContext(),apps)
-                    if(newApp){
-                        view?.let {
-                            binding.account.setImageDrawable(StartButtonGreen(requireContext()))
-                        }
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                //do nothing
-            }
-        })
         }
     }
 

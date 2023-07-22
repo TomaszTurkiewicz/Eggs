@@ -8,18 +8,11 @@ class NewApps {
         this.appsInGooglePlay = numberOfApps.numberOfApps
     }
 
-    fun saveNewNumberOfApps(){
-        this.appsSavedINMemory = this.appsInGooglePlay
-    }
-
-    private fun setAppsInMemoryEqualToGoogle(){
-        this.appsSavedINMemory = this.appsInGooglePlay
+    fun setAppsInMemoryInt(numberOfAppsInMemory:Int){
+        this.appsSavedINMemory = numberOfAppsInMemory
     }
 
     fun isNewApp():Boolean{
-        if(appsInGooglePlay<appsSavedINMemory){
-            setAppsInMemoryEqualToGoogle()
-        }
         return appsInGooglePlay>appsSavedINMemory
     }
 }
