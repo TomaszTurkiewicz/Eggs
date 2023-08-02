@@ -76,7 +76,7 @@ class SettingsFragment : Fragment() {
 
     private fun rankingChecking(): Runnable = Runnable {
         val activity = activity as MainActivity
-        rankingReady = activity.getSorted()
+        rankingReady = activity.getDownloaded()
         if(rankingReady){
             view?.let {
                 binding.ranking.setImageDrawable(StartButton(requireContext()))

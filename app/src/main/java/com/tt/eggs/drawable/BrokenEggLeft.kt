@@ -8,7 +8,7 @@ import com.tt.eggs.R
 import com.tt.eggs.classes.Functions
 import com.tt.eggs.classes.Theme
 
-class BrokenEggLeft (private val context: Context, val black:Boolean): Drawable() {
+class BrokenEggLeft (private val context: Context, val black:Boolean, private val halfFault:Boolean): Drawable() {
     private val paint = Paint()
 
 
@@ -19,15 +19,19 @@ class BrokenEggLeft (private val context: Context, val black:Boolean): Drawable(
 
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.maskFilter = BlurMaskFilter(1f,BlurMaskFilter.Blur.NORMAL)
-        if(black) {
+
+
+        val a = Point((unit*0.55).toInt(), (unit*0.4).toInt())
+        val radius = unit*0.22
+        // todo part of chicken
+        if(black and halfFault) {
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
             paint.color = ContextCompat.getColor(context, Theme(context).getShadowColor())
         }
-
-        val a = Point((unit*0.55).toInt(), (unit*0.4).toInt())
-        val radius = unit*0.22
         canvas.drawCircle(a.x.toFloat(), a.y.toFloat(), radius.toFloat(),paint)
+
+
 
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.strokeWidth = (unit*0.02).toFloat()
@@ -113,11 +117,17 @@ class BrokenEggLeft (private val context: Context, val black:Boolean): Drawable(
         path.cubicTo(z1.x.toFloat(), z1.y.toFloat(),curvedRadiusZZ2.x,curvedRadiusZZ2.y, z2.x.toFloat(), z2.y.toFloat())
         path.close()
 
+// todo part of chicken
         canvas.drawPath(path,paint)
 
 
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = (unit*0.1).toFloat()
+        if(black) {
+            paint.color = ContextCompat.getColor(context, R.color.black)
+        }else{
+            paint.color = ContextCompat.getColor(context, Theme(context).getShadowColor())
+        }
 
         val a1 = Point((unit*1.5).toInt(), (unit*1.9).toInt())
         val b1 = Point((unit*1.85).toInt(), (unit*2.1).toInt())
@@ -207,6 +217,12 @@ class BrokenEggLeft (private val context: Context, val black:Boolean): Drawable(
         path4.moveTo(e3.x.toFloat(), e3.y.toFloat())
         path4.lineTo(f3.x.toFloat(), f3.y.toFloat())
 
+// todo part of chicken
+        if(black and halfFault) {
+            paint.color = ContextCompat.getColor(context, R.color.black)
+        }else{
+            paint.color = ContextCompat.getColor(context, Theme(context).getShadowColor())
+        }
         canvas.drawPath(path4,paint)
 
 

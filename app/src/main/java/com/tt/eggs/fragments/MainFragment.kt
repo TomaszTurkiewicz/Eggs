@@ -106,6 +106,8 @@ class MainFragment : Fragment() {
     private var runningEggSound4: MediaPlayer?=null
     private var runningEggSound5: MediaPlayer?=null
 
+    private var endGameLooper = true
+
 //    private lateinit var apps:NewApps
 
 
@@ -529,8 +531,9 @@ class MainFragment : Fragment() {
             binding.faultLeftFirst.setImageDrawable(
                 if (fallenEgg.getFallenEgg(1, 0)) BrokenEggLeft(
                     requireContext(),
-                    true
-                ) else BrokenEggLeft(requireContext(), false)
+                    true,
+                    rabbitBoolean
+                ) else BrokenEggLeft(requireContext(), false, rabbitBoolean)
             )
             binding.faultLeftSecond.setImageDrawable(
                 if (fallenEgg.getFallenEgg(
@@ -574,8 +577,9 @@ class MainFragment : Fragment() {
                     )
                 ) BrokenEggRight(
                     requireContext(),
-                    true
-                ) else BrokenEggRight(requireContext(), false)
+                    true,
+                    rabbitBoolean
+                ) else BrokenEggRight(requireContext(), false, rabbitBoolean)
             )
             binding.faultRightSecond.setImageDrawable(
                 if (fallenEgg.getFallenEgg(
@@ -684,9 +688,6 @@ class MainFragment : Fragment() {
             demoMode()
             val activity = activity as MainActivity
             activity.showAdvert()
-//            if(mInterstitialAd != null){
-//                mInterstitialAd?.show(requireActivity())
-//            }
         }
 
     }
@@ -838,7 +839,7 @@ class MainFragment : Fragment() {
 
     private fun saveUserToFirebaseDatabase() {
         val activity = activity as MainActivity
-        if(activity.getSorted()){
+        if(activity.getDownloaded()){
         val currentUser = Firebase.auth.currentUser
         if (currentUser != null) {
             if (currentUser.uid == loggedInStatus.userid) {
@@ -913,12 +914,13 @@ class MainFragment : Fragment() {
             mHandler.removeCallbacks(gameLoop())
             game.addFault(rabbitBoolean)
             updateFaultsView()
+            val halfFault = rabbitBoolean
 
             if(game.getFault()<=Static.FAULT_TWO_AND_HALF) {
                 stopAllSounds()
                 chickenPlace = 0
 
-                lostEggAnimation(moveProduct.positionFallenEgg)
+                lostEggAnimation(moveProduct.positionFallenEgg, halfFault)
             }else{
                 stopAllSounds()
                 faultSound = MediaPlayer.create(requireContext(),R.raw.fault)
@@ -930,12 +932,15 @@ class MainFragment : Fragment() {
     }
 
     private fun fallenEggEndGame(fallenEgg: FallenEgg): Runnable = Runnable{
-        val finished = fallenEgg.moveDown()
-        displayRunningChicken(fallenEgg)
-        if(!finished){
+//        val finished = fallenEgg.moveDown()
+//        displayRunningChicken(fallenEgg)
+
+        if(endGameLooper){
+            fallenEgg.moveDown()
+            displayRunningChicken(fallenEgg)
+            endGameLooper = false
             mHandlerLostEgg.postDelayed(fallenEggEndGame(fallenEgg),1000)
-        }
-        else{
+        }else{
             mHandlerLostEgg.removeCallbacksAndMessages(null)
             mHandlerRabbit.removeCallbacksAndMessages(null)
             mHandlerFlash.removeCallbacksAndMessages(null)
@@ -944,6 +949,19 @@ class MainFragment : Fragment() {
             activity.showAdvert()
 
         }
+
+//        if(!finished){
+//            mHandlerLostEgg.postDelayed(fallenEggEndGame(fallenEgg),1000)
+//        }
+//        else{
+//            mHandlerLostEgg.removeCallbacksAndMessages(null)
+//            mHandlerRabbit.removeCallbacksAndMessages(null)
+//            mHandlerFlash.removeCallbacksAndMessages(null)
+//            demoMode()
+//            val activity = activity as MainActivity
+//            activity.showAdvert()
+//
+//        }
     }
 
     // lost egg animation end game
@@ -953,6 +971,7 @@ class MainFragment : Fragment() {
             Static.PLAY_A -> loseA()
             Static.PLAY_B -> loseB()
         }
+        endGameLooper = true
         fallenEgg.setFallenEgg(positionFallenEgg/2)
         fallenEggEndGame(fallenEgg).run()
 
@@ -1042,7 +1061,7 @@ class MainFragment : Fragment() {
     }
 
     // fallen egg runnable
-    private fun fallenEgg(fallenEgg: FallenEgg):Runnable = Runnable {
+    private fun fallenEgg(fallenEgg: FallenEgg, halfFault: Boolean):Runnable = Runnable {
         val finished = fallenEgg.moveDown()
         stopAllSounds()
         if(chickenPlace==0){
@@ -1050,25 +1069,35 @@ class MainFragment : Fragment() {
             brokenEggSound?.start()
         }
 
-        displayRunningChicken(fallenEgg)
-        chickenPlace+=1
+        val chickenAt1 = chickenPlace==1
 
-        if(!finished){
-            mHandlerLostEgg.postDelayed(fallenEgg(fallenEgg),1000)
-        }
-        else{
+        if(chickenAt1 and !halfFault){
             mHandlerLostEgg.removeCallbacksAndMessages(null)
             game.setGeneratingEggStraightAway()
             mHandler.postDelayed(gameLoop(),delay())
+        } else {
+            displayRunningChicken(fallenEgg)
+            chickenPlace+=1
+
+            if(!finished){
+                mHandlerLostEgg.postDelayed(fallenEgg(fallenEgg, halfFault),1000)
+            }
+            else{
+                mHandlerLostEgg.removeCallbacksAndMessages(null)
+                game.setGeneratingEggStraightAway()
+                mHandler.postDelayed(gameLoop(),delay())
+            }
         }
+
+
     }
 
     // lost egg animation
-    private fun lostEggAnimation(positionFallenEgg: Int) {
+    private fun lostEggAnimation(positionFallenEgg: Int, halfFault:Boolean) {
 
         val fallenEgg = FallenEgg()
         fallenEgg.setFallenEgg(positionFallenEgg/2)
-        fallenEgg(fallenEgg).run()
+        fallenEgg(fallenEgg,halfFault).run()
 
 
     }
@@ -1386,21 +1415,6 @@ class MainFragment : Fragment() {
             mHandlerFlash.postDelayed(flashFault(imageView),500)
         }
     }
-
-//    private fun loadAdvert() {
-//        val adRequest = AdRequest.Builder().build()
-//        val adId = getString(R.string.admob_big)
-//        InterstitialAd.load(requireContext(),adId,adRequest, object  : InterstitialAdLoadCallback(){
-//            override fun onAdFailedToLoad(adError: LoadAdError) {
-//                loadAdvert()
-//            }
-//
-//            override fun onAdLoaded(interstitialAd: InterstitialAd) {
-//                mInterstitialAd = interstitialAd
-//            }
-//        })
-//
-//    }
 
     // return boolean if game is played or paused
     private fun playOrPause(): Boolean {

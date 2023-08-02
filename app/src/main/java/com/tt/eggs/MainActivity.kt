@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
-    fun getSorted():Boolean{
+    fun getDownloaded():Boolean{
         return this.listDownloaded
     }
 
@@ -158,7 +158,6 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
-    //todo check google apps from firebase!!! and change button color
 }
 
 
