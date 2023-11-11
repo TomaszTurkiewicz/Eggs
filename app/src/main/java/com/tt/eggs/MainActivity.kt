@@ -1,7 +1,9 @@
 package com.tt.eggs
 
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -10,6 +12,11 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.ump.ConsentDebugSettings
+import com.google.android.ump.ConsentForm
+import com.google.android.ump.ConsentInformation
+import com.google.android.ump.ConsentRequestParameters
+import com.google.android.ump.UserMessagingPlatform
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -20,6 +27,7 @@ import com.tt.eggs.classes.GooglePlayApps
 import com.tt.eggs.classes.NewApps
 import com.tt.eggs.classes.User
 import com.tt.eggs.databinding.ActivityMainBinding
+import java.util.concurrent.atomic.AtomicBoolean
 
 
 class MainActivity : AppCompatActivity(){
@@ -31,6 +39,10 @@ class MainActivity : AppCompatActivity(){
     private var googlePlayApps: GooglePlayApps? = null
     private var apps:NewApps = NewApps()
 
+    private lateinit var consentInformation: ConsentInformation
+    // Use an atomic boolean to initialize the Google Mobile Ads SDK and load ads once.
+    private var isMobileAdsInitializeCalled = AtomicBoolean(false)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,13 +51,77 @@ class MainActivity : AppCompatActivity(){
         val view = binding.root
         setContentView(view)
         fullScreen(view)
-        MobileAds.initialize(this)
+//        MobileAds.initialize(this)
+        requestConsentForm()
 
         userList = mutableListOf()
         createUserListFromFirebase()
 
         apps.setAppsInMemoryInt(Functions.readNumberOfAppsFromMemory(this))
         checkAppsInGooglePlay()
+
+    }
+
+    private fun requestConsentForm(){
+
+
+
+        // Set tag for under age of consent. false means users are not under age
+        // of consent.
+        val params = ConsentRequestParameters
+            .Builder()
+            .setTagForUnderAgeOfConsent(false)
+            .build()
+
+
+        consentInformation = UserMessagingPlatform.getConsentInformation(this)
+//        consentInformation.reset()
+        consentInformation.requestConsentInfoUpdate(
+            this,
+            params,
+            {
+                UserMessagingPlatform.loadAndShowConsentFormIfRequired(
+                    this@MainActivity,
+                    ConsentForm.OnConsentFormDismissedListener {
+                            loadAndShowError ->
+                        // Consent gathering failed.
+                        Log.w(
+                            ContentValues.TAG, String.format("%s: %s",
+                            loadAndShowError?.errorCode,
+                            loadAndShowError?.message))
+
+                        // Consent has been gathered.
+                        if (consentInformation.canRequestAds()) {
+                            initializeMobileAdsSdk()
+                        }
+                    }
+                )
+            },
+            {
+                    requestConsentError ->
+                // Consent gathering failed.
+                Log.w(
+                    ContentValues.TAG, String.format("%s: %s",
+                    requestConsentError.errorCode,
+                    requestConsentError.message))
+            })
+
+        // Check if you can initialize the Google Mobile Ads SDK in parallel
+        // while checking for new consent information. Consent obtained in
+        // the previous session can be used to request ads.
+        if (consentInformation.canRequestAds()) {
+            initializeMobileAdsSdk()
+        }
+    }
+
+    private fun initializeMobileAdsSdk() {
+        if (isMobileAdsInitializeCalled.get()) {
+            return
+        }
+        isMobileAdsInitializeCalled.set(true)
+
+        // Initialize the Google Mobile Ads SDK.
+        MobileAds.initialize(this)
 
     }
 
