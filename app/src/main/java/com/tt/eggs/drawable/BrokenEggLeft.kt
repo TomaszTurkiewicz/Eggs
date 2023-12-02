@@ -23,7 +23,6 @@ class BrokenEggLeft (private val context: Context, val black:Boolean, private va
 
         val a = Point((unit*0.55).toInt(), (unit*0.4).toInt())
         val radius = unit*0.22
-        // todo part of chicken
         if(black and halfFault) {
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
@@ -117,7 +116,6 @@ class BrokenEggLeft (private val context: Context, val black:Boolean, private va
         path.cubicTo(z1.x.toFloat(), z1.y.toFloat(),curvedRadiusZZ2.x,curvedRadiusZZ2.y, z2.x.toFloat(), z2.y.toFloat())
         path.close()
 
-// todo part of chicken
         canvas.drawPath(path,paint)
 
 
@@ -217,7 +215,6 @@ class BrokenEggLeft (private val context: Context, val black:Boolean, private va
         path4.moveTo(e3.x.toFloat(), e3.y.toFloat())
         path4.lineTo(f3.x.toFloat(), f3.y.toFloat())
 
-// todo part of chicken
         if(black and halfFault) {
             paint.color = ContextCompat.getColor(context, R.color.black)
         }else{
@@ -233,6 +230,9 @@ class BrokenEggLeft (private val context: Context, val black:Boolean, private va
         paint.alpha=alpha
     }
 
+    @Deprecated("Deprecated in Java",
+        ReplaceWith("PixelFormat.OPAQUE", "android.graphics.PixelFormat")
+    )
     override fun getOpacity(): Int = PixelFormat.OPAQUE
 
     override fun setColorFilter(colorFilter: ColorFilter?) {

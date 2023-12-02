@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentForm
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
@@ -89,7 +88,6 @@ class MainActivity : AppCompatActivity(){
                     if(snapshot.exists()){
                         // porownaj, update
 
-                        // todo finish this!!!
                         createUserListFromFirebase()
                     }
                     else{
@@ -103,9 +101,8 @@ class MainActivity : AppCompatActivity(){
                         val userId = UserId()
                         userId.userId = currentUser!!.uid
                         dbRanking.setValue(userId)
-                        val a =100
                         createUserListFromFirebase()
-                        // todo finish this!!! and check
+
                     }
                 }
 
@@ -217,22 +214,6 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun createUserListFromFirebase() {
-//        val dbRef = Firebase.database.getReference("user")
-//        dbRef.addListenerForSingleValueEvent(object : ValueEventListener{
-//            override fun onCancelled(p0: DatabaseError) {
-//
-//            }
-//
-//            override fun onDataChange(p0: DataSnapshot) {
-//                if(p0.exists()){
-//                    for(user in p0.children){
-//                        val tUser = user.getValue(User::class.java)
-//                        userList.add(tUser!!)
-//                    }
-//                    listDownloaded = true
-//                }
-//            }
-//        })
 
         idList.clear()
         val dates = DateUtils().getLastMonth()
@@ -349,9 +330,7 @@ class MainActivity : AppCompatActivity(){
     }
 
     fun showAdvert(){
-        mInterstitialAd?.let {
-            it?.show(this)
-        }
+        mInterstitialAd?.show(this)
     }
 
 }

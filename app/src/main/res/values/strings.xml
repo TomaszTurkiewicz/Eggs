@@ -40,7 +40,6 @@
     <string name="delete_account">DELETE ACCOUNT</string>
     <string name="warning">!!! WARNING !!!</string>
     <string name="warning_message">Your account will be deleted. Are You sure?</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="account">ACCOUNT</string>
     <string name="dark_mode">DARK MODE</string>

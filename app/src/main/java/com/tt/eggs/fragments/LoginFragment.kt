@@ -1,7 +1,6 @@
 package com.tt.eggs.fragments
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -565,5 +564,3 @@ class LoginFragment : Fragment() {
 
 
 }
-
-// todo change user checking in firebase
