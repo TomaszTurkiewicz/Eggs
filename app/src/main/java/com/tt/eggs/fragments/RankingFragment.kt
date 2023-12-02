@@ -140,12 +140,13 @@ class RankingFragment : Fragment() {
 
     private fun prepareRankingWithCoroutine(){
         if(loggedInStatus.loggedIn){
+            val a = 100
             var exist = false
             val user = User(loggedInStatus.userid,
                 Functions.checkUserNameFromSharedPreferences(requireContext(),loggedInStatus.userid),
                 Functions.readGameAFromSharedPreferences(requireContext(),loggedInStatus.userid),
                 Functions.readGameBFromSharedPreferences(requireContext(),loggedInStatus.userid))
-            for(i in 0 until userList.size-1){
+            for(i in 0 until userList.size){
                 if(userList[i].id.equals(userid)){
                     userList[i].gameA = user.gameA
                     userList[i].gameB = user.gameB
@@ -174,6 +175,8 @@ class RankingFragment : Fragment() {
             }
             rankingReady=true
         }
+
+
     }
 
 

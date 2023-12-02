@@ -17,15 +17,21 @@ import com.google.android.ump.ConsentForm
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.tt.eggs.classes.DateUtils
 import com.tt.eggs.classes.Functions
 import com.tt.eggs.classes.GooglePlayApps
 import com.tt.eggs.classes.NewApps
 import com.tt.eggs.classes.User
+import com.tt.eggs.classes.UserId
+import com.tt.eggs.classes.UserTimeStamp
 import com.tt.eggs.databinding.ActivityMainBinding
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -38,6 +44,13 @@ class MainActivity : AppCompatActivity(){
     private var mInterstitialAd: InterstitialAd? = null
     private var googlePlayApps: GooglePlayApps? = null
     private var apps:NewApps = NewApps()
+    private var currentUser: FirebaseUser? = null
+    private lateinit var auth: FirebaseAuth
+
+    private val idList:MutableList<UserId> = mutableListOf()
+    private var datesListSize = 0
+    private var currentPosition = 0
+    private var listSize = 0
 
     private lateinit var consentInformation: ConsentInformation
     // Use an atomic boolean to initialize the Google Mobile Ads SDK and load ads once.
@@ -55,11 +68,54 @@ class MainActivity : AppCompatActivity(){
         requestConsentForm()
 
         userList = mutableListOf()
-        createUserListFromFirebase()
+        updateTimeStamp()
+
 
         apps.setAppsInMemoryInt(Functions.readNumberOfAppsFromMemory(this))
         checkAppsInGooglePlay()
 
+    }
+
+    private fun updateTimeStamp() {
+        auth = Firebase.auth
+        currentUser = auth.currentUser
+
+        if(currentUser!=null){
+            val currentDate = DateUtils().getCurrentDate()
+            val dbTimeStamp = Firebase.database.getReference("timeStamp").child(currentUser!!.uid)
+
+            dbTimeStamp.addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()){
+                        // porownaj, update
+
+                        // todo finish this!!!
+                        createUserListFromFirebase()
+                    }
+                    else{
+
+                        // set timestamp and ranking
+                        val timeStamp = UserTimeStamp()
+                        timeStamp.timestamp = currentDate
+
+                        dbTimeStamp.setValue(timeStamp)
+                        val dbRanking = Firebase.database.getReference("ranking").child(currentDate.toString()).child(currentUser!!.uid)
+                        val userId = UserId()
+                        userId.userId = currentUser!!.uid
+                        dbRanking.setValue(userId)
+                        val a =100
+                        createUserListFromFirebase()
+                        // todo finish this!!! and check
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+            })
+        }else{
+            createUserListFromFirebase()
+        }
     }
 
     private fun requestConsentForm(){
@@ -161,23 +217,87 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun createUserListFromFirebase() {
-        val dbRef = Firebase.database.getReference("user")
-        dbRef.addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onCancelled(p0: DatabaseError) {
+//        val dbRef = Firebase.database.getReference("user")
+//        dbRef.addListenerForSingleValueEvent(object : ValueEventListener{
+//            override fun onCancelled(p0: DatabaseError) {
+//
+//            }
+//
+//            override fun onDataChange(p0: DataSnapshot) {
+//                if(p0.exists()){
+//                    for(user in p0.children){
+//                        val tUser = user.getValue(User::class.java)
+//                        userList.add(tUser!!)
+//                    }
+//                    listDownloaded = true
+//                }
+//            }
+//        })
 
-            }
+        idList.clear()
+        val dates = DateUtils().getLastMonth()
+        datesListSize = dates.size
+        currentPosition = 0
+        readUserIdsFromFirebase(dates)
 
-            override fun onDataChange(p0: DataSnapshot) {
-                if(p0.exists()){
-                    for(user in p0.children){
-                        val tUser = user.getValue(User::class.java)
-                        userList.add(tUser!!)
-                    }
-                    listDownloaded = true
-                }
-            }
-        })
     }
+
+    private fun readUserIdsFromFirebase(dates: MutableList<Int>) {
+        if(currentPosition<datesListSize){
+            val dbRef = Firebase.database.getReference("ranking").child(dates[currentPosition].toString())
+            dbRef.addListenerForSingleValueEvent(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                 if(snapshot.exists()){
+                     for(id in snapshot.children){
+                         val tId = id.getValue(UserId::class.java)
+                         idList.add(tId!!)
+                     }
+                 }
+                    currentPosition+=1
+                    readUserIdsFromFirebase(dates)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+        }
+        else{
+            readUsersFromFirebase()
+        }
+
+    }
+
+    private fun readUsersFromFirebase() {
+        userList.clear()
+        listSize = idList.size
+        currentPosition = 0
+        readUsersListFromFirebase()
+
+    }
+
+    private fun readUsersListFromFirebase() {
+        if(currentPosition<listSize){
+            val dbRef = Firebase.database.getReference("user").child(idList[currentPosition].userId!!)
+            dbRef.addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()){
+                        val user = snapshot.getValue(User::class.java)
+                        userList.add(user!!)
+                    }
+                    currentPosition+=1
+                    readUsersListFromFirebase()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+            })
+        }else{
+            listDownloaded = true
+        }
+
+    }
+
 
     private fun setFullScreenContent(){
         mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback(){
