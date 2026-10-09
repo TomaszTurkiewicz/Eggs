@@ -31,8 +31,8 @@ import com.tt.eggs.R
 import com.tt.eggs.classes.*
 import com.tt.eggs.databinding.FragmentMainBinding
 import com.tt.eggs.drawable.*
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -889,7 +889,7 @@ class MainFragment : Fragment() {
             // egg has been caught
             if(moveProduct.logicProduct==1){
 
-                GlobalScope.launch(Dispatchers.Default){
+                lifecycleScope.launch(Dispatchers.Default){
                     caughtEggSound = MediaPlayer.create(requireContext(),R.raw.score_move)
                     caughtEggSound?.start()
                 }
@@ -1144,7 +1144,7 @@ class MainFragment : Fragment() {
     }
 
     private fun makeSoundRunningEggStep(step:Int){
-        GlobalScope.launch(Dispatchers.Default){
+        lifecycleScope.launch(Dispatchers.Default){
             when(step){
                 1->{
                     runningEggSound1?.start()
@@ -2317,5 +2317,6 @@ class MainFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         mHandlerPause.removeCallbacksAndMessages(null)
+        _binding = null
     }
 }

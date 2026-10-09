@@ -361,5 +361,10 @@ class DeleteUserFragment : Fragment() {
         findNavController().navigateUp()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }
 

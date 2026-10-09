@@ -210,4 +210,9 @@ class OtherGamesFragment : Fragment() {
         binding.otherGamesText.setTextSize(TypedValue.COMPLEX_UNIT_PX, (screenUnit*0.6).toFloat())
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

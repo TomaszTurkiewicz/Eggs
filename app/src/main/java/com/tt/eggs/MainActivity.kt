@@ -34,6 +34,7 @@ import com.tt.eggs.classes.UserTimeStamp
 import com.tt.eggs.databinding.ActivityMainBinding
 import java.util.concurrent.atomic.AtomicBoolean
 
+const val TEST = true
 
 class MainActivity : AppCompatActivity(){
 
@@ -54,7 +55,6 @@ class MainActivity : AppCompatActivity(){
     private lateinit var consentInformation: ConsentInformation
     // Use an atomic boolean to initialize the Google Mobile Ads SDK and load ads once.
     private var isMobileAdsInitializeCalled = AtomicBoolean(false)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(){
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        fullScreen(view)
+        view.post { fullScreen(view) }
 //        MobileAds.initialize(this)
         requestConsentForm()
 
@@ -73,6 +73,13 @@ class MainActivity : AppCompatActivity(){
         apps.setAppsInMemoryInt(Functions.readNumberOfAppsFromMemory(this))
         checkAppsInGooglePlay()
 
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus && ::binding.isInitialized) {
+            fullScreen(binding.root)
+        }
     }
 
     private fun updateTimeStamp() {
@@ -87,8 +94,19 @@ class MainActivity : AppCompatActivity(){
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.exists()){
                         // porownaj, update
-
-                        createUserListFromFirebase()
+                        val timeStamp = snapshot.getValue(UserTimeStamp::class.java)
+                        if(timeStamp!!.timestamp == currentDate){
+                            createUserListFromFirebase()
+                        }else{
+                            Firebase.database.getReference("ranking").child(timeStamp.timestamp.toString()).child(currentUser!!.uid).removeValue()
+                            timeStamp.timestamp = currentDate
+                            dbTimeStamp.setValue(timeStamp)
+                            val dbRanking = Firebase.database.getReference("ranking").child(currentDate.toString()).child(currentUser!!.uid)
+                            val userId = UserId()
+                            userId.userId = currentUser!!.uid
+                            dbRanking.setValue(userId)
+                            createUserListFromFirebase()
+                        }
                     }
                     else{
 
@@ -239,6 +257,8 @@ class MainActivity : AppCompatActivity(){
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    currentPosition += 1
+                    readUserIdsFromFirebase(dates)
                 }
             })
         }
@@ -270,6 +290,8 @@ class MainActivity : AppCompatActivity(){
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    currentPosition += 1
+                    readUsersListFromFirebase()
                 }
 
             })
@@ -315,7 +337,7 @@ class MainActivity : AppCompatActivity(){
     fun loadAdvert(){
         if(mInterstitialAd==null){
             val adRequest = AdRequest.Builder().build()
-            val adId = getString(R.string.admob_big)
+            val adId = if(TEST) getString(R.string.admob_big_test) else getString(R.string.admob_big)
             InterstitialAd.load(this,adId,adRequest,object : InterstitialAdLoadCallback(){
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
                     mInterstitialAd = interstitialAd
@@ -323,7 +345,7 @@ class MainActivity : AppCompatActivity(){
                 }
 
                 override fun onAdFailedToLoad(adError: LoadAdError) {
-                    loadAdvert()
+                    mInterstitialAd = null
                 }
             })
         }

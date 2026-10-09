@@ -140,7 +140,6 @@ class RankingFragment : Fragment() {
 
     private fun prepareRankingWithCoroutine(){
         if(loggedInStatus.loggedIn){
-            val a = 100
             var exist = false
             val user = User(loggedInStatus.userid,
                 Functions.checkUserNameFromSharedPreferences(requireContext(),loggedInStatus.userid),
@@ -750,5 +749,9 @@ class RankingFragment : Fragment() {
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }
