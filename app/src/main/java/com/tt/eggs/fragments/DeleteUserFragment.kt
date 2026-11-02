@@ -329,36 +329,47 @@ class DeleteUserFragment : Fragment() {
     }
 
     private fun firebaseAuthWithGoogle(idToken:String?){
+        val activity = activity ?: return
         val credentials = GoogleAuthProvider.getCredential(idToken,null)
         auth.signInWithCredential(credentials)
-            .addOnCompleteListener(requireActivity()){task ->
+            .addOnCompleteListener(activity){task ->
+                val ctx = context ?: return@addOnCompleteListener
                 if(task.isSuccessful){
                     val user = Firebase.auth.currentUser
                     user?.let {
                         val dbRef = Firebase.database.getReference("user").child(user.uid)
 
                         dbRef.removeValue().addOnCompleteListener {
+                            if (context == null) return@addOnCompleteListener
                             user.delete().addOnCompleteListener{
-                                Toast.makeText(requireContext(),"USER DELETED", Toast.LENGTH_LONG).show()
-                                Functions.saveLoggedStateToSharedPreferences(requireContext(),false,"")
+                                val ctx3 = context ?: return@addOnCompleteListener
+                                Toast.makeText(ctx3,"USER DELETED", Toast.LENGTH_LONG).show()
+                                Functions.saveLoggedStateToSharedPreferences(ctx3,false,"")
                                 goFragmentUp()
                             }.addOnFailureListener {
-                                Toast.makeText(requireContext(),"SOMETHING WENT WRONG TRY ONCE AGAIN LATER",
+                                val ctxErr = context ?: return@addOnFailureListener
+                                Toast.makeText(ctxErr,"SOMETHING WENT WRONG TRY ONCE AGAIN LATER",
                                     Toast.LENGTH_LONG).show()
                             }
                         }.addOnFailureListener {
-                            Toast.makeText(requireContext(),"SOMETHING WENT WRONG TRY ONCE AGAIN LATER", Toast.LENGTH_LONG).show()
+                            val ctxErr = context ?: return@addOnFailureListener
+                            Toast.makeText(ctxErr,"SOMETHING WENT WRONG TRY ONCE AGAIN LATER", Toast.LENGTH_LONG).show()
                         }
                     }
                 }
                 else{
-                    Toast.makeText(requireContext(),"SOMETHING WENT WRONG TRY ONCE AGAIN LATER", Toast.LENGTH_LONG).show()
+                    Toast.makeText(ctx,"SOMETHING WENT WRONG TRY ONCE AGAIN LATER", Toast.LENGTH_LONG).show()
                 }
             }
     }
 
     private fun goFragmentUp(){
-        findNavController().navigateUp()
+        if (isAdded && !isDetached) {
+            try {
+                findNavController().navigateUp()
+            } catch (_: Exception) {
+            }
+        }
     }
 
     override fun onDestroyView() {

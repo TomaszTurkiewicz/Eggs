@@ -104,9 +104,11 @@ class LoginFragment : Fragment() {
     }
 
     private fun firebaseAuthWithGoogle(idToken:String?){
+        val activity = activity ?: return
         val credentials = GoogleAuthProvider.getCredential(idToken,null)
         auth.signInWithCredential(credentials)
-            .addOnCompleteListener(requireActivity()){ task ->
+            .addOnCompleteListener(activity){ task ->
+                val ctx = context ?: return@addOnCompleteListener
                 if(task.isSuccessful){
                     val user = Firebase.auth.currentUser
                     if(user!=null){
@@ -115,7 +117,7 @@ class LoginFragment : Fragment() {
 
                     }
                 }else{
-                    Functions.saveLoggedStateToSharedPreferences(requireContext(),false,"")
+                    Functions.saveLoggedStateToSharedPreferences(ctx,false,"")
                     updateUI()
                 }
             }
@@ -135,6 +137,7 @@ class LoginFragment : Fragment() {
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
+                    val ctx = context ?: return
                     // user doesn't exists
                     if(!p0.exists()){
 
@@ -149,29 +152,29 @@ class LoginFragment : Fragment() {
                     else{
                         // check if sharedpreferences and firebase database are the same if not make them the same
                         val tUser = p0.getValue(User::class.java)
-                        val userName = Functions.checkUserNameFromSharedPreferences(requireContext(),user.uid)
-                        val gameA = Functions.readGameAFromSharedPreferences(requireContext(),user.uid)
-                        val gameB = Functions.readGameBFromSharedPreferences(requireContext(),user.uid)
+                        val userName = Functions.checkUserNameFromSharedPreferences(ctx,user.uid)
+                        val gameA = Functions.readGameAFromSharedPreferences(ctx,user.uid)
+                        val gameB = Functions.readGameBFromSharedPreferences(ctx,user.uid)
                         if(tUser!=null) {
                             if(userName != tUser.userName){
-                                Functions.saveUserNameToSharedPreferences(requireContext(),user.uid,tUser.userName)
+                                Functions.saveUserNameToSharedPreferences(ctx,user.uid,tUser.userName)
                             }
 
                             if (tUser.gameA.totalScoreA < gameA.totalScoreA) {
                                 tUser.gameA = gameA
                             }
                             else{
-                                Functions.saveStatisticAToSharedPreferences(requireContext(),user.uid,tUser.gameA)
+                                Functions.saveStatisticAToSharedPreferences(ctx,user.uid,tUser.gameA)
                             }
                             if (tUser.gameB.totalScoreB < gameB.totalScoreB) {
                                 tUser.gameB = gameB
                             }
                             else{
-                                Functions.saveStatisticBToSharedPreferences(requireContext(),user.uid,tUser.gameB)
+                                Functions.saveStatisticBToSharedPreferences(ctx,user.uid,tUser.gameB)
                             }
                             dbRef.setValue(tUser)
 
-                            Functions.saveLoggedStateToSharedPreferences(requireContext(),true, user.uid)
+                            Functions.saveLoggedStateToSharedPreferences(ctx,true, user.uid)
 
                             updateUI()
 

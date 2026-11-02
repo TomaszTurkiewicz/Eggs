@@ -134,29 +134,42 @@ class MainFragment : Fragment() {
         }
     }
 
+    private fun stopAllHandlers() {
+        mHandler.removeCallbacksAndMessages(null)
+        mHandlerDemo.removeCallbacksAndMessages(null)
+        mHandlerPause.removeCallbacksAndMessages(null)
+        mHandlerWin.removeCallbacksAndMessages(null)
+        mHandlerRabbit.removeCallbacksAndMessages(null)
+        mHandlerFlash.removeCallbacksAndMessages(null)
+        mHandlerLostEgg.removeCallbacksAndMessages(null)
+        mHandlerHighScore.removeCallbacksAndMessages(null)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        runningEggSound1?.stop()
-        runningEggSound1?.release()
+        stopAllHandlers()
+
+        val mediaPlayers = arrayOf(
+            runningEggSound1, runningEggSound2, runningEggSound3, runningEggSound4, runningEggSound5,
+            runningEggFirstSound, caughtEggSound, faultSound, brokenEggSound, winningSound
+        )
+        for (mp in mediaPlayers) {
+            try {
+                mp?.stop()
+                mp?.release()
+            } catch (_: Exception) {
+            }
+        }
         runningEggSound1 = null
-
-        runningEggSound2?.stop()
-        runningEggSound2?.release()
         runningEggSound2 = null
-
-        runningEggSound3?.stop()
-        runningEggSound3?.release()
         runningEggSound3 = null
-
-        runningEggSound4?.stop()
-        runningEggSound4?.release()
         runningEggSound4 = null
-
-        runningEggSound5?.stop()
-        runningEggSound5?.release()
         runningEggSound5 = null
-
-//        newAppsHandler.removeCallbacksAndMessages(null)
+        runningEggFirstSound = null
+        caughtEggSound = null
+        faultSound = null
+        brokenEggSound = null
+        winningSound = null
     }
 
     override fun onCreateView(
@@ -2316,7 +2329,7 @@ class MainFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mHandlerPause.removeCallbacksAndMessages(null)
+        stopAllHandlers()
         _binding = null
     }
 }
