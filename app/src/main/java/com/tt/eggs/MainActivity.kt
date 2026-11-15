@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(){
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus && ::binding.isInitialized) {
-            fullScreen(binding.root)
+            binding.root.post { fullScreen(binding.root) }
         }
     }
 
@@ -310,10 +310,18 @@ class MainActivity : AppCompatActivity(){
 
             override fun onAdDismissedFullScreenContent() {
                 super.onAdDismissedFullScreenContent()
+                mInterstitialAd = null
+                if (::binding.isInitialized) {
+                    binding.root.post { loadAdvert() }
+                }
             }
 
             override fun onAdFailedToShowFullScreenContent(p0: AdError) {
                 super.onAdFailedToShowFullScreenContent(p0)
+                mInterstitialAd = null
+                if (::binding.isInitialized) {
+                    binding.root.post { loadAdvert() }
+                }
             }
 
             override fun onAdImpression() {
@@ -352,7 +360,12 @@ class MainActivity : AppCompatActivity(){
     }
 
     fun showAdvert(){
-        mInterstitialAd?.show(this)
+        val ad = mInterstitialAd
+        if (ad != null) {
+            ad.show(this)
+        } else {
+            loadAdvert()
+        }
     }
 
 }
